@@ -13,24 +13,27 @@
 
 (function () {
   /* jshint multistr:true */
-  'use strict';
+  "use strict";
   if (window.frames.length != parent.frames.length) {
     // alert('在iframe中');
     return false;
   }
   let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
   url = url.replace("?from=manga_person", "");
-  if (location.host == "greasyfork.org"){
-    url = url.replace(/(\/\d+)-.+/,"$1");
+  let title = document.title;
+  if (location.host == "greasyfork.org") {
+    url = url.replace(/(\/\d+)-.+/, "$1");
   }
 
-  GM_registerMenuCommand('复制', () => {
-    GM_setClipboard(document.title + '\n' + url);
+  GM_registerMenuCommand("复制", () => {
+    GM_setClipboard(document.title + "\n" + url);
     //alert("复制成功：\r\n" + document.title + '\n' + document.location.href);
   });
 
-  GM_registerMenuCommand('复制HTML', () => {
-    GM_setClipboard(document.title + `\n<a href="${url}" target="_blank" title="${document.title}">${url}</a>`);
+  GM_registerMenuCommand("复制HTML", () => {
+    GM_setClipboard(
+      `<p>${title}</p><p><a href="${url}" target="_blank" title="${title}">${url}</a></p>`
+    );
     //alert("复制成功：\r\n" + document.title + '\n' + document.location.href);
   });
 
