@@ -14,18 +14,18 @@
   const $ = window.jQuery;
   // console.log($);
   const $btnBad = $(` <a class="btn btn-primary">BAD</a>`);
-  const strTip = `<p>此贴因不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>`;
+  const strTip = `<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>`;
   $btnBad.css({ color: "#fff" }).click(function () {
     let um = window.UM.getEditor("message");
     let str = um.getContent();
-    if (str.indexOf("~~") > -1) {
+    if (str.indexOf("#~~") > -1) {
       return;
     }
     let strCode = LZString.compress(str);
-    um.setContent(strTip + `<p>~~${strCode}~~</p>`);
-
-    // let strDeCode = LZString.decompress(strCode);
-    // um.setContent(strCode + strDeCode);
+    um.setContent(strTip + `<p>#~~${strCode}~~#</p>`);
+    console.log(LZString.decompress(strCode));
+    //let strDeCode = LZString.decompress(strCode);
+    //um.setContent(strCode + strDeCode);
   });
   if ($("input[name=update_reason]").length > 0) {
     $("#submit").after($btnBad);
@@ -39,14 +39,14 @@
       return;
     }
     let str = $secP.html();
-    if (str.indexOf("~~") == -1) {
+    if (str.indexOf("#~~") == -1) {
       return;
     }
     console.log(str);
-    str = str.replace(/~~(.+)~~/, function (a, b) {
+    str = str.replace(/#~~(.+)~~#/, function (a, b) {
       console.log(arguments);
       let strDeCode = LZString.decompress(b);
-      // console.log(strDeCode);
+      console.log(strDeCode);
       return strDeCode;
     });
     $secP.after(str).remove();
