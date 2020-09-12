@@ -17,3 +17,7 @@ GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
 Feedly - 中键标记已读 + 收藏导出为*.url
 
 https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
+
+Z-Blog前台编辑文章入口
+
+https://github.com/wdssmq/userscript/blob/master/zblog/edt.user.js
