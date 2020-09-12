@@ -1,9 +1,11 @@
 // ==UserScript==
-// @name         Feedly - 中键标记已读 + 收藏导出为URL
-// @namespace    沉冰浮水.tk
-// @version      0.3
+// @name         Feedly - 中键标记已读 + 收藏导出为*.url
 // @description  新标签页打开条目时自动标记为已读
+// @version      0.3.2
 // @author       沉冰浮水
+// @namespace    https://www.wdssmq.com/
+// @raw          https://github.com/wdssmq/userscript/raw/master/feedly/feedly.user.js
+// @raw          https://greasyfork.org/zh-CN/scripts/381793
 // @match        https://feedly.com/*
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
