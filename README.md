@@ -8,7 +8,7 @@
 
 爱发电主页：https://afdian.net/@wdssmq
 
-GreasyFork：https://greasyfork.org/zh-CN/users/6865
+GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
 
 ## 已有项目
 
