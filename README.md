@@ -8,9 +8,9 @@
 
 爱发电主页：https://afdian.net/@wdssmq
 
-GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
+      GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
 
-## 已有项目
+## 已有项目  
 
 注：安装相应浏览器扩展后点击各脚本页的raw即可安装。
 
@@ -25,3 +25,7 @@ https://github.com/wdssmq/userscript/blob/master/zblog/edt.user.js
 复制当前页面标题及网址
 
 https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
+
+[bilibili]稍后再看导出为.url
+
+https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
