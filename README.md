@@ -21,3 +21,7 @@ https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
 Z-Blog前台编辑文章入口
 
 https://github.com/wdssmq/userscript/blob/master/zblog/edt.user.js
+
+复制当前页面标题及网址
+
+https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
