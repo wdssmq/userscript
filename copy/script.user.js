@@ -4,7 +4,7 @@
 // @description 复制当前页面标题及网址
 // @include     http://*
 // @include     https://*
-// @version     1.7
+// @version     1.8
 // @grant       GM_registerMenuCommand
 // @grant       GM_setClipboard
 // @url         https://greasyfork.org/zh-CN/scripts/28056
@@ -18,23 +18,33 @@
     // alert('在iframe中');
     return false;
   }
-  let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
-  url = url.replace("?from=manga_person", "");
-  let title = document.title;
-  if (location.host == "greasyfork.org") {
-    url = url.replace(/(\/\d+)-.+/, "$1");
+  function fnGetInfo() {
+    let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
+    url = url.replace("?from=manga_person", "");
+    let title = document.title;
+    if (location.host == "greasyfork.org") {
+      url = url.replace(/(\/\d+)-.+/, "$1");
+    }
+    return [title, url];
   }
 
   GM_registerMenuCommand("复制", () => {
-    GM_setClipboard(document.title + "\n" + url);
-    //alert("复制成功：\r\n" + document.title + '\n' + document.location.href);
+    const [title, url] = fnGetInfo();
+    GM_setClipboard(title + "\n" + url);
   });
 
   GM_registerMenuCommand("复制HTML", () => {
+    const [title, url] = fnGetInfo();
     GM_setClipboard(
       `<p>${title}</p><p><a href="${url}" target="_blank" title="${title}">${url}</a></p>`
     );
-    //alert("复制成功：\r\n" + document.title + '\n' + document.location.href);
+  });  
+
+  GM_registerMenuCommand("复制为Markdown", () => {
+    const [title, url] = fnGetInfo();
+    GM_setClipboard(
+      `[${title}](${url} "${title}")`
+    );
   });
 
   function $n(e) {
