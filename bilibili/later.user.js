@@ -80,7 +80,7 @@
       error: function (err) {
         console.error(err);
       },
-    });
+    });                                                                                                                                                                                                                                                       
     // $.get("https://api.bilibili.com/x/v2/history/toview/web", function (data) {
     //   console.log(data);
     // });
