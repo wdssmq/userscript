@@ -10,6 +10,7 @@
 // @version     1.9
 // @grant       none
 // ==/UserScript==
+// jshint       esversion:6
 (function () {
   if (!window.jQuery) {
     return false;

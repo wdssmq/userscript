@@ -22,6 +22,10 @@ Z-Blog 前台编辑文章入口
 
 https://github.com/wdssmq/userscript/blob/master/zblog/edt.user.js
 
+Z-Blog 开发者工具
+
+https://github.com/wdssmq/userscript/blob/master/zblog/DevTools.user.js
+
 复制当前页面标题及网址
 
 https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
