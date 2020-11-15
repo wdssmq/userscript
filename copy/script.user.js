@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name        复制标题网址（QQ群：189574683）
-// @namespace   https://www.wdssmq.com
 // @description 复制当前页面标题及网址
+// @url         https://greasyfork.org/zh-CN/scripts/28056
+// @namespace   https://www.wdssmq.com
 // @include     http://*
 // @include     https://*
 // @version     1.8
 // @grant       GM_registerMenuCommand
 // @grant       GM_setClipboard
-// @url         https://greasyfork.org/zh-CN/scripts/28056
 // jshint       esversion:6
 // ==/UserScript==
 
