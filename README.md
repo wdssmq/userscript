@@ -4,11 +4,13 @@
 
 ## 前置
 
-项目地址： https://github.com/wdssmq/userscript
+更多脚本： https://github.com/wdssmq/userscript
 
 爱发电主页：https://afdian.net/@wdssmq
 
 GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
+
+QQ群：189574683
 
 ## 用于复制
 

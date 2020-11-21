@@ -18,7 +18,7 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
-/*jshint esversion:6 */
+/*jshint esversion:9 */
 // 本脚本综合以下项目实现
 // https://greasyfork.org/scripts/28410
 // https://greasyfork.org/scripts/375992
