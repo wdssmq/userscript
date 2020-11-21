@@ -73,12 +73,13 @@
     }
   });
   addEvent($n("#box"), "mouseup", function (event) {
+    console.log(event.target);
     if (
-      event.target.className === "heading" &&
+      event.target.id === "header-title" &&
       event.target.nodeName === "SPAN"
     ) {
       let intCount = $na("div.content a").length;
-      $n("h1 .heading").innerHTML = `Read later（${intCount}）`;
+      $n("h1 #header-title").innerHTML = `Read later（${intCount}）`;
       GM_setClipboard(fnMKShell($na("div.content a")));
     }
   });
