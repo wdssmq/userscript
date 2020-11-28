@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [manhuagui]打包下载（QQ群：189574683）
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      0.2
 // @description  按章节打包下载漫画柜的资源
 // @author       沉冰浮水
 // @link   ----------------------------
@@ -32,17 +32,8 @@
   }
   function fnGenUrl() {
     // 用于下载图片
-    let imgUrl = document.querySelector(".mangaFile").getAttribute("src");
-    if (imgUrl.includes("[") || imgUrl.includes("]")) {
-      //如果url里含有[]这两个符号，会被encodeURI编码掉。所以encodeURI之后要在转换回来（我在这地方被坑了数小时）。但为什么下边还要再encodeURI一次？不经过二次encodeURI就不行，我也是好晕啊
-      imgUrl = encodeURI(imgUrl).replace(/%5B/g, "[").replace(/%5D/g, "]");
-    } else if (imgUrl.includes("%") && imgUrl.includes("%26") === false) {
-      //如果含有已经转码过的汉字，就全解码成汉字，再编码。%26是排除&符号。但为什么还是需要第二次编码？
-      imgUrl = encodeURI(decodeURI(imgUrl));
-    } else {
-      //虽然不知道为什么，总之编码两次就对了
-      imgUrl = encodeURI(imgUrl);
-    }
+    const imgUrl = $n(".mangaFile").getAttribute("src");
+    // $n(".mangaFile").setAttribute("src","");
     console.log(imgUrl);
     return imgUrl;
   }
@@ -53,6 +44,11 @@
     const pages = $na("option").length; // 总页数
     return { name, chapter, pages };
   }
+
+  // window.addEventListener("hashchange", () => {
+  //   const img_url = $n(".mangaFile").Attribute("src");
+  //   $n(".mangaFile").Attribute("src")
+  // });
 
   // 网络请求
   const get = (url, responseType = "json", retry = 3) =>
@@ -126,7 +122,7 @@
   };
 
   // 文件名补零
-  let FILENAME_LENGTH = parseInt(GM_getValue("filename_length", "0")) || 0;
+  let FILENAME_LENGTH = parseInt(GM_getValue("filename_length", "2")) || 2;
   GM_registerMenuCommand("Filename Length", () => {
     let num;
     do {
@@ -181,45 +177,63 @@
     }
     return Promise.all(threads);
   };
-  const fnDownload = async () => {
+  const fnDownload = async ($btn = null) => {
     const info = fnGenInfo();
     const cfName = `${info.name}_${info.chapter}`;
     info.done = 0;
+    info.error = 0;
+    info.bad = {};
     console.log(info);
     // zip
     const zip = await new JSZip();
+    //
+    const btnDownloadProgress = (curPage = 0) => {
+      if ($btn) {
+        $btn.innerHTML = `正在下载：${curPage} /${info.pages}`;
+      }
+    };
+    const btnCompressingProgress = (percent = 0) => {
+      if ($btn) {
+        $btn.innerHTML = percent == 100 ? "已完成√" : `正在压缩：${percent}`;
+      }
+    };
     // 下载并添加到zip
+    // page 从1开始
     const dlPromise = (url, page, threadID = 0) => {
+      const fileName = ((i) => {
+        return `${String(i).padStart(FILENAME_LENGTH, 0)}.jpg`;
+      })(page);
       return get(url, "arraybuffer")
         .then(async (data) => {
-          const fileName = ((i) => {
-            return `${String(i + 1).padStart(FILENAME_LENGTH, 0)}.jpg`;
-          })(page);
           await zip.file(fileName, Comlink.transfer({ data }, [data]));
           info.done++;
         })
-        .catch((e) => {
-          info.error = true;
-          throw e;
+        .catch(async (e) => {
+          await zip.file(`${fileName}.bad.txt`, "");
+          info.bad[page] = `${url}`;
+          info.error++;
+          // throw e;
         });
     };
     for (let page = 0; page < info.pages; page++) {
-      await sleep(593);
       const url = fnGenUrl();
-      await dlPromise(url, page);
+      btnDownloadProgress(page + 1);
+      await dlPromise(url, page + 1);
+      await sleep(597);
       $n("#next").click();
     }
     // await multiThread(urls, dlPromise);
     return async () => {
-      info.compressing = true;
-      let lastZipFile = "";
+      // info.compressing = true;
+      // let lastZipFile = "";
       const { data } = await zip.generateAsync(
         { type: "arraybuffer", ...getCompressionOptions() },
         Comlink.proxy(({ percent, currentFile }) => {
-          if (lastZipFile !== currentFile && currentFile) {
-            lastZipFile = currentFile;
-            console.log(`Compressing ${percent.toFixed(2)}%`, currentFile);
-          }
+          // if (lastZipFile !== currentFile && currentFile) {
+          //   lastZipFile = currentFile;
+          //   console.log(`Compressing ${percent.toFixed(2)}%`, currentFile);
+          // }
+          btnCompressingProgress(percent.toFixed(2));
           info.compressingPercent = percent;
         })
       );
@@ -241,8 +255,14 @@
   startDownload.style.background = "#0077D1";
   startDownload.style.cursor = "pointer";
   startDownload.addEventListener("click", async () => {
-    const fnDL = await fnDownload();
+    let curPage = parseInt($n("#page").innerHTML);
+    if (curPage > 1) {
+      alert("请从第一页开始下载");
+      return false;
+    }
+    const fnDL = await fnDownload(startDownload);
     const { data, name } = await fnDL();
     saveAs(data, name);
   });
+  fnGenUrl();
 })();
