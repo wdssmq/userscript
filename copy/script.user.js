@@ -1,11 +1,17 @@
 // ==UserScript==
 // @name        复制标题网址（QQ群：189574683）
+// @namespace   https://www.wdssmq.com
+// @author      沉冰浮水
+// @version     1.9
 // @description 复制当前页面标题及网址
 // @url         https://greasyfork.org/zh-CN/scripts/28056
-// @namespace   https://www.wdssmq.com
+// @link   ----------------------------
+// @link   https://github.com/wdssmq/userscript
+// @link   https://afdian.net/@wdssmq
+// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @link   ----------------------------
 // @include     http://*
 // @include     https://*
-// @version     1.8
 // @grant       GM_registerMenuCommand
 // @grant       GM_setClipboard
 // jshint       esversion:6
@@ -21,7 +27,8 @@
   function fnGetInfo() {
     let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
     url = url.replace("?from=manga_person", "");
-    let title = document.title;
+    let title = document.title.trim();
+    title = title.replace(/^(.+吧-百度贴吧)--.+/, "$1");
     if (location.host == "greasyfork.org") {
       url = url.replace(/(\/\d+)-.+/, "$1");
     }
@@ -38,13 +45,16 @@
     GM_setClipboard(
       `<p>${title}</p><p><a href="${url}" target="_blank" title="${title}">${url}</a></p>`
     );
-  });  
+  });
 
-  GM_registerMenuCommand("复制为Markdown", () => {
+  GM_registerMenuCommand("复制为Markdown[text]", () => {
     const [title, url] = fnGetInfo();
-    GM_setClipboard(
-      `[${title}](${url} "${title}")`
-    );
+    GM_setClipboard(`[${title}](${url} "${title}")`);
+  });
+
+  GM_registerMenuCommand("复制为Markdown[link]", () => {
+    const [title, url] = fnGetInfo();
+    GM_setClipboard(`${title}：[${url}](${url} "${title}")`);
   });
 
   function $n(e) {
