@@ -16,9 +16,9 @@ QQ群：189574683
 
 ```js
 // @link   ----------------------------
-// @link： https://github.com/wdssmq/userscript
-// @link： https://afdian.net/@wdssmq
-// @link:  https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @link   https://github.com/wdssmq/userscript
+// @link   https://afdian.net/@wdssmq
+// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @link   ----------------------------
 ```
 
@@ -37,6 +37,10 @@ https://github.com/wdssmq/userscript/blob/master/zblog/edt.user.js
 Z-Blog 开发者工具
 
 https://github.com/wdssmq/userscript/blob/master/zblog/DevTools.user.js
+
+[zblog] 应用中心促销工具
+
+https://github.com/wdssmq/userscript/blob/master/zblog/promotion.user.js
 
 复制当前页面标题及网址
 
