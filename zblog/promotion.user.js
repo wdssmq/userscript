@@ -166,7 +166,9 @@
   objPB.APIKey = GM_getValue("pb_key", "");
   GM_registerMenuCommand("PushBullet鉴权Key", () => {
     const key = prompt("PushBullet鉴权Key:", objPB.APIKey);
-    GM_setValue("pb_key", key);
+    if (typeof key == "string") {
+      GM_setValue("pb_key", key);
+    }
   });
   objPB.skip = function () {
     console.log(arguments);
@@ -174,7 +176,7 @@
   objPB.isGM = true;
 
   if (!objPB.APIKey) {
-    $(".divHeader").append(" - <span class=\"star\">未设置PushBullet</span>");
+    $(".divHeader").append(' - <span class="star">未设置PushBullet</span>');
   }
 
   // 当前时间
@@ -274,11 +276,13 @@
               if (err) {
                 throw err;
               } else {
-                lsData.PbSend[appid] = daystamp;
-                console.log(res.status, res.response);
+                console.log(res.status);
+                console.log(res.response);
               }
             }
           );
+        // 不能放在回调中- -
+        lsData.PbSend[appid] = daystamp;
       }
       return;
     }
