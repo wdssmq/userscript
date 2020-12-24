@@ -30,6 +30,7 @@
   function $na(e) {
     return document.querySelectorAll(e);
   }
+
   function fnGenUrl() {
     // 用于下载图片
     const imgUrl = $n(".mangaFile").getAttribute("src");
@@ -44,11 +45,6 @@
     const pages = $na("option").length; // 总页数
     return { name, chapter, pages };
   }
-
-  // window.addEventListener("hashchange", () => {
-  //   const img_url = $n(".mangaFile").Attribute("src");
-  //   $n(".mangaFile").Attribute("src")
-  // });
 
   // 网络请求
   const get = (url, responseType = "json", retry = 3) =>
@@ -264,5 +260,26 @@
     const { data, name } = await fnDL();
     saveAs(data, name);
   });
-  fnGenUrl();
+
+  // 单图查看
+  const setCurImgLink = () => {
+    if ($n("#curimg")) {
+      $n("#curimg").href = fnGenUrl();
+      return;
+    }
+    const $imgLink = document.createElement("a");
+    $imgLink.id = "curimg";
+    $imgLink.innerHTML = "查看单图";
+    $imgLink.className = "btn-red";
+    $imgLink.href = fnGenUrl();
+    $imgLink.target = "_blank";
+    $imgLink.style.background = "#0077D1";
+    $imgLink.style.cursor = "pointer";
+    $n(".main-btn").insertBefore($imgLink,$n("#viewList"));
+  };
+  setCurImgLink();
+
+  window.addEventListener("hashchange", () => {
+    setCurImgLink();
+  });
 })();
