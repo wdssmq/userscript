@@ -24,11 +24,14 @@
     // alert('在iframe中');
     return false;
   }
-  function fnGetInfo() {
+  function fnGetInfo(md = false) {
     let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
     url = url.replace("?from=manga_person", "");
     let title = document.title.trim();
     title = title.replace(/^(.+吧-百度贴吧)--.+/, "$1");
+    if (md) {
+      title = title.replace("_", "\\_");
+    }
     if (location.host == "greasyfork.org") {
       url = url.replace(/(\/\d+)-.+/, "$1");
     }
@@ -48,12 +51,12 @@
   });
 
   GM_registerMenuCommand("复制为Markdown[text]", () => {
-    const [title, url] = fnGetInfo();
+    const [title, url] = fnGetInfo(true);
     GM_setClipboard(`[${title}](${url} "${title}")`);
   });
 
   GM_registerMenuCommand("复制为Markdown[link]", () => {
-    const [title, url] = fnGetInfo();
+    const [title, url] = fnGetInfo(true);
     GM_setClipboard(`${title}：[${url}](${url} "${title}")`);
   });
 
