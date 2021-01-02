@@ -1,14 +1,19 @@
 // ==UserScript==
-// @name         Xino 管理工具
+// @name         xiuno 管理工具[QQ群：189574683]
 // @namespace    沉冰浮水
 // @version      0.1
 // @description  对不合规的内容加密处理
 // @author       沉冰浮水
+// @link   ----------------------------
+// @link   https://github.com/wdssmq/userscript
+// @link   https://afdian.net/@wdssmq
+// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @link   ----------------------------
 // @match        https://bbs.zblogcn.com/*
 // @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
 // @grant        none
 // ==/UserScript==
-
+/*jshint esversion:6 */
 (function () {
   "use strict";
   const $ = window.jQuery;
@@ -21,10 +26,10 @@
     if (str.indexOf("#~~") > -1) {
       return;
     }
-    let strCode = LZString.compress(str);
+    let strCode = LZString.compressToBase64(str);
     um.setContent(strTip + `<p>#~~${strCode}~~#</p>`);
-    console.log(LZString.decompress(strCode));
-    //let strDeCode = LZString.decompress(strCode);
+    console.log(LZString.decompressFromBase64(strCode));
+    //let strDeCode = LZString.decompressFromBase64(strCode);
     //um.setContent(strCode + strDeCode);
   });
   if ($("input[name=update_reason]").length > 0) {
@@ -45,7 +50,7 @@
     console.log(str);
     str = str.replace(/#~~(.+)~~#/, function (a, b) {
       console.log(arguments);
-      let strDeCode = LZString.decompress(b);
+      let strDeCode = LZString.decompressFromBase64(b);
       console.log(strDeCode);
       return strDeCode;
     });

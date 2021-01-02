@@ -38,7 +38,7 @@ Z-Blog 开发者工具
 
 https://github.com/wdssmq/userscript/blob/master/zblog/DevTools.user.js
 
-[zblog] 应用中心促销工具
+\[zblog\] 应用中心促销工具
 
 https://github.com/wdssmq/userscript/blob/master/zblog/promotion.user.js
 
@@ -50,10 +50,14 @@ https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
 
 https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
 
-[bilibili]稍后再看导出为.url
+\[bilibili\]稍后再看导出为.url
 
 https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
 
-[manhuagui]打包下载
+\[manhuagui\]打包下载
 
 https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
+
+xiuno 管理工具
+
+https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
