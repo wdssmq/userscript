@@ -1,0 +1,14 @@
+{
+  "bookmarks": [
+    {
+      "site": "zbp",
+      "name": "后台",
+      "url": "/zb_system/cmd.php?act=login"
+    },
+    {
+      "site": "zbp",
+      "name": "插件管理",
+      "url": "/zb_system/admin/index.php?act=PluginMng"
+    }
+  ]
+}

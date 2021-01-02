@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         EasyPHP 面板助手
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
-// @description  try to take over the world!
 // @author       沉冰浮水
-// @match        http://127.0.0.1:1111/
+// @description  新窗口打开站点；自动启用服务；书签功能；
+// @version      0.1
+// @match        http://127.0.0.1:1111/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // ==/UserScript==
