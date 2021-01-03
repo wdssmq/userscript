@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name        Z-Blog - 前台编辑文章入口
-// @description 配合主题以显示前台编辑入口
+// @namespace   https://www.wdssmq.com/
 // @version     0.1
 // @author      沉冰浮水
-// @namespace   https://www.wdssmq.com/
+// @description 配合主题以显示前台编辑入口
 // @link        https://afdian.net/@wdssmq
 // @link        https://github.com/wdssmq/userscript
 // @link        https://greasyfork.org/zh-CN/users/6865-wdssmq

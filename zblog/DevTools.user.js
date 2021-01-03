@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name        ZBLOG开发者工具
-// @description 含搜索订单，附带隐藏未付订单，应用审核回显；
-// @link        https://greasyfork.org/zh-CN/scripts/25662
 // @namespace   wdssmq.com
+// @description 含搜索订单，附带隐藏未付订单，应用审核回显；
 // @author      沉冰浮水
+// @version     2.0
+// @link        https://greasyfork.org/zh-CN/scripts/25662
 // @include     https://app.zblogcn.com/zb_system/admin/edit.php*id=*
 // @include     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php*
 // @include     https://app.zblogcn.com/?id=*
-// @version     1.9
 // @grant       none
 // ==/UserScript==
 // jshint       esversion:6
@@ -51,7 +51,7 @@
   function fnAjax(page, pat) {
     $.ajax({
       url:
-        "https://app.zblogcn.com/zb_users/plugin/AppBuy/main.php?page=" + page,
+        "https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php?page=" + page,
       type: "get",
       success: function (data) {
         // if (/已付款/.test(data) && page < 3) {
@@ -67,7 +67,8 @@
                 oDate = new Date(Date.parse(match[1]));
                 if (nDate === null) nDate = oDate;
                 intVdg++;
-                var Match = TheHtml.match(/\(([\d\.]+)\)/);
+                var Match = TheHtml.match(/\(-?([\d\.]+)\)/);
+                // console.log(Match,page);
                 rmbFgu += parseFloat(Match[1]) * 100;
                 $("table:not(#tbStatistic) tbody").append(
                   "<tr>" + TheHtml + "</tr>\n"

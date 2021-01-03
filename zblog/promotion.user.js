@@ -241,10 +241,6 @@
       }
       console.log(appname, appid, pm_type, modRlt);
     } else if (!diff(0, pubdate)) {
-      // lsData 中移除
-      const tmp_set = new Set(lsData.arrApps);
-      tmp_set.delete(appid);
-      lsData.arrApps = Array.from(tmp_set);
       console.log(appname, appid, pm_type);
       const strStart = $(this).prev().html();
       const sDate = new Date(strStart.replace(/-/g, "/"));
@@ -261,7 +257,11 @@
         obj.msg += `\n${appname}促销中；`;
       }
       rltLog += `${obj.msg}\n\n`;
-      if (!lsData.PbSend[appid] || lsData.PbSend[appid] !== daystamp) {
+      const lstSend = parseInt(daystamp / 4);
+      if (
+        (!lsData.PbSend[appid] || lsData.PbSend[appid] !== lstSend) &&
+        lsData.arrApps.indexOf(appid) > -1
+      ) {
         objPB.APIKey &&
           objPB.push(
             "link",
@@ -282,8 +282,12 @@
             }
           );
         // 不能放在回调中- -
-        lsData.PbSend[appid] = daystamp;
+        lsData.PbSend[appid] = lstSend;
       }
+      // lsData 中移除
+      const tmp_set = new Set(lsData.arrApps);
+      tmp_set.delete(appid);
+      lsData.arrApps = Array.from(tmp_set);
       return;
     }
   }); // --遍历结束
@@ -312,9 +316,12 @@
   // 剩余数量
   let count = parseInt(document.getElementById("count").value);
   // 促销价
-  const disc = (count % 7) / 7;
-  let fee = star * disc;
+  let disc = (count % 7) / 7;
+  if (star <= 13.7 && count % 7 > 0) {
+    disc = ((count % 7) - 1) / 7;
+  }
   $("#amount .star").after(`<span>${disc.toFixed(2)}</span>`);
+  let fee = star * disc;
 
   let o_fee = star;
   if (lsData.app_id_hash === appid) {
