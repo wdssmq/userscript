@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Feedly - 中键标记已读 + 收藏导出为*.url
+// @name         [Feedly] - 中键标记已读 + 收藏导出为*.url
 // @description  新标签页打开条目时自动标记为已读
-// @version      0.3.2
+// @version      0.3.3
 // @author       沉冰浮水
 // @namespace    https://www.wdssmq.com/
 // @raw          https://github.com/wdssmq/userscript/raw/master/feedly/feedly.user.js
@@ -60,12 +60,13 @@
   }
   var opt1 = 0;
   addEvent($n("#box"), "mouseup", function (event) {
-    if (event.target.className === "title" && event.target.nodeName === "A") {
-      var btn = event.target.parentNode.querySelector(".mark-as-read");
-      console.log(btn.title === "Mark as read");
+    if (event.target.className === "entry__title" && event.target.nodeName === "A") {
       console.log(event.target);
-      if (btn.title === "Mark as read") {
-        btn.click();
+      const $btn = event.target.parentNode.querySelector(".EntryMarkAsReadButton");
+      if ($btn.title === "Mark as read") {
+        console.log($btn.title);
+        console.log("自动标记已读");
+        $btn.click();
       }
       if (event.button !== 1 && opt1) {
         GM_openInTab(event.target.href, true);
@@ -73,11 +74,11 @@
     }
   });
   addEvent($n("#box"), "mouseup", function (event) {
-    console.log(event.target);
     if (
       event.target.id === "header-title" &&
       event.target.nodeName === "SPAN"
-    ) {
+      ) {
+      console.log(event.target);
       let intCount = $na("div.content a").length;
       $n("h1 #header-title").innerHTML = `Read later（${intCount}）`;
       GM_setClipboard(fnMKShell($na("div.content a")));
