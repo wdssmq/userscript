@@ -1,9 +1,14 @@
 // ==UserScript==
 // @name         [Feedly] - 中键标记已读 + 收藏导出为*.url
-// @description  新标签页打开条目时自动标记为已读
-// @version      0.3.3
-// @author       沉冰浮水
 // @namespace    https://www.wdssmq.com/
+// @author       沉冰浮水
+// @version      0.3.3
+// @description  新标签页打开条目时自动标记为已读
+// @link   ----------------------------
+// @link   https://github.com/wdssmq/userscript
+// @link   https://afdian.net/@wdssmq
+// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @link   ----------------------------
 // @raw          https://github.com/wdssmq/userscript/raw/master/feedly/feedly.user.js
 // @raw          https://greasyfork.org/zh-CN/scripts/381793
 // @match        https://feedly.com/*

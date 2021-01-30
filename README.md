@@ -10,7 +10,7 @@
 
 GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
 
-QQ群：189574683
+QQ 群：189574683
 
 ## 用于复制
 
@@ -46,7 +46,7 @@ https://github.com/wdssmq/userscript/blob/master/zblog/promotion.user.js
 
 https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
 
-给文本框加MD工具条
+给文本框加 MD 工具条
 
 https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
 
