@@ -5,6 +5,8 @@
 // @description  将B站的稍后再看列表导出为.url文件
 // @author       沉冰浮水
 // @url          https://greasyfork.org/scripts/398415
+// @include      https://www.bilibili.com/
+// @include      https://t.bilibili.com/
 // @include      https://www.bilibili.com/watchlater/*
 // @include      https://www.bilibili.com/video/av*
 // @include      https://www.bilibili.com/video/BV*
@@ -18,7 +20,21 @@
 /* jshint esversion:6 */
 (function () {
   "use strict";
-  const $ = unsafeWindow.jQuery;
+  let $;
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  // 番剧链接改为我的追番
+  document.addEventListener("DOMContentLoaded", async function (e) {
+    await sleep(3000);
+    $ = unsafeWindow.$ || window.$;
+    const uid = ((url) => {
+      // console.log(url.match(/\d+/));
+      return url.match(/\d+/)[0];
+    })($("a.count-item[href^='//space']").attr("href"));
+    $("a[href$='/anime/']").attr(
+      "href",
+      `https://space.bilibili.com/${uid}/bangumi`
+    );
+  });
   //const pic = unsafeWindow.__INITIAL_STATE__.videoData.pic;
   //if (pic){
   //console.log(pic);
@@ -80,7 +96,7 @@
       error: function (err) {
         console.error(err);
       },
-    });                                                                                                                                                                                                                                                       
+    });
     // $.get("https://api.bilibili.com/x/v2/history/toview/web", function (data) {
     //   console.log(data);
     // });
@@ -152,7 +168,7 @@
       }
       let arrTime = $n(".bilibili-player-video-time-now").innerText.split(":");
       let t = parseInt(arrTime[0]) * 60 + parseInt(arrTime[1]) - 7;
-      console.log(oldTime,t);
+      console.log(oldTime, t);
       if (t - oldTime <= 73) {
         return url;
       }
@@ -177,7 +193,10 @@
         // e.target.className || "class为空"
         // );
         // 实际代码
-        if (e.target.nodeName === "DIV" && e.target.className === "bilibili-player-dm-tip-wrap") {
+        if (
+          e.target.nodeName === "DIV" &&
+          e.target.className === "bilibili-player-dm-tip-wrap"
+        ) {
           console.log(e.target);
           url = fnGenUrl(url);
         }
