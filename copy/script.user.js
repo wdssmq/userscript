@@ -30,7 +30,7 @@
     let title = document.title.trim();
     title = title.replace(/^(.+吧-百度贴吧)--.+/, "$1");
     if (md) {
-      title = title.replace("_", "\\_");
+      title = title.replace(/_/g, "\\_");
     }
     if (location.host == "greasyfork.org") {
       url = url.replace(/(\/\d+)-.+/, "$1");
