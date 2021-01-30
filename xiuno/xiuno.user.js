@@ -36,6 +36,14 @@
     $("#submit").after($btnBad);
     return;
   }
+  // 楼层地址
+  const curHref = location.href.replace(location.hash,"");
+  $("li.media.post").each(function () {
+    const $me = $(this);
+    const pid = $me.data("pid");
+    const $date = $me.find("span.date");
+    $date.after(`<a class="text-grey ml-2" href="${curHref}#${pid}">楼层地址</a>`);
+  })
   // 解码
   $("div.message").each(function () {
     let $secP = $(this).find("p:nth-child(2)");
