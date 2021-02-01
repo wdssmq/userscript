@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [manhuagui]打包下载（QQ群：189574683）
 // @namespace    https://www.wdssmq.com/
-// @version      0.2
+// @version      0.3
 // @description  按章节打包下载漫画柜的资源
 // @author       沉冰浮水
 // @link   ----------------------------
@@ -31,28 +31,18 @@
     return document.querySelectorAll(e);
   }
 
-  function fnGenUrl() {
-    // 用于下载图片
-    const imgUrl = $n(".mangaFile").getAttribute("src");
-    // $n(".mangaFile").setAttribute("src","");
-    console.log(imgUrl);
-    return imgUrl;
-  }
-
-  function fnGenInfo() {
-    const name = $n(".title h1 a").innerHTML; //漫画名
-    const chapter = $n(".title h2").innerHTML; //漫画名
-    const pages = $na("option").length; // 总页数
-    return { name, chapter, pages };
-  }
-
   // 网络请求
-  const get = (url, responseType = "json", retry = 3) =>
+  const get = (url, responseType = "json", retry = 2) =>
     new Promise((resolve, reject) => {
       try {
+        // console.log(navigator.userAgent);
         GM_xmlhttpRequest({
           method: "GET",
           url,
+          headers: {
+            "User-Agent": navigator.userAgent, // If not specified, navigator.userAgent will be used.
+            referer: "https://www.manhuagui.com/",
+          },
           responseType,
           onerror: (e) => {
             if (retry === 0) reject(e);
@@ -173,6 +163,27 @@
     }
     return Promise.all(threads);
   };
+
+  let curImgUrl = "";
+  function fnGenUrl() {
+    // 用于下载图片
+    const imgUrl = $n(".mangaFile").getAttribute("src");
+    // $n(".mangaFile").setAttribute("src","");
+    if (curImgUrl !== imgUrl) {
+      console.log(imgUrl);
+      curImgUrl = imgUrl;
+    }
+    // return encodeURI(imgUrl);
+    return imgUrl;
+  }
+
+  function fnGenInfo() {
+    const name = $n(".title h1 a").innerHTML; // 漫画名
+    const chapter = $n(".title h2").innerHTML; // 章节
+    const pages = $na("option").length; // 总页数
+    return { name, chapter, pages };
+  }
+
   const fnDownload = async ($btn = null) => {
     const info = fnGenInfo();
     const cfName = `${info.name}_${info.chapter}`;
@@ -215,7 +226,11 @@
       const url = fnGenUrl();
       btnDownloadProgress(page + 1);
       await dlPromise(url, page + 1);
-      await sleep(597);
+      await sleep(137);
+      if (info.error) {
+        alert("下载失败");
+        break;
+      }
       $n("#next").click();
     }
     // await multiThread(urls, dlPromise);
@@ -234,10 +249,11 @@
         })
       );
       console.log(info);
-      console.log("Done");
+      // console.log("Done");
       return {
         name: `${cfName}.zip`,
         data: new Blob([data]),
+        error: info.error,
       };
     };
   };
@@ -257,8 +273,10 @@
       return false;
     }
     const fnDL = await fnDownload(startDownload);
-    const { data, name } = await fnDL();
-    saveAs(data, name);
+    const { data, name, error } = await fnDL();
+    if (!error) {
+      saveAs(data, name);
+    }
   });
 
   // 单图查看
@@ -275,7 +293,7 @@
     $imgLink.target = "_blank";
     $imgLink.style.background = "#0077D1";
     $imgLink.style.cursor = "pointer";
-    $n(".main-btn").insertBefore($imgLink,$n("#viewList"));
+    $n(".main-btn").insertBefore($imgLink, $n("#viewList"));
   };
   setCurImgLink();
 
