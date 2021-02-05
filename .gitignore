@@ -2,3 +2,4 @@
 *.lnk
 *code-workspace
 node_modules
+.history

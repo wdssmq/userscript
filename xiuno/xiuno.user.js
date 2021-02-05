@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         xiuno 管理工具[QQ群：189574683]
 // @namespace    沉冰浮水
-// @version      0.1
+// @version      0.2
 // @description  对不合规的内容加密处理
 // @author       沉冰浮水
 // @link   ----------------------------

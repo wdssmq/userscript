@@ -2,7 +2,7 @@
 // @name         [Feedly] - 中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
-// @version      0.3.3
+// @version      0.3.4
 // @description  新标签页打开条目时自动标记为已读
 // @link   ----------------------------
 // @link   https://github.com/wdssmq/userscript
@@ -68,11 +68,11 @@
     if (event.target.className === "entry__title" && event.target.nodeName === "A") {
       console.log(event.target);
       const $btn = event.target.parentNode.querySelector(".EntryMarkAsReadButton");
-      if ($btn.title === "Mark as read") {
+      // if ($btn.title === "Mark as read") {
         console.log($btn.title);
         console.log("自动标记已读");
         $btn.click();
-      }
+      // }
       if (event.button !== 1 && opt1) {
         GM_openInTab(event.target.href, true);
       }
