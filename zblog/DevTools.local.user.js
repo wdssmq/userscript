@@ -43,12 +43,17 @@
     });
   }
   console.log(config);
+  const curUsr = [$("div.username").text(), $("#app_author_name").val()];
+  // 只在新建时填写
+  if (curUsr[0].indexOf(curUsr[1]) > -1) {
+    fnFill("#app_author_name", config.authName, 1);
+    fnFill("#app_author_email", config.authEmail, 1);
+    fnFill("#app_author_url", config.authUrl, 1);
+    fnFill("#app_phpver", config.appPHPVer, 1);
+  }
+  // 值为空时填写
   fnFill("#app_url", config.appUrl);
   fnFill("#app_description", config.appDesc);
-  fnFill("#app_author_name", config.authName);
-  fnFill("#app_author_email", config.authEmail);
-  fnFill("#app_author_url", config.authUrl);
-  fnFill("#app_phpver", config.appPHPVer, 1);
 
   const app_id = $("#app_id").val();
   if (/LinksManage/.test(app_id)) {
