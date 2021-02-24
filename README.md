@@ -38,6 +38,10 @@ Z-Blog 开发者工具
 
 https://github.com/wdssmq/userscript/blob/master/zblog/DevTools.user.js
 
+\[Z-Blog\]使用 MD 编辑应用介绍
+
+https://github.com/wdssmq/userscript/blob/master/zblog/md-app-doc.user.js
+
 \[zblog\] 应用中心促销工具
 
 https://github.com/wdssmq/userscript/blob/master/zblog/promotion.user.js

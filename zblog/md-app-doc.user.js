@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         [Z-Blog]使用MD编辑应用文档
+// @name         [Z-Blog]使用MD编辑应用介绍
 // @namespace    https://www.wdssmq.com/
 // @version      0.1
 // @author       wdssmq
@@ -14,7 +14,7 @@
 // @require      https://cdn.jsdelivr.net/npm/marked/marked.min.js
 // @grant        none
 // ==/UserScript==
-
+/*jshint esversion: 8 */
 (function () {
   "use strict";
 
