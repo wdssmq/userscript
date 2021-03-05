@@ -5,11 +5,11 @@
 // @version     2.0
 // @description 复制当前页面标题及网址
 // @url         https://greasyfork.org/zh-CN/scripts/28056
-// @link   ----------------------------
-// @link   https://github.com/wdssmq/userscript
+// ----------------------------
 // @link   https://afdian.net/@wdssmq
+// @link   https://github.com/wdssmq/userscript
 // @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link   ----------------------------
+// ----------------------------
 // @include     http://*
 // @include     https://*
 // @grant       GM_registerMenuCommand

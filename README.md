@@ -15,11 +15,11 @@ QQ 群：189574683
 ## 用于复制
 
 ```js
-// @link   ----------------------------
-// @link   https://github.com/wdssmq/userscript
+// ----------------------------
 // @link   https://afdian.net/@wdssmq
+// @link   https://github.com/wdssmq/userscript
 // @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link   ----------------------------
+// ----------------------------
 ```
 
 ## 已有项目

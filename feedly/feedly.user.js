@@ -4,13 +4,14 @@
 // @author       沉冰浮水
 // @version      0.3.4
 // @description  新标签页打开条目时自动标记为已读
-// @link   ----------------------------
-// @link   https://github.com/wdssmq/userscript
+// ----------------------------
+// @raw    https://github.com/wdssmq/userscript/tree/master/feedly
+// @raw    https://greasyfork.org/zh-CN/scripts/381793
+// ----------------------------
 // @link   https://afdian.net/@wdssmq
+// @link   https://github.com/wdssmq/userscript
 // @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link   ----------------------------
-// @raw          https://github.com/wdssmq/userscript/raw/master/feedly/feedly.user.js
-// @raw          https://greasyfork.org/zh-CN/scripts/381793
+// ----------------------------
 // @match        https://feedly.com/*
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
@@ -24,6 +25,34 @@
   function $na(e) {
     return document.querySelectorAll(e);
   }
+  function addEvent(element, evnt, funct) {
+    return element.addEventListener(evnt, funct, false);
+  }
+  // 拿回订阅源地址
+  // 绑定监听事件到 div#box 上
+  addEvent($n("#box"), "mouseup", function (event) {
+    // 输出触发事件的元素
+    console.log(event.target);
+    // 根据内容判断是否执行相应操作
+    const elText = event.target.innerHTML;
+    if (
+      // elText.indexOf("Feed not found") > -1 ||
+      elText.indexOf("Wrong feed URL") > -1
+    ) {
+      // 内部再输出一次确定判断条件正确
+      console.log(event.target);
+      // 拿到解码后的订阅源地址
+      const curUrl = ((url) => {
+        return url.replace("https://feedly.com/i/subscription/feed/", "");
+      })(decodeURIComponent(location.href));
+      // 输出到页面中
+      $n("#feedlyPageFX h2").insertAdjacentHTML(
+        "beforeend",
+        `<div class="sub">${curUrl}</div>`
+      );
+    }
+  });
+  // 星标文章导出为 *.url 文件
   function fnMKShell($list) {
     const today = new Date(); //获得当前日期
     const year = today.getFullYear(); //获得年份
@@ -55,39 +84,39 @@
     return strRlt;
     //$n("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
   }
-  function addEvent(element, evnt, funct) {
-    if (element.attachEvent) {
-      // IE < 9
-      return element.attachEvent("on" + evnt, funct);
-    } else {
-      return element.addEventListener(evnt, funct, false);
-    }
-  }
-  var opt1 = 0;
-  addEvent($n("#box"), "mouseup", function (event) {
-    if (event.target.className === "entry__title" && event.target.nodeName === "A") {
-      console.log(event.target);
-      const $btn = event.target.parentNode.querySelector(".EntryMarkAsReadButton");
-      // if ($btn.title === "Mark as read") {
-        console.log($btn.title);
-        console.log("自动标记已读");
-        $btn.click();
-      // }
-      if (event.button !== 1 && opt1) {
-        GM_openInTab(event.target.href, true);
-      }
-    }
-  });
   addEvent($n("#box"), "mouseup", function (event) {
     if (
       event.target.id === "header-title" &&
       event.target.nodeName === "SPAN"
-      ) {
+    ) {
       console.log(event.target);
       let intCount = $na("div.content a").length;
       $n("h1 #header-title").innerHTML = `Read later（${intCount}）`;
       GM_setClipboard(fnMKShell($na("div.content a")));
     }
   });
+
+  // 自动标记已读
+  var opt1 = 0;
+  addEvent($n("#box"), "mouseup", function (event) {
+    if (
+      event.target.className === "entry__title" &&
+      event.target.nodeName === "A"
+    ) {
+      console.log(event.target);
+      const $btn = event.target.parentNode.querySelector(
+        ".EntryMarkAsReadButton"
+      );
+      // if ($btn.title === "Mark as read") {
+      console.log($btn.title);
+      console.log("自动标记已读");
+      $btn.click();
+      // }
+      if (event.button !== 1 && opt1) {
+        GM_openInTab(event.target.href, true);
+      }
+    }
+  });
+
   return;
 })();
