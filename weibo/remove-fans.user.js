@@ -27,6 +27,9 @@
     if ($menuList.length == 0) {
       return;
     }
+    if (!confirm("将移除当前页全部关注者！")) {
+      return;
+    }
     $menuList.addClass("xnxf").show();
     setInterval(function () {
       // if ($('a[action-type="removeFan"]').length === 0) location.reload(true);

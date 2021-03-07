@@ -2,8 +2,8 @@
 // @name         [bilibili]稍后再看导出为.url
 // @namespace    wdssmq.com
 // @version      0.1
-// @description  将B站的稍后再看列表导出为.url文件
 // @author       沉冰浮水
+// @description  将B站的稍后再看列表导出为.url文件
 // @url          https://greasyfork.org/scripts/398415
 // @include      https://www.bilibili.com/
 // @include      https://t.bilibili.com/

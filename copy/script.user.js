@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name        复制标题网址（QQ群：189574683）
 // @namespace   https://www.wdssmq.com
-// @author      沉冰浮水
 // @version     2.0
+// @author      沉冰浮水
 // @description 复制当前页面标题及网址
 // @url         https://greasyfork.org/zh-CN/scripts/28056
 // ----------------------------
@@ -15,10 +15,10 @@
 // @grant       GM_registerMenuCommand
 // @grant       GM_setClipboard
 // jshint       esversion:6
+/* jshint multistr:true */
 // ==/UserScript==
 
 (function () {
-  /* jshint multistr:true */
   "use strict";
   if (window.frames.length != parent.frames.length) {
     // alert('在iframe中');
