@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [zblog] 应用中心促销工具
+// @name        [zblog] - 应用中心促销工具
 // @namespace   https://www.wdssmq.com/
 // @author      沉冰浮水
 // @version     1.1
@@ -226,10 +226,10 @@
     const appname = $(this).parent().find("td:nth-child(2)").text();
     const pm_type = $(this).parent().find("td:nth-child(6)").text();
     const pubdate = new Date(html.replace(/-/g, "/"));
-    if (diff((appid % 37) + 13, pubdate) || appid == app_id_hash) {
+    if (diff(appid % 7, pubdate) || appid == app_id_hash) {
       const modRlt = (daystamp + appid) % 593;
       const bolRlt = [13, 37, 73, 137, 313, 433, 577].indexOf(modRlt);
-      if (bolRlt) {
+      if (bolRlt > -1) {
         lsData.arrApps.push(appid);
         lsData.arrAppNames[appid] = appname;
         $(this)
@@ -252,9 +252,9 @@
       };
       obj.msg = `https://app.zblogcn.com/?id=${appid}`;
       if (cntDown > 0) {
-        obj.msg += `\n${appname}${cntDown}分钟后开始促销；`;
+        obj.msg += `\n「${appname}」「${cntDown}」分钟后开始促销；`;
       } else {
-        obj.msg += `\n${appname}促销中；`;
+        obj.msg += `\n「${appname}」促销中；`;
       }
       rltLog += `${obj.msg}\n\n`;
       const lstSend = parseInt(daystamp / 4);
@@ -276,6 +276,9 @@
               if (err) {
                 throw err;
               } else {
+                if (res.status > 200) {
+                  alert("Token 过期");
+                }
                 console.log(res.status);
                 console.log(res.response);
               }
