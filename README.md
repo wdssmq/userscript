@@ -30,7 +30,7 @@ Feedly - 中键标记已读 + 收藏导出为\*.url
 
 https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
 
-Z-Blog 前台编辑文章入口
+\[zblog\] - 前台编辑文章入口
 
 https://github.com/wdssmq/userscript/blob/master/zblog/edt.user.js
 
