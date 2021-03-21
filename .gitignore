@@ -1,5 +1,6 @@
+note-*
 *.url
 *.lnk
-*code-workspace
+*.code-workspace
 node_modules
 .history
