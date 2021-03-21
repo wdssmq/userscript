@@ -4,9 +4,9 @@
 
 ## 前置
 
-更多脚本： https://github.com/wdssmq/userscript
-
 爱发电主页：https://afdian.net/@wdssmq
+
+更多脚本： https://github.com/wdssmq/userscript
 
 GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
 
