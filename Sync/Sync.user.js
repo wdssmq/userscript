@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Resilio Sync管理[QQ群：189574683]
+// @name         Resilio Sync 分享/备份服手（QQ群：189574683）
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @version      0.3

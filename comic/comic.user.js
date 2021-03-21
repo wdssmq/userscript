@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         [manhuagui]打包下载（QQ群：189574683）
+// @name         [manhuagui] - 打包下载（QQ群：189574683）
 // @namespace    https://www.wdssmq.com/
 // @version      0.3
 // @description  按章节打包下载漫画柜的资源

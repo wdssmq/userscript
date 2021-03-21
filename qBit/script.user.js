@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         qBittorrent 管理脚本[QQ群：189574683]
+// @name         qBittorrent 管理脚本（QQ群：189574683）
 // @namespace    http://沉冰浮水.tk/
 // @version      0.2
 // @author       沉冰浮水

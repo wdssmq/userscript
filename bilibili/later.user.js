@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         [bilibili]稍后再看导出为.url
+// @name         [bilibili] - 稍后再看导出为.url
 // @namespace    wdssmq.com
 // @version      0.1
 // @author       沉冰浮水
