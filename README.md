@@ -30,19 +30,19 @@ Feedly - 中键标记已读 + 收藏导出为\*.url
 
 https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
 
-\[zblog\] - 前台编辑文章入口
+\[Z-Blog\] - 前台编辑文章入口
 
 https://github.com/wdssmq/userscript/blob/master/zblog/edt.user.js
 
-Z-Blog 开发者工具
+\[Z-Blog\] - 开发者工具
 
 https://github.com/wdssmq/userscript/blob/master/zblog/DevTools.user.js
 
-\[Z-Blog\]使用 MD 编辑应用介绍
+\[Z-Blog\] - 使用 MD 编辑应用介绍
 
 https://github.com/wdssmq/userscript/blob/master/zblog/md-app-doc.user.js
 
-\[zblog\] 应用中心促销工具
+\[Z-Blog\] - 应用中心促销工具
 
 https://github.com/wdssmq/userscript/blob/master/zblog/promotion.user.js
 
@@ -65,3 +65,7 @@ https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
 xiuno 管理工具
 
 https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
+
+度盘接生成
+
+https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js
