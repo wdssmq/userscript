@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [zblog] - 前台编辑文章入口
+// @name        [Z-Blog] - 前台编辑文章入口
 // @namespace   https://www.wdssmq.com/
 // @version     0.2
 // @author      沉冰浮水

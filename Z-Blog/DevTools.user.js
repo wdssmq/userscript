@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [zblog]开发者工具（应用中心）
+// @name        [Z-Blog] - 开发者工具（应用中心）
 // @namespace   wdssmq.com
 // @description 含搜索订单，附带隐藏未付订单，应用审核回显；
 // @author      沉冰浮水

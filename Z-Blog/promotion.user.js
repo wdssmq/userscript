@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [zblog] - 应用中心促销工具
+// @name        [Z-Blog] - 应用中心促销工具
 // @namespace   https://www.wdssmq.com/
 // @author      沉冰浮水
 // @version     1.1
