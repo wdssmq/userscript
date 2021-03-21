@@ -1,9 +1,15 @@
 // ==UserScript==
 // @name         qBittorrent 管理脚本[QQ群：189574683]
 // @namespace    http://沉冰浮水.tk/
-// @version      0.1
-// @description  通过WebUI的API进行Tracker替换等操作
+// @version      0.2
 // @author       沉冰浮水
+// @description  通过 WebUI 的 API 批量替换 Tracker
+// ----------------------------
+// @link   https://greasyfork.org/zh-CN/scripts/391688
+// @link   https://afdian.net/@wdssmq
+// @link   https://github.com/wdssmq/userscript
+// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
+// ----------------------------
 // @match        http://127.0.0.1:8080/
 // @require      https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js
 // @grant        GM_xmlhttpRequest
@@ -94,7 +100,7 @@
       console.log(item.hash);
       fnEdtTracker(item.hash, origUrl, newUrl);
     });
-    // 计数略麻烦 
+    // 计数略麻烦
     // alert(`替换完成${arrTorrents.length}个`);
   }
 
