@@ -3,14 +3,10 @@
 // @namespace    wdssmq.com
 // @version      0.1
 // @author       沉冰浮水
-// @description  将B站的稍后再看列表导出为.url文件
+// @description  将 B 站的稍后再看列表导出为.url文件
 // @url          https://greasyfork.org/scripts/398415
-// @include      https://www.bilibili.com/
-// @include      https://t.bilibili.com/
-// @include      https://www.bilibili.com/watchlater/*
-// @include      https://www.bilibili.com/video/av*
-// @include      https://www.bilibili.com/video/BV*
-// @include      https://www.bilibili.com/bangumi/play/ep*
+// @include      https://www.bilibili.com/*
+// @include      https://t.bilibili.com/*
 // @include      https://manga.bilibili.com/account-center*
 // @icon         https://www.bilibili.com/favicon.ico
 // @run-at       document-end
@@ -20,31 +16,35 @@
 /* jshint esversion:6 */
 (function () {
   "use strict";
-  let $;
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  // 番剧链接改为我的追番
-  document.addEventListener("DOMContentLoaded", async function (e) {
-    await sleep(3000);
-    $ = unsafeWindow.$ || window.$;
-    const uid = ((url) => {
-      // console.log(url.match(/\d+/));
-      return url.match(/\d+/)[0];
-    })($("a.count-item[href^='//space']").attr("href"));
-    $("a[href$='/anime/']").attr(
-      "href",
-      `https://space.bilibili.com/${uid}/bangumi`
-    );
-  });
-  //const pic = unsafeWindow.__INITIAL_STATE__.videoData.pic;
-  //if (pic){
-  //console.log(pic);
-  //}
   function $n(e) {
     return document.querySelector(e);
   }
   function $na(e) {
     return document.querySelectorAll(e);
   }
+  // 番剧链接改为我的追番
+  (() => {
+    document.addEventListener(
+      "mouseover",
+      function (e) {
+        const $ = unsafeWindow.$ || window.$;
+        const $pick = $("a[href$='/anime/'],.pick");
+        if ($pick.data("uid")) {
+          return;
+        }
+        const uid = ((url) => {
+          // console.log(url.match(/\d+/));
+          return url.match(/\d+/)[0];
+        })($("a.count-item[href^='//space']").attr("href"));
+        console.log(uid);
+        $pick
+          .attr("href", `https://space.bilibili.com/${uid}/bangumi`)
+          .data("uid", uid).addClass("pick");
+      },
+      false
+    );
+  })();
   function fnCopy(eTrig, content) {
     $n(eTrig).addEventListener("click", function (e) {
       GM_setClipboard(content);
@@ -148,55 +148,52 @@
   })();
 
   // 时间轴书签
-  function fnGenUrl(url) {
-    let more = 0;
-    if ($n(".watched.on")) {
-      url = $n(".watched.on a").href;
-      more = 1;
-    }
-    // console.log(more);
-    // console.log($n(".bilibili-player-video-time-now"));
-    if ($n(".bilibili-player-video-time-now")) {
-      let strQurey = document.location.search;
-      let matchRlt = strQurey.match(/t=(\d+)/);
-      //console.log(matchRlt);
-      let oldTime = matchRlt && matchRlt[1] ? parseInt(matchRlt[1]) : 0;
-      if (more) {
-        url = url + "&";
-      } else {
-        url = url.split("?")[0] + "?";
+  (function () {
+    function fnGenUrl(url) {
+      let more = 0;
+      if ($n(".watched.on")) {
+        url = $n(".watched.on a").href;
+        more = 1;
       }
-      let arrTime = $n(".bilibili-player-video-time-now").innerText.split(":");
-      let t = parseInt(arrTime[0]) * 60 + parseInt(arrTime[1]) - 7;
-      console.log(oldTime, t);
-      if (t - oldTime <= 73) {
+      // console.log(more);
+      // console.log($n(".bilibili-player-video-time-now"));
+      if ($n(".bilibili-player-video-time-now")) {
+        let strQurey = document.location.search;
+        let matchRlt = strQurey.match(/t=(\d+)/);
+        //console.log(matchRlt);
+        let oldTime = matchRlt && matchRlt[1] ? parseInt(matchRlt[1]) : 0;
+        if (more) {
+          url = url + "&";
+        } else {
+          url = url.split("?")[0];
+        }
+        let arrTime = $n(".bilibili-player-video-time-now").innerText.split(
+          ":"
+        );
+        let t = parseInt(arrTime[0]) * 60 + parseInt(arrTime[1]) - 7;
+        console.log(oldTime, t);
+        if (t - oldTime <= 73) {
+          return url;
+        }
+        let title = $n("h1.video-title").title;
+        let nURL = `${url}?t=${t}`;
+        $n("title").innerHTML = `${title}_${t}_bilibili`;
+        //$n("h1.video-title").innerHTML = `<a href="${nURL}" title="${t}">${title}_${t}</a>`;
+        window.history.pushState(null, null, nURL);
         return url;
       }
-      let title = $n("h1.video-title").title;
-      let nURL = `${url}?t=${t}`;
-      $n("title").innerHTML = `${title}_${t}_bilibili`;
-      //$n("h1.video-title").innerHTML = `<a href="${nURL}" title="${t}">${title}_${t}</a>`;
-      window.history.pushState(null, null, nURL);
       return url;
     }
-    return url;
-  }
-  (function () {
+
     let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
-    console.log(url);
     document.addEventListener(
       "mouseover",
       function (e) {
-        // console.log(
-        // e.target,
-        // e.target.nodeName,
-        // e.target.className || "class为空"
-        // );
-        // 实际代码
         if (
           e.target.nodeName === "DIV" &&
           e.target.className === "bilibili-player-dm-tip-wrap"
         ) {
+          console.log(url);
           console.log(e.target);
           url = fnGenUrl(url);
         }
