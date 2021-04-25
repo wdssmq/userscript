@@ -4,11 +4,11 @@
 
 ## 前置
 
-爱发电主页：https://afdian.net/@wdssmq
+爱发电主页： [https://afdian.net/@wdssmq](https://afdian.net/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
 
-更多脚本： https://github.com/wdssmq/userscript
+更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
-GreasyFork：https://greasyfork.org/zh-CN/users/6865-wdssmq
+GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq")
 
 QQ 群：189574683
 
