@@ -3,7 +3,7 @@
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @version      0.3.4
-// @description  新标签页打开条目时自动标记为已读
+// @description  新标签页打开条目时自动标记为已读，收藏计数
 // ----------------------------
 // @raw    https://github.com/wdssmq/userscript/tree/master/feedly
 // @raw    https://greasyfork.org/zh-CN/scripts/381793

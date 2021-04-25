@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        海腾之眼（贴吧防和谐）
+// @name        海腾之眼（贴吧防和谐）【停止维护】
 // @namespace   漆黒の翼
 // @description 对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ群：189574683
 // @author      海藤瞬
