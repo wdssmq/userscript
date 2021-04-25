@@ -74,7 +74,7 @@
         strTitle = `${i}丨标题过长丨${lenTitle}`;
       }
       let strUrl = e.href;
-      strRlt += `\n#${lenTitle}\n`;
+      // strRlt += `\n#${i} - ${lenTitle}\n`;
       strRlt += 'echo [InternetShortcut] > "' + strTitle + '.url"\n';
       strRlt += 'echo "URL=' + strUrl + '" >> "' + strTitle + '.url"\n';
     });
@@ -86,21 +86,37 @@
   }
   addEvent($n("#box"), "mouseup", function (event) {
     if (
-      event.target.id === "header-title" &&
-      event.target.nodeName === "SPAN"
+      event.target.innerHTML.indexOf("Read later") > -1
     ) {
-      console.log(event.target);
-      let intCount = $na("div.content a").length;
-      $n("h1 #header-title").innerHTML = `Read later（${intCount}）`;
+      const $el = event.target;
+      console.log($el);
+      fnOnScroll();
       GM_setClipboard(fnMKShell($na("div.content a")));
     }
   });
+
+  // 星标计数
+  function fnOnScroll() {
+    if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
+      $n("#feedlyFrame").dataset.addEL = "done";
+      $n("#feedlyFrame").addEventListener('scroll', function () {
+        console.log(location.href);
+        if ('https://feedly.com/i/saved' == location.href) {
+          let intCount = $na("div.content a").length;
+          $n("h1 #header-title").innerHTML = `Read later（${intCount}）`;
+          $n("h2.Heading").innerHTML = `Read later（${intCount}）`;
+        }
+      });
+    }
+  }
+
+
 
   // 自动标记已读
   var opt1 = 0;
   addEvent($n("#box"), "mouseup", function (event) {
     if (
-      event.target.className === "entry__title" &&
+      event.target.className === "link entry__title" &&
       event.target.nodeName === "A"
     ) {
       console.log(event.target);
