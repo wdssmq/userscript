@@ -28,7 +28,7 @@ QQ 群：189574683
 
 ---start---
 
-name：海腾之眼（贴吧防和谐）
+name：海腾之眼（贴吧防和谐）【停止维护】
 
 desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ群：189574683
 
@@ -110,7 +110,7 @@ url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.js
 
 name：\[Feedly\] - 中键标记已读 + 收藏导出为*.url
 
-desc：新标签页打开条目时自动标记为已读
+desc：新标签页打开条目时自动标记为已读，收藏计数
 
 url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
 
