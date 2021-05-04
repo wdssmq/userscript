@@ -28,6 +28,8 @@
   function addEvent(element, evnt, funct) {
     return element.addEventListener(evnt, funct, false);
   }
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   // 拿回订阅源地址
   // 绑定监听事件到 div#box 上
   addEvent($n("#box"), "mouseup", function (event) {
@@ -52,6 +54,7 @@
       );
     }
   });
+
   // 星标文章导出为 *.url 文件
   function fnMKShell($list) {
     const today = new Date(); //获得当前日期
@@ -95,6 +98,14 @@
     }
   });
 
+  // 加载完成后激活计数
+  window.onload = async function () {
+    while (!fnOnScroll()) {
+      console.log("waiting……");
+      await sleep(3000);
+    }
+  }
+
   // 星标计数
   function fnOnScroll() {
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
@@ -107,10 +118,12 @@
           $n("h2.Heading").innerHTML = `Read later（${intCount}）`;
         }
       });
+      console.log("计数事件- 启用成功");
+      return true;
     }
+    console.log("计数事件 - 页面加载中");
+    return false
   }
-
-
 
   // 自动标记已读
   var opt1 = 0;
