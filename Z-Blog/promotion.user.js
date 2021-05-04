@@ -21,6 +21,7 @@
 // @grant       GM_registerMenuCommand
 // ==/UserScript==
 /*jshint esversion:6 */
+
 // https://tieba.baidu.com/p/*
 (function () {
   if (location.host !== "tieba.baidu.com") {
@@ -73,6 +74,7 @@
 
   fnCheckRun(post_id);
 })();
+
 // https://app.zblogcn.com/?id=*
 (function () {
   if (
@@ -127,6 +129,7 @@
     zbp.cookie.set(ckeName, ckeValue, 7);
   });
 })();
+
 // promotion.php
 (function () {
   if (location.pathname.indexOf("AppBuy/shop") === -1) {
@@ -218,6 +221,7 @@
       $(this).parent().remove();
     }
   });
+
   // 在表格页遍历内容
   let rltLog = "";
   $("tr.color3>td:nth-of-type(8)").each(function () {
@@ -226,9 +230,9 @@
     const appname = $(this).parent().find("td:nth-child(2)").text();
     const pm_type = $(this).parent().find("td:nth-child(6)").text();
     const pubdate = new Date(html.replace(/-/g, "/"));
+    const modRlt = (daystamp + appid) % 593;
     if (diff(appid % 7, pubdate) || appid == app_id_hash) {
-      const modRlt = (daystamp + appid) % 593;
-      const bolRlt = [13, 37, 73, 137, 313, 433, 577].indexOf(modRlt);
+      const bolRlt = [13, 29, 37, 53, 61, 73, 89, 109, 137, 149, 157, 173, 181, 193, 229, 241, 257, 269, 277, 293, 313, 337, 349, 373, 389, 421, 433, 449, 509, 541, 557, 569, 577].indexOf(modRlt);
       if (bolRlt > -1) {
         lsData.arrApps.push(appid);
         lsData.arrAppNames[appid] = appname;
@@ -239,9 +243,9 @@
           })
           .insertAfter("table tbody tr:first-child");
       }
-      console.log(appname, appid, pm_type, modRlt);
+      console.log("-", appname, parseInt(appid), pm_type, modRlt);
     } else if (!diff(0, pubdate)) {
-      console.log(appname, appid, pm_type);
+      console.log("+", appname, parseInt(appid), pm_type, modRlt);
       const strStart = $(this).prev().html();
       const sDate = new Date(strStart.replace(/-/g, "/"));
       const cntDown = parseInt((sDate / 1000 - timestamp) / 60);
@@ -258,10 +262,8 @@
       }
       rltLog += `${obj.msg}\n\n`;
       const lstSend = parseInt(daystamp / 4);
-      if (
-        (!lsData.PbSend[appid] || lsData.PbSend[appid] !== lstSend) &&
-        lsData.arrApps.indexOf(appid) > -1
-      ) {
+      // lsData.arrApps.indexOf(appid) > -1
+      if (!lsData.PbSend[appid] || lsData.PbSend[appid] !== lstSend) {
         objPB.APIKey &&
           objPB.push(
             "link",
