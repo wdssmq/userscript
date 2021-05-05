@@ -28,6 +28,14 @@ QQ 群：189574683
 
 ---start---
 
+name：博客助手
+
+desc：发布预定义文章到知乎、简书等豉
+
+url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js
+
+--------
+
 name：海腾之眼（贴吧防和谐）【停止维护】
 
 desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ群：189574683
