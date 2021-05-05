@@ -272,7 +272,7 @@
             {
               title: `${appname}促销提醒 - 【${daystamp}】`,
               url: `https://app.zblogcn.com/?id=${appid}&t=${daystamp}`,
-              body: `#PubKey ${appname}促销提醒 - 【${daystamp}】`,
+              body: `#PubWord ${appname}促销提醒 - 【${daystamp}】`,
             },
             function (err, res) {
               if (err) {
