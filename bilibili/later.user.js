@@ -82,7 +82,7 @@
     return strRlt;
     //$("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
   }
-  function fnGetAjax(callback = function () {}) {
+  function fnGetAjax(callback = function () { }) {
     $.ajax({
       url: "https://api.bilibili.com/x/v2/history/toview/web",
       type: "GET",
@@ -155,21 +155,17 @@
         url = $n(".watched.on a").href;
         more = 1;
       }
-      // console.log(more);
-      // console.log($n(".bilibili-player-video-time-now"));
-      if ($n(".bilibili-player-video-time-now")) {
+      const $curTime = $n(".bilibili-player-video-time-now");
+      if ($curTime && $curTime.innerHTML) {
         let strQurey = document.location.search;
         let matchRlt = strQurey.match(/t=(\d+)/);
-        //console.log(matchRlt);
         let oldTime = matchRlt && matchRlt[1] ? parseInt(matchRlt[1]) : 0;
         if (more) {
           url = url + "&";
         } else {
           url = url.split("?")[0];
         }
-        let arrTime = $n(".bilibili-player-video-time-now").innerText.split(
-          ":"
-        );
+        let arrTime = $curTime.innerHTML.split(":");
         let t = parseInt(arrTime[0]) * 60 + parseInt(arrTime[1]) - 7;
         console.log(oldTime, t);
         if (t - oldTime <= 73) {
