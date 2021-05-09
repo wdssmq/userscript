@@ -17,12 +17,15 @@
 /*jshint esversion:6 */
 (function () {
   "use strict";
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const s = document.createElement("script");
   s.setAttribute(
     "src",
     "https://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js"
   );
-  s.onload = function () {
+  document.head.appendChild(s);
+
+  function fnDelThisPage() {
     const $menuList = $(".opt_box .layer_menu_list");
     if ($menuList.length == 0) {
       return;
@@ -31,7 +34,11 @@
       return;
     }
     $menuList.addClass("xnxf").show();
-    setInterval(function () {
+    const t = setInterval(function () {
+      if ($(".W_layer .W_btn_a").length === 0 && $('a[action-type="removeFan"]').length === 0) {
+        clearInterval(t);
+        return false;
+      }
       // if ($('a[action-type="removeFan"]').length === 0) location.reload(true);
       if ($(".W_layer .W_btn_a").length === 0) {
         $('a[action-type="removeFan"]')[0].click();
@@ -40,5 +47,19 @@
       }
     }, 379);
   };
-  document.head.appendChild(s);
+
+  window.onload = async function () {
+    let flag = false;
+    while (!flag) {
+      const $menuList = $(".opt_box .layer_menu_list");
+      console.log($menuList, $menuList.length);
+      if ($menuList.length > 0) {
+        flag = true;
+      } else {
+        console.log("waiting……");
+        await sleep(3000);
+      }
+    }
+    fnDelThisPage();
+  }
 })();
