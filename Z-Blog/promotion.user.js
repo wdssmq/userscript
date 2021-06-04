@@ -222,6 +222,17 @@
     }
   });
 
+  function fnCheckAPP(appid, daystamp) {
+    for (let i of [-1, 0, 1]) {
+      const modRlt = (daystamp + appid + i) % 593;
+      const bolRlt = [13, 29, 37, 53, 61, 73, 89, 109, 137, 149, 157, 173, 181, 193, 229, 241, 257, 269, 277, 293, 313, 337, 349, 373, 389, 421, 433, 449, 509, 541, 557, 569, 577].indexOf(modRlt);
+      if (bolRlt > -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // 在表格页遍历内容
   let rltLog = "";
   $("tr.color3>td:nth-of-type(8)").each(function () {
@@ -230,10 +241,8 @@
     const appname = $(this).parent().find("td:nth-child(2)").text();
     const pm_type = $(this).parent().find("td:nth-child(6)").text();
     const pubdate = new Date(html.replace(/-/g, "/"));
-    const modRlt = (daystamp + appid) % 593;
-    if (diff(appid % 7, pubdate) || appid == app_id_hash) {
-      const bolRlt = [13, 29, 37, 53, 61, 73, 89, 109, 137, 149, 157, 173, 181, 193, 229, 241, 257, 269, 277, 293, 313, 337, 349, 373, 389, 421, 433, 449, 509, 541, 557, 569, 577].indexOf(modRlt);
-      if (bolRlt > -1) {
+    if (diff(appid % 7 + 37, pubdate) || appid == app_id_hash) {
+      if (fnCheckAPP(appid, daystamp)) {
         lsData.arrApps.push(appid);
         lsData.arrAppNames[appid] = appname;
         $(this)
@@ -243,9 +252,9 @@
           })
           .insertAfter("table tbody tr:first-child");
       }
-      console.log("-", appname, parseInt(appid), pm_type, modRlt);
+      console.log("-", appname, parseInt(appid), pm_type);
     } else if (!diff(0, pubdate)) {
-      console.log("+", appname, parseInt(appid), pm_type, modRlt);
+      console.log("+", appname, parseInt(appid), pm_type);
       const strStart = $(this).prev().html();
       const sDate = new Date(strStart.replace(/-/g, "/"));
       const cntDown = parseInt((sDate / 1000 - timestamp) / 60);
