@@ -30,11 +30,11 @@ QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0)
 
 ---start---
 
-name：\[manhuagui\] - 打包下载（QQ群：189574683）
+name：\[新浪微博\] - 批量移除粉丝（QQ群：189574683）
 
-desc：按章节打包下载漫画柜的资源
+desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
 
-url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
+url：https://github.com/wdssmq/userscript/blob/master/weibo/remove-fans.user.js
 
 --------
 
@@ -54,43 +54,11 @@ url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js
 
 --------
 
-name：博客助手
+name：\[Feedly\] - 中键标记已读 + 收藏导出为*.url
 
-desc：发布预定义文章到知乎、简书等豉
+desc：新标签页打开条目时自动标记为已读，收藏计数
 
-url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js
-
---------
-
-name：qBittorrent 管理脚本（QQ群：189574683）
-
-desc：通过 WebUI 的 API 批量替换 Tracker
-
-url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
-
---------
-
-name：\[Z-Blog\] - 使用MD编辑应用介绍
-
-desc：使用MD编辑应用说明
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
-
---------
-
-name：\[Z-Blog\] - 前台编辑文章入口
-
-desc：配合主题以显示前台编辑入口
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/edt.user.js
-
---------
-
-name：\[Z-Blog\] - 开发者工具（应用中心）
-
-desc：含搜索订单，附带隐藏未付订单，应用审核回显；
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.user.js
+url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
 
 --------
 
@@ -102,6 +70,14 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/GenLogo.user.js
 
 --------
 
+name：\[Z-Blog\] - 开发者工具（应用中心）
+
+desc：含搜索订单，附带隐藏未付订单，应用审核回显；
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.user.js
+
+--------
+
 name：\[Z-Blog\] - 插件工具 For 腾讯云点播
 
 desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
@@ -110,11 +86,11 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.us
 
 --------
 
-name：\[Z-Blog\] - 开发者工具（本地）
+name：\[Z-Blog\] - 使用MD编辑应用介绍
 
-desc：自动填写Z-Blog应用的配置项
+desc：使用MD编辑应用说明
 
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
 
 --------
 
@@ -126,27 +102,35 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/promotion.user.js
 
 --------
 
-name：Markdown-A-Textarea
+name：\[Z-Blog\] - 前台编辑文章入口
 
-desc：在需要的地方启用MarkDown语法，添加格式帮助链接及 Markdown 工具栏
+desc：配合主题以显示前台编辑入口
 
-url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
-
---------
-
-name：复制标题网址（QQ群：189574683）
-
-desc：复制当前页面标题及网址
-
-url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/edt.user.js
 
 --------
 
-name：\[Feedly\] - 中键标记已读 + 收藏导出为*.url
+name：\[Z-Blog\] - 开发者工具（本地）
 
-desc：新标签页打开条目时自动标记为已读，收藏计数
+desc：自动填写Z-Blog应用的配置项
 
-url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js
+
+--------
+
+name：xiuno 管理工具（QQ群：189574683）
+
+desc：对不合规的内容加密处理
+
+url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
+
+--------
+
+name：博客助手
+
+desc：发布预定义文章到知乎、简书等豉
+
+url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js
 
 --------
 
@@ -158,6 +142,30 @@ url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.js
 
 --------
 
+name：\[manhuagui\] - 打包下载（QQ群：189574683）
+
+desc：按章节打包下载漫画柜的资源
+
+url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
+
+--------
+
+name：复制标题网址（QQ群：189574683）
+
+desc：复制当前页面标题及网址
+
+url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
+
+--------
+
+name：qBittorrent 管理脚本（QQ群：189574683）
+
+desc：通过 WebUI 的 API 批量替换 Tracker
+
+url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
+
+--------
+
 name：\[bilibili\] - 稍后再看导出为.url
 
 desc：将 B 站的稍后再看列表导出为.url文件
@@ -166,19 +174,11 @@ url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
 
 --------
 
-name：\[新浪微博\] - 批量移除粉丝（QQ群：189574683）
+name：Markdown-A-Textarea
 
-desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
+desc：在需要的地方启用MarkDown语法，添加格式帮助链接及 Markdown 工具栏
 
-url：https://github.com/wdssmq/userscript/blob/master/weibo/remove-fans.user.js
-
---------
-
-name：Resilio Sync 分享/备份服手（QQ群：189574683）
-
-desc：快捷导出/分享Sync任务；
-
-url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
 
 --------
 
@@ -190,11 +190,11 @@ url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js
 
 --------
 
-name：xiuno 管理工具（QQ群：189574683）
+name：Resilio Sync 分享/备份服手（QQ群：189574683）
 
-desc：对不合规的内容加密处理
+desc：快捷导出/分享Sync任务；
 
-url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
 
 --------
 
