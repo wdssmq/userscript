@@ -42,8 +42,6 @@
     }
   }
 
-  const config_num = 2;
-
   const fnGetMaster = () => {
     //
     const elImg = $n("a.group-master-a+img");
@@ -62,9 +60,12 @@
     return idMngs;
   };
 
+  const config_num = 2;
+
   const fnPickMngs = () => {
     const curWeek = fnTime("w");
     const arrMngs = fnGetMngs();
+    console.log("管理列表：");
     console.log(arrMngs);
     const arrIndex = (() => {
       const numSerial = curWeek % parseInt(arrMngs.length / config_num);
@@ -81,6 +82,7 @@
         rltMngs.push(arrMngs[i]);
       }
     });
+    console.log("选取：");
     console.log(rltMngs);
     return rltMngs;
   }
