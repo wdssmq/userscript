@@ -182,6 +182,22 @@ url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markd
 
 --------
 
+name：\[QQ 群\] - 今天谁值日
+
+desc：用于确定值日生/doge
+
+url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.js
+
+--------
+
+name：\[QQ 群\] - 批量踢人（QQ群：189574683）
+
+desc：自动选择 20 名成员
+
+url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupMemberRemove.user.js
+
+--------
+
 name：Resilio Sync管理（QQ群：189574683）【失效】
 
 desc：快捷导出/分享Sync任务；
