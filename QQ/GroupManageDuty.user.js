@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        [QQ 群] - 今天谁值日
 // @namespace   wdssmq
-// @version     1.1
+// @version     1.2
 // @author      沉冰浮水
 // @description 用于确定值日生/doge
 // ----------------------------
@@ -93,12 +93,17 @@
     })
   }
 
+  let config_done = false;
   function fnMain() {
-    if ($n("a.group-master-a+img")) {
+    if ($n("a.group-master-a+img") && !config_done) {
       fnSetStyle(fnPickMngs());
+      config_done = true;
     }
   }
   fnMain();
 
-  window.addEventListener('load', fnMain, false);
+  // window.addEventListener('load', fnMain, false);
+  window.addEventListener('scroll', function () {
+    fnMain();
+  });
 })();

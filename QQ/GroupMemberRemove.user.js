@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        [QQ 群] - 批量踢人（QQ群：189574683）
 // @namespace   wdssmq
-// @version     1.6
+// @version     1.7
 // @author      沉冰浮水
 // @description 自动选择 20 名成员
 // ----------------------------
@@ -25,13 +25,14 @@
   }
 
   function fnRun() {
-    if (!$n(".del-member.disabled"))
+    if (!$n(".del-member.disabled")) {
       return false;
+    }
     $n(".del-member.disabled").removeAttribute("disabled");
     $n(".del-member.disabled").className = "del-member";
 
-    var mbList = $na('.mb .check-input');
-    for (var x = 0; x < 20; x++) {
+    const mbList = $na('.mb .check-input');
+    for (let x = 0; x < 20; x++) {
       mbList[x].setAttribute('checked', 'checked');
     }
     fnRun();
@@ -40,7 +41,7 @@
     fnRun();
   });
   $n('.select-result .submit').addEventListener('click', function () {
-    t = setTimeout(function () {
+    let t = setTimeout(function () {
       fnRun();
     }, 900);
   }, false);
