@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        [QQ 群] - 今天谁值日
 // @namespace   wdssmq
-// @version     1.0
+// @version     1.1
 // @author      沉冰浮水
 // @description 用于确定值日生/doge
 // ----------------------------
@@ -14,6 +14,7 @@
 // @include     https://qun.qq.com/member.html*
 // @grant       none
 // ==/UserScript==
+/* jshint esversion:6 */
 (function () {
   'use strict';
   function $n(e) {
@@ -87,18 +88,17 @@
   const fnSetStyle = (pickMngs) => {
     pickMngs.forEach((id) => {
       const elMb = $n(`.mb${id}`);
-      console.log(elMb);
       const elSpan = elMb.querySelector(".td-user-nick span");
       elSpan.style.color = "red";
     })
   }
 
   function fnMain() {
-    fnSetStyle(fnPickMngs());
+    if ($n("a.group-master-a+img")) {
+      fnSetStyle(fnPickMngs());
+    }
   }
-  if ($n("a.group-master-a+img")) {
-    fnMain();
-  }
+  fnMain();
 
   window.addEventListener('load', fnMain, false);
 })();
