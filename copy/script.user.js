@@ -14,10 +14,10 @@
 // @include     https://*
 // @grant       GM_registerMenuCommand
 // @grant       GM_setClipboard
-// jshint       esversion:6
-/* jshint multistr:true */
 // ==/UserScript==
 
+/** jshint       esversion:6 **/
+/** jshint multistr:true **/
 (function () {
   "use strict";
   if (window.frames.length != parent.frames.length) {
