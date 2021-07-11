@@ -17,6 +17,9 @@
 (function () {
   "use strict";
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const _log = (...args) => console.log('[bilibili-helper]', ...args);
+  const _warn = (...args) => console.warn('[bilibili-helper]', ...args);
+  const _error = (...args) => console.error('[bilibili-helper]', ...args);
   function $n(e) {
     return document.querySelector(e);
   }
@@ -29,6 +32,9 @@
       "mouseover",
       function (e) {
         const $ = unsafeWindow.$ || window.$;
+        if (!$) {
+          return;
+        }
         const $pick = $("a[href$='/anime/'],.pick");
         if ($pick.data("uid")) {
           return;
@@ -37,7 +43,7 @@
           // console.log(url.match(/\d+/));
           return url.match(/\d+/)[0];
         })($("a.count-item[href^='//space']").attr("href"));
-        console.log(uid);
+        _log("用户 uid", uid);
         $pick
           .attr("href", `https://space.bilibili.com/${uid}/bangumi`)
           .data("uid", uid).addClass("pick");
@@ -156,18 +162,28 @@
         more = 1;
       }
       const $curTime = $n(".bilibili-player-video-time-now");
+      // _log("当前时间元素", $curTime);
+      console.log();
       if ($curTime && $curTime.innerHTML) {
         let strQurey = document.location.search;
         let matchRlt = strQurey.match(/t=(\d+)/);
         let oldTime = matchRlt && matchRlt[1] ? parseInt(matchRlt[1]) : 0;
+        _log("上次记录", oldTime);
         if (more) {
           url = url + "&";
         } else {
           url = url.split("?")[0];
         }
-        let arrTime = $curTime.innerHTML.split(":");
-        let t = parseInt(arrTime[0]) * 60 + parseInt(arrTime[1]) - 7;
-        console.log(oldTime, t);
+        const fnTime = ((str) => {
+          const arr = str.split(":");
+          if (arr.length === 3) {
+            return parseInt(arr[0]) * 3600 + parseInt(arr[1]) * 60 + parseInt(arr[2]);
+          } else {
+            return fnTime(`0:${str}`);
+          }
+        });
+        let t = fnTime($curTime.innerHTML) - 7;
+        _log("已播放", t);
         if (t - oldTime <= 73) {
           return url;
         }
@@ -182,6 +198,7 @@
     }
 
     let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
+    console.log(url);
     document.addEventListener(
       "mouseover",
       function (e) {
@@ -189,8 +206,7 @@
           e.target.nodeName === "DIV" &&
           e.target.className === "bilibili-player-dm-tip-wrap"
         ) {
-          console.log(url);
-          console.log(e.target);
+          // _log(e.target);
           url = fnGenUrl(url);
         }
       },
