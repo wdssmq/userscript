@@ -166,6 +166,14 @@ url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
 
 --------
 
+name：「GitHub」获取文件的 jsDelivr 地址
+
+desc：获取项目文件的 CDN 地址
+
+url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js
+
+--------
+
 name：度盘接生成（QQ群：189574683）
 
 desc：分享资源后生成带描述的分享文本或html代码。
