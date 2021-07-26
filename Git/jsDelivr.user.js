@@ -45,11 +45,11 @@
       ["https://github.com/", "https://cdn.jsdelivr.net/gh/"],
       ["/blob/", "@"]
     ]
-    let rltUrl = url;
+    let cdnUrl = url;
     arrMap.forEach(line => {
-      rltUrl = rltUrl.replace(line[0], line[1]);
+      cdnUrl = cdnUrl.replace(line[0], line[1]);
     });
-    return rltUrl;
+    return cdnUrl;
   }
   //
   document.addEventListener("mouseover", function (e) {
