@@ -70,7 +70,7 @@ url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
 
 --------
 
-name：\[bilibili\] - 稍后再看导出为.url
+name：「bilibili」 - 稍后再看导出为.url
 
 desc：将 B 站的稍后再看列表导出为.url文件
 
