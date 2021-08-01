@@ -59,6 +59,8 @@
       fnFill("#app_author_email", config.authEmail, 1);
       fnFill("#app_author_url", config.authUrl, 1);
       fnFill("#app_phpver", config.appPHPVer, 1);
+      fnFill("#app_path", "main.php", 1);
+      fnFill("#app_include", "include.php", 1);
     }
     // 值为空时填写
     fnFill("#app_url", config.appUrl);
