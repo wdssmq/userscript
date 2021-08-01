@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [Z-Blog] - 应用中心促销工具
+// @name        「Z-Blog」 - 应用中心促销工具
 // @namespace   https://www.wdssmq.com/
 // @author      沉冰浮水
 // @version     1.1
@@ -189,14 +189,14 @@
   const timestamp = parseInt(curTime.valueOf() / 1000);
   // 时间戳转换成天数
   const daystamp = parseInt(timestamp / 86400);
-  console.log(curTime, daystamp);
+  console.log(curTime.toLocaleString(), daystamp);
 
   $("title").append(daystamp);
 
   // 工具函数
   function diff(n = 0, pubdate = null) {
     const intDiff = parseInt((curTime - pubdate) / (1000 * 60 * 60 * 24));
-    // console.log(intDiff);
+    console.log(n, intDiff);
     if (intDiff >= n) {
       return true;
     } else {
@@ -225,7 +225,11 @@
   function fnCheckAPP(appid, daystamp) {
     for (let i of [-1, 0, 1]) {
       const modRlt = (daystamp + appid + i) % 593;
-      const bolRlt = [13, 29, 37, 53, 61, 73, 89, 109, 137, 149, 157, 173, 181, 193, 229, 241, 257, 269, 277, 293, 313, 337, 349, 373, 389, 421, 433, 449, 509, 541, 557, 569, 577].indexOf(modRlt);
+      const bolRlt = [
+        13, 29, 37, 53, 61, 73, 89, 109, 137, 149, 157, 173, 181, 193, 229, 241,
+        257, 269, 277, 293, 313, 337, 349, 373, 389, 421, 433, 449, 509, 541,
+        557, 569, 577,
+      ].indexOf(modRlt);
       if (bolRlt > -1) {
         return true;
       }
@@ -236,25 +240,35 @@
   // 在表格页遍历内容
   let rltLog = "";
   $("tr.color3>td:nth-of-type(8)").each(function () {
+    console.log("---");
     const html = $(this).html() || "1970-01-01 08:00:00";
     const appid = $(this).parent().find("td:first-child").text();
     const appname = $(this).parent().find("td:nth-child(2)").text();
     const pm_type = $(this).parent().find("td:nth-child(6)").text();
     const pubdate = new Date(html.replace(/-/g, "/"));
-    if (diff(appid % 7 + 37, pubdate) || appid == app_id_hash) {
-      if (fnCheckAPP(appid, daystamp)) {
-        lsData.arrApps.push(appid);
-        lsData.arrAppNames[appid] = appname;
-        $(this)
-          .parent()
-          .css({
-            color: "red",
-          })
-          .insertAfter("table tbody tr:first-child");
-      }
-      console.log("-", appname, parseInt(appid), pm_type);
-    } else if (!diff(0, pubdate)) {
-      console.log("+", appname, parseInt(appid), pm_type);
+    const logData = {
+      appname,
+      daystamp,
+      appid,
+      pubdate: pubdate.toLocaleDateString(),
+    };
+
+    console.log("-", logData);
+    // console.log(pubdate - curTime);
+    // if (diff((appid % 37) + 7, pubdate) || appid == app_id_hash) {
+    // }
+    if (pubdate - curTime < 0 && fnCheckAPP(appid, daystamp)) {
+      lsData.arrApps.push(appid);
+      lsData.arrAppNames[appid] = appname;
+      $(this)
+        .parent()
+        .css({
+          color: "red",
+        })
+        .insertAfter("table tbody tr:first-child");
+    } else if (pubdate - curTime > 0) {
+      logData.pm_type = pm_type;
+      console.log("+", logData);
       const strStart = $(this).prev().html();
       const sDate = new Date(strStart.replace(/-/g, "/"));
       const cntDown = parseInt((sDate / 1000 - timestamp) / 60);
@@ -331,28 +345,24 @@
   let count = parseInt(document.getElementById("count").value);
   // 促销价
   let disc = (count % 7) / 7;
-  if (star <= 13.7 && count % 7 > 0) {
-    disc = ((count % 7) - 1) / 7;
-  }
   $("#amount .star").after(`<span>${disc.toFixed(2)}</span>`);
   let fee = star * disc;
 
-  let o_fee = star;
-  if (lsData.app_id_hash === appid) {
-    count += parseInt(lsData.disc_hash / 3);
-    o_fee = (star - lsData.disc_hash) * (5 / 7);
-    if (o_fee < 5.93) {
-      o_fee = 5.93;
-    }
-    lsData.app_id_hash = null;
-    // localStorage[lsName] = JSON.stringify(lsData);
-  }
-  fee = o_fee < fee ? o_fee : fee;
+  fee = fee > 3.7 ? fee - 3.7 : fee;
 
-  document.getElementById("fee").value = fee;
-  // if (document.getElementById("fee").value < 14) {
-  //document.getElementById("fee").value = 5.93;
+  // let o_fee = star;
+  // if (lsData.app_id_hash === appid) {
+  //   count += parseInt(lsData.disc_hash / 3);
+  //   o_fee = (star - lsData.disc_hash) * (5 / 7);
+  //   if (o_fee < 5.93) {
+  //     o_fee = 5.93;
+  //   }
+  //   lsData.app_id_hash = null;
+  //   // localStorage[lsName] = JSON.stringify(lsData);
   // }
+  // fee = o_fee < fee ? o_fee : fee;
+
+  document.getElementById("fee").value = fee.toFixed(2);
   document.getElementById("type").value = 3;
   document.getElementById("count").value = count == 0 ? 13 : count;
   unsafeWindow.checkType();
