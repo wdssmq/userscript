@@ -194,15 +194,6 @@
   $("title").append(daystamp);
 
   // 工具函数
-  function diff(n = 0, pubdate = null) {
-    const intDiff = parseInt((curTime - pubdate) / (1000 * 60 * 60 * 24));
-    console.log(n, intDiff);
-    if (intDiff >= n) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   function setDate(t, d) {
     t.setDate(t.getDate() + d);
     return t;
@@ -245,19 +236,24 @@
     const appid = $(this).parent().find("td:first-child").text();
     const appname = $(this).parent().find("td:nth-child(2)").text();
     const pm_type = $(this).parent().find("td:nth-child(6)").text();
-    const pubdate = new Date(html.replace(/-/g, "/"));
+    const expTime = new Date(html.replace(/-/g, "/"));
+    const diffTime = parseInt((expTime - curTime) / (1000 * 60 * 60 * 24));
     const logData = {
       appname,
       daystamp,
       appid,
-      pubdate: pubdate.toLocaleDateString(),
+      expTime: expTime.toLocaleDateString(),
+      diffTime,
     };
 
     console.log("-", logData);
     // console.log(pubdate - curTime);
     // if (diff((appid % 37) + 7, pubdate) || appid == app_id_hash) {
     // }
-    if (pubdate - curTime < 0 && fnCheckAPP(appid, daystamp)) {
+    if (
+      (diffTime < 0 && fnCheckAPP(appid, daystamp + diffTime)) ||
+      diffTime < -173
+    ) {
       lsData.arrApps.push(appid);
       lsData.arrAppNames[appid] = appname;
       $(this)
@@ -266,7 +262,7 @@
           color: "red",
         })
         .insertAfter("table tbody tr:first-child");
-    } else if (pubdate - curTime > 0) {
+    } else if (diffTime > 0) {
       logData.pm_type = pm_type;
       console.log("+", logData);
       const strStart = $(this).prev().html();
