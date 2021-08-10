@@ -1,4 +1,6 @@
 note-*
+*-draft
+*.draft.js
 *.url
 *.lnk
 *.code-workspace
