@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         博客助手
+// @name         「Blog」写作助手
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @version      0.1
@@ -7,6 +7,8 @@
 // @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.0.0/js-yaml.min.js
 // @match        https://editor.csdn.net/md*
 // @match        https://www.jianshu.com/writer*
+// @match        https://www.cnblogs.com/*/*
+// @match        https://i.cnblogs.com/posts/edit
 // @grant        GM_getValue
 // @grant        GM_setValue
 // ==/UserScript==
@@ -21,6 +23,16 @@
   function $na(e) {
     return document.querySelectorAll(e);
   }
+  function $xpath(xpath) {
+    const result = document.evaluate(
+      xpath,
+      document,
+      null,
+      XPathResult.ANY_TYPE,
+      null
+    );
+    return result.iterateNext();
+  }
 
   // 配置项
   const objInfo = GM_getValue("objInfo", null);
@@ -29,7 +41,7 @@
       origUrl: "https://www.wdssmq.com/post/-alias-.html",
       form: "沉冰浮水",
       jgchat: "我的咸鱼心",
-      WeChatOA: "水水不想说"
+      WeChatOA: "水水不想说",
     });
   }
   console.log(objInfo);
@@ -37,9 +49,9 @@
   const globalInfo = {};
 
   globalInfo.site = (() => {
-    const list = ["jianshu", "csdn"];
+    const list = ["jianshu", "csdn", "cnblogs"];
     let rlt = "";
-    list.forEach(element => {
+    list.forEach((element) => {
       if (location.host.indexOf(element) > -1) {
         rlt = element;
       }
@@ -97,8 +109,16 @@
     rlt.doc = doc;
     if (globalInfo.site === "jianshu") {
       oBody = oBody.replace(`---\n${arrBody[1]}---\n`, `\n`);
+    } else if (globalInfo.site === "cnblogs") {
+      oBody = oBody.replace(
+        `---\n${arrBody[1]}---\n`,
+        `<!-- ---\n${arrBody[1]}--- -->\n`
+      );
     } else {
-      oBody = oBody.replace(`---\n${arrBody[1]}---\n`, `&lt;!-- ---\n${arrBody[1]}--- --&gt;\n`);
+      oBody = oBody.replace(
+        `---\n${arrBody[1]}---\n`,
+        `&lt;!-- ---\n${arrBody[1]}--- --&gt;\n`
+      );
     }
     // arrBody[1] = "null";
     rlt.content = oBody;
@@ -109,7 +129,9 @@
   const fnAfterContent = (info, doc) => {
     let tpl = `\n\n原文链接：[-origUrl-](-origUrl-)`;
     tpl += `\n\n井盖口令：「-jgchat-」`;
-    tpl += `\n\n微信公众号：「-WeChatOA-」`;
+    if ("jianshu" !== globalInfo.site) {
+      tpl += `\n\n微信公众号：「-WeChatOA-」`;
+    }
     for (const key in info) {
       if (Object.hasOwnProperty.call(info, key)) {
         const element = info[key];
@@ -128,7 +150,11 @@
   };
 
   const fnMainCSDN = ($el) => {
-    if ($el.innerHTML == "发布文章" && $el.nodeName.toLowerCase() == "h3" && globalInfo.origUrl) {
+    if (
+      $el.innerHTML == "发布文章" &&
+      $el.nodeName.toLowerCase() == "h3" &&
+      globalInfo.origUrl
+    ) {
       $el.innerHTML = globalInfo.origUrl;
     }
     const $title = $(".article-bar__title");
@@ -137,10 +163,8 @@
       return;
     }
     if (globalInfo.curTitle) {
-      console.log($title.val());
       $title.val(globalInfo.curTitle);
     }
-    // console.log($editor.val());
     const { err, msg, doc, content } = fnYAML2JSON($editor.text());
     if (err == 0 && content.indexOf("原文链接：") === -1) {
       globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
@@ -150,7 +174,7 @@
     } else if (err > 0) {
       console.log(err, msg);
     }
-  }
+  };
 
   const fnMainJianshu = ($el) => {
     const $title = $n("._24i7u");
@@ -158,9 +182,6 @@
     if (!$title || !$editor) {
       return;
     }
-    // if ($editor.dataset.verDone) return;
-    // console.log($title.value);
-    // console.log($editor.value);
     const { err, msg, doc, content } = fnYAML2JSON($editor.value);
     if (err == 0 && content.indexOf("原文链接：") === -1) {
       globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
@@ -176,8 +197,41 @@
       console.log(globalInfo.curTitle);
       $title.value = globalInfo.curTitle;
     }
-  }
+  };
+  const fnMainCnBlogs = ($el) => {
+    const $title = $n("#post-title");
+    const $editor = $n("#md-editor");
+    if (!$title || !$editor) {
+      return;
+    }
+    let lstMsg = "";
+    const { err, msg, doc, content } = fnYAML2JSON($editor.value);
+    if (err == 0 && content.indexOf("原文链接：") === -1) {
+      globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
+      globalInfo.curTitle = doc.title;
+      globalInfo.title = doc.title;
+      $editor.value = content.trim() + fnAfterContent(objInfo, doc);
+      $title.value = doc.title;
+      $editor.dataset.verDone = 1;
+    } else if (lstMsg !== msg) {
+      console.log("解析未执行", msg);
+      lstMsg = msg;
+    }
+    if (globalInfo.curTitle) {
+      $title.value = globalInfo.curTitle;
+    }
+  };
 
+  const fnCnBlogsInit = () => {
+    if ($n("#blog_nav_sitehome")) {
+      $n("#blog_nav_sitehome").style.display = "none";
+    }
+    // // 移除多余空格
+    // const $text = $xpath('//*[@id="mylinks"]/text()[1]');
+    // console.log($text);
+    // // $text.remove();
+    // $text.innerHTML = "";
+  };
 
   document.addEventListener(
     "mouseover",
@@ -189,6 +243,10 @@
           break;
         case "csdn":
           fnMainCSDN($el);
+          break;
+        case "cnblogs":
+          fnCnBlogsInit();
+          fnMainCnBlogs();
           break;
         default:
           break;
