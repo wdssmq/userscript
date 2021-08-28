@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [Z-Blog] - 前台编辑文章入口
+// @name       「Z-Blog」- 前台编辑文章入口
 // @namespace   https://www.wdssmq.com/
 // @version     0.2
 // @author      沉冰浮水
@@ -10,7 +10,7 @@
 // @link   https://github.com/wdssmq/userscript
 // @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
 // ----------------------------
-// @match       *://*/post/*.html
+// @match       *://*/post/*.html*
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*
 // @grant       none
@@ -22,6 +22,7 @@
   }
   let $ = window.jQuery;
   $(function () {
+    // 添加编辑按钮
     $(".js-edt")
       .each(function () {
         const id = $(this).data("id");
@@ -32,9 +33,8 @@
         );
       })
       .removeClass("is-hidden hidden");
-    // if ($("#edtDateTime").length === 1) {
-    // $('#edtDateTime').datetimepicker('setDate', (new Date()));
-    // }
+
+    // 清理评论失效网址
     $(".cmt-tips").each(function () {
       const $this = $(this);
       const authName = $this.data("name");
@@ -43,5 +43,24 @@
       );
     });
     $(".cmt-edit").css({ color: "#175199" });
+
+    // 设置文章为回收
+    $("#edtTitle").after(
+      '<a class="js-empty" href="javascript:;" title="设置为回收"> [设置为回收]</a>'
+    );
+    let editor_api = window.editor_api;
+    $(".js-empty").click(function () {
+      $("#edtTitle").val("回收");
+      $("#edtTag").val("回收");
+      let strMore = "";
+      if (typeof window.EDITORMD == "object") {
+        strMore = "\n\n<!--more-->";
+      } else {
+        strMore = '<hr class="more" />';
+      }
+      let oBody = "回收" + strMore;
+      editor_api.editor.content.put(oBody);
+      editor_api.editor.intro.put("");
+    });
   });
 })();
