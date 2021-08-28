@@ -166,7 +166,7 @@ url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.js
 
 --------
 
-name：博客助手
+name：「Blog」写作助手
 
 desc：发布预定义文章到知乎、简书等豉
 
