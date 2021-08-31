@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         qBittorrent 管理脚本（QQ群：189574683）
+// @name         qBittorrent 管理脚本「QQ 群：189574683」
 // @namespace    http://沉冰浮水.tk/
-// @version      0.2
+// @version      0.3
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
 // ----------------------------
