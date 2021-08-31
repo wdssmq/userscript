@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [QQ 群] - 今天谁值日
+// @name        「QQ 群」 - 今天谁值日
 // @namespace   wdssmq
 // @version     1.2
 // @author      沉冰浮水
