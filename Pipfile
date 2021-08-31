@@ -11,4 +11,4 @@ build = "python run.py"
 [dev-packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.9"
