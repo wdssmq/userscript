@@ -18,9 +18,9 @@ QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0)
 
 ```js
 // ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @link     https://afdian.net/@wdssmq
+// @link     https://github.com/wdssmq/userscript
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // ----------------------------
 ```
 
