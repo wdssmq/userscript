@@ -54,7 +54,7 @@ url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
 
 --------
 
-name：Resilio Sync 分享/备份服手（QQ群：189574683）
+name：Resilio Sync 分享/备份助手「QQ群：189574683」
 
 desc：快捷导出/分享Sync任务；
 
@@ -94,7 +94,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
 
 --------
 
-name：\[Z-Blog\] - 开发者工具（应用中心）
+name：「Z-Blog」 - 开发者工具（应用中心）
 
 desc：含搜索订单，附带隐藏未付订单，应用审核回显；
 
@@ -190,7 +190,7 @@ url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
 
 --------
 
-name：\[QQ 群\] - 今天谁值日
+name：「QQ 群」 - 今天谁值日
 
 desc：用于确定值日生/doge
 
@@ -198,7 +198,7 @@ url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.j
 
 --------
 
-name：\[QQ 群\] - 批量踢人（QQ群：189574683）
+name：「QQ 群」 - 批量踢人（QQ群：189574683）
 
 desc：自动选择 20 名成员
 
