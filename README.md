@@ -118,7 +118,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.use
 
 --------
 
-name：\[Z-Blog\] - 前台编辑文章入口
+name：「Z-Blog」- 前台编辑文章入口
 
 desc：配合主题以显示前台编辑入口
 
@@ -214,7 +214,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js
 
 --------
 
-name：qBittorrent 管理脚本（QQ群：189574683）
+name：qBittorrent 管理脚本「QQ 群：189574683」
 
 desc：通过 WebUI 的 API 批量替换 Tracker
 
