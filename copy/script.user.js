@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name        复制标题网址（QQ群：189574683）
+// @name        复制标题网址
 // @namespace   https://www.wdssmq.com
-// @version     2.0
+// @version     2.1
 // @author      沉冰浮水
-// @description 复制当前页面标题及网址
+// @description 复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ群：189574683」
 // @url         https://greasyfork.org/zh-CN/scripts/28056
 // ----------------------------
 // @link   https://afdian.net/@wdssmq
