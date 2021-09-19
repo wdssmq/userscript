@@ -10,9 +10,9 @@
 
 更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
-GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq")
+GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork")
 
-QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0)
+QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
 ## 用于复制
 
