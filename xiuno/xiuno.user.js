@@ -132,3 +132,32 @@
     return callback(rltStr);
   }
 })();
+
+// 引入元素插入
+(function () {
+  if (typeof UM === "undefined") {
+    return;
+  }
+  // 调用函数封装
+  function fnBlockQute() {
+    umObj = UM.getEditor("message");
+    umObj.focus(true);
+    umObj.execCommand(
+      "insertHtml",
+      `<blockquote class="blockquote"><p><br></p>
+    </blockquote><p><br></p>`
+    );
+  }
+  // 添加引用按钮
+  $("head").append('<style>.edui-icon-blockquote:before{content:"\\f10d";}');
+  (() => {
+    const $btn = $.eduibutton({
+      icon: "blockquote",
+      click: function () {
+        fnBlockQute();
+      },
+      title: UM.getEditor("message").getLang("labelMap")["blockquote"] || "",
+    });
+    $(".edui-btn-name-insertcode").after($btn);
+  })();
+})();
