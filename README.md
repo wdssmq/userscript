@@ -32,7 +32,7 @@ QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
 name：「bilibili」 - 稍后再看导出为.url
 
-desc：将 B 站的稍后再看列表导出为.url文件
+desc：将 B 站的稍后再看列表导出为.url 文件
 
 url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
 
@@ -46,25 +46,25 @@ url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
 
 --------
 
-name：度盘接生成（QQ群：189574683）
+name：度盘接生成（QQ 群：189574683）
 
-desc：分享资源后生成带描述的分享文本或html代码。
+desc：分享资源后生成带描述的分享文本或 html 代码。
 
 url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js
 
 --------
 
-name：Resilio Sync 分享/备份助手「QQ群：189574683」
+name：Resilio Sync 分享/备份助手「QQ 群：189574683」
 
-desc：快捷导出/分享Sync任务；
+desc：快捷导出/分享 Sync 任务；
 
 url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
 
 --------
 
-name：Resilio Sync管理（QQ群：189574683）【失效】
+name：Resilio Sync 管理「QQ 群：189574683」【失效】
 
-desc：快捷导出/分享Sync任务；
+desc：快捷导出/分享 Sync 任务；
 
 url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js
 
@@ -104,7 +104,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/edt.user.js
 
 name：「Z-Blog」 - 开发者工具（本地）
 
-desc：自动填写Z-Blog应用的配置项
+desc：自动填写 Z-Blog 应用的配置项
 
 url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js
 
@@ -118,9 +118,9 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/GenLogo.user.js
 
 --------
 
-name：\[Z-Blog\] - 使用MD编辑应用介绍
+name：\[Z-Blog\] - 使用 Markdown 编辑应用介绍
 
-desc：使用MD编辑应用说明
+desc：使用 Markdown 编辑应用说明
 
 url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
 
