@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         [Z-Blog] - 使用MD编辑应用介绍
+// @name         [Z-Blog] - 使用 Markdown 编辑应用介绍
 // @namespace    https://www.wdssmq.com/
 // @version      0.1
 // @author       wdssmq
-// @description  使用MD编辑应用说明
+// @description  使用 Markdown 编辑应用说明
 // @link   ----------------------------
 // @link   https://github.com/wdssmq/userscript
 // @link   https://afdian.net/@wdssmq

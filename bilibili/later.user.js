@@ -3,7 +3,7 @@
 // @namespace    wdssmq.com
 // @version      0.1
 // @author       沉冰浮水
-// @description  将 B 站的稍后再看列表导出为.url文件
+// @description  将 B 站的稍后再看列表导出为.url 文件
 // @url          https://greasyfork.org/scripts/398415
 // @include      https://www.bilibili.com/*
 // @include      https://t.bilibili.com/*

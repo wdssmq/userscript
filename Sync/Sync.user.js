@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Resilio Sync 分享/备份助手「QQ群：189574683」
+// @name         Resilio Sync 分享/备份助手「QQ 群：189574683」
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @version      0.4
-// @description  快捷导出/分享Sync任务；
+// @description  快捷导出/分享 Sync 任务；
 // @selfLink     https://greasyfork.org/zh-CN/scripts/388497
 // ----------------------------
 // @link     https://afdian.net/@wdssmq

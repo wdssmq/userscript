@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Resilio Sync管理（QQ群：189574683）【失效】
+// @name         Resilio Sync 管理「QQ 群：189574683」【失效】
 // @namespace    http://沉冰浮水.tk/
 // @version      0.3
-// @description  快捷导出/分享Sync任务；
+// @description  快捷导出/分享 Sync 任务；
 // @author       沉冰浮水
 // @match        http://127.0.0.1:8888/gui/
 // @run-at       document-end

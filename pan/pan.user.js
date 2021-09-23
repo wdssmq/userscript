@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name        度盘接生成（QQ群：189574683）
+// @name        度盘接生成（QQ 群：189574683）
 // @namespace   wdssmq
 // @version     1.3.5
 // @author      沉冰浮水
-// @description 分享资源后生成带描述的分享文本或html代码。
+// @description 分享资源后生成带描述的分享文本或 html 代码。
 // ----------------------------
 // @link   https://afdian.net/@wdssmq
 // @link   https://github.com/wdssmq/userscript
