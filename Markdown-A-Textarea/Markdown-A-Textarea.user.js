@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Markdown-A-Textarea
 // @namespace   wdssmq
-// @description 在需要的地方启用MarkDown语法，添加格式帮助链接及 Markdown 工具栏
+// @description 在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
 // @version     1.0.2
 // @link        https://greasyfork.org/zh-CN/scripts/29203
 // @author      沉冰浮水

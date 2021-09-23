@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [新浪微博] - 批量移除粉丝（QQ群：189574683）
+// @name        「新浪微博」 - 批量移除粉丝（QQ 群：189574683）
 // @namespace   https://www.wdssmq.com/
 // @version     1.0.2
 // @authour     沉冰浮水
