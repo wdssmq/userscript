@@ -2,9 +2,16 @@
 // @name         Resilio Sync 分享/备份助手「QQ群：189574683」
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
-// @version      0.3
+// @version      0.4
 // @description  快捷导出/分享Sync任务；
-// @match        http://127.0.0.1:8888/gui/
+// @selfLink     https://greasyfork.org/zh-CN/scripts/388497
+// ----------------------------
+// @link     https://afdian.net/@wdssmq
+// @link     https://github.com/wdssmq/userscript
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// ----------------------------
+// @include        http://*:8888/gui/
+// @include        http://*:5000/gui/
 // @run-at       document-end
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -189,6 +196,16 @@
     }
   }
 
+  // 文件名切分为 Tag；
+  function fnSplitName2Tag(syncItem) {
+    let name = syncItem.name,
+      size = syncItem.size,
+      key = syncItem.key;
+    name = name.replace(/[#^+\[\]【】「」]+/g, " #").trim();
+    name = `${name}[${size}]`;
+    return fnJoin(name, `\r\n${key}`);
+  }
+
   const arrItems = {};
   // 追加复制文本框
   $(document).on("mouseover", ".modal-dialog", function (n) {
@@ -212,31 +229,35 @@
       });
       arrItems[curName].key = $(this).find("input").val().trim();
       const curItem = arrItems[curName];
-      $input.val(`${curItem.name}[${curItem.size}]：\r\n${curItem.key}`);
+      // $input.val(`${curItem.name}[${curItem.size}]：\r\n${curItem.key}`);
+      $input.val(fnSplitName2Tag(curItem));
 
       $(this).find(".modal-body").append($input);
       $(this).data("rsDone", 1);
       return;
     }
   });
+
   // 获取大小
   $(document).on("mouseover", ".options-button.shareButton", function (n) {
-    console.log($(this).parentsUntil("tbody")[2]);
     const domEl = $(this).parentsUntil("tbody")[2];
     const $elTr = $(domEl);
-    // console.log($elTr);
+
+    // console.log(domEl, $elTr);
 
     const item = {
       name: $elTr.find(".nameColumn .nameLabel").html().trim(),
-      size: $elTr.find(".sizeColumn").html().trim(),
+      size: "未知大小",
     };
+
     // console.log(item);
 
-    if (Object.hasOwnProperty.call(arrItems, item.name)) {
-      return;
+    if ($elTr.find(".sizeColumn").length > 0) {
+      item.size = $elTr.find(".sizeColumn").html().trim();
     }
     arrItems[item.name] = item;
-    console.log(arrItems);
+
+    // console.log(arrItems);
 
     return;
   });
