@@ -158,7 +158,7 @@ url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
 
 --------
 
-name：\[manhuagui\] - 打包下载（QQ群：189574683）
+name：\[manhuagui\] - 打包下载（QQ 群：189574683）
 
 desc：按章节打包下载漫画柜的资源
 
@@ -166,7 +166,7 @@ url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
 
 --------
 
-name：「QQ 群」 - 批量踢人（QQ群：189574683）
+name：「QQ 群」 - 批量踢人（QQ 群：189574683）
 
 desc：自动选择 20 名成员
 
@@ -184,7 +184,7 @@ url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.j
 
 name：Markdown-A-Textarea
 
-desc：在需要的地方启用MarkDown语法，添加格式帮助链接及 Markdown 工具栏
+desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
 
 url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
 
@@ -200,13 +200,13 @@ url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
 
 name：海腾之眼（贴吧防和谐）【停止维护】
 
-desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ群：189574683
+desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
 
 url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
 
 --------
 
-name：xiuno 管理工具（QQ群：189574683）
+name：xiuno 管理工具（QQ 群：189574683）
 
 desc：对不合规的内容加密处理
 
@@ -214,7 +214,7 @@ url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
 
 --------
 
-name：\[新浪微博\] - 批量移除粉丝（QQ群：189574683）
+name：「新浪微博」 - 批量移除粉丝（QQ 群：189574683）
 
 desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
 
