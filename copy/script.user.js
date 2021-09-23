@@ -3,7 +3,7 @@
 // @namespace   https://www.wdssmq.com
 // @version     2.1
 // @author      沉冰浮水
-// @description 复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ群：189574683」
+// @description 复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
 // @url         https://greasyfork.org/zh-CN/scripts/28056
 // ----------------------------
 // @link   https://afdian.net/@wdssmq
