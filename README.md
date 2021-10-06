@@ -30,115 +30,11 @@ QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
 ---start---
 
-name：「bilibili」 - 稍后再看导出为.url
+name：Markdown-A-Textarea
 
-desc：将 B 站的稍后再看列表导出为.url 文件
+desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
 
-url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
-
---------
-
-name：qBittorrent 管理脚本「QQ 群：189574683」
-
-desc：通过 WebUI 的 API 批量替换 Tracker
-
-url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
-
---------
-
-name：度盘接生成（QQ 群：189574683）
-
-desc：分享资源后生成带描述的分享文本或 html 代码。
-
-url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js
-
---------
-
-name：Resilio Sync 分享/备份助手「QQ 群：189574683」
-
-desc：快捷导出/分享 Sync 任务；
-
-url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
-
---------
-
-name：Resilio Sync 管理「QQ 群：189574683」【失效】
-
-desc：快捷导出/分享 Sync 任务；
-
-url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js
-
---------
-
-name：EasyPHP 面板助手
-
-desc：新窗口打开站点；自动启用服务；书签功能；
-
-url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.js
-
---------
-
-name：\[Z-Blog\] - 插件工具 For 腾讯云点播
-
-desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.user.js
-
---------
-
-name：「Z-Blog」 - 应用中心促销工具
-
-desc：用于辅助设置促销选项
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/promotion.user.js
-
---------
-
-name：「Z-Blog」- 前台编辑文章入口
-
-desc：配合主题以显示前台编辑入口
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/edt.user.js
-
---------
-
-name：「Z-Blog」 - 开发者工具（本地）
-
-desc：自动填写 Z-Blog 应用的配置项
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js
-
---------
-
-name：\[Z-Blog\] - Logo 生成
-
-desc：自动叠加历史图标制作新的图片
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/GenLogo.user.js
-
---------
-
-name：\[Z-Blog\] - 使用 Markdown 编辑应用介绍
-
-desc：使用 Markdown 编辑应用说明
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
-
---------
-
-name：「Z-Blog」 - 开发者工具（应用中心）
-
-desc：含搜索订单，附带隐藏未付订单，应用审核回显；
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.user.js
-
---------
-
-name：「GitHub」获取文件的 jsDelivr 地址
-
-desc：获取项目文件的 CDN 地址
-
-url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
 
 --------
 
@@ -150,11 +46,83 @@ url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js
 
 --------
 
-name：复制标题网址
+name：EasyPHP 面板助手
 
-desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ群：189574683」
+desc：新窗口打开站点；自动启用服务；书签功能；
 
-url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
+url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.js
+
+--------
+
+name：Resilio Sync 管理「QQ 群：189574683」【失效】
+
+desc：快捷导出/分享 Sync 任务；
+
+url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js
+
+--------
+
+name：Resilio Sync 分享/备份助手「QQ 群：189574683」
+
+desc：快捷导出/分享 Sync 任务；
+
+url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
+
+--------
+
+name：\[Z-Blog\] - Logo 生成
+
+desc：自动叠加历史图标制作新的图片
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/GenLogo.user.js
+
+--------
+
+name：「Z-Blog」- 前台编辑文章入口
+
+desc：配合主题以显示前台编辑入口
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/edt.user.js
+
+--------
+
+name：「Z-Blog」 - 开发者工具（应用中心）
+
+desc：含搜索订单，附带隐藏未付订单，应用审核回显；
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.user.js
+
+--------
+
+name：「Z-Blog」 - 应用中心促销工具
+
+desc：用于辅助设置促销选项
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/promotion.user.js
+
+--------
+
+name：\[Z-Blog\] - 使用 Markdown 编辑应用介绍
+
+desc：使用 Markdown 编辑应用说明
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
+
+--------
+
+name：「Z-Blog」 - 开发者工具（本地）
+
+desc：自动填写 Z-Blog 应用的配置项
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js
+
+--------
+
+name：\[Z-Blog\] - 插件工具 For 腾讯云点播
+
+desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.user.js
 
 --------
 
@@ -166,43 +134,11 @@ url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
 
 --------
 
-name：「QQ 群」 - 批量踢人（QQ 群：189574683）
+name：度盘接生成（QQ 群：189574683）
 
-desc：自动选择 20 名成员
+desc：分享资源后生成带描述的分享文本或 html 代码。
 
-url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupMemberRemove.user.js
-
---------
-
-name：「QQ 群」 - 今天谁值日
-
-desc：用于确定值日生/doge
-
-url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.js
-
---------
-
-name：Markdown-A-Textarea
-
-desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
-
-url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
-
---------
-
-name：\[Feedly\] - 中键标记已读 + 收藏导出为*.url
-
-desc：新标签页打开条目时自动标记为已读，收藏计数
-
-url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
-
---------
-
-name：海腾之眼（贴吧防和谐）【停止维护】
-
-desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
-
-url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
+url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js
 
 --------
 
@@ -214,11 +150,75 @@ url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
 
 --------
 
+name：「GitHub」获取文件的 jsDelivr 地址
+
+desc：获取项目文件的 CDN 地址
+
+url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js
+
+--------
+
+name：复制标题网址
+
+desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ群：189574683」
+
+url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
+
+--------
+
+name：qBittorrent 管理脚本「QQ 群：189574683」
+
+desc：通过 WebUI 的 API 批量替换 Tracker
+
+url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
+
+--------
+
+name：「QQ 群」 - 今天谁值日
+
+desc：用于确定值日生/doge
+
+url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.js
+
+--------
+
+name：「QQ 群」 - 批量踢人（QQ 群：189574683）
+
+desc：自动选择 20 名成员
+
+url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupMemberRemove.user.js
+
+--------
+
 name：「新浪微博」 - 批量移除粉丝（QQ 群：189574683）
 
 desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
 
 url：https://github.com/wdssmq/userscript/blob/master/weibo/remove-fans.user.js
+
+--------
+
+name：「bilibili」 - 稍后再看导出为.url
+
+desc：将 B 站的稍后再看列表导出为.url 文件
+
+url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
+
+--------
+
+name：海腾之眼（贴吧防和谐）【停止维护】
+
+desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
+
+url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
+
+--------
+
+name：\[Feedly\] - 中键标记已读 + 收藏导出为*.url
+
+desc：新标签页打开条目时自动标记为已读，收藏计数
+
+url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js
 
 --------
 
