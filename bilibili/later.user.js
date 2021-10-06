@@ -161,6 +161,10 @@
         url = $n(".watched.on a").href;
         more = 1;
       }
+      if ($n("#multi_page li.on")) {
+        url = $n("#multi_page li.on a").href;
+        more = 1;
+      }
       const $curTime = $n(".bilibili-player-video-time-now");
       // _log("当前时间元素", $curTime);
       console.log();
