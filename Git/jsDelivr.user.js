@@ -11,7 +11,7 @@
 // @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
 // ----------------------------
 // @match        https://github.com/*/*
-// @icon         https://www.google.com/s2/favicons?domain=github.com
+// @icon         https://github.com/favicon.ico
 // @grant        none
 // ==/UserScript==
 
