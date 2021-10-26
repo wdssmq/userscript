@@ -62,7 +62,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js
 
 --------
 
-name：Resilio Sync 分享/备份助手「QQ 群：189574683」
+name：「水水」Resilio Sync 分享/备份助手「QQ 群：189574683」
 
 desc：快捷导出/分享 Sync 任务；
 
@@ -142,7 +142,7 @@ url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js
 
 --------
 
-name：xiuno 管理工具（QQ 群：189574683）
+name：「水水」xiuno 管理工具（QQ 群：189574683）
 
 desc：对不合规的内容加密处理
 
@@ -166,7 +166,7 @@ url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
 
 --------
 
-name：qBittorrent 管理脚本「QQ 群：189574683」
+name：「水水」qBittorrent 管理脚本「QQ 群：189574683」
 
 desc：通过 WebUI 的 API 批量替换 Tracker
 
