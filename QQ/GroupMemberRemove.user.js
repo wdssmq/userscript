@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        「QQ 群」 - 批量踢人（QQ 群：189574683）
+// @name        「QQ 群」- 批量踢人（QQ 群：189574683）
 // @namespace   wdssmq
 // @version     1.7
 // @author      沉冰浮水

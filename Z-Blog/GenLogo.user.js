@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         [Z-Blog] - Logo 生成
+// @name         「Z-Blog」- Logo 生成
 // @namespace    https://www.wdssmq.com
 // @version      0.1
 // @description  自动叠加历史图标制作新的图片

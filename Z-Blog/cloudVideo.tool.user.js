@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         「Z-Blog」 - 插件工具 For 视频云点播
+// @name         「Z-Blog」- 插件工具 For 视频云点播
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @version      0.3

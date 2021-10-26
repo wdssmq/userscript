@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         「Z-Blog」 - 开发者工具（本地）
+// @name         「Z-Blog」- 开发者工具（本地）
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @description  自动填写 Z-Blog 应用的配置项

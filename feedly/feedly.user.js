@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         [Feedly] - 中键标记已读 + 收藏导出为*.url
+// @name         「Feedly」- 中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @version      0.3.5
