@@ -118,7 +118,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.use
 
 --------
 
-name：\[Z-Blog\] - 插件工具 For 腾讯云点播
+name：「Z-Blog」 - 插件工具 For 视频云点播
 
 desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
 
@@ -160,7 +160,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js
 
 name：复制标题网址
 
-desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ群：189574683」
+desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
 
 url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
 
