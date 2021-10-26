@@ -70,7 +70,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
 
 --------
 
-name：\[Z-Blog\] - Logo 生成
+name：「Z-Blog」- Logo 生成
 
 desc：自动叠加历史图标制作新的图片
 
@@ -86,7 +86,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/edt.user.js
 
 --------
 
-name：「Z-Blog」 - 开发者工具（应用中心）
+name：「Z-Blog」- 开发者工具（应用中心）
 
 desc：含搜索订单，附带隐藏未付订单，应用审核回显；
 
@@ -94,7 +94,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.user.js
 
 --------
 
-name：「Z-Blog」 - 应用中心促销工具
+name：「Z-Blog」- 应用中心促销工具
 
 desc：用于辅助设置促销选项
 
@@ -102,7 +102,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/promotion.user.js
 
 --------
 
-name：\[Z-Blog\] - 使用 Markdown 编辑应用介绍
+name：「Z-Blog」- 使用 Markdown 编辑应用介绍
 
 desc：使用 Markdown 编辑应用说明
 
@@ -110,7 +110,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
 
 --------
 
-name：「Z-Blog」 - 开发者工具（本地）
+name：「Z-Blog」- 开发者工具（本地）
 
 desc：自动填写 Z-Blog 应用的配置项
 
@@ -118,7 +118,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.use
 
 --------
 
-name：「Z-Blog」 - 插件工具 For 视频云点播
+name：「Z-Blog」- 插件工具 For 视频云点播
 
 desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
 
@@ -126,7 +126,7 @@ url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.us
 
 --------
 
-name：\[manhuagui\] - 打包下载（QQ 群：189574683）
+name：「manhuagui」- 打包下载（QQ 群：189574683）
 
 desc：按章节打包下载漫画柜的资源
 
@@ -174,7 +174,7 @@ url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
 
 --------
 
-name：「QQ 群」 - 今天谁值日
+name：「QQ 群」- 今天谁值日
 
 desc：用于确定值日生/doge
 
@@ -182,7 +182,7 @@ url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.j
 
 --------
 
-name：「QQ 群」 - 批量踢人（QQ 群：189574683）
+name：「QQ 群」- 批量踢人（QQ 群：189574683）
 
 desc：自动选择 20 名成员
 
@@ -190,7 +190,7 @@ url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupMemberRemove.user
 
 --------
 
-name：「新浪微博」 - 批量移除粉丝（QQ 群：189574683）
+name：「新浪微博」- 批量移除粉丝（QQ 群：189574683）
 
 desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
 
@@ -198,7 +198,7 @@ url：https://github.com/wdssmq/userscript/blob/master/weibo/remove-fans.user.js
 
 --------
 
-name：「bilibili」 - 稍后再看导出为.url
+name：「bilibili」- 稍后再看导出为.url
 
 desc：将 B 站的稍后再看列表导出为.url 文件
 
@@ -214,7 +214,7 @@ url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
 
 --------
 
-name：\[Feedly\] - 中键标记已读 + 收藏导出为*.url
+name：「Feedly」- 中键标记已读 + 收藏导出为*.url
 
 desc：新标签页打开条目时自动标记为已读，收藏计数
 
