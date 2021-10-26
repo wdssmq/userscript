@@ -3,7 +3,7 @@
 // @namespace    https://www.wdssmq.com/
 // @author       沉冰浮水
 // @description  自动填写 Z-Blog 应用的配置项
-// @version      0.2
+// @version      0.3
 // @link   ----------------------------
 // @link   https://github.com/wdssmq/userscript
 // @link   https://afdian.net/@wdssmq

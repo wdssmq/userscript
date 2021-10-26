@@ -14,6 +14,8 @@
 // @include     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/promotion.php
 // @include     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/promotion_edit.php*
 // @require     https://greasyfork.org/scripts/418543-pushbullet/code/PushBullet.js?version=879737
+// @require     https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js
+// @X-require     https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/locale/zh-cn.min.js
 // @run-at      document-end
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getValue
@@ -322,6 +324,10 @@
     return;
   }
 
+  // 双 11 促销
+  const curMMDD = parseInt(moment().format("MMDD"));
+  let is1111 = curMMDD > 1025 && curMMDD < 1111 ? true : false;
+
   const appid = $("#appid").val();
 
   if (lsData.arrApps.indexOf(appid) === -1) {
@@ -337,6 +343,25 @@
   star = star.match(/\d+\.\d+/) || star.match(/\d+/);
   star = star[0];
   console.log("原价是：%s", star);
+
+  if (is1111) {
+    document.getElementById("active").value = 1;
+    if (star < 6) {
+      // 1.1
+      document.getElementById("type").value = 6;
+    } else if (star < 15) {
+      // 对折
+      document.getElementById("type").value = 4;
+    } else if (star < 40) {
+      // 11.11
+      document.getElementById("type").value = 5;
+    } else {
+      // 对折
+      document.getElementById("type").value = 4;
+    }
+    checkType();
+    return;
+  }
   // 剩余数量
   let count = parseInt(document.getElementById("count").value);
   // 促销价
