@@ -53,9 +53,23 @@
     rlt += Math.floor(Math.random() * 255).toString(16);
     return rlt;
   }
+
+  function fnGetDefColor(i) {
+    switch (i) {
+      case 0:
+        return "rgb(22, 44, 77)";
+        break;
+      case 1:
+        return "rgb(57, 90, 131)";
+        break;
+      default:
+        return fnRndColor();
+        break;
+    }
+  }
   // rgb(20, 47, 58)
   for (let i = 0; i < 37; i++) {
-    const curColor = i == 0 ? "rgb(22, 44, 77)" : fnRndColor();
+    const curColor = fnGetDefColor();
     console.log(curColor);
     $(`<div class="logo-box i-${i}"></div>`).appendTo("body").css({
       backgroundColor: curColor,
