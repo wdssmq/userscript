@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」qBittorrent 管理脚本「QQ 群：189574683」
 // @namespace    http://沉冰浮水.tk/
-// @version      0.3
+// @version      0.4
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
 // ----------------------------
@@ -16,7 +16,7 @@
 // jshint        esversion:6
 // ==/UserScript==
 
-(function() {
+(function () {
   "use strict";
   "esversion: 6";
   /* jshint multistr:true */
@@ -32,17 +32,20 @@
   );
   let strHtml =
     '<div style="padding:13px 23px;">\
-    <h2>分类：<h2><input class="js-input" type="text" name="category" style="width: 97%;"><br>\
-    <h2>旧Trakcer：<h2><input class="js-input" type="text" name="origUrl" style="width: 97%;"><br>\
-    <h2>新Tracker：<h2><input class="js-input" type="text" name="newUrl" style="width: 97%;"><br>\
+    <h2>分类：（必须指定分类，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;"><br>\
+    <h2>旧 Trakcer：<h2><input class="js-input" type="text" name="origUrl" style="width: 97%;"><br>\
+    <h2>新 Tracker：<h2><input class="js-input" type="text" name="newUrl" style="width: 97%;"><br>\
     <hr>\
     <button class="js-replace">替换</button>\
+    <hr>\
+    「<a target="_blank" title="爱发电 - @wdssmq" href="https://afdian.net/@wdssmq" rel="nofollow">爱发电 - @wdssmq</a>」\
+    「<a target="_blank" title="QQ群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ群 - 我的咸鱼心</a>」\
     </div>';
   // 点击事件
-  $("a.js-modal").click(function() {
+  $("a.js-modal").click(function () {
     new MochaUI.Window({
       id: "js-modal",
-      title: "批量替换Tracker",
+      title: "批量替换 Tracker",
       loadMethod: "iframe",
       contentURL: "",
       scrollbars: true,
@@ -52,19 +55,19 @@
       paddingVertical: 0,
       paddingHorizontal: 0,
       width: 500,
-      height: 250
+      height: 250,
     });
     $("#js-modal_content").append(strHtml);
   });
-  $(document).on("click", ".js-replace", function() {
+  $(document).on("click", ".js-replace", function () {
     // alert($(".js-input[name=category]").val());
     let obj = {
-      category: $(".js-input[name=category]").val(),
-      origUrl: $(".js-input[name=origUrl]").val(),
-      newUrl: $(".js-input[name=newUrl]").val()
+      category: $(".js-input[name=category]").val().trim(),
+      origUrl: $(".js-input[name=origUrl]").val().trim(),
+      newUrl: $(".js-input[name=newUrl]").val().trim(),
     };
     let err = 0;
-    Object.keys(obj).map(function(key) {
+    Object.keys(obj).map(function (key) {
       if (obj[key].trim() === "") {
         err = `${key}不能为空`;
       }
@@ -73,20 +76,16 @@
       alert(err);
       return;
     }
-    fnHttpGet(api.info, { category: obj.category }, function(data) {
+    fnHttpGet(api.info, { category: obj.category }, function (data) {
       fnEdtList(data, obj.origUrl, obj.newUrl);
     });
     return;
   });
 
-  // $(".js-replace").click(function() {
-
-  // });
-
   // API List
   const api = {
     info: hostUrl + "api/v2/torrents/info",
-    editTracker: hostUrl + "api/v2/torrents/editTracker"
+    editTracker: hostUrl + "api/v2/torrents/editTracker",
   };
 
   // let strTest = "udp://tracker.publicbt.com:80/announce";
@@ -96,7 +95,7 @@
   // });
 
   function fnEdtList(arrTorrents, origUrl, newUrl) {
-    arrTorrents.map(function(item) {
+    arrTorrents.map(function (item) {
       console.log(item.hash);
       fnEdtTracker(item.hash, origUrl, newUrl);
     });
@@ -119,13 +118,16 @@
   function fnHttpGet(
     url,
     objPar = {},
-    callback = function(data) {
+    callback = function (data) {
       console.log(data);
     }
   ) {
     let strPar =
-      Object.keys(objPar).length === 0 ? "": "?" + Object.keys(objPar)
-            .map(function(key) {
+      Object.keys(objPar).length === 0
+        ? ""
+        : "?" +
+          Object.keys(objPar)
+            .map(function (key) {
               return (
                 encodeURIComponent(key) + "=" + encodeURIComponent(objPar[key])
               );
@@ -138,15 +140,15 @@
       url: url + strPar,
       headers: {
         "User-agent": window.navigator.userAgent,
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      onload: function(responseDetail) {
+      onload: function (responseDetail) {
         if (responseDetail.status === 200) {
           callback(JSON.parse(responseDetail.responseText));
         } else {
           console.log(responseDetail.status, responseDetail);
         }
-      }
+      },
     });
   }
 })();
