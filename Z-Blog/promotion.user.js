@@ -24,6 +24,20 @@
 // ==/UserScript==
 /*jshint esversion:6 */
 
+// localStorage 封装
+const lsObj = {
+  setItem: function (key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  },
+  getItem: function (key, def = "") {
+    const item = localStorage.getItem(key);
+    if (item) {
+      return JSON.parse(item);
+    }
+    return def;
+  },
+};
+
 // https://tieba.baidu.com/p/*
 (function () {
   if (location.host !== "tieba.baidu.com") {
@@ -137,15 +151,24 @@
   if (location.pathname.indexOf("AppBuy/shop") === -1) {
     return;
   }
+
   // 获取jQuery
   const $ = window.jQuery || unsafeWindow.jQuery;
 
-  const lsName = "gm_pm_data";
-  const lsData = localStorage[lsName]
-    ? JSON.parse(localStorage[lsName])
-    : { arrApps: [], arrAppNames: {}, PbSend: {} };
+  const gob = {
+    curAppList: [],
+    logAppList: null,
+    load: function (logDef) {
+      this.logAppList = lsObj.getItem("logAppList", logDef);
+    },
+    save: function () {
+      lsObj.setItem("logAppList", this.logAppList);
+    },
+  };
 
-  console.log(lsData);
+  gob.load({ arrApps: [], arrAppNames: {}, PbSend: {} });
+
+  console.log(gob.logAppList);
 
   // 承接前台跳转
   let app_id_hash = null;
@@ -161,16 +184,16 @@
     post_id_hash = match.groups["post_id"];
     disc_hash = match.groups["disc"];
     //
-    lsData.app_id_hash = app_id_hash;
-    lsData.post_id_hash = post_id_hash;
-    lsData.disc_hash = parseInt(disc_hash);
+    gob.logAppList.app_id_hash = app_id_hash;
+    gob.logAppList.post_id_hash = post_id_hash;
+    gob.logAppList.disc_hash = parseInt(disc_hash);
   }
 
-  // 接入PushBullet
+  // 接入 PushBullet
   const objPB = window.PushBullet || {};
   objPB.APIKey = GM_getValue("pb_key", "");
-  GM_registerMenuCommand("PushBullet鉴权Key", () => {
-    const key = prompt("PushBullet鉴权Key:", objPB.APIKey);
+  GM_registerMenuCommand("PushBullet 鉴权 Key", () => {
+    const key = prompt("PushBullet 鉴权 Key:", objPB.APIKey);
     if (typeof key == "string") {
       GM_setValue("pb_key", key);
     }
@@ -181,16 +204,19 @@
   objPB.isGM = true;
 
   if (!objPB.APIKey) {
-    $(".divHeader").append(' - <span class="star">未设置PushBullet</span>');
+    $(".divHeader").append(' - <span class="star">未设置 PushBullet</span>');
   }
 
   // 当前时间
   const curTime = new Date();
+
   // 获取时间戳
   // const timestamp = Date.parse(curTime) / 1000;
   const timestamp = parseInt(curTime.valueOf() / 1000);
+
   // 时间戳转换成天数
   const daystamp = parseInt(timestamp / 86400);
+
   console.log(curTime.toLocaleString(), daystamp);
 
   $("title").append(daystamp);
@@ -208,6 +234,8 @@
     t.setTime(t.getTime() + s * 1000);
     return t;
   }
+
+  // 移除草稿项
   $("tr.color3>td:nth-of-type(3)").each(function () {
     let html = $(this).text();
     if (html == "草稿") {
@@ -215,6 +243,7 @@
     }
   });
 
+  // 判断应用是否选中
   function fnCheckAPP(appid, daystamp) {
     for (let i of [-1, 0, 1]) {
       const modRlt = (daystamp + appid + i) % 593;
@@ -233,11 +262,12 @@
   // 在表格页遍历内容
   let rltLog = "";
   $("tr.color3>td:nth-of-type(8)").each(function () {
-    console.log("---");
+    // console.log("---");
+
     const html = $(this).html() || "1970-01-01 08:00:00";
     const appid = $(this).parent().find("td:first-child").text();
     const appname = $(this).parent().find("td:nth-child(2)").text();
-    const pm_type = $(this).parent().find("td:nth-child(6)").text();
+    const pmType = $(this).parent().find("td:nth-child(6)").text();
     const expTime = new Date(html.replace(/-/g, "/"));
     const diffTime = parseInt((expTime - curTime) / (1000 * 60 * 60 * 24));
     const logData = {
@@ -246,18 +276,19 @@
       appid,
       expTime: expTime.toLocaleDateString(),
       diffTime,
+      pmType,
     };
 
-    console.log("-", logData);
-    // console.log(pubdate - curTime);
-    // if (diff((appid % 37) + 7, pubdate) || appid == app_id_hash) {
-    // }
+    // console.log("-", logData);
+
+    gob.curAppList.push(logData);
+
     if (
       (diffTime < 0 && fnCheckAPP(appid, daystamp + diffTime)) ||
-      diffTime < -173
+      diffTime < -73
     ) {
-      lsData.arrApps.push(appid);
-      lsData.arrAppNames[appid] = appname;
+      gob.logAppList.arrApps.push(appid);
+      gob.logAppList.arrAppNames[appid] = appname;
       $(this)
         .parent()
         .css({
@@ -265,26 +296,38 @@
         })
         .insertAfter("table tbody tr:first-child");
     } else if (diffTime > 0) {
-      logData.pm_type = pm_type;
-      console.log("+", logData);
+      // console.log("+", logData);
+
+      // 开始时间
       const strStart = $(this).prev().html();
       const sDate = new Date(strStart.replace(/-/g, "/"));
+
+      // 倒计时
       const cntDown = parseInt((sDate / 1000 - timestamp) / 60);
+
       // 理论上可以推送的QQ群的
       const obj = {
         type: 1,
         uin: 189574683,
+        msg: "",
       };
       obj.msg = `https://app.zblogcn.com/?id=${appid}`;
+
+      // msg 拼接
       if (cntDown > 0) {
         obj.msg += `\n「${appname}」「${cntDown}」分钟后开始促销；`;
       } else {
         obj.msg += `\n「${appname}」促销中；`;
       }
       rltLog += `${obj.msg}\n\n`;
+
+      // 指定时间周期内只发送一次
       const lstSend = parseInt(daystamp / 4);
-      // lsData.arrApps.indexOf(appid) > -1
-      if (!lsData.PbSend[appid] || lsData.PbSend[appid] !== lstSend) {
+
+      if (
+        !gob.logAppList.PbSend[appid] ||
+        gob.logAppList.PbSend[appid] !== lstSend
+      ) {
         objPB.APIKey &&
           objPB.push(
             "link",
@@ -307,20 +350,26 @@
               }
             }
           );
-        // 不能放在回调中- -
-        lsData.PbSend[appid] = lstSend;
+
+        // 标记发送；不能放在回调中 - -；
+        gob.logAppList.PbSend[appid] = lstSend;
       }
-      // lsData 中移除
-      const tmp_set = new Set(lsData.arrApps);
+
+      // gob.logAppList 中移除
+      const tmp_set = new Set(gob.logAppList.arrApps);
       tmp_set.delete(appid);
-      lsData.arrApps = Array.from(tmp_set);
+      gob.logAppList.arrApps = Array.from(tmp_set);
       return;
     }
   }); // --遍历结束
-  console.log(rltLog);
-  // 写入ls
+
+  // console.log(rltLog);
+
+  // console.log(gob.curAppList);
+
+  // 写入 ls
   if (location.pathname.indexOf("promotion.php") > -1) {
-    localStorage[lsName] = JSON.stringify(lsData);
+    gob.save();
     return;
   }
 
@@ -330,14 +379,15 @@
 
   const appid = $("#appid").val();
 
-  if (lsData.arrApps.indexOf(appid) === -1) {
+  if (gob.logAppList.arrApps.indexOf(appid) === -1) {
     document.getElementById("active").value = 0;
   } else {
     document.getElementById("active").value = 1;
     $("textarea.description,#title").val(
-      lsData.arrAppNames[appid].replace(/\[[^\]]+\]/g, "").trim()
+      gob.logAppList.arrAppNames[appid].replace(/\[[^\]]+\]/g, "").trim()
     );
   }
+
   // 原价
   let star = $("#amount .star").text();
   star = star.match(/\d+\.\d+/) || star.match(/\d+/);
@@ -362,8 +412,10 @@
     checkType();
     return;
   }
+
   // 剩余数量
   let count = parseInt(document.getElementById("count").value);
+
   // 促销价
   let disc = (count % 7) / 7;
   $("#amount .star").after(`<span>${disc.toFixed(2)}</span>`);
@@ -372,14 +424,14 @@
   fee = fee > 3.7 ? fee - 3.7 : fee;
 
   // let o_fee = star;
-  // if (lsData.app_id_hash === appid) {
-  //   count += parseInt(lsData.disc_hash / 3);
-  //   o_fee = (star - lsData.disc_hash) * (5 / 7);
+  // if (gob.logAppList.app_id_hash === appid) {
+  //   count += parseInt(gob.logAppList.disc_hash / 3);
+  //   o_fee = (star - gob.logAppList.disc_hash) * (5 / 7);
   //   if (o_fee < 5.93) {
   //     o_fee = 5.93;
   //   }
-  //   lsData.app_id_hash = null;
-  //   // localStorage[lsName] = JSON.stringify(lsData);
+  //   gob.logAppList.app_id_hash = null;
+  //   // localStorage[lsName] = JSON.stringify(gob.logAppList);
   // }
   // fee = o_fee < fee ? o_fee : fee;
 
