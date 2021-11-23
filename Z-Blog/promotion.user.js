@@ -272,11 +272,7 @@ const lsObj = {
     const diffTime = parseInt((expTime - curTime) / (1000 * 60 * 60 * 24));
     const logData = {
       appname,
-      daystamp,
-      appid,
-      expTime: expTime.toLocaleDateString(),
-      diffTime,
-      pmType,
+      appid: parseInt(appid),
     };
 
     // console.log("-", logData);
