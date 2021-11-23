@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         「水水」xiuno 管理工具（QQ 群：189574683）
+// @name         「xiuno」管理工具（QQ 群：189574683）
 // @namespace    沉冰浮水
 // @version      0.3
 // @description  对不合规的内容加密处理
@@ -15,7 +15,7 @@
 // @require      https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.js
 // @grant        none
 // ==/UserScript==
-/*jshint esversion:6 */
+/* jshint esversion:6 */
 (function () {
   "use strict";
   const $ = window.jQuery;
