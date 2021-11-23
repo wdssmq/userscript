@@ -272,7 +272,11 @@ const lsObj = {
     const diffTime = parseInt((expTime - curTime) / (1000 * 60 * 60 * 24));
     const logData = {
       appname,
+      // daystamp,
       appid: parseInt(appid),
+      // expTime: expTime.toLocaleDateString(),
+      // diffTime,
+      // pmType,
     };
 
     // console.log("-", logData);
@@ -359,9 +363,11 @@ const lsObj = {
     }
   }); // --遍历结束
 
-  // console.log(rltLog);
+  console.log(rltLog);
 
   // console.log(gob.curAppList);
+
+  // console.log(JSON.stringify(gob.curAppList));
 
   // 写入 ls
   if (location.pathname.indexOf("promotion.php") > -1) {
