@@ -56,7 +56,8 @@
   function fnAjax(page, pat) {
     $.ajax({
       url:
-        "https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php?page=" + page,
+        "https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php?page=" +
+        page,
       type: "get",
       success: function (data) {
         // if (/已付款/.test(data) && page < 3) {
@@ -148,7 +149,7 @@
   }
   const $ = window.jQuery;
   let $p = $("#response3 dl p");
-  if ($p.find("a").length == 1) {
+  if ($p.length == 0 || $p.find("a").length == 1) {
     return;
   }
   function fnGet(cb) {
