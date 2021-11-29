@@ -65,7 +65,7 @@
     $message.find(".user-signature").remove();
     $message.find(".blind-box").remove();
     // 内容
-    let content = $message.html();
+    let content = $message.text() || "";
     // 提取数字，不存在则返回
     const match = content.match(/\d+/g);
     if (match == null) {
@@ -80,26 +80,28 @@
     // 取余
     const mod = number % arrList.length;
     const pick = arrList[mod];
-
-    // 判断是否已经存在
-    if (fnCheckItemInArr(pick, arrRlt) || setUsers.has(username)) {
-      return;
-    } else {
-      setUsers.add(username);
-    }
-
-    // 添加
-    arrRlt.push(pick);
-
-    // 显示
-    content += `<blockquote class="blockquote blind-box"><p><b>${
+    // 组织数据
+    let strRlt = `<blockquote class="blockquote blind-box"><p><b>-num- - ${
       pick.appname
     } | ${pick.appid} | ${fnMatch2Number(
       match
     )} + ${intPid} = ${number}</b></p></blockquote>`;
-    // content += encodeURIComponent(content);
-    $message.html(content);
-  });
 
-  console.log(JSON.stringify(arrRlt));
+    // 判断是否已经存在
+    if (fnCheckItemInArr(pick, arrRlt) || setUsers.has(username)) {
+      strRlt = `<blockquote class="blockquote blind-box"><b>重复</b></blockquote>`;
+    } else {
+      // 添加
+      arrRlt.push(pick);
+      // 每个用户有一次有效
+      setUsers.add(username);
+      // 序号
+      strRlt = strRlt.replace(/\-num\-/g, arrRlt.length);
+    }
+
+    // 显示
+    $message.append(strRlt);
+  });
+  console.log("抽中应用");
+  console.log(arrRlt);
 })();
