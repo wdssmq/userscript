@@ -13,12 +13,12 @@
 // @match        https://bbs.zblogcn.com/*
 // @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
 // @require      https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.js
-// @grant        none
+// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 /* jshint esversion:6 */
 (function () {
   "use strict";
-  const $ = window.jQuery;
+  const $ = window.jQuery || unsafeWindow.jQuery;
   // console.log($);
   const $btnBad = $(` <a class="btn btn-primary">BAD</a>`);
   const strTip = `<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>`;
@@ -70,12 +70,15 @@
   });
   // YML 获取
   function fnGetAjax(strURL, strData, fnCallback) {
-    $.ajax({
-      url: strURL,
-      type: "GET",
+    GM_xmlhttpRequest({
+      method: "GET",
       data: strData,
-      // dataType: "json",
-      success: fnCallback,
+      url: strURL,
+      onload: function (responseDetail) {
+        if (responseDetail.status === 200) {
+          fnCallback(responseDetail.responseText, strURL);
+        }
+      },
     });
   }
   // 开发者申请
@@ -126,7 +129,7 @@
       "https://cdn.jsdelivr.net/gh/wdssmq/ReviewLog@main/2021.yml",
       // "https://raw.githubusercontent.com/wdssmq/ReviewLog/main/2021.yml",
       "",
-      function (resData) {
+      function (resData, strURL) {
         // console.log(resData);
 
         // // yml2obj
@@ -135,7 +138,9 @@
 
         // 好像不解析直接判断就行；
         if (resData.indexOf(location.href) > -1) {
-          $(".pre-yml").before(`<p class="text-danger">已提交过</p>`);
+          $(".pre-yml").before(
+            `<p class="text-danger">已提交过 - <code>${strURL}</code></p>`
+          );
           return;
         }
       }
