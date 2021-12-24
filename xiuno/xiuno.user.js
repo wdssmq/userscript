@@ -68,6 +68,16 @@
       `<a class="text-grey ml-2" title="获取当前楼层链接" href="${curHref}#${pid}">「楼层地址」</a>`
     );
   });
+  // YML 获取
+  function fnGetAjax(strURL, strData, fnCallback) {
+    $.ajax({
+      url: strURL,
+      type: "GET",
+      data: strData,
+      // dataType: "json",
+      success: fnCallback,
+    });
+  }
   // 开发者申请
   const $h4 = $(".media-body h4");
   let title = $h4.text().trim();
@@ -112,6 +122,24 @@
       }
     );
     $(".pre-yml").text(`${styYML}`);
+    fnGetAjax(
+      "https://cdn.jsdelivr.net/gh/wdssmq/ReviewLog@main/2021.yml",
+      // "https://raw.githubusercontent.com/wdssmq/ReviewLog/main/2021.yml",
+      "",
+      function (resData) {
+        // console.log(resData);
+
+        // // yml2obj
+        // const oData = jsyaml.load(resData, "utf8");
+        // console.log(oData);
+
+        // 好像不解析直接判断就行；
+        if (resData.indexOf(location.href) > -1) {
+          $(".pre-yml").before(`<p class="text-danger">已提交过</p>`);
+          return;
+        }
+      }
+    );
   }
   // 工具函数
   function fnStrtr(
