@@ -88,7 +88,7 @@
     }
     const tplYML = `- id: #id#
     type: #type#
-    status: ing
+    status: 进行中
     url: #url#
     date:
       - #date#
