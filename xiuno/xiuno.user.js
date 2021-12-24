@@ -31,8 +31,8 @@
     let strCode = LZString.compressToBase64(str);
     um.setContent(strTip + `<p>#~~${strCode}~~#</p>`);
     console.log(LZString.decompressFromBase64(strCode));
-    //let strDeCode = LZString.decompressFromBase64(strCode);
-    //um.setContent(strCode + strDeCode);
+    // let strDeCode = LZString.decompressFromBase64(strCode);
+    // um.setContent(strCode + strDeCode);
   });
   if ($("input[name=update_reason]").length > 0) {
     $("#submit").after($btnBad);
