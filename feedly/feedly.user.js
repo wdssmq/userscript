@@ -16,7 +16,7 @@
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
 // ==/UserScript==
-/*jshint esversion: 6 */
+/* jshint esversion: 6 */
 (function () {
   "use strict";
   function $n(e) {
@@ -29,6 +29,35 @@
     return element.addEventListener(evnt, funct, false);
   }
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  // localStorage 封装
+  const lsObj = {
+    setItem: function (key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+    getItem: function (key, def = "") {
+      const item = localStorage.getItem(key);
+      if (item) {
+        return JSON.parse(item);
+      }
+      return def;
+    },
+  };
+
+  const gob = {
+    lock: false,
+    curStars: 0,
+    lstStars: 0,
+    diffStars: 0,
+    load: function (lstDef = 0) {
+      this.lstStars = lsObj.getItem("lstStars", lstDef);
+      this.diffStars = lsObj.getItem("diffStars", 0);
+    },
+    save: function () {
+      lsObj.setItem("lstStars", this.lstStars);
+      lsObj.setItem("diffStars", this.diffStars);
+    },
+  };
 
   // 拿回订阅源地址
   // 绑定监听事件到 div#box 上
@@ -88,9 +117,7 @@
     //$n("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
   }
   addEvent($n("#box"), "mouseup", function (event) {
-    if (
-      event.target.innerHTML.indexOf("Read later") > -1
-    ) {
+    if (event.target.innerHTML.indexOf("Read later") > -1) {
       const $el = event.target;
       console.log($el);
       fnOnScroll();
@@ -100,33 +127,55 @@
 
   // 加载完成后激活计数
   window.onload = async function () {
-    while (!fnOnScroll()) {
-      console.log("waiting……");
+    do {
+      fnOnScroll();
+      console.log("waiting…… fnOnScroll");
       await sleep(3000);
-    }
-  }
+    } while (gob.curStars == 0);
+    do {
+      fnLaterControl();
+      console.log("waiting…… fnLaterControl");
+      await sleep(3000);
+    } while (gob.lstStars == 0);
+  };
 
   // 星标计数
   function fnOnScroll() {
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
       $n("#feedlyFrame").dataset.addEL = "done";
-      $n("#feedlyFrame").addEventListener('scroll', function () {
+      $n("#feedlyFrame").addEventListener("scroll", function () {
         console.log(location.href);
-        if ('https://feedly.com/i/saved' == location.href) {
-          let intCount = $na("div.content a").length;
-          $n("h1 #header-title").innerHTML = `Read later（${intCount}）`;
-          $n("h2.Heading").innerHTML = `Read later（${intCount}）`;
+        if ("https://feedly.com/i/saved" == location.href) {
+          let intCount = $na("div.content a").length,
+            strText = `Read later（${intCount} - ${gob.diffStars}）`;
+          $n("h1 #header-title").innerHTML = strText;
+          $n("h2.Heading").innerHTML = strText;
+          gob.curStars = intCount;
         }
       });
       console.log("计数事件- 启用成功");
       return true;
     }
     console.log("计数事件 - 页面加载中");
-    return false
+    return false;
+  }
+
+  // 星标变动控制
+  function fnLaterControl() {
+    if (gob.curStars == 0 || gob.lock) {
+      return;
+    }
+    gob.load(gob.curStars);
+    h;
+    console.log(gob);
+    // 星标变化计数；正数减少，负数增加
+    const diff = gob.lstStars - gob.curStars;
+    gob.diffStars += diff;
+    gob.save();
   }
 
   // 自动标记已读
-  var opt1 = 0;
+  let opt1 = 0;
   addEvent($n("#box"), "mouseup", function (event) {
     if (
       event.target.className === "link entry__title" &&
