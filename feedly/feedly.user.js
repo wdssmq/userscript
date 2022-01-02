@@ -125,7 +125,7 @@
     }
   });
 
-  // 加载完成后激活计数
+  // 加载完成后执行
   window.onload = async function () {
     do {
       fnOnScroll();
@@ -139,25 +139,30 @@
     } while (gob.lstStars == 0);
   };
 
-  // 星标计数
+  // 星标计数触发和更新
   function fnOnScroll() {
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
       $n("#feedlyFrame").dataset.addEL = "done";
-      $n("#feedlyFrame").addEventListener("scroll", function () {
-        console.log(location.href);
-        if ("https://feedly.com/i/saved" == location.href) {
-          let intCount = $na("div.content a").length,
-            strText = `Read later（${intCount} - ${gob.diffStars}）`;
-          $n("h1 #header-title").innerHTML = strText;
-          $n("h2.Heading").innerHTML = strText;
-          gob.curStars = intCount;
-        }
-      });
+      fnCountStarts();
+      $n("#feedlyFrame").addEventListener("scroll", fnCountStarts);
       console.log("计数事件- 启用成功");
       return true;
     }
     console.log("计数事件 - 页面加载中");
     return false;
+  }
+
+
+  // 星标计数
+  function fnCountStarts() {
+    console.log(location.href);
+    if ("https://feedly.com/i/saved" == location.href) {
+      let intCount = $na("div.content a").length,
+        strText = `Read later（${intCount} - ${gob.diffStars}）`;
+      $n("h1 #header-title").innerHTML = strText;
+      $n("h2.Heading").innerHTML = strText;
+      gob.curStars = intCount;
+    }
   }
 
   // 星标变动控制
