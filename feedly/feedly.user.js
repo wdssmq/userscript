@@ -174,6 +174,8 @@
     // 星标变化计数；正数减少，负数增加
     const diff = gob.lstStars - gob.curStars;
     gob.diffStars += diff;
+    // 更新 localStorage 存储
+    gob.lstStars = gob.curStars;
     gob.save();
   }
 
