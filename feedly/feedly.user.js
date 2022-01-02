@@ -143,7 +143,7 @@
   function fnOnScroll() {
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
       $n("#feedlyFrame").dataset.addEL = "done";
-      fnCountStarts();
+      // fnCountStarts();
       $n("#feedlyFrame").addEventListener("scroll", fnCountStarts);
       console.log("计数事件- 启用成功");
       return true;
@@ -151,7 +151,6 @@
     console.log("计数事件 - 页面加载中");
     return false;
   }
-
 
   // 星标计数
   function fnCountStarts() {
@@ -171,7 +170,6 @@
       return;
     }
     gob.load(gob.curStars);
-    h;
     console.log(gob);
     // 星标变化计数；正数减少，负数增加
     const diff = gob.lstStars - gob.curStars;
