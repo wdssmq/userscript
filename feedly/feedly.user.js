@@ -45,11 +45,15 @@
   };
 
   const gob = {
-    lock: false,
+    loaded: false,
     curStars: 0,
     lstStars: 0,
     diffStars: 0,
     load: function (lstDef = 0) {
+      if (this.loaded) {
+        return;
+      }
+      this.loaded = true;
       this.lstStars = lsObj.getItem("lstStars", lstDef);
       this.diffStars = lsObj.getItem("diffStars", 0);
     },
@@ -141,14 +145,18 @@
 
   // 星标计数触发和更新
   function fnOnScroll() {
+    // 一屏能显示时直接触发一次
+    if ($n(".list-entries > h2")) {
+      fnCountStarts();
+    }
+    // 滚动条滚动时触发
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
       $n("#feedlyFrame").dataset.addEL = "done";
-      // fnCountStarts();
       $n("#feedlyFrame").addEventListener("scroll", fnCountStarts);
-      console.log("计数事件- 启用成功");
+      console.log("计数事件监听 - 启用成功");
       return true;
     }
-    console.log("计数事件 - 页面加载中");
+    console.log("计数事件监听 - 页面加载中");
     return false;
   }
 
@@ -160,13 +168,14 @@
         strText = `Read later（${intCount} - ${gob.diffStars}）`;
       $n("h1 #header-title").innerHTML = strText;
       $n("h2.Heading").innerHTML = strText;
+      $n("#header-title").innerHTML = strText;
       gob.curStars = intCount;
     }
   }
 
   // 星标变动控制
   function fnLaterControl() {
-    if (gob.curStars == 0 || gob.lock) {
+    if (gob.curStars == 0 || gob.loaded) {
       return;
     }
     gob.load(gob.curStars);
