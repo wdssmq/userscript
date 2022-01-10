@@ -16,6 +16,7 @@
 /* jshint esversion:6 */
 (function () {
   "use strict";
+  const $ = window.$ || unsafeWindow.$;
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const _log = (...args) => console.log('[bilibili-helper]', ...args);
   const _warn = (...args) => console.warn('[bilibili-helper]', ...args);

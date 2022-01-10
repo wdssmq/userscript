@@ -11,8 +11,9 @@
 // @match        https://i.cnblogs.com/posts/edit
 // @grant        GM_getValue
 // @grant        GM_setValue
-// ==/UserScript==
 
+// ==/UserScript==
+/* jshint esversion:6 */
 (function () {
   "use strict";
   let $ = window.$ || unsafeWindow.$;

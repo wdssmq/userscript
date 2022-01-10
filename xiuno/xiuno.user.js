@@ -13,12 +13,12 @@
 // @match        https://bbs.zblogcn.com/*
 // @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
 // @require      https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.js
-// @grant        none
+// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 /* jshint esversion:6 */
 (function () {
   "use strict";
-  const $ = window.jQuery;
+  const $ = window.jQuery || unsafeWindow.jQuery;
   // console.log($);
   const $btnBad = $(` <a class="btn btn-primary">BAD</a>`);
   const strTip = `<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>`;
@@ -31,8 +31,8 @@
     let strCode = LZString.compressToBase64(str);
     um.setContent(strTip + `<p>#~~${strCode}~~#</p>`);
     console.log(LZString.decompressFromBase64(strCode));
-    //let strDeCode = LZString.decompressFromBase64(strCode);
-    //um.setContent(strCode + strDeCode);
+    // let strDeCode = LZString.decompressFromBase64(strCode);
+    // um.setContent(strCode + strDeCode);
   });
   if ($("input[name=update_reason]").length > 0) {
     $("#submit").after($btnBad);
@@ -68,6 +68,19 @@
       `<a class="text-grey ml-2" title="获取当前楼层链接" href="${curHref}#${pid}">「楼层地址」</a>`
     );
   });
+  // YML 获取
+  function fnGetAjax(strURL, strData, fnCallback) {
+    GM_xmlhttpRequest({
+      method: "GET",
+      data: strData,
+      url: strURL,
+      onload: function (responseDetail) {
+        if (responseDetail.status === 200) {
+          fnCallback(responseDetail.responseText, strURL);
+        }
+      },
+    });
+  }
   // 开发者申请
   const $h4 = $(".media-body h4");
   let title = $h4.text().trim();
@@ -112,6 +125,26 @@
       }
     );
     $(".pre-yml").text(`${styYML}`);
+    fnGetAjax(
+      "https://cdn.jsdelivr.net/gh/wdssmq/ReviewLog@main/2021.yml",
+      // "https://raw.githubusercontent.com/wdssmq/ReviewLog/main/2021.yml",
+      "",
+      function (resData, strURL) {
+        // console.log(resData);
+
+        // // yml2obj
+        // const oData = jsyaml.load(resData, "utf8");
+        // console.log(oData);
+
+        // 好像不解析直接判断就行；
+        if (resData.indexOf(location.href) > -1) {
+          $(".pre-yml").before(
+            `<p class="text-danger">已提交过 - <code>${strURL}</code></p>`
+          );
+          return;
+        }
+      }
+    );
   }
   // 工具函数
   function fnStrtr(
