@@ -147,6 +147,8 @@
   function fnOnScroll() {
     // 一屏能显示时直接触发一次
     if ($n(".list-entries > h2")) {
+      gob.curStars = $na("div.content a").length;
+      fnLaterControl();
       fnCountStarts();
     }
     // 滚动条滚动时触发
@@ -183,6 +185,7 @@
     // 星标变化计数；正数减少，负数增加
     const diff = gob.lstStars - gob.curStars;
     gob.diffStars += diff;
+    gob.diffStars = gob.diffStars >= 4 ? 0 : gob.diffStars;
     // 更新 localStorage 存储
     gob.lstStars = gob.curStars;
     gob.save();
