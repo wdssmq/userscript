@@ -4,6 +4,11 @@
 // @version      0.1
 // @author       沉冰浮水
 // @description  跳转到正确的链接
+// ----------------------------
+// @link     https://afdian.net/@wdssmq
+// @link     https://github.com/wdssmq/userscript
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// ----------------------------
 // @match        https://jump.bdimg.com/f?kw=*
 // @icon         https://www.google.com/s2/favicons?domain=bdimg.com
 // @grant        none
