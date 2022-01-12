@@ -230,6 +230,14 @@ url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
 
 --------
 
+name：「水水」链接跳转
+
+desc：跳转到正确的链接
+
+url：https://github.com/wdssmq/userscript/blob/master/other/UrlRedirect.user.js
+
+--------
+
 name：度盘接生成（QQ 群：189574683）
 
 desc：分享资源后生成带描述的分享文本或 html 代码。
