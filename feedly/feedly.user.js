@@ -162,16 +162,21 @@
     return false;
   }
 
+  // 收藏数 View
+  function fnViewStarts() {
+    const strText = `Read later（${gob.curStars} - ${gob.diffStars}）`;
+    $n("h1 #header-title").innerHTML = strText;
+    $n("h2.Heading").innerHTML = strText;
+    $n("#header-title").innerHTML = strText;
+  }
+
   // 星标计数
   function fnCountStarts() {
     console.log(location.href);
     if ("https://feedly.com/i/saved" == location.href) {
-      let intCount = $na("div.content a").length,
-        strText = `Read later（${intCount} - ${gob.diffStars}）`;
-      $n("h1 #header-title").innerHTML = strText;
-      $n("h2.Heading").innerHTML = strText;
-      $n("#header-title").innerHTML = strText;
+      const intCount = $na("div.content a").length;
       gob.curStars = intCount;
+      fnViewStarts();
     }
   }
 
