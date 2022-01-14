@@ -131,16 +131,12 @@
 
   // 加载完成后执行
   window.onload = async function () {
+    let endLoop = false;
     do {
-      fnOnScroll();
+      await sleep(3000);
       console.log("waiting…… fnOnScroll");
-      await sleep(3000);
-    } while (gob.curStars == 0);
-    do {
-      fnLaterControl();
-      console.log("waiting…… fnLaterControl");
-      await sleep(3000);
-    } while (gob.lstStars == 0);
+      endLoop = fnOnScroll();
+    } while (!endLoop);
   };
 
   // 星标计数触发和更新
@@ -155,6 +151,7 @@
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
       $n("#feedlyFrame").dataset.addEL = "done";
       $n("#feedlyFrame").addEventListener("scroll", fnCountStarts);
+      $n("#feedlyFrame").addEventListener("scroll", fnLaterControl);
       console.log("计数事件监听 - 启用成功");
       return true;
     }
