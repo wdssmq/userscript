@@ -102,6 +102,14 @@ url：https://github.com/wdssmq/userscript/blob/master/other/UrlRedirect.user.js
 
 --------
 
+name：「水水」typecho.in 链接提取
+
+desc：提取 typecho.in 分享的网址
+
+url：https://github.com/wdssmq/userscript/blob/master/other/typecho.in.user.js
+
+--------
+
 name：「GitHub」获取文件的 jsDelivr 地址
 
 desc：获取项目文件的 CDN 地址
