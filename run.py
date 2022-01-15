@@ -62,7 +62,10 @@ def fnReadJS(filePath):
 def fnGenScriptInfo(name, desc, dir, file):
     url = "https://github.com/wdssmq/userscript/blob/master/%s/%s" % (
         dir, file)
-    return "name：%s\n\ndesc：%s\n\nurl：%s\n\n" % (name, desc, url)
+    # https://cdn.jsdelivr.net/gh/wdssmq/userscript/other/typecho.in.user.js
+    # https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/other/typecho.in.user.js 1
+    cdn = "https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/%s/%s" % (dir, file)
+    return "name：%s\n\ndesc：%s\n\nurl：%s\n\ncdn：%s" % (name, desc, url, cdn)
 # 拼接脚本信息用于 ReadMe
 
 
