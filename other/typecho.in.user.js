@@ -10,8 +10,7 @@
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // ----------------------------
 // @match        https://typecho.in/*
-// @icon         https://www.google.com/s2/favicons?domain=typecho.in
-// @grant        none
+// @grant        GM_addStyle
 // ==/UserScript==
 
 /** jshint esversion:6 **/
@@ -25,6 +24,13 @@
     return document.querySelectorAll(e);
   }
 
+  GM_addStyle(`
+    a.link {
+      color: red;
+      padding-right: 13px;
+    }
+  `);
+
   const re = /https?:\/\/[^\s\n]+/g;
   const sText = $n(".container #content").innerHTML;
 
@@ -37,17 +43,10 @@
   for (const key in oMatch) {
     if (Object.hasOwnProperty.call(oMatch, key)) {
       const url = oMatch[key];
-      const $a = document.createElement("a");
-      $a.href = url;
-      $a.innerText = url;
-      $a.target = "_blank";
-      // $a.style.color = "#175199";
-      $a.style.color = "red";
+      const html = `<a class="link" title="${url}" href="${url}" target="_blank">${url}</a>`;
+
       $n(".container #content").style.marginTop = "10px";
-      $n(".container #content").parentNode.insertBefore(
-        $a,
-        $n(".container #content")
-      );
+      $n(".container #content").insertAdjacentHTML("beforebegin", html);
     }
   }
 })();
