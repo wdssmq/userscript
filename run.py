@@ -65,7 +65,7 @@ def fnGenScriptInfo(name, desc, dir, file):
     # https://cdn.jsdelivr.net/gh/wdssmq/userscript/other/typecho.in.user.js
     # https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/other/typecho.in.user.js 1
     cdn = "https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/%s/%s" % (dir, file)
-    return "name：%s\n\ndesc：%s\n\nurl：%s\n\ncdn：%s" % (name, desc, url, cdn)
+    return "name：%s\n\ndesc：%s\n\nurl：%s\n\ncdn：%s\n\n" % (name, desc, url, cdn)
 # 拼接脚本信息用于 ReadMe
 
 
