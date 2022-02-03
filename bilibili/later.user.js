@@ -5,6 +5,11 @@
 // @author       沉冰浮水
 // @description  将 B 站的稍后再看列表导出为.url 文件
 // @url          https://greasyfork.org/scripts/398415
+// ----------------------------
+// @link     https://afdian.net/@wdssmq
+// @link     https://github.com/wdssmq/userscript
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// ----------------------------
 // @include      https://www.bilibili.com/*
 // @include      https://t.bilibili.com/*
 // @include      https://manga.bilibili.com/account-center*
@@ -132,8 +137,12 @@
           return;
         }
         const uid = ((url) => {
-          // console.log(url.match(/\d+/));
-          return url.match(/\d+/)[0];
+          // _log(url.match(/\d+/));
+          if (url) {
+            return url.match(/\d+/)[0];
+          } else {
+            return "";
+          }
         })($("a.count-item[href^='//space']").attr("href"));
         _log("用户 uid", uid);
         $pick
@@ -143,12 +152,16 @@
       false
     );
   })();
+
+  // 点击指定元素复制内容
   function fnCopy(eTrig, content) {
     $n(eTrig).addEventListener("click", function (e) {
       GM_setClipboard(content);
       this.style.color = "gray";
     });
   }
+
+  // 构造 Bash Shell 脚本
   function fnMKShell(arrList) {
     const today = new Date(); //获得当前日期
     const year = today.getFullYear(); //获得年份
@@ -166,7 +179,7 @@
      */
     arrList.forEach(function (e, i) {
       const serial = i + 1;
-      // console.log(e);
+      // _log(e);
       const title = e.title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
       const href = e.href || e.url;
       // echo [InternetShortcut] > "*.url"
@@ -176,10 +189,12 @@
     });
     strRlt += "exit\n\n";
     // strRlt = strRlt.replace(/\/\/\//g, "//www.bilibili.com/");
-    //console.log(strRlt);
+    //_log(strRlt);
     return strRlt;
     //$("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
   }
+
+  // Ajax 封装
   function fnGetAjax(callback = function () { }) {
     $.ajax({
       url: "https://api.bilibili.com/x/v2/history/toview/web",
@@ -188,7 +203,7 @@
         withCredentials: true, // 这里设置了withCredentials
       },
       success: function (data) {
-        // console.log();
+        // _log();
         callback(data.data.list);
       },
       error: function (err) {
@@ -196,11 +211,12 @@
       },
     });
     // $.get("https://api.bilibili.com/x/v2/history/toview/web", function (data) {
-    //   console.log(data);
+    //   _log(data);
     // });
   }
+
+  // 导出稍后再看为 .lnk 文件
   (function () {
-    // 导出稍后再看
     if (/#\/list|#\/video/g.test(location.href)) {
       fnGetAjax(function (list) {
         const arrRlt = [];
@@ -210,7 +226,7 @@
             href: `https://www.bilibili.com/video/${item.bvid}`,
             bvid: item.bvid,
           });
-          console.log(item, index);
+          _log(item, index);
         });
         // 注册点击复制
         fnCopy("span.t", fnMKShell(arrRlt));
@@ -218,6 +234,8 @@
       return false;
     }
   })();
+
+  // 收藏夹导出为 .lnk 文件
   (function () {
     if (location.hash === "#/my-favourite") {
       let f = 0;
@@ -228,7 +246,7 @@
             return false;
           }
           let $magList = $na("div.text-info-section a:first-child");
-          console.log($magList);
+          _log($magList);
           if ($magList.length) {
             f = 1;
             fnCopy(
@@ -240,7 +258,6 @@
         },
         false
       );
-
       return false;
     }
   })();
@@ -259,7 +276,7 @@
       }
       const $curTime = $n(".bilibili-player-video-time-now");
       // _log("当前时间元素", $curTime);
-      console.log();
+      _log();
       if ($curTime && $curTime.innerHTML) {
         let strQurey = document.location.search;
         let matchRlt = strQurey.match(/t=(\d+)/);
@@ -294,7 +311,7 @@
     }
 
     let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
-    console.log(url);
+    _log(url);
     document.addEventListener(
       "mouseover",
       function (e) {
@@ -308,5 +325,5 @@
       },
       false
     );
-  })();
+  })(); // 时间轴书签
 })();
