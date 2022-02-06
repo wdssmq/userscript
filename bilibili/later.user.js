@@ -26,8 +26,8 @@
   "use strict";
   // 基础函数或变量
   const curUrl = window.location.href;
-  const $ = window.$ || unsafeWindow.$;
   const curDate = new Date();
+  const $ = window.$ || unsafeWindow.$;
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const _log = (...args) => console.log('[bilibili-helper]', ...args);
   const _warn = (...args) => console.warn('[bilibili-helper]', ...args);
