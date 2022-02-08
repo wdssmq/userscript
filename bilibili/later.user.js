@@ -5,17 +5,28 @@
 // @author       沉冰浮水
 // @description  将 B 站的稍后再看列表导出为.url 文件
 // @url          https://greasyfork.org/scripts/398415
+// ----------------------------
+// @link     https://afdian.net/@wdssmq
+// @link     https://github.com/wdssmq/userscript
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// ----------------------------
 // @include      https://www.bilibili.com/*
 // @include      https://t.bilibili.com/*
 // @include      https://manga.bilibili.com/account-center*
+// @include      https://account.bilibili.com/account/big/myPackage
 // @icon         https://www.bilibili.com/favicon.ico
 // @run-at       document-end
 // @grant        GM_setClipboard
+// @grant        GM_notification
+// @grant        GM.openInTab
 
 // ==/UserScript==
 /* jshint esversion:6 */
 (function () {
   "use strict";
+  // 基础函数或变量
+  const curUrl = window.location.href;
+  const curDate = new Date();
   const $ = window.$ || unsafeWindow.$;
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const _log = (...args) => console.log('[bilibili-helper]', ...args);
@@ -27,6 +38,91 @@
   function $na(e) {
     return document.querySelectorAll(e);
   }
+
+  // cookie 封装
+  const ckeObj = {
+    setItem: function (key, value) {
+      const Days = 137;
+      const exp = new Date();
+      exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+      document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
+    },
+    getItem: function (key, def = "") {
+      const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
+      const arr = document.cookie.match(reg);
+      if (arr) {
+        return arr[2];
+      }
+      return def;
+    }
+  };
+
+  // B 币领取提醒
+  (() => {
+    const ckeName = "bilibili-helper-bcoin-lstMonth";
+    const curMonth = curDate.getMonth() + 1;
+    const lstMonth = ckeObj.getItem(ckeName, 0);
+    const bcoinUrl = "https://account.bilibili.com/account/big/myPackage";
+
+    // 元素变化监听
+    const fnElChange = (el, fn = () => { }) => {
+      const observer = new MutationObserver((mutationRecord, mutationObserver) => {
+        _log('body attributes changed!!!'); // body attributes changed!!!
+        _log('mutationRecord = ', mutationRecord); // [MutationRecord]
+        _log('mutationObserver === observer', mutationObserver === observer); // true
+        fn(mutationRecord, mutationObserver);
+        mutationObserver.disconnect();
+      });
+      observer.observe(el, {
+        // attributes: false,
+        // attributeFilter: ["class"],
+        childList: true,
+        // characterData: false,
+        subtree: true,
+      });
+    }
+
+    // 通知事件封装
+    const notify = (title, body) => {
+      GM_notification({
+        title: title,
+        text: body,
+        timeout: 0,
+        onclick: () => {
+          // window.location.href = bcoinUrl;
+          GM.openInTab(bcoinUrl, false);
+        }
+      });
+    }
+
+    // 判断是否已经领取过
+    const fnCheckByDOM = () => {
+      const $bcoin = $n(".bcoin-wrapper");
+      _log("---");
+      // $bcoin && _log($bcoin.innerHTML);
+      if ($bcoin && $bcoin.innerText.includes("本月已领")) {
+        ckeObj.setItem(ckeName, curMonth);
+        return true;
+      } else {
+        fnElChange($n("#app"), fnCheckByDOM);
+      }
+      return false;
+    }
+
+    // _log($n("body").innerHTML);
+    // _log(lstMonth, curMonth);
+
+    // 对比 ls 数据
+    if (lstMonth != curMonth) {
+      _log(curUrl, bcoinUrl);
+      if (curUrl.indexOf(bcoinUrl) > -1) {
+        fnCheckByDOM();
+      } else {
+        notify("B 币领取提醒", "点击查看 B 币领取情况");
+      }
+    }
+  })();
+
   // 番剧链接改为我的追番
   (() => {
     document.addEventListener(
@@ -41,8 +137,12 @@
           return;
         }
         const uid = ((url) => {
-          // console.log(url.match(/\d+/));
-          return url.match(/\d+/)[0];
+          // _log(url.match(/\d+/));
+          if (url) {
+            return url.match(/\d+/)[0];
+          } else {
+            return "";
+          }
         })($("a.count-item[href^='//space']").attr("href"));
         _log("用户 uid", uid);
         $pick
@@ -52,12 +152,16 @@
       false
     );
   })();
+
+  // 点击指定元素复制内容
   function fnCopy(eTrig, content) {
     $n(eTrig).addEventListener("click", function (e) {
       GM_setClipboard(content);
       this.style.color = "gray";
     });
   }
+
+  // 构造 Bash Shell 脚本
   function fnMKShell(arrList) {
     const today = new Date(); //获得当前日期
     const year = today.getFullYear(); //获得年份
@@ -75,7 +179,7 @@
      */
     arrList.forEach(function (e, i) {
       const serial = i + 1;
-      // console.log(e);
+      // _log(e);
       const title = e.title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
       const href = e.href || e.url;
       // echo [InternetShortcut] > "*.url"
@@ -85,10 +189,12 @@
     });
     strRlt += "exit\n\n";
     // strRlt = strRlt.replace(/\/\/\//g, "//www.bilibili.com/");
-    //console.log(strRlt);
+    //_log(strRlt);
     return strRlt;
     //$("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
   }
+
+  // Ajax 封装
   function fnGetAjax(callback = function () { }) {
     $.ajax({
       url: "https://api.bilibili.com/x/v2/history/toview/web",
@@ -97,7 +203,7 @@
         withCredentials: true, // 这里设置了withCredentials
       },
       success: function (data) {
-        // console.log();
+        // _log();
         callback(data.data.list);
       },
       error: function (err) {
@@ -105,11 +211,12 @@
       },
     });
     // $.get("https://api.bilibili.com/x/v2/history/toview/web", function (data) {
-    //   console.log(data);
+    //   _log(data);
     // });
   }
+
+  // 导出稍后再看为 .lnk 文件
   (function () {
-    // 导出稍后再看
     if (/#\/list|#\/video/g.test(location.href)) {
       fnGetAjax(function (list) {
         const arrRlt = [];
@@ -119,7 +226,7 @@
             href: `https://www.bilibili.com/video/${item.bvid}`,
             bvid: item.bvid,
           });
-          console.log(item, index);
+          _log(item, index);
         });
         // 注册点击复制
         fnCopy("span.t", fnMKShell(arrRlt));
@@ -127,6 +234,8 @@
       return false;
     }
   })();
+
+  // 收藏夹导出为 .lnk 文件
   (function () {
     if (location.hash === "#/my-favourite") {
       let f = 0;
@@ -137,7 +246,7 @@
             return false;
           }
           let $magList = $na("div.text-info-section a:first-child");
-          console.log($magList);
+          _log($magList);
           if ($magList.length) {
             f = 1;
             fnCopy(
@@ -149,7 +258,6 @@
         },
         false
       );
-
       return false;
     }
   })();
@@ -168,7 +276,7 @@
       }
       const $curTime = $n(".bilibili-player-video-time-now");
       // _log("当前时间元素", $curTime);
-      console.log();
+      _log();
       if ($curTime && $curTime.innerHTML) {
         let strQurey = document.location.search;
         let matchRlt = strQurey.match(/t=(\d+)/);
@@ -203,7 +311,7 @@
     }
 
     let url = document.location.href.replace("?tdsourcetag=s_pctim_aiomsg", "");
-    console.log(url);
+    _log(url);
     document.addEventListener(
       "mouseover",
       function (e) {
@@ -217,5 +325,5 @@
       },
       false
     );
-  })();
+  })(); // 时间轴书签
 })();

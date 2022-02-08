@@ -45,10 +45,14 @@
   };
 
   const gob = {
+    // 非 ls 字段
     loaded: false,
     curStars: 0,
+    // ls 字段
+    resetLocked: true,
     lstStars: 0,
     diffStars: 0,
+    // 读取
     load: function (lstDef = 0) {
       if (this.loaded) {
         return;
@@ -56,10 +60,13 @@
       this.loaded = true;
       this.lstStars = lsObj.getItem("lstStars", lstDef);
       this.diffStars = lsObj.getItem("diffStars", 0);
+      this.resetLocked = lsObj.getItem("resetLocked", true);
     },
+    // 保存
     save: function () {
       lsObj.setItem("lstStars", this.lstStars);
       lsObj.setItem("diffStars", this.diffStars);
+      lsObj.setItem("resetLocked", this.resetLocked);
     },
   };
 
@@ -187,8 +194,12 @@
     // 星标变化计数；正数减少，负数增加
     const diff = gob.lstStars - gob.curStars;
     gob.diffStars += diff;
-    gob.diffStars = gob.diffStars >= 4 ? 0 : gob.diffStars;
+    // 解锁重置判断
+    if (!gob.resetLocked) {
+      gob.diffStars = gob.diffStars < 4 ? 0 : gob.diffStars;
+    }
     // 更新 localStorage 存储
+    gob.resetLocked = gob.diffStars >= 7 ? false : true;
     gob.lstStars = gob.curStars;
     gob.save();
   }

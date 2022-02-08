@@ -24,21 +24,25 @@
   function $na(e) {
     return document.querySelectorAll(e);
   }
+  // 移除指定元素
   function fnRemove(e) {
     const $e = typeof e === 'string' ? $n(e) : e;
     $e.parentNode.removeChild($e);
   }
+  // 添加子节点到指定元素
   function fnAppendChild(e, $ne) {
     const $e = typeof e === 'string' ? $n(e) : e;
     $e.appendChild($ne);
   }
+  // 添加元素指定元素前
   function fnAppendBefore(e, $ne) {
     const $e = typeof e === 'string' ? $n(e) : e;
-    $e.parentNode.insertBefore($ne, $e);//在box之前添加元素;
+    $e.parentNode.insertBefore($ne, $e);
   }
+  // 添加元素指定元素后
   function fnAppendAfter(e, $ne) {
     const $e = typeof e === 'string' ? $n(e) : e;
-    $e.parentNode.insertBefore($ne, $e.nextSibling);//在box之前添加元素;
+    $e.parentNode.insertBefore($ne, $e.nextSibling);
   }
   function fnGetCDNUrl(url) {
     const arrMap = [
