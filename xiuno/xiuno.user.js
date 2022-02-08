@@ -171,16 +171,20 @@
   if (typeof UM === "undefined") {
     return;
   }
-  // 调用函数封装
+
+  // 引用标签插入封装
   function fnBlockQute() {
-    umObj = UM.getEditor("message");
-    umObj.focus(true);
+    const umObj = UM.getEditor("message");
+    if (!umObj.isFocus()) {
+      umObj.focus(true);
+    }
     umObj.execCommand(
       "insertHtml",
       `<blockquote class="blockquote"><p><br></p>
     </blockquote><p><br></p>`
     );
   }
+
   // 添加引用按钮
   $("head").append('<style>.edui-icon-blockquote:before{content:"\\f10d";}');
   (() => {
