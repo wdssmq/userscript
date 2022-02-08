@@ -193,4 +193,29 @@
     });
     $(".edui-btn-name-insertcode").after($btn);
   })();
+
+  // 自动排版函数封装
+  function fnAutoFormat() {
+    const umObj = UM.getEditor("message");
+    let strHTML = umObj.getContent();
+    strHTML = strHTML.replace(
+      /<blockquote>/g,
+      '<blockquote class="blockquote">'
+    );
+    // 第二个参数为 true 表示追加；
+    umObj.setContent(strHTML, false);
+  }
+
+  // 添加自动排版按钮
+  $("head").append('<style>.edui-btn-auto-format:before{content:"fix";}');
+  (() => {
+    const $btn = $.eduibutton({
+      icon: "auto-format",
+      click: function () {
+        fnAutoFormat();
+      },
+      title: "自动排版",
+    });
+    $(".edui-btn-name-insertcode").after($btn);
+  })();
 })();
