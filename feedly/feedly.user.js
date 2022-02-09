@@ -51,7 +51,7 @@
     // ls 字段
     resetLocked: true,
     lstStars: 0,
-    diffStars: 0,
+    diffStars: null,
     // 读取
     load: function (lstDef = 0) {
       if (this.loaded) {
@@ -59,7 +59,9 @@
       }
       this.loaded = true;
       this.lstStars = lsObj.getItem("lstStars", lstDef);
-      this.diffStars = lsObj.getItem("diffStars", 0);
+      // decrease 减少
+      // increase 增加
+      this.diffStars = lsObj.getItem("diffStars", { decr: 0, incr: 0 });
       this.resetLocked = lsObj.getItem("resetLocked", true);
     },
     // 保存
@@ -168,7 +170,7 @@
 
   // 收藏数 View
   function fnViewStarts() {
-    const strText = `Read later（${gob.curStars} - ${gob.diffStars}）`;
+    const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）`;
     $n("h1 #header-title").innerHTML = strText;
     $n("h2.Heading").innerHTML = strText;
     $n("#header-title").innerHTML = strText;
@@ -190,16 +192,35 @@
       return;
     }
     gob.load(gob.curStars);
+
     console.log(gob);
-    // 星标变化计数；正数减少，负数增加
-    const diff = gob.lstStars - gob.curStars;
-    gob.diffStars += diff;
+
+    // 星标变化计数
+    const diff = gob.curStars - gob.lstStars;
+
+    // 记录相等时不触发
+    if (diff === 0) {
+      return;
+    }
+
+    // 大于上一次记录
+    if (diff > 0) {
+      // 新增星标计数
+      gob.diffStars.incr += Math.abs(diff);
+    } else {
+      // 已读星标计数
+      gob.diffStars.decr += Math.abs(diff);
+    }
+
     // 解锁重置判断
     if (!gob.resetLocked) {
-      gob.diffStars = gob.diffStars < 4 ? 0 : gob.diffStars;
+      gob.diffStars.decr = 0;
+      gob.diffStars.incr = 0;
     }
+
     // 更新 localStorage 存储
-    gob.resetLocked = gob.diffStars >= 7 ? false : true;
+    gob.resetLocked = gob.diffStars.decr - gob.diffStars.incr >= 4 ? false : true;
+    // gob.resetLocked = gob.diffStars.decr >= 7 ? false : true;
     gob.lstStars = gob.curStars;
     gob.save();
   }
