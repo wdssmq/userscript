@@ -66,13 +66,14 @@
       // increase 增加
       this.diffStars = lsObj.getItem("diffStars", this.diffStars);
       this.resetLocked = lsObj.getItem("resetLocked", true);
+      _log("load", gob);
     },
     // 保存
     save: function () {
-      _log("save");
       lsObj.setItem("lstStars", this.lstStars);
       lsObj.setItem("diffStars", this.diffStars);
       lsObj.setItem("resetLocked", this.resetLocked);
+      _log("save", gob);
     },
   };
 
@@ -143,52 +144,40 @@
   });
 
   // 加载完成后执行
-  window.onload = async function () {
-    let endLoop = false;
-    do {
-      await sleep(3000);
-      console.log("waiting…… fnOnScroll");
-      endLoop = fnOnScroll();
-    } while (!endLoop);
+  window.onload = function () {
+    fnOnScroll();
   };
 
   // 星标计数触发和更新
-  function fnOnScroll() {
+  async function fnOnScroll() {
+    await sleep(3000);
+    if ("https://feedly.com/i/saved" !== location.href) {
+      return;
+    }
     // 一屏能显示时直接触发一次
     if ($n(".list-entries > h2")) {
       gob.curStars = $na("div.content a").length;
       fnLaterControl();
-      fnCountStarts();
+      fnViewStarts();
+      _log("fnOnScroll", "星标计数触发");
+    } else {
+      fnOnScroll();
+      _log("fnOnScroll", "页面加载中");
     }
     // 滚动条滚动时触发
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
       $n("#feedlyFrame").dataset.addEL = "done";
-      $n("#feedlyFrame").addEventListener("scroll", fnCountStarts);
-      $n("#feedlyFrame").addEventListener("scroll", fnLaterControl);
-      console.log("计数事件监听 - 启用成功");
-      return true;
+      $n("#feedlyFrame").addEventListener("scroll", fnViewStarts);
+      _log("fnOnScroll", "列表滚动监听");
     }
-    console.log("计数事件监听 - 页面加载中");
-    return false;
   }
 
   // 收藏数 View
   function fnViewStarts() {
-    _log(gob);
     const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）`;
     $n("h1 #header-title").innerHTML = strText;
     $n("h2.Heading").innerHTML = strText;
     $n("#header-title").innerHTML = strText;
-  }
-
-  // 星标计数
-  function fnCountStarts() {
-    console.log(location.href);
-    if ("https://feedly.com/i/saved" == location.href) {
-      const intCount = $na("div.content a").length;
-      gob.curStars = intCount;
-      fnViewStarts();
-    }
   }
 
   // 星标变动控制
@@ -197,8 +186,6 @@
       return;
     }
     gob.load();
-
-    console.log(gob);
 
     // 星标变化计数
     const diff = gob.curStars - gob.lstStars;
@@ -233,7 +220,7 @@
 
   // 自动标记已读
   let opt1 = 0;
-  addEvent($n("#box"), "mouseup", function (event) {
+  addEvent($n("#box"), "mouseover", function (event) {
     if (
       event.target.className === "link entry__title" &&
       event.target.nodeName === "A"
