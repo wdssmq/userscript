@@ -56,12 +56,12 @@
     lstStars: 0,
     diffStars: { decr: 0, incr: 0 },
     // 读取
-    load: function (lstDef = 0) {
+    load: function () {
       if (this.loaded) {
         return;
       }
       this.loaded = true;
-      this.lstStars = lsObj.getItem("lstStars", lstDef);
+      this.lstStars = lsObj.getItem("lstStars", 0);
       // decrease 减少
       // increase 增加
       this.diffStars = lsObj.getItem("diffStars", this.diffStars);
@@ -196,7 +196,7 @@
     if (gob.curStars == 0 || gob.loaded) {
       return;
     }
-    gob.load(gob.curStars);
+    gob.load();
 
     console.log(gob);
 
