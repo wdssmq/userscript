@@ -14,8 +14,9 @@
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*
 // @grant       none
+
 // ==/UserScript==
-/*jshint esversion:6 */
+/* jshint esversion:6 */
 (function () {
   if (!window.jQuery) {
     return false;
