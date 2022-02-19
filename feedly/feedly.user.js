@@ -29,6 +29,9 @@
     return element.addEventListener(evnt, funct, false);
   }
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const _log = (...args) => console.log("[feedly-helper]", ...args);
+  const _warn = (...args) => console.warn("[feedly-helper]", ...args);
+  const _error = (...args) => console.error("[feedly-helper]", ...args);
 
   // localStorage 封装
   const lsObj = {
@@ -51,7 +54,7 @@
     // ls 字段
     resetLocked: true,
     lstStars: 0,
-    diffStars: null,
+    diffStars: { decr: 0, incr: 0 },
     // 读取
     load: function (lstDef = 0) {
       if (this.loaded) {
@@ -61,11 +64,12 @@
       this.lstStars = lsObj.getItem("lstStars", lstDef);
       // decrease 减少
       // increase 增加
-      this.diffStars = lsObj.getItem("diffStars", { decr: 0, incr: 0 });
+      this.diffStars = lsObj.getItem("diffStars", this.diffStars);
       this.resetLocked = lsObj.getItem("resetLocked", true);
     },
     // 保存
     save: function () {
+      _log("save");
       lsObj.setItem("lstStars", this.lstStars);
       lsObj.setItem("diffStars", this.diffStars);
       lsObj.setItem("resetLocked", this.resetLocked);
@@ -170,6 +174,7 @@
 
   // 收藏数 View
   function fnViewStarts() {
+    _log(gob);
     const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）`;
     $n("h1 #header-title").innerHTML = strText;
     $n("h2.Heading").innerHTML = strText;
@@ -219,7 +224,8 @@
     }
 
     // 更新 localStorage 存储
-    gob.resetLocked = gob.diffStars.decr - gob.diffStars.incr >= 4 ? false : true;
+    gob.resetLocked =
+      gob.diffStars.decr - gob.diffStars.incr >= 4 ? false : true;
     // gob.resetLocked = gob.diffStars.decr >= 7 ? false : true;
     gob.lstStars = gob.curStars;
     gob.save();
