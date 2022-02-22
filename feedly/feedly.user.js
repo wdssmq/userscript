@@ -162,6 +162,7 @@
       gob.curStars = $na("div.content a").length;
       fnLaterControl();
       fnViewStarts();
+      fnColorStars();
       _log("fnOnScroll", "星标计数触发");
     } else {
       fnOnScroll();
@@ -219,6 +220,25 @@
     // gob.resetLocked = gob.diffStars.decr >= 7 ? false : true;
     gob.lstStars = gob.curStars;
     gob.save();
+  }
+
+  // 按规则给星标条目着色
+  function fnColorStars() {
+    const curTime = Math.floor(new Date().getTime() / 1000);
+    // const curDays = Math.floor(curTime / 86400);
+    const cur4Minutes = Math.floor(curTime / 240);
+    // _log("fnColorStars", curTime, cur4Minutes);
+    const $stars = $na("div.content a");
+    [].forEach.call($stars, function ($e, i) {
+      // _log("fnColorStars", $e, i);
+      // _log("fnColorStars", "==============================");
+      const href = $e.href;
+      const hash = parseInt(href.replace(/\D/g, ""));
+      // _log("fnColorStars", href, hash);
+      if ((hash + cur4Minutes) % 4 === 0) {
+        $e.parentNode.parentNode.style.backgroundColor = "#f0f0f0";
+      }
+    });
   }
 
   // 自动标记已读
