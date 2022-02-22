@@ -146,14 +146,17 @@
   // 加载完成后执行
   window.onload = function () {
     fnOnScroll();
+    $n("#box").addEventListener("mouseover", fnOnScroll, false);
   };
 
   // 星标计数触发和更新
   async function fnOnScroll() {
     await sleep(3000);
+    // 判断页面地址
     if ("https://feedly.com/i/saved" !== location.href) {
       return;
     }
+    $n("#box").removeEventListener("mouseover", fnOnScroll, false);
     // 一屏能显示时直接触发一次
     if ($n(".list-entries > h2")) {
       gob.curStars = $na("div.content a").length;
