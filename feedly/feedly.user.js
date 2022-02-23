@@ -52,7 +52,7 @@
     loaded: false,
     curStars: 0,
     // ls 字段
-    resetLocked: true,
+    bolReset: false,
     lstStars: 0,
     diffStars: { decr: 0, incr: 0 },
     // 读取
@@ -65,7 +65,7 @@
       // decrease 减少
       // increase 增加
       this.diffStars = lsObj.getItem("diffStars", this.diffStars);
-      this.resetLocked = lsObj.getItem("resetLocked", true);
+      this.bolReset = lsObj.getItem("bolReset", false);
       _log("load", gob);
     },
     // 保存
@@ -195,13 +195,14 @@
     }
     gob.load();
 
+    // 解锁重置判断
+    if (gob.bolReset) {
+      gob.diffStars.decr = 0;
+      gob.diffStars.incr = gob.curStars;
+    }
+
     // 星标变化计数
     const diff = gob.curStars - gob.lstStars;
-
-    // 记录相等时不触发
-    if (diff === 0) {
-      return;
-    }
 
     // 大于上一次记录
     if (diff > 0) {
@@ -212,18 +213,30 @@
       gob.diffStars.decr += Math.abs(diff);
     }
 
-    // 解锁重置判断
-    if (!gob.resetLocked) {
-      gob.diffStars.decr = 0;
-      gob.diffStars.incr = 0;
-    }
+    // 记录变量原始值
+    const strReset = gob.bolReset.toString();
+
+    // _log("fnLaterControl", strReset);
+
+    gob.bolReset = ((iRead, iNums) => {
+      if (iRead < 17) {
+        return false;
+      }
+      _log("fnLaterControl", iNums, iNums % 4);
+      if (iNums % 4 !== 0) {
+        $n(".list-entries").style.backgroundColor = "#ccc";
+        return false;
+      } else {
+        return true;
+      }
+    })(gob.diffStars.decr, cur4Hours);
+
+    gob.lstStars = gob.curStars;
 
     // 更新 localStorage 存储
-    gob.resetLocked =
-      gob.diffStars.decr - gob.diffStars.incr >= 4 ? false : true;
-    // gob.resetLocked = gob.diffStars.decr >= 7 ? false : true;
-    gob.lstStars = gob.curStars;
-    gob.save();
+    if (diff !== 0 || strReset !== gob.bolReset.toString()) {
+      gob.save();
+    }
   }
 
   // 按规则给星标条目着色
