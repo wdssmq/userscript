@@ -235,8 +235,11 @@
       const href = $e.href;
       const hash = parseInt(href.replace(/\D/g, ""));
       // _log("fnColorStars", href, hash);
-      if ((hash + cur4Minutes) % 4 === 0) {
-        $e.parentNode.parentNode.style.backgroundColor = "#f0f0f0";
+      const intNum = parseInt(hash + cur4Minutes);
+      // const intNum = parseInt(i + cur4Minutes);
+
+      if (intNum % 4 === 0) {
+        $e.parentNode.parentNode.style.backgroundColor = "#ddd";
       }
     });
   }
