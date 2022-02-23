@@ -145,8 +145,8 @@
 
   // 加载完成后执行
   window.onload = function () {
-    fnOnScroll();
     $n("#box").addEventListener("mouseover", fnOnScroll, false);
+    fnOnScroll();
   };
 
   // 星标计数触发和更新
@@ -161,7 +161,7 @@
     if ($n(".list-entries > h2")) {
       gob.curStars = $na("div.content a").length;
       fnLaterControl();
-      fnViewStarts();
+      fnViewStars();
       fnColorStars();
       _log("fnOnScroll", "星标计数触发");
     } else {
@@ -171,13 +171,13 @@
     // 滚动条滚动时触发
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
       $n("#feedlyFrame").dataset.addEL = "done";
-      $n("#feedlyFrame").addEventListener("scroll", fnViewStarts);
+      $n("#feedlyFrame").addEventListener("scroll", fnViewStars);
       _log("fnOnScroll", "列表滚动监听");
     }
   }
 
   // 收藏数 View
-  function fnViewStarts() {
+  function fnViewStars() {
     const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）`;
     $n("h1 #header-title").innerHTML = strText;
     $n("h2.Heading").innerHTML = strText;
