@@ -156,8 +156,8 @@
     if ("https://feedly.com/i/saved" !== location.href) {
       return;
     }
-    $n("#box").removeEventListener("mouseover", fnOnScroll, false);
-    // 一屏能显示时直接触发一次
+    // $n("#box").removeEventListener("mouseover", fnOnScroll, false);
+    // 全部条目加载后执行
     if ($n(".list-entries > h2")) {
       gob.curStars = $na("div.content a").length;
       fnLaterControl();
@@ -182,6 +182,9 @@
     $n("h1 #header-title").innerHTML = strText;
     $n("h2.Heading").innerHTML = strText;
     $n("#header-title").innerHTML = strText;
+    if (gob.diffStars.decr >= 17 && cur4Hours % 4 !== 0) {
+      $n(".list-entries").style.backgroundColor = "#ccc";
+    }
   }
 
   const curTime = Math.floor(new Date().getTime() / 1000);
@@ -190,7 +193,7 @@
 
   // 星标变动控制
   function fnLaterControl() {
-    if (gob.curStars == 0 || gob.loaded) {
+    if (gob.loaded) {
       return;
     }
     gob.load();
@@ -219,16 +222,10 @@
     // _log("fnLaterControl", strReset);
 
     gob.bolReset = ((iRead, iNums) => {
-      if (iRead < 17) {
-        return false;
-      }
-      _log("fnLaterControl", iNums, iNums % 4);
-      if (iNums % 4 !== 0) {
-        $n(".list-entries").style.backgroundColor = "#ccc";
-        return false;
-      } else {
+      if (iRead >= 17 && iNums % 4 === 0) {
         return true;
       }
+      return false;
     })(gob.diffStars.decr, cur4Hours);
 
     gob.lstStars = gob.curStars;
