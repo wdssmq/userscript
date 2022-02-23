@@ -104,10 +104,10 @@
 
   // 星标文章导出为 *.url 文件
   function fnMKShell($list) {
-    const today = new Date(); //获得当前日期
-    const year = today.getFullYear(); //获得年份
-    const month = today.getMonth() + 1; //此方法获得的月份是从0---11，所以要加1才是当前月份
-    const day = today.getDate(); //获得当前日期
+    const today = new Date(); // 获得当前日期
+    const year = today.getFullYear(); // 获得年份
+    const month = today.getMonth() + 1; // 此方法获得的月份是从0---11，所以要加1才是当前月份
+    const day = today.getDate(); // 获得当前日期
     const arrDate = [year, month, day];
     let strRlt =
       'if [ ! -d "foldername" ]; then\n' +
@@ -227,16 +227,23 @@
     const curTime = Math.floor(new Date().getTime() / 1000);
     // const curDays = Math.floor(curTime / 86400);
     const cur4Minutes = Math.floor(curTime / 240);
+
     // _log("fnColorStars", curTime, cur4Minutes);
+
     const $stars = $na("div.content a");
     [].forEach.call($stars, function ($e, i) {
       // _log("fnColorStars", $e, i);
       // _log("fnColorStars", "==============================");
+
       const href = $e.href;
       const hash = parseInt(href.replace(/\D/g, ""));
+
       // _log("fnColorStars", href, hash);
+
       const intNum = parseInt(hash + cur4Minutes);
       // const intNum = parseInt(i + cur4Minutes);
+
+      // _log("fnColorStars", intNum, intNum % 4);
 
       if (intNum % 4 === 0) {
         $e.parentNode.parentNode.style.backgroundColor = "#ddd";
@@ -257,7 +264,7 @@
       );
       if ($btn) {
         _log(event.button, "自动标记已读");
-      $btn.click();
+        $btn.click();
       }
       if (event.button !== 1 && opt1) {
         GM_openInTab(event.target.href, true);
