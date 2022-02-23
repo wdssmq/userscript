@@ -246,20 +246,19 @@
 
   // 自动标记已读
   let opt1 = 0;
-  addEvent($n("#box"), "mouseover", function (event) {
+  addEvent($n("#box"), "mouseup", function (event) {
     if (
       event.target.className === "link entry__title" &&
       event.target.nodeName === "A"
     ) {
-      console.log(event.target);
+      _log(event.target);
       const $btn = event.target.parentNode.querySelector(
         ".EntryMarkAsReadButton"
       );
-      // if ($btn.title === "Mark as read") {
-      console.log($btn.title);
-      console.log("自动标记已读");
+      if ($btn) {
+        _log(event.button, "自动标记已读");
       $btn.click();
-      // }
+      }
       if (event.button !== 1 && opt1) {
         GM_openInTab(event.target.href, true);
       }
