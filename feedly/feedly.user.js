@@ -184,6 +184,10 @@
     $n("#header-title").innerHTML = strText;
   }
 
+  const curTime = Math.floor(new Date().getTime() / 1000);
+  const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
+  const cur4Minutes = Math.floor(curTime / 240);
+
   // 星标变动控制
   function fnLaterControl() {
     if (gob.curStars == 0 || gob.loaded) {
@@ -224,10 +228,6 @@
 
   // 按规则给星标条目着色
   function fnColorStars() {
-    const curTime = Math.floor(new Date().getTime() / 1000);
-    // const curDays = Math.floor(curTime / 86400);
-    const cur4Minutes = Math.floor(curTime / 240);
-
     // _log("fnColorStars", curTime, cur4Minutes);
 
     const $stars = $na("div.content a");
