@@ -182,14 +182,27 @@
     $n("h1 #header-title").innerHTML = strText;
     $n("h2.Heading").innerHTML = strText;
     $n("#header-title").innerHTML = strText;
-    if (gob.diffStars.decr >= 17 && cur4Hours % 4 !== 0) {
+    if (fnCheckControl(gob.diffStars.decr) === "lock") {
       $n(".list-entries").style.backgroundColor = "#ccc";
     }
   }
 
   const curTime = Math.floor(new Date().getTime() / 1000);
-  const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
+  const curHours = Math.floor(curTime / 3600);
+  // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
   const cur4Minutes = Math.floor(curTime / 240);
+
+  const fnCheckControl = (iRead) => {
+    const iTime = curHours;
+    if (iRead < 17) {
+      return "default";
+    }
+    if (iTime % 4 === 0) {
+      return "reset";
+    } else {
+      return "lock";
+    }
+  };
 
   // 星标变动控制
   function fnLaterControl() {
@@ -221,12 +234,12 @@
 
     // _log("fnLaterControl", strReset);
 
-    gob.bolReset = ((iRead, iNums) => {
-      if (iRead >= 17 && iNums % 4 === 0) {
+    gob.bolReset = ((iRead) => {
+      if (fnCheckControl(iRead) === "reset") {
         return true;
       }
       return false;
-    })(gob.diffStars.decr, cur4Hours);
+    })(gob.diffStars.decr);
 
     gob.lstStars = gob.curStars;
 
