@@ -178,13 +178,17 @@
 
   // 收藏数 View
   function fnViewStars() {
-    const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）`;
+    const objTime = {
+      time: 0,
+      rem: 0,
+    };
+    if (fnCheckControl(gob.diffStars.decr, objTime) === "lock") {
+      $n(".list-entries").style.backgroundColor = "#ccc";
+    }
+    const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）（${objTime.time} - ${objTime.rem}）`;
     $n("h1 #header-title").innerHTML = strText;
     $n("h2.Heading").innerHTML = strText;
     $n("#header-title").innerHTML = strText;
-    if (fnCheckControl(gob.diffStars.decr) === "lock") {
-      $n(".list-entries").style.backgroundColor = "#ccc";
-    }
   }
 
   const curTime = Math.floor(new Date().getTime() / 1000);
@@ -192,11 +196,13 @@
   // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
   const cur4Minutes = Math.floor(curTime / 240);
 
-  const fnCheckControl = (iRead) => {
+  const fnCheckControl = (iRead, objSec = {}) => {
     const iTime = curHours;
+    objSec.time = iTime;
     if (iRead < 17) {
       return "default";
     }
+    objSec.rem = iTime % 4;
     if (iTime % 4 === 0) {
       return "reset";
     } else {
