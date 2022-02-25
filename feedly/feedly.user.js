@@ -72,7 +72,7 @@
     save: function () {
       lsObj.setItem("lstStars", this.lstStars);
       lsObj.setItem("diffStars", this.diffStars);
-      lsObj.setItem("resetLocked", this.resetLocked);
+      lsObj.setItem("bolReset", this.bolReset);
       _log("save", gob);
     },
   };
