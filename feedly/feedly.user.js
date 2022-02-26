@@ -19,6 +19,10 @@
 /* jshint esversion: 6 */
 (function () {
   "use strict";
+  // 基础函数或变量
+  const curUrl = window.location.href;
+  const curDate = new Date();
+  // const $ = window.$ || unsafeWindow.$;
   function $n(e) {
     return document.querySelector(e);
   }
@@ -93,7 +97,7 @@
       // 拿到解码后的订阅源地址
       const curUrl = ((url) => {
         return url.replace("https://feedly.com/i/subscription/feed/", "");
-      })(decodeURIComponent(location.href));
+      })(decodeURIComponent(curUrl));
       // 输出到页面中
       $n("#feedlyPageFX h2").insertAdjacentHTML(
         "beforeend",
@@ -153,7 +157,7 @@
   async function fnOnScroll() {
     await sleep(3000);
     // 判断页面地址
-    if ("https://feedly.com/i/saved" !== location.href) {
+    if ("https://feedly.com/i/saved" !== curUrl) {
       return;
     }
     // $n("#box").removeEventListener("mouseover", fnOnScroll, false);
@@ -191,7 +195,7 @@
     $n("#header-title").innerHTML = strText;
   }
 
-  const curTime = Math.floor(new Date().getTime() / 1000);
+  const curTime = Math.floor(curDate.getTime() / 1000);
   const curHours = Math.floor(curTime / 3600);
   // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
   const cur4Minutes = Math.floor(curTime / 240);
