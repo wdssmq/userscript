@@ -101,9 +101,9 @@
 
   // 拿回订阅源地址
   // 绑定监听事件到 div#box 上
-  addEvent($n("#box"), "mouseup", function (event) {
+  $n("#box").addEventListener("mouseup", function (event) {
     // 输出触发事件的元素
-    console.log(event.target);
+    // _log("105",event.target);
     // 根据内容判断是否执行相应操作
     const elText = event.target.innerHTML;
     if (
@@ -122,7 +122,7 @@
         `<div class="sub">${curUrl}</div>`
       );
     }
-  });
+  }, false);
 
   // 星标文章导出为 *.url 文件
   function fnMKShell($list) {
@@ -156,14 +156,14 @@
     return strRlt;
     //$n("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
   }
-  addEvent($n("#box"), "mouseup", function (event) {
+  $n("#box").addEventListener("mouseup", function (event) {
     if (event.target.innerHTML.indexOf("Read later") > -1) {
       const $el = event.target;
       console.log($el);
       fnOnScroll();
       GM_setClipboard(fnMKShell($na("div.content a")));
     }
-  });
+  }, false);
 
   // 加载完成后执行
   window.onload = function () {
