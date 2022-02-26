@@ -23,19 +23,37 @@
   const curUrl = window.location.href;
   const curDate = new Date();
   // const $ = window.$ || unsafeWindow.$;
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const _log = (...args) => console.log("[Feedly]\n", ...args);
+  const _warn = (...args) => console.warn("[Feedly]\n", ...args);
+  const _error = (...args) => console.error("[Feedly]\n", ...args);
   function $n(e) {
     return document.querySelector(e);
   }
   function $na(e) {
     return document.querySelectorAll(e);
   }
-  function addEvent(element, evnt, funct) {
-    return element.addEventListener(evnt, funct, false);
+
+  // 附加函数
+  function fnRmovoDOM(el) {
+    el.parentNode.removeChild(el);
   }
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const _log = (...args) => console.log("[feedly-helper]", ...args);
-  const _warn = (...args) => console.warn("[feedly-helper]", ...args);
-  const _error = (...args) => console.error("[feedly-helper]", ...args);
+  function fnFindDomUp(el, selector, up = 1) {
+    // _log("fnFindDomUp", el, selector, up);
+    const elParent = el.parentNode;
+    if (selector.indexOf(".") == 0 && elParent.className.indexOf(selector.split(".")[1]) > -1) {
+      return elParent;
+    }
+    const elFind = elParent.parentNode.querySelector(selector);
+    if (elFind) {
+      return elFind;
+    }
+    if (up > 1) {
+      return fnFindDomUp(elParent, selector, up - 1);
+    } else {
+      return null;
+    }
+  }
 
   // localStorage 封装
   const lsObj = {
@@ -285,25 +303,37 @@
   }
 
   // 自动标记已读
-  let opt1 = 0;
-  addEvent($n("#box"), "mouseup", function (event) {
-    if (
-      event.target.className === "link entry__title" &&
-      event.target.nodeName === "A"
-    ) {
-      _log(event.target);
-      const $btn = event.target.parentNode.querySelector(
-        ".EntryMarkAsReadButton"
-      );
-      if ($btn) {
-        _log(event.button, "自动标记已读");
-        $btn.click();
-      }
-      if (event.button !== 1 && opt1) {
-        GM_openInTab(event.target.href, true);
-      }
+  (() => {
+    if (!$n("#box") || $n("#box").dataset.AutoMark === "bind") {
+      return;
     }
-  });
+    $n("#box").dataset.AutoMark = "bind";
+    $n("#box").addEventListener("mouseup", function (event) {
+      if (
+        event.target.className === "link entry__title" &&
+        event.target.nodeName === "A"
+      ) {
+        // 当前条目元素
+        const $entry = fnFindDomUp(event.target, ".entry", 2);
+        // 标记已读的按钮
+        const $btn = event.target.parentNode.querySelector(
+          ".EntryMarkAsReadButton"
+        );
+
+        // _log("fnMarkRead", event.target);
+        // _log("fnMarkRead", $entry, $entry.className);
+
+        // 判断是否含有指定类名
+        if ($entry.className.indexOf("entry--read") > -1) {
+          return;
+        }
+        if ($btn) {
+          _log(event.button, "自动标记已读");
+          $btn.click();
+        }
+      }
+    }, false);
+  })();
 
   return;
 })();
