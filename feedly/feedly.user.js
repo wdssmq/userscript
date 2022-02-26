@@ -269,7 +269,7 @@
 
       // _log("fnColorStars", href, hash);
 
-      const intNum = parseInt(hash + cur4Minutes);
+      const intNum = parseInt(hash + cur4Minutes + i);
       // const intNum = parseInt(i + cur4Minutes);
 
       // _log("fnColorStars", intNum, intNum % 4);
