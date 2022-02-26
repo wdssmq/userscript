@@ -114,9 +114,9 @@ name：「Feedly」Less Item
 
 desc：减少每次显示的条目数量
 
-url：https://github.com/wdssmq/userscript/blob/master/feedly/LessItems.js
+url：https://github.com/wdssmq/userscript/blob/master/feedly/LessItems.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/LessItems.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/LessItems.user.js
 
 --------
 
