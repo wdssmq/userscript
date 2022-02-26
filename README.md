@@ -110,6 +110,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/feedly.user.js
 
 --------
 
+name：「Feedly」Less Item
+
+desc：减少每次显示的条目数量
+
+url：https://github.com/wdssmq/userscript/blob/master/feedly/LessItems.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/LessItems.js
+
+--------
+
 name：「新浪微博」- 批量移除粉丝（QQ 群：189574683）
 
 desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
@@ -297,6 +307,16 @@ desc：提取 typecho.in 分享的网址
 url：https://github.com/wdssmq/userscript/blob/master/other/typecho.in.user.js
 
 cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/other/typecho.in.user.js
+
+--------
+
+name：New Userscript
+
+desc：try to take over the world!
+
+url：https://github.com/wdssmq/userscript/blob/master/other/default.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/other/default.user.js
 
 --------
 
