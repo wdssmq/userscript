@@ -55,7 +55,7 @@
   };
 
   async function fnOnLoad() {
-    await sleep(3000);
+    await sleep(1000);
 
     // 绑定监听事件
     if ($n("#box").dataset.EventBind !== "done") {
@@ -76,15 +76,15 @@
 
     // 判断加载完成
     if (!$n("#feedlyFrame")) {
-      fnMain();
-      _log("fnMain", "页面加载中");
+      fnOnLoad();
+      _log("fnOnLoad", "页面加载中");
     }
 
     // 滚动条滚动时触发
     if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.LessItem !== "done") {
       $n("#feedlyFrame").dataset.LessItem = "done";
       $n("#feedlyFrame").addEventListener("scroll", fnLessItem);
-      _log("fnMain", "列表滚动监听");
+      _log("fnOnLoad", "列表滚动监听");
     }
   }
 
@@ -96,7 +96,12 @@
   }
 
   async function fnLessItem() {
+    // 判断页面地址
+    if (curUrl.indexOf("subscription/") === -1) {
+      return;
+    }
     await sleep(3000);
+
 
     if ($n(".giant-mark-as-read")) {
       fnRmovoDOM($n(".giant-mark-as-read"));
