@@ -221,10 +221,10 @@
   const fnCheckControl = (iRead, objSec = {}) => {
     const iTime = curHours;
     objSec.time = iTime;
+    objSec.rem = iTime % 4;
     if (iRead < 17) {
       return "default";
     }
-    objSec.rem = iTime % 4;
     if (iTime % 4 === 0) {
       return "reset";
     } else {
