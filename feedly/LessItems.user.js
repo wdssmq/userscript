@@ -111,7 +111,7 @@
 
     // _log("fnLessItem", $items.length);
 
-    let intDivi = 37;
+    let intDivi = 17;
     let lstAgo = "";
 
     if ($n(".list-entries > h2")) {
@@ -138,10 +138,12 @@
 
       const intNum = parseInt(i);
 
-      // _log("fnLessItem", link, hash, intNum);
-
       const intMod = fnGetMod(intNum, intDivi);
-      if (intMod !== 0 || lstAgo === "") {
+
+      // _log("fnLessItem", link, hash, intNum);
+      // _log("fnLessItem", intMod, intDivi, intNum);
+
+      if (intMod !== 0 || (lstAgo === "" && $items.length > 137)) {
         $e.style.display = "none";
         // fnRmovoDOM($e);
       }
