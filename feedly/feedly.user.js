@@ -23,6 +23,7 @@
   const curUrl = window.location.href;
   const curDate = new Date();
   // const $ = window.$ || unsafeWindow.$;
+  const _curUrl = () => { return window.location.href; };
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const _log = (...args) => console.log("[Feedly]\n", ...args);
   const _warn = (...args) => console.warn("[Feedly]\n", ...args);
@@ -175,7 +176,7 @@
   async function fnOnScroll() {
     await sleep(3000);
     // 判断页面地址
-    if ("https://feedly.com/i/saved" !== curUrl) {
+    if ("https://feedly.com/i/saved" !== _curUrl()) {
       return;
     }
     // $n("#box").removeEventListener("mouseover", fnOnScroll, false);
