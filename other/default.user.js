@@ -15,7 +15,8 @@
   const curUrl = window.location.href;
   const curDate = new Date();
   // const $ = window.$ || unsafeWindow.$;
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const _curUrl = () => { return window.location.href; };
+  const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const _log = (...args) => console.log("[GM_]\n", ...args);
   const _warn = (...args) => console.warn("[GM_]\n", ...args);
   const _error = (...args) => console.error("[GM_]\n", ...args);

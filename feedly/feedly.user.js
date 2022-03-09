@@ -24,7 +24,7 @@
   const curDate = new Date();
   // const $ = window.$ || unsafeWindow.$;
   const _curUrl = () => { return window.location.href; };
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const _log = (...args) => console.log("[Feedly]\n", ...args);
   const _warn = (...args) => console.warn("[Feedly]\n", ...args);
   const _error = (...args) => console.error("[Feedly]\n", ...args);
