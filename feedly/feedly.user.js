@@ -173,13 +173,19 @@
   };
 
   // 星标计数触发和更新
-  async function fnOnScroll() {
-    await sleep(3000);
+  async function fnOnScroll(event = null) {
     // 判断页面地址
     if ("https://feedly.com/i/saved" !== _curUrl()) {
       return;
     }
-    // $n("#box").removeEventListener("mouseover", fnOnScroll, false);
+    if (event !== null && $n("#box").dataset.OnScroll === "remove") {
+      _log("fnOnScroll", $n("#box").dataset.OnScroll);
+      return;
+    } else {
+      $n("#box").dataset.OnScroll = "remove";
+      $n("#box").removeEventListener("mouseover", fnOnScroll, false);
+    }
+    await _sleep(3000);
     // 全部条目加载后执行
     if ($n(".list-entries > h2")) {
       gob.curStars = $na("div.content a").length;
