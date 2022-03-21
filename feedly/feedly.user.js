@@ -212,7 +212,7 @@
       rem: 0,
     };
     if (fnCheckControl(gob.diffStars, objTime) === "lock") {
-      $n(".list-entries").style.backgroundColor = "#aaa";
+      $n(".list-entries").style.backgroundColor = "#ddd";
     }
     const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）（${objTime.time} - ${objTime.rem}）`;
     $n("h1 #header-title").innerHTML = strText;
@@ -306,9 +306,9 @@
 
       if (intNum % 4 === 0) {
         pickCount++;
-        $e.parentNode.parentNode.style.backgroundColor = "#aaa";
+        $e.parentNode.parentNode.style.backgroundColor = "#ddd";
       } else {
-        if (fnCheckControl(gob.diffStars) === "lock" || pickCount > 17) {
+        if (fnCheckControl(gob.diffStars) === "lock" || pickCount > 13) {
           // console.log($e.parentNode.parentNode.classList);
           $e.parentNode.parentNode.style.backgroundColor = "#666";
         }
