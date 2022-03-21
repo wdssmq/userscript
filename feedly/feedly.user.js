@@ -211,8 +211,8 @@
       time: 0,
       rem: 0,
     };
-    if (fnCheckControl(gob.diffStars.decr, objTime) === "lock") {
-      $n(".list-entries").style.backgroundColor = "#ccc";
+    if (fnCheckControl(gob.diffStars, objTime) === "lock") {
+      $n(".list-entries").style.backgroundColor = "#aaa";
     }
     const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）（${objTime.time} - ${objTime.rem}）`;
     $n("h1 #header-title").innerHTML = strText;
@@ -225,14 +225,14 @@
   // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
   const cur4Minutes = Math.floor(curTime / 240);
 
-  const fnCheckControl = (iRead, objSec = {}) => {
+  const fnCheckControl = (diffStars, objSec = {}) => {
     const iTime = curHours;
     objSec.time = iTime;
     objSec.rem = iTime % 4;
-    if (iRead < 17) {
+    if (diffStars.decr < 17) {
       return "default";
     }
-    if (iTime % 4 === 0) {
+    if (iTime % 4 === 0 || diffStars.incr > 13) {
       return "reset";
     } else {
       return "lock";
@@ -249,7 +249,7 @@
     // 解锁重置判断
     if (gob.bolReset) {
       gob.diffStars.decr = 0;
-      gob.diffStars.incr = gob.curStars;
+      gob.diffStars.incr = 0;
     }
 
     // 星标变化计数
@@ -269,12 +269,12 @@
 
     // _log("fnLaterControl", strReset);
 
-    gob.bolReset = ((iRead) => {
-      if (fnCheckControl(iRead) === "reset") {
+    gob.bolReset = ((diffStars) => {
+      if (fnCheckControl(diffStars) === "reset") {
         return true;
       }
       return false;
-    })(gob.diffStars.decr);
+    })(gob.diffStars);
 
     gob.lstStars = gob.curStars;
 
@@ -289,6 +289,7 @@
     // _log("fnColorStars", curTime, cur4Minutes);
 
     const $stars = $na("div.content a");
+    let pickCount = 0;
     [].forEach.call($stars, function ($e, i) {
       // _log("fnColorStars", $e, i);
       // _log("fnColorStars", "==============================");
@@ -304,7 +305,13 @@
       // _log("fnColorStars", intNum, intNum % 4);
 
       if (intNum % 4 === 0) {
-        $e.parentNode.parentNode.style.backgroundColor = "#ddd";
+        pickCount++;
+        $e.parentNode.parentNode.style.backgroundColor = "#aaa";
+      } else {
+        if (fnCheckControl(gob.diffStars) === "lock" || pickCount > 17) {
+          // console.log($e.parentNode.parentNode.classList);
+          $e.parentNode.parentNode.style.backgroundColor = "#666";
+        }
       }
     });
   }
