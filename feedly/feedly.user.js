@@ -216,7 +216,9 @@
     }
     const strText = `Read later（${gob.curStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）（${objTime.time} - ${objTime.rem}）`;
     $n("h1 #header-title").innerHTML = strText;
-    $n("h2.Heading").innerHTML = strText;
+    if ($n("header.header h2")) {
+      $n("header.header h2").innerHTML = strText;
+    }
     $n("#header-title").innerHTML = strText;
   }
 
