@@ -310,6 +310,7 @@
         pickCount++;
         $e.parentNode.parentNode.style.backgroundColor = "#ddd";
       } else {
+        $e.parentNode.parentNode.style.backgroundColor = "transparent";
         if (fnCheckControl(gob.diffStars) === "lock" || pickCount > 13) {
           // console.log($e.parentNode.parentNode.classList);
           $e.parentNode.parentNode.style.backgroundColor = "#666";
