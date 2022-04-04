@@ -16,6 +16,7 @@
   const curDate = new Date();
   // const $ = window.$ || unsafeWindow.$;
   const _curUrl = () => { return window.location.href; };
+  const _curDate = () => { return new Date(); };
   const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const _log = (...args) => console.log("[GM_]\n", ...args);
   const _warn = (...args) => console.warn("[GM_]\n", ...args);
