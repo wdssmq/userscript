@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        度盘接生成（QQ 群：189574683）
+// @name        「废弃」度盘接生成（QQ 群：189574683）
 // @namespace   wdssmq
 // @version     1.3.5
 // @author      沉冰浮水
