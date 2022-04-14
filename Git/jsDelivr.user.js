@@ -30,17 +30,17 @@
     $e.parentNode.removeChild($e);
   }
   // 添加子节点到指定元素
-  function fnAppendChild(e, $ne) {
+  function fnAppendChild($ne, e) {
     const $e = typeof e === 'string' ? $n(e) : e;
     $e.appendChild($ne);
   }
   // 添加元素指定元素前
-  function fnAppendBefore(e, $ne) {
+  function fnAppendBefore($ne, e) {
     const $e = typeof e === 'string' ? $n(e) : e;
     $e.parentNode.insertBefore($ne, $e);
   }
   // 添加元素指定元素后
-  function fnAppendAfter(e, $ne) {
+  function fnAppendAfter($ne, e) {
     const $e = typeof e === 'string' ? $n(e) : e;
     $e.parentNode.insertBefore($ne, $e.nextSibling);
   }
@@ -88,7 +88,7 @@
     $cdn_a.setAttribute("target", "_blank");
     $cdn_a.innerHTML = `「cdn」`;
     // 应用元素到页面中
-    fnAppendAfter($cur_a, $cdn_a);
+    fnAppendAfter($cdn_a, $cur_a);
 
     // // 获取现有样式
     // const curStyle = window.getComputedStyle($cur_a);
