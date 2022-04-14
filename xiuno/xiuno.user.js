@@ -14,6 +14,8 @@
 // @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
 // @require      https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.js
 // @grant        GM_xmlhttpRequest
+// @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
 /* jshint esversion:6 */
 (function () {
@@ -70,6 +72,10 @@
   });
   // YML 获取
   function fnGetAjax(strURL, strData, fnCallback) {
+    if (typeof strData === "function") {
+      fnCallback = strData;
+      strData = "";
+    }
     GM_xmlhttpRequest({
       method: "GET",
       data: strData,
@@ -77,6 +83,9 @@
       onload: function (responseDetail) {
         if (responseDetail.status === 200) {
           fnCallback(responseDetail.responseText, strURL);
+        } else {
+          console.log(responseDetail);
+          alert("请求失败，请检查网络！");
         }
       },
     });
@@ -125,10 +134,19 @@
       }
     );
     $(".pre-yml").text(`${styYML}`);
+    let urlYML = GM_getValue("urlYML", "");
+    if (!urlYML) {
+      // 弹窗由用户输入
+      urlYML = prompt("请输入 YML 地址", "https://cdn.jsdelivr.net/gh/wdssmq/ReviewLog@main/data/2022H1.yml");
+      // "https://cdn.jsdelivr.net/gh/wdssmq/ReviewLog@main/data/2022H1.yml",
+      // "https://raw.githubusercontent.com/wdssmq/ReviewLog/main/data/2022H1.yml",
+      GM_setValue("urlYML", urlYML);
+      location.reload();
+      return;
+    }
+    console.log(urlYML);
     fnGetAjax(
-      "https://cdn.jsdelivr.net/gh/wdssmq/ReviewLog@main/2021.yml",
-      // "https://raw.githubusercontent.com/wdssmq/ReviewLog/main/2021.yml",
-      "",
+      urlYML,
       function (resData, strURL) {
         // console.log(resData);
 
