@@ -182,7 +182,7 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/pan/pan-2109.user.js
 
 name：度盘接生成（QQ 群：189574683）
 
-desc：分享资源后生成带描述的分享文本或 html 代码。
+desc：度盘分享文件时自动复制为 HTML 或 MarkDown
 
 url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js
 
