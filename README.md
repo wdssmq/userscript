@@ -170,6 +170,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/QQ/GroupMemberRemove.
 
 --------
 
+name：「废弃」度盘接生成（QQ 群：189574683）
+
+desc：分享资源后生成带描述的分享文本或 html 代码。
+
+url：https://github.com/wdssmq/userscript/blob/master/pan/pan-2109.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/pan/pan-2109.user.js
+
+--------
+
 name：度盘接生成（QQ 群：189574683）
 
 desc：分享资源后生成带描述的分享文本或 html 代码。
