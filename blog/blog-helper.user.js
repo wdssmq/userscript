@@ -41,7 +41,6 @@
     GM_setValue("objInfo", {
       origUrl: "https://www.wdssmq.com/post/-alias-.html",
       form: "沉冰浮水",
-      jgchat: "我的咸鱼心",
       WeChatOA: "水水不想说",
     });
   }
@@ -129,7 +128,6 @@
 
   const fnAfterContent = (info, doc) => {
     let tpl = `\n\n原文链接：[-origUrl-](-origUrl-)`;
-    tpl += `\n\n井盖口令：「-jgchat-」`;
     if ("jianshu" !== globalInfo.site) {
       tpl += `\n\n微信公众号：「-WeChatOA-」`;
     }
