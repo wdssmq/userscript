@@ -44,9 +44,18 @@
       WeChatOA: "水水不想说",
     });
   }
-  console.log(objInfo);
+  console.log("objInfo", objInfo);
 
-  const globalInfo = {};
+  const globalInfo = {
+    hashBody: "",
+    isBodyChanged: (hashBodyNew) => {
+      if (hashBodyNew !== globalInfo.hashBody) {
+        globalInfo.hashBody = hashBodyNew;
+        return true;
+      }
+      return false;
+    },
+  };
 
   globalInfo.site = (() => {
     const list = ["jianshu", "csdn", "cnblogs"];
@@ -59,7 +68,7 @@
     return rlt;
   })();
 
-  console.log(globalInfo);
+  console.log("globalInfo", globalInfo);
 
   function fnHashVal(string) {
     let hash = 0,
@@ -78,16 +87,6 @@
     const rlt = { err: 0, msg: "" };
     oBody = oBody.replace(/<!-- ---|--- -->/g, "---");
     // console.log(oBody);
-
-    // 文本修改前仅执行一次
-    const curHash = fnHashVal(oBody);
-    if (!globalInfo.hashBody || curHash !== globalInfo.hashBody) {
-      globalInfo.hashBody = curHash;
-    } else {
-      rlt.err = 2;
-      rlt.msg = curHash;
-      return rlt;
-    }
 
     // 拆分为数组
     const arrBody = oBody.split("---\n");
@@ -164,14 +163,23 @@
     if (globalInfo.curTitle) {
       $title.val(globalInfo.curTitle);
     }
-    const { err, msg, doc, content } = fnYAML2JSON($editor.text());
+    const oBody = $editor.text();
+    // 文本修改前仅执行一次
+    const curHash = fnHashVal(oBody);
+    if (!globalInfo.isBodyChanged(curHash)) {
+      console.log("fnMainCSDN", "文本未改变");
+      return;
+    }
+    const { err, msg, doc, content } = fnYAML2JSON(oBody);
+    // console.log("fnMainCSDN", err, msg, doc);
     if (err == 0 && content.indexOf("原文链接：") === -1) {
       globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
       globalInfo.curTitle = doc.title;
       $editor.find("pre").html(content.trim() + fnAfterContent(objInfo, doc));
       $title.val(doc.title);
     } else if (err > 0) {
-      console.log(err, msg);
+      console.log("fnMainCSDN", err, msg);
+      // globalInfo.hashBody = "";
     }
   };
 
@@ -197,6 +205,7 @@
       $title.value = globalInfo.curTitle;
     }
   };
+
   const fnMainCnBlogs = ($el) => {
     const $title = $n("#post-title");
     const $editor = $n("#md-editor");
