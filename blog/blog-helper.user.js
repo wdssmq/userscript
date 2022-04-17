@@ -53,6 +53,7 @@
         globalInfo.hashBody = hashBodyNew;
         return true;
       }
+      console.log("isBodyChanged", "文本未改变");
       return false;
     },
   };
@@ -167,7 +168,6 @@
     // 文本修改前仅执行一次
     const curHash = fnHashVal(oBody);
     if (!globalInfo.isBodyChanged(curHash)) {
-      console.log("fnMainCSDN", "文本未改变");
       return;
     }
     const { err, msg, doc, content } = fnYAML2JSON(oBody);
@@ -189,7 +189,13 @@
     if (!$title || !$editor) {
       return;
     }
-    const { err, msg, doc, content } = fnYAML2JSON($editor.value);
+    const oBody = $editor.value;
+    // 文本修改前仅执行一次
+    const curHash = fnHashVal(oBody);
+    if (!globalInfo.isBodyChanged(curHash)) {
+      return;
+    }
+    const { err, msg, doc, content } = fnYAML2JSON(oBody);
     if (err == 0 && content.indexOf("原文链接：") === -1) {
       globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
       globalInfo.curTitle = doc.title;
