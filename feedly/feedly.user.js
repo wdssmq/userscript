@@ -324,6 +324,7 @@
     if (!$n("#box") || $n("#box").dataset.MarkRead === "bind") {
       return;
     }
+    // _log("fnAutoMark", "自动标记已读");
     $n("#box").dataset.MarkRead = "bind";
 
     // 根据事件返回需要的 dom 元素
@@ -336,14 +337,13 @@
         $btn: null
       };
       if (eType === "mouseup") {
-      if (
-          eTgt.className === "link entry__title" &&
-          eTgt.nodeName === "A"
-      ) {
+        if (
+          eTgt.classList.contains("entry__title") && eTgt.nodeName === "A"
+        ) {
           objRlt = {
-        // 当前条目元素
+            // 当前条目元素
             $entry: eTgt.parentNode.parentNode,
-        // 标记已读的按钮
+            // 标记已读的按钮
             $btn: eTgt.parentNode.querySelector("button.EntryMarkAsReadButton")
           };
           pick = true;
@@ -405,13 +405,13 @@
       }
       const { $entry, $btn } = fnEventFilter(event.type, event.target);
       if (!$entry || !$btn) {
-          return;
-        }
+        return;
+      }
       // 判断是否含有指定类名
       if ($entry.className.indexOf("entry--read") === -1) {
         _log("fnMarRead", event.button, "自动标记已读");
-          $btn.click();
-        }
+        $btn.click();
+      }
     };
     // 绑定监听事件
     $n("#box").addEventListener("mouseup", fnEventHandler, false);
