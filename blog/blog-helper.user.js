@@ -218,8 +218,14 @@
     if (!$title || !$editor) {
       return;
     }
+    const oBody = $editor.value;
+    // 文本修改前仅执行一次
+    const curHash = fnHashVal(oBody);
+    if (!globalInfo.isBodyChanged(curHash)) {
+      return;
+    }
     let lstMsg = "";
-    const { err, msg, doc, content } = fnYAML2JSON($editor.value);
+    const { err, msg, doc, content } = fnYAML2JSON(oBody);
     if (err == 0 && content.indexOf("原文链接：") === -1) {
       globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
       globalInfo.curTitle = doc.title;
