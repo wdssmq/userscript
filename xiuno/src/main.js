@@ -1,8 +1,4 @@
 
-// 基础
-// import { $ } from "./_base.js";
-// console.log($);
-
 // 加密
 import _lz from "./_lz.js";
 
