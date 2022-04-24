@@ -243,7 +243,7 @@
       let $badge = null;
       if (log && log.status === "通过") {
         $badge = $(`<span class="badge badge-success">${log.status}</span>`);
-      } else if (log && log.status === "拒绝") {
+      } else if (log) {
         $badge = $(`<span class="badge badge-primary">${log.status}</span>`);
       } else {
         $badge = $(`<span class="badge badge-warning">未记录</span>`);
