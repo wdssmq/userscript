@@ -59,8 +59,8 @@
     });
   }
   // formtTime 封装
-  function fnFormatTime(strTime) {
-    const objTime = new Date(strTime);
+  function fnFormatTime() {
+    const objTime = new Date();
     const strYear = objTime.getFullYear();
     const strMonth = objTime.getMonth() + 1;
     const strDate = objTime.getDate();
@@ -296,14 +296,15 @@
     }
 
     // YML 模板
-    const tplYML = `- id: #id#
-type: #type#
-status: 进行中
-url: #url#
-date:
-  - #date#
-reviewers:
-  - 沉冰浮水`;
+    const tplYML = `
+- id: #id#
+  type: #type#
+  status: 进行中
+  url: #url#
+  date:
+    - #date#
+  reviewers:
+    - 沉冰浮水`;
     // 构建 YML
     const styYML = fnStrtr(
       tplYML,

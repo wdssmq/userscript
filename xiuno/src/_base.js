@@ -36,8 +36,8 @@ function fnGetRequest(strURL, strData, fnCallback) {
   });
 }
 // formtTime 封装
-function fnFormatTime(strTime) {
-  const objTime = new Date(strTime);
+function fnFormatTime() {
+  const objTime = new Date();
   const strYear = objTime.getFullYear();
   const strMonth = objTime.getMonth() + 1;
   const strDate = objTime.getDate();
