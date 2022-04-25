@@ -64,7 +64,8 @@ def fnGenScriptInfo(name, desc, dir, file):
         dir, file)
     # https://cdn.jsdelivr.net/gh/wdssmq/userscript/other/typecho.in.user.js
     # https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/other/typecho.in.user.js 1
-    cdn = "https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/%s/%s" % (dir, file)
+    cdn = "https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/%s/%s" % (
+        dir, file)
     return "name：%s\n\ndesc：%s\n\nurl：%s\n\ncdn：%s\n\n" % (name, desc, url, cdn)
 # 拼接脚本信息用于 ReadMe
 
@@ -101,6 +102,8 @@ def fnMain():
             if ("user.js" not in n):
                 fnLog("跳过 %s" % n)
                 continue
+            # else:
+                # fnLog("正在处理 %s" % n)
             scripInfo = fnReadJS(f)
             rltInfo += fnGenScriptInfo(scripInfo[0], scripInfo[1], dirName, n)
             rltInfo += "--------\n\n"
