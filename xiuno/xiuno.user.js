@@ -300,6 +300,7 @@
 - id: #id#
   type: #type#
   status: 进行中
+  rating:
   url: #url#
   date:
     - #date#
@@ -320,6 +321,10 @@
         str = str.replace(/\s{4}/g, "_2_");
         str = str.replace(/_2_/g, "  ");
         str = str.replace(/\\\|/g, "\n");
+        const objMatch = title.match(/(通过|拒绝)/);
+        if (objMatch) {
+          str = str.replace(/status: 进行中/, `status: ${objMatch[1]}`);
+        }
         return str;
       }
     );
