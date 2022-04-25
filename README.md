@@ -120,16 +120,6 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/xiuno/xiuno.user.js
 
 --------
 
-name：「xiuno」盲盒抽奖（QQ 群：189574683）
-
-desc：Z-BlogPHP 盲盒抽奖
-
-url：https://github.com/wdssmq/userscript/blob/master/xiuno/blind-box.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/xiuno/blind-box.user.js
-
---------
-
 name：「Feedly」- 中键标记已读 + 收藏导出为*.url
 
 desc：新标签页打开条目时自动标记为已读，收藏计数
@@ -227,16 +217,6 @@ desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么�
 url：https://github.com/wdssmq/userscript/blob/master/weibo/remove-fans.user.js
 
 cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/weibo/remove-fans.user.js
-
---------
-
-name：EasyPHP 面板助手
-
-desc：新窗口打开站点；自动启用服务；书签功能；
-
-url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/EasyPHP/Dashboard.js
 
 --------
 
