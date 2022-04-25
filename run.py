@@ -98,6 +98,9 @@ def fnMain():
             continue
         files = fnGetFilesInDir2(dirPath, ".js")
         for (f, n) in files:
+            if ("user.js" not in n):
+                fnLog("跳过 %s" % n)
+                continue
             scripInfo = fnReadJS(f)
             rltInfo += fnGenScriptInfo(scripInfo[0], scripInfo[1], dirName, n)
             rltInfo += "--------\n\n"
