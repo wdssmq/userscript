@@ -220,6 +220,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/weibo/remove-fans.use
 
 --------
 
+name：EasyPHP 面板助手
+
+desc：新窗口打开站点；自动启用服务；书签功能；
+
+url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/EasyPHP/Dashboard.user.js
+
+--------
+
 name：Markdown-A-Textarea
 
 desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
