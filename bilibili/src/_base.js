@@ -22,7 +22,7 @@ function $na(e) {
 // ---------------------------------------------------
 export {
   curUrl,
-  // curDate,
+  curDate,
   _curUrl,
   // _curDate,
   // _sleep,
