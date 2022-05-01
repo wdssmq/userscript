@@ -14,7 +14,7 @@ const gm_banner = `
 // @grant        none
 // ==/UserScript==
 /* jshint esversion: 6 */
-`.trim();
+`;
 
 const gm_name = "empty_def";
 
