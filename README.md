@@ -242,7 +242,7 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
 
 name：「bilibili」- 稍后再看导出为.url
 
-desc：将 B 站的稍后再看列表导出为.url 文件
+desc：将 B 站的稍后再看列表导出为 *.url 文件
 
 url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
 
