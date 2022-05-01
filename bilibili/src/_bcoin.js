@@ -1,4 +1,4 @@
-import { curUrl, curDate, _log, $n } from './_base.js';
+import { curUrl, curDate, _log, $n, fnElChange } from './_base.js';
 
 // cookie 封装
 const ckeObj = {
@@ -39,24 +39,6 @@ const diffDateDays = (date1, date2) => {
 
   _log(`当前日期: ${curDateStr}`);
   _log(`下次领取: ${nxtDateStr}`);
-
-  // 元素变化监听
-  const fnElChange = (el, fn = () => { }) => {
-    const observer = new MutationObserver((mutationRecord, mutationObserver) => {
-      // _log('body attributes changed!!!'); // body attributes changed!!!
-      // _log('mutationRecord = ', mutationRecord); // [MutationRecord]
-      // _log('mutationObserver === observer', mutationObserver === observer); // true
-      fn(mutationRecord, mutationObserver);
-      mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
-    });
-    observer.observe(el, {
-      // attributes: false,
-      // attributeFilter: ["class"],
-      childList: true,
-      // characterData: false,
-      subtree: true,
-    });
-  }
 
   // 通知事件封装
   const notify = (title, body) => {

@@ -19,6 +19,23 @@ function $n(e) {
 function $na(e) {
   return document.querySelectorAll(e);
 }
+// 元素变化监听
+const fnElChange = (el, fn = () => { }) => {
+  const observer = new MutationObserver((mutationRecord, mutationObserver) => {
+    // _log('body attributes changed!!!'); // body attributes changed!!!
+    // _log('mutationRecord = ', mutationRecord); // [MutationRecord]
+    // _log('mutationObserver === observer', mutationObserver === observer); // true
+    fn(mutationRecord, mutationObserver);
+    mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
+  });
+  observer.observe(el, {
+    // attributes: false,
+    // attributeFilter: ["class"],
+    childList: true,
+    // characterData: false,
+    subtree: true,
+  });
+}
 // ---------------------------------------------------
 export {
   curUrl,
@@ -32,4 +49,5 @@ export {
   // $,
   $n,
   $na,
+  fnElChange,
 };
