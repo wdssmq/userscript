@@ -22,13 +22,13 @@ function $na(e) {
 // ---------------------------------------------------
 export {
   curUrl,
-  // curDate,
+  curDate,
   _curUrl,
-  // _curDate,
-  // _sleep,
+  _curDate,
+  _sleep,
   _log,
-  // _warn,
-  // _error,
+  _warn,
+  _error,
   // $,
   $n,
   $na,
