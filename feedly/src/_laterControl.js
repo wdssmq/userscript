@@ -130,11 +130,11 @@ const fnCheckControl = (diff, objSec = {}) => {
   objSec.time = iTime;
   objSec.rem = iTime % 4;
   // 累计已读少于 17 或者累计新增大于累计已读
-  if (diff.decr < 17 || diff.incr - diff.decr > 4) {
+  if (diff.decr < 17 || diff.incr - diff.decr >= 4) {
     return "default";
   }
   // 每 4 小时且累计已读大于累计新增，或者累计新增过大（一般为初始运行时）
-  if ((iTime % 4 === 0 && diff.decr - diff.incr > 4) || gob._curStars - diff.incr < 4) {
+  if ((iTime % 4 === 0 && diff.decr - diff.incr >= 4) || gob._curStars - diff.incr <= 4) {
     return "reset";
   }
   return "lock";
