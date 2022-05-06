@@ -67,9 +67,6 @@ function fnLaterViewStars() {
     time: 0,
     rem: 0,
   };
-  if (fnCheckControl(gob.data.diffStars, objTime) === "lock") {
-    $n(".list-entries").style.backgroundColor = "#ddd";
-  }
   gob._curStars = fnLaterGetItems(gob);
   const strText = `Read later（${gob._curStars} 丨 -${gob.data.diffStars.decr} 丨 +${gob.data.diffStars.incr}）（${objTime.time} - ${objTime.rem}）`;
   $n("h1 #header-title").innerHTML = strText;
@@ -189,7 +186,11 @@ function fnLaterControl() {
 function fnColorStars() {
   // _log("fnColorStars", curTime, cur4Minutes);
 
-  const $stars = $na("div.content a");
+  const $stars = gob.$list;
+  const isLock = fnCheckControl(gob.data.diffStars);
+  if (isLock === "lock") {
+    $n(".list-entries").style.backgroundColor = "#ddd";
+  }
   let pickCount = 0;
   [].forEach.call($stars, function ($e, i) {
     // _log("fnColorStars", $e, i);
@@ -210,7 +211,7 @@ function fnColorStars() {
       $e.parentNode.parentNode.style.backgroundColor = "#ddd";
     } else {
       $e.parentNode.parentNode.style.backgroundColor = "transparent";
-      if (fnCheckControl(gob.data.diffStars) === "lock" || pickCount > 13) {
+      if (isLock === "lock" || pickCount > 13) {
         // console.log($e.parentNode.parentNode.classList);
         $e.parentNode.parentNode.style.backgroundColor = "#666";
       }
