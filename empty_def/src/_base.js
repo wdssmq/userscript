@@ -20,6 +20,22 @@ function $na(e) {
   return document.querySelectorAll(e);
 }
 // ---------------------------------------------------
+const fnElChange = (el, fn = () => { }) => {
+  const observer = new MutationObserver((mutationRecord, mutationObserver) => {
+    // _log('mutationRecord = ', mutationRecord);
+    // _log('mutationObserver === observer', mutationObserver === observer);
+    fn(mutationRecord, mutationObserver);
+    // mutationObserver.disconnect();
+  });
+  observer.observe(el, {
+    // attributes: false,
+    // attributeFilter: ["class"],
+    childList: true,
+    // characterData: false,
+    subtree: true,
+  });
+}
+// ---------------------------------------------------
 export {
   curUrl,
   curDate,
@@ -32,4 +48,5 @@ export {
   // $,
   $n,
   $na,
+  fnElChange,
 };
