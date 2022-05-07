@@ -5,11 +5,14 @@ const gm_banner = `
 // @version      0.1
 // @author       沉冰浮水
 // @description  try to take over the world!
-// @link     ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
 // @link     https://github.com/wdssmq/userscript
 // @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link     ----------------------------
+// @null     ----------------------------
 // @match        <$URL$>
 // @grant        none
 // ==/UserScript==
