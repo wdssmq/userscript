@@ -4,13 +4,16 @@
 // @version     1.0.2
 // @authour     沉冰浮水
 // @description 批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
-// ----------------------------
+// @null     ----------------------------
 // @link   https://greasyfork.org/zh-CN/scripts/30730
-// ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include     https://weibo.com/*/fans*
 // @grant       none
 // ==/UserScript==
