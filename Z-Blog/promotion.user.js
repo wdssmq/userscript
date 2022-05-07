@@ -1,15 +1,17 @@
 // ==UserScript==
-// @name        「Z-Blog」- 应用中心促销工具
+// @name        「Z-Blog」应用中心促销工具
 // @namespace   https://www.wdssmq.com/
-// @author      沉冰浮水
 // @version     1.1
+// @author      沉冰浮水
 // @description 用于辅助设置促销选项
-// @link   ----------------------------
-// @link   https://github.com/wdssmq/userscript
-// @link   https://afdian.net/@wdssmq
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link   ----------------------------
-// @include     https://tieba.baidu.com/p/*
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include     https://app.zblogcn.com/?id=*
 // @include     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/promotion.php
 // @include     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/promotion_edit.php*

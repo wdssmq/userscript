@@ -4,11 +4,14 @@
 // @version     1.3.5
 // @author      沉冰浮水
 // @description 分享资源后生成带描述的分享文本或 html 代码。
-// ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @url         https://greasyfork.org/zh-CN/scripts/6505
 // @include     https://pan.baidu.com/disk/home*
 // @include     https://send.firefox.com/

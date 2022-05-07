@@ -1,16 +1,18 @@
 // ==UserScript==
-// @name        「QQ 群」- 今天谁值日
+// @name        「QQ 群」今天谁值日
 // @namespace   wdssmq
 // @version     1.2
 // @author      沉冰浮水
 // @description 用于确定值日生/doge
-// ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
 // @link        https://greasyfork.org/zh-CN/scripts/26812
-// ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include     https://qun.qq.com/member.html*
 // @grant       none
 // ==/UserScript==

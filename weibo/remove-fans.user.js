@@ -1,10 +1,9 @@
 // ==UserScript==
-// @name        「新浪微博」- 批量移除粉丝（QQ 群：189574683）
+// @name        「新浪微博」批量移除粉丝（QQ 群：189574683）
 // @namespace   https://www.wdssmq.com/
 // @version     1.0.2
 // @authour     沉冰浮水
 // @description 批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
-// @null     ----------------------------
 // @link   https://greasyfork.org/zh-CN/scripts/30730
 // @null     ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
@@ -17,7 +16,7 @@
 // @include     https://weibo.com/*/fans*
 // @grant       none
 // ==/UserScript==
-/*jshint esversion:6 */
+/* jshint esversion:6 */
 (function () {
   "use strict";
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

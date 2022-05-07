@@ -4,12 +4,14 @@
 // @version      0.4
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
-// ----------------------------
-// @link   https://greasyfork.org/zh-CN/scripts/391688
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @match        http://127.0.0.1:8080/
 // @require      https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js
 // @grant        GM_xmlhttpRequest

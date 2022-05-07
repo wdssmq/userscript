@@ -1,9 +1,17 @@
 // ==UserScript==
-// @name         Resilio Sync 管理「QQ 群：189574683」【失效】
-// @namespace    http://沉冰浮水.tk/
+// @name         「废弃」Resilio Sync 管理「QQ 群：189574683」
+// @namespace    https://www.wdssmq.com/
 // @version      0.3
-// @description  快捷导出/分享 Sync 任务；
 // @author       沉冰浮水
+// @description  快捷导出/分享 Sync 任务；
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @match        http://127.0.0.1:8888/gui/
 // @run-at       document-end
 // @grant        GM_getValue

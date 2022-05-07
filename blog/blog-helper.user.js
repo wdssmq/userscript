@@ -1,9 +1,17 @@
 // ==UserScript==
 // @name         「Blog」写作助手
 // @namespace    https://www.wdssmq.com/
-// @author       沉冰浮水
 // @version      0.1
+// @author       沉冰浮水
 // @description  发布预定义文章到知乎、简书等豉
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.0.0/js-yaml.min.js
 // @match        https://editor.csdn.net/md*
 // @match        https://www.jianshu.com/writer*

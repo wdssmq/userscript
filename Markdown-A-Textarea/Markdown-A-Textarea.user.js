@@ -1,10 +1,18 @@
 // ==UserScript==
 // @name        Markdown-A-Textarea
 // @namespace   wdssmq
-// @description 在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
 // @version     1.0.2
-// @link        https://greasyfork.org/zh-CN/scripts/29203
 // @author      沉冰浮水
+// @description 在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
+// @link        https://greasyfork.org/zh-CN/scripts/29203
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @contributor JixunMoe
 // @contributor wOxxOm
 // @license     MIT License

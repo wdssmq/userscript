@@ -1,15 +1,18 @@
 // ==UserScript==
-// @name        度盘接生成（QQ 群：189574683）
+// @name        「水水」度盘接生成（QQ 群：189574683）
 // @namespace   wdssmq
-// @author      沉冰浮水
 // @version     2.0
+// @author      沉冰浮水
 // @description 度盘分享文件时自动复制为 HTML 或 MarkDown
-// ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
-// @url         https://greasyfork.org/zh-CN/scripts/6505
+// @link         https://greasyfork.org/zh-CN/scripts/6505
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include     https://pan.baidu.com/disk/main*
 // @grant       GM_setClipboard
 // ==/UserScript==

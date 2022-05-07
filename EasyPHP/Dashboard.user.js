@@ -1,9 +1,17 @@
 // ==UserScript==
-// @name         EasyPHP 面板助手
+// @name         「其他」EasyPHP 面板助手
 // @namespace    https://www.wdssmq.com/
+// @version      0.1
 // @author       沉冰浮水
 // @description  新窗口打开站点；自动启用服务；书签功能；
-// @version      0.1
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @match        http://127.0.0.1:1111/*
 // @grant        GM_getValue
 // @grant        GM_setValue

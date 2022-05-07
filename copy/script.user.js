@@ -1,15 +1,18 @@
 // ==UserScript==
-// @name        复制标题网址
+// @name        「水水」复制标题网址
 // @namespace   https://www.wdssmq.com
 // @version     2.1
 // @author      沉冰浮水
 // @description 复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
 // @url         https://greasyfork.org/zh-CN/scripts/28056
-// ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include     http://*
 // @include     https://*
 // @grant       GM_registerMenuCommand

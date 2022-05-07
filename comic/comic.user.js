@@ -1,14 +1,17 @@
 // ==UserScript==
-// @name         「manhuagui」- 打包下载（QQ 群：189574683）
+// @name         「漫画」打包下载（QQ 群：189574683）
 // @namespace    https://www.wdssmq.com/
 // @version      0.3
-// @description  按章节打包下载漫画柜的资源
 // @author       沉冰浮水
-// @link   ----------------------------
-// @link：       https://github.com/wdssmq/userscript
-// @link：       https://afdian.net/@wdssmq
-// @link:        https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link   ----------------------------
+// @description  按章节打包下载漫画柜的资源
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @match        https://www.manhuagui.com/comic/*/*.html
 // @require      https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js
 // @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js

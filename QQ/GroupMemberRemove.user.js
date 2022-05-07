@@ -1,16 +1,18 @@
 // ==UserScript==
-// @name        「QQ 群」- 批量踢人（QQ 群：189574683）
+// @name        「QQ 群」批量踢人（QQ 群：189574683）
 // @namespace   wdssmq
 // @version     1.7
 // @author      沉冰浮水
 // @description 自动选择 20 名成员
-// ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
 // @link        https://greasyfork.org/zh-CN/scripts/26812
-// ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include     https://qun.qq.com/member.html*
 // @grant       none
 // ==/UserScript==

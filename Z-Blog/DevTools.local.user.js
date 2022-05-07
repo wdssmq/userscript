@@ -1,21 +1,24 @@
 // ==UserScript==
-// @name         「Z-Blog」- 开发者工具（本地）
+// @name         「Z-Blog」开发者工具（本地）
 // @namespace    https://www.wdssmq.com/
+// @version      0.3
 // @author       沉冰浮水
 // @description  自动填写 Z-Blog 应用的配置项
-// @version      0.3
-// @link   ----------------------------
-// @link   https://github.com/wdssmq/userscript
-// @link   https://afdian.net/@wdssmq
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link   ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include        http://*/zb_users/plugin/AppCentre/plugin_edit.php*
 // @include        http://*/zb_users/plugin/AppCentre/theme_edit.php*
 // @include        http://*/zb_system/admin/index.php?act=PluginMng*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // ==/UserScript==
-/*jshint esversion:6 */
+/* jshint esversion:6 */
 (function () {
   "use strict";
   const $ = window.jQuery || unsafeWindow.jQuery || function () {};

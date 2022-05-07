@@ -2,13 +2,16 @@
 // @name         「水水」typecho.in 链接提取
 // @namespace    https://www.wdssmq.com/
 // @version      0.1
-// @description  提取 typecho.in 分享的网址
 // @author       沉冰浮水
-// ----------------------------
-// @link     https://afdian.net/@wdssmq
+// @description  提取 typecho.in 分享的网址
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
 // @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
 // @match        https://typecho.in/*
 // @grant        GM_addStyle
 // ==/UserScript==

@@ -5,11 +5,14 @@
 // @version      0.4
 // @description  快捷导出/分享 Sync 任务；
 // @selfLink     https://greasyfork.org/zh-CN/scripts/388497
-// ----------------------------
-// @link     https://afdian.net/@wdssmq
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
 // @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
 // @include        http://*:8888/gui/
 // @include        http://*:5000/gui/
 // @run-at       document-end

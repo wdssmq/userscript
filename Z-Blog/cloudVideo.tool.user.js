@@ -1,9 +1,17 @@
 // ==UserScript==
-// @name         「Z-Blog」- 插件工具 For 视频云点播
+// @name         「Z-Blog」插件工具 For 视频云点播
 // @namespace    https://www.wdssmq.com/
-// @author       沉冰浮水
 // @version      0.3
+// @author       沉冰浮水
 // @description  用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @include      https://console.cloud.tencent.com/vod/media*
 // @include      https://vod.console.aliyun.com/
 // @grant        GM_setClipboard

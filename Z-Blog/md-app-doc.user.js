@@ -1,14 +1,17 @@
 // ==UserScript==
-// @name         「Z-Blog」- 使用 Markdown 编辑应用介绍
+// @name         「Z-Blog」使用 Markdown 编辑应用介绍
 // @namespace    https://www.wdssmq.com/
 // @version      0.1
 // @author       wdssmq
 // @description  使用 Markdown 编辑应用说明
-// @link   ----------------------------
-// @link   https://github.com/wdssmq/userscript
-// @link   https://afdian.net/@wdssmq
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link   ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @match        https://app.zblogcn.com/zb_system/admin/edit.php?*
 // @require      https://unpkg.com/turndown/dist/turndown.js
 // @require      https://cdn.jsdelivr.net/npm/marked/marked.min.js

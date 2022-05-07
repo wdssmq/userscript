@@ -1,15 +1,18 @@
 // ==UserScript==
-// @name        「Z-Blog」- 开发者工具（应用中心）
+// @name        「Z-Blog」开发者工具（应用中心）
 // @namespace   wdssmq.com
-// @description 含搜索订单，附带隐藏未付订单，应用审核回显；
-// @author      沉冰浮水
 // @version     2.0
-// ----------------------------
+// @author      沉冰浮水
+// @description 含搜索订单，附带隐藏未付订单，应用审核回显；
 // @link     https://greasyfork.org/zh-CN/scripts/25662
-// @link     https://afdian.net/@wdssmq
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
 // @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
 // @include     https://app.zblogcn.com/zb_system/admin/edit.php*id=*
 // @include     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php*
 // @include     https://app.zblogcn.com/?id=*
