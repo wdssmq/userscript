@@ -73,7 +73,7 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/tieba/tieba.user.js
 
 --------
 
-name：「Feedly」- 中键标记已读 + 收藏导出为*.url
+name：「Feedly」中键标记已读 + 收藏导出为*.url
 
 desc：新标签页打开条目时自动标记为已读，收藏计数
 
