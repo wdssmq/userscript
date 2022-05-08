@@ -13,6 +13,7 @@
 // @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
+// @noframes
 // @match       *://*/post/*.html*
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*

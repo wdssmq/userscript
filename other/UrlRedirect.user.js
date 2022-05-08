@@ -12,6 +12,7 @@
 // @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
+// @noframes
 // @match        https://jump.bdimg.com/f?kw=*
 // @match        https://c.pc.qq.com/middlem.html?pfurl=*
 // @icon         https://www.google.com/s2/favicons?domain=bdimg.com
