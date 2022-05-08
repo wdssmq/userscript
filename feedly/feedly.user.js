@@ -1,18 +1,20 @@
 
 // ==UserScript==
-// @name         「Feedly」- 中键标记已读 + 收藏导出为*.url
+// @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
 // @version      0.3.6
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
-// ----------------------------
-// @raw    https://github.com/wdssmq/userscript/tree/master/feedly
-// @raw    https://greasyfork.org/zh-CN/scripts/381793
-// ----------------------------
-// @link   https://afdian.net/@wdssmq
-// @link   https://github.com/wdssmq/userscript
-// @link   https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @link    https://github.com/wdssmq/userscript/tree/master/feedly
+// @link    https://greasyfork.org/zh-CN/scripts/381793
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
+// @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
+// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null     ----------------------------
 // @match        https://feedly.com/*
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
@@ -72,6 +74,10 @@
     // 非 ls 字段
     _loaded: false,
     _curStars: 0,
+    _time: {
+      cycle: 0,
+      rem: 0,
+    },
     // ls 字段
     data: {
       bolReset: false,
@@ -116,15 +122,8 @@
 
   // 收藏数 View
   function fnLaterViewStars() {
-    const objTime = {
-      time: 0,
-      rem: 0,
-    };
-    if (fnCheckControl(gob.data.diffStars, objTime) === "lock") {
-      $n(".list-entries").style.backgroundColor = "#ddd";
-    }
     gob._curStars = fnLaterGetItems(gob);
-    const strText = `Read later（${gob._curStars} 丨 -${gob.data.diffStars.decr} 丨 +${gob.data.diffStars.incr}）（${objTime.time} - ${objTime.rem}）`;
+    const strText = `Read later（${gob._curStars} 丨 -${gob.data.diffStars.decr} 丨 +${gob.data.diffStars.incr}）（${gob._time.cycle} - ${gob._time.rem}）`;
     $n("h1 #header-title").innerHTML = strText;
     if ($n("header.header h2")) {
       $n("header.header h2").innerHTML = strText;
@@ -178,16 +177,16 @@
   // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
   const cur4Minutes = Math.floor(curTime / 240);
 
-  const fnCheckControl = (diff, objSec = {}) => {
+  const fnCheckControl = (diff) => {
     const iTime = curHours;
-    objSec.time = iTime;
-    objSec.rem = iTime % 4;
+    gob.cycle.time = iTime;
+    gob._times.rem = iTime % 4;
     // 累计已读少于 17 或者累计新增大于累计已读
-    if (diff.decr < 17 || diff.incr - diff.decr > 4) {
+    if (diff.decr < 17 || diff.incr - diff.decr >= 4) {
       return "default";
     }
-    // 每 4 小时且累计已读大于累计新增，或者累计新增过大（一般为初始运行时）
-    if ((iTime % 4 === 0 && diff.decr - diff.incr > 4) || gob._curStars - diff.incr < 4) {
+    // 每 4 小时且累计已读大于累计新增
+    if (iTime % 4 === 0 && diff.decr - diff.incr >= 4) {
       return "reset";
     }
     return "lock";
@@ -208,6 +207,15 @@
 
     // 星标变化计数
     const diff = gob._curStars - gob.data.lstStars;
+
+    // 写入新的星标数
+    gob.data.lstStars = gob._curStars;
+
+    // 初始化时直接返回
+    if (diff === gob._curStars) {
+      gob.save();
+      return;
+    }
 
     // 大于上一次记录
     if (diff > 0) {
@@ -230,8 +238,6 @@
       return false;
     })(gob.data.diffStars);
 
-    gob.data.lstStars = gob._curStars;
-
     // 更新 localStorage 存储
     if (diff !== 0 || strReset !== gob.data.bolReset.toString()) {
       gob.save();
@@ -242,7 +248,11 @@
   function fnColorStars() {
     // _log("fnColorStars", curTime, cur4Minutes);
 
-    const $stars = $na("div.content a");
+    const $stars = gob.$list;
+    const isLock = fnCheckControl(gob.data.diffStars);
+    if (isLock === "lock") {
+      $n(".list-entries").style.backgroundColor = "#ddd";
+    }
     let pickCount = 0;
     [].forEach.call($stars, function ($e, i) {
       // _log("fnColorStars", $e, i);
@@ -263,7 +273,7 @@
         $e.parentNode.parentNode.style.backgroundColor = "#ddd";
       } else {
         $e.parentNode.parentNode.style.backgroundColor = "transparent";
-        if (fnCheckControl(gob.data.diffStars) === "lock" || pickCount > 13) {
+        if (isLock === "lock" || pickCount > 13) {
           // console.log($e.parentNode.parentNode.classList);
           $e.parentNode.parentNode.style.backgroundColor = "#666";
         }

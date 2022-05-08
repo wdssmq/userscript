@@ -130,8 +130,8 @@ const fnCheckControl = (diff) => {
   if (diff.decr < 17 || diff.incr - diff.decr >= 4) {
     return "default";
   }
-  // 每 4 小时且累计已读大于累计新增，或者累计新增过大（一般为初始运行时）
-  if ((iTime % 4 === 0 && diff.decr - diff.incr >= 4) || gob._curStars - diff.incr <= 4) {
+  // 每 4 小时且累计已读大于累计新增
+  if (iTime % 4 === 0 && diff.decr - diff.incr >= 4) {
     return "reset";
   }
   return "lock";
@@ -153,6 +153,15 @@ function fnLaterControl() {
   // 星标变化计数
   const diff = gob._curStars - gob.data.lstStars;
 
+  // 写入新的星标数
+  gob.data.lstStars = gob._curStars;
+
+  // 初始化时直接返回
+  if (diff === gob._curStars) {
+    gob.save();
+    return;
+  }
+
   // 大于上一次记录
   if (diff > 0) {
     // 新增星标计数
@@ -173,8 +182,6 @@ function fnLaterControl() {
     }
     return false;
   })(gob.data.diffStars);
-
-  gob.data.lstStars = gob._curStars;
 
   // 更新 localStorage 存储
   if (diff !== 0 || strReset !== gob.data.bolReset.toString()) {
