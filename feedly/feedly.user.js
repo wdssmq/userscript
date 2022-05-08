@@ -179,8 +179,8 @@
 
   const fnCheckControl = (diff) => {
     const iTime = curHours;
-    gob.cycle.time = iTime;
-    gob._times.rem = iTime % 4;
+    gob._time.cycle = iTime;
+    gob._time.rem = iTime % 4;
     // 累计已读少于 17 或者累计新增大于累计已读
     if (diff.decr < 17 || diff.incr - diff.decr >= 4) {
       return "default";
