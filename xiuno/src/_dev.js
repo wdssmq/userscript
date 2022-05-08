@@ -1,5 +1,5 @@
 // _devView.js | 开发者申请查看
-import { $, curHref, lsObj, fnGetRequest, fnFormatTime } from './_base.js';
+import { $, curHref, lsObj, _log, fnGetRequest, fnFormatTime } from './_base.js';
 (() => {
   // CDN 地址替换
   function fnGetCDNUrl(url) {
@@ -62,14 +62,14 @@ import { $, curHref, lsObj, fnGetRequest, fnFormatTime } from './_base.js';
     },
     init: function (ymlList) {
       this.data = lsObj.getItem("gobDev", this.data);
-      console.log("gobDev init", this.data);
+      _log("gobDev init", this.data);
       this.ymlList = ymlList;
     },
     checkUrl: function (url) {
       let rlt = null;
       this.data.lstLogs.forEach(log => {
         if (log.url.indexOf(url) > -1) {
-          console.log("checkUrl", url, log.url);
+          _log("checkUrl", url, log.url);
           rlt = log;
         }
       });
@@ -155,7 +155,7 @@ import { $, curHref, lsObj, fnGetRequest, fnFormatTime } from './_base.js';
   // 标题内容解析
   title = title.replace(/\[|【/g, "「").replace(/\]|】/g, "」");
   const objMatch = title.match(/「([^」]+)」「(theme|plugin)」/);
-  console.log(objMatch);
+  _log("objMatch", objMatch);
   if (!objMatch) {
     return;
   }
@@ -170,7 +170,8 @@ import { $, curHref, lsObj, fnGetRequest, fnFormatTime } from './_base.js';
   date:
     - #date#
   reviewers:
-    - 沉冰浮水`;
+    - null
+`;
   // 构建 YML
   const styYML = fnStrtr(
     tplYML,
@@ -182,9 +183,9 @@ import { $, curHref, lsObj, fnGetRequest, fnFormatTime } from './_base.js';
     },
     (str) => {
       str = str.replace(/\n/g, "\\|");
-      str = str.replace(/\s{6}/g, "_2__2_");
-      str = str.replace(/\s{4}/g, "_2_");
-      str = str.replace(/_2_/g, "  ");
+      // str = str.replace(/\s{6}/g, "_2__2_");
+      // str = str.replace(/\s{4}/g, "_2_");
+      // str = str.replace(/_2_/g, "  ");
       str = str.replace(/\\\|/g, "\n");
       const objMatch = title.match(/(通过|拒绝)/);
       if (objMatch) {
