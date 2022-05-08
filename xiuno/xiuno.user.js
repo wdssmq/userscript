@@ -5,11 +5,14 @@
 // @description  对不合规的内容加密处理
 // @author       沉冰浮水
 // @link         https://greasyfork.org/zh-CN/scripts/419517
-// @link     ----------------------------
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
 // @link     https://github.com/wdssmq/userscript
 // @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @link     ----------------------------
+// @null     ----------------------------
 // @match        https://bbs.zblogcn.com/*
 // @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
 // @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js
@@ -20,6 +23,8 @@
 /* jshint esversion:6 */
 (function () {
   'use strict';
+
+  const gm_name = "xiuno";
 
   // 初始变量
   const $ = window.jQuery || unsafeWindow.jQuery;
@@ -38,6 +43,8 @@
       return def;
     },
   };
+  // 预置函数
+  const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
   // Get 封装
   function fnGetRequest(strURL, strData, fnCallback) {
     if (typeof strData === "function") {
@@ -197,14 +204,14 @@
       },
       init: function (ymlList) {
         this.data = lsObj.getItem("gobDev", this.data);
-        console.log("gobDev init", this.data);
+        _log("gobDev init", this.data);
         this.ymlList = ymlList;
       },
       checkUrl: function (url) {
         let rlt = null;
         this.data.lstLogs.forEach(log => {
           if (log.url.indexOf(url) > -1) {
-            console.log("checkUrl", url, log.url);
+            _log("checkUrl", url, log.url);
             rlt = log;
           }
         });
@@ -290,7 +297,7 @@
     // 标题内容解析
     title = title.replace(/\[|【/g, "「").replace(/\]|】/g, "」");
     const objMatch = title.match(/「([^」]+)」「(theme|plugin)」/);
-    console.log(objMatch);
+    _log("objMatch", objMatch);
     if (!objMatch) {
       return;
     }
@@ -305,7 +312,8 @@
   date:
     - #date#
   reviewers:
-    - 沉冰浮水`;
+    - null
+`;
     // 构建 YML
     const styYML = fnStrtr(
       tplYML,
@@ -317,9 +325,9 @@
       },
       (str) => {
         str = str.replace(/\n/g, "\\|");
-        str = str.replace(/\s{6}/g, "_2__2_");
-        str = str.replace(/\s{4}/g, "_2_");
-        str = str.replace(/_2_/g, "  ");
+        // str = str.replace(/\s{6}/g, "_2__2_");
+        // str = str.replace(/\s{4}/g, "_2_");
+        // str = str.replace(/_2_/g, "  ");
         str = str.replace(/\\\|/g, "\n");
         const objMatch = title.match(/(通过|拒绝)/);
         if (objMatch) {

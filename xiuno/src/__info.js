@@ -22,7 +22,7 @@ const gm_banner = `
 // @grant        GM_getValue
 // ==/UserScript==
 /* jshint esversion:6 */
-`.trim();
+`;
 
 const gm_name = "xiuno";
 
