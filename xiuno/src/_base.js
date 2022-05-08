@@ -1,3 +1,5 @@
+import { gm_name } from "./__info";
+
 // 初始变量
 const $ = window.jQuery || unsafeWindow.jQuery;
 const UM = window.UM || unsafeWindow.UM;
@@ -15,6 +17,8 @@ const lsObj = {
     return def;
   },
 };
+// 预置函数
+const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
 // Get 封装
 function fnGetRequest(strURL, strData, fnCallback) {
   if (typeof strData === "function") {
@@ -51,4 +55,5 @@ function fnFormatTime() {
     ""
   ).trim();
 }
-export { $, UM, curHref, lsObj, fnGetRequest, fnFormatTime };
+
+export { $, UM, curHref, lsObj, _log, fnGetRequest, fnFormatTime };
