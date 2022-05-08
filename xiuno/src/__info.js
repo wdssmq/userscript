@@ -1,4 +1,4 @@
-const banner = `
+const gm_banner = `
 // ==UserScript==
 // @name         「xiuno」管理工具（QQ 群：189574683）
 // @namespace    沉冰浮水
@@ -24,6 +24,6 @@ const banner = `
 /* jshint esversion:6 */
 `.trim();
 
-const name = "xiuno";
+const gm_name = "xiuno";
 
-export { banner, name };
+export { gm_banner, gm_name };
