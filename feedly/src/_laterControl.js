@@ -19,6 +19,10 @@ const gob = {
   // 非 ls 字段
   _loaded: false,
   _curStars: 0,
+  _time: {
+    cycle: 0,
+    rem: 0,
+  },
   // ls 字段
   data: {
     bolReset: false,
@@ -63,12 +67,8 @@ function fnLaterGetItems(obj) {
 
 // 收藏数 View
 function fnLaterViewStars() {
-  const objTime = {
-    time: 0,
-    rem: 0,
-  };
   gob._curStars = fnLaterGetItems(gob);
-  const strText = `Read later（${gob._curStars} 丨 -${gob.data.diffStars.decr} 丨 +${gob.data.diffStars.incr}）（${objTime.time} - ${objTime.rem}）`;
+  const strText = `Read later（${gob._curStars} 丨 -${gob.data.diffStars.decr} 丨 +${gob.data.diffStars.incr}）（${gob._time.cycle} - ${gob._time.rem}）`;
   $n("h1 #header-title").innerHTML = strText;
   if ($n("header.header h2")) {
     $n("header.header h2").innerHTML = strText;
@@ -122,10 +122,10 @@ const curHours = Math.floor(curTime / 3600);
 // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
 const cur4Minutes = Math.floor(curTime / 240);
 
-const fnCheckControl = (diff, objSec = {}) => {
+const fnCheckControl = (diff) => {
   const iTime = curHours;
-  objSec.time = iTime;
-  objSec.rem = iTime % 4;
+  gob.cycle.time = iTime;
+  gob._times.rem = iTime % 4;
   // 累计已读少于 17 或者累计新增大于累计已读
   if (diff.decr < 17 || diff.incr - diff.decr >= 4) {
     return "default";
