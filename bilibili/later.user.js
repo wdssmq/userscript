@@ -209,14 +209,17 @@
     arrList.forEach(function (e, i) {
       const serial = i + 1;
       // _log(e);
-      const title = e.title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
+      let title = e.title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
+      title = title.replace(/["'\s]/g, "");
       const href = e.href || e.url;
       // echo [InternetShortcut] > "*.url"
       // echo "URL=*" >> "*.url"
       strRlt += `echo [InternetShortcut] > "${serial}-${title}.url"\n`;
       strRlt += `echo "URL=${href}" >> "${serial}-${title}.url"\n`;
     });
-    strRlt += "exit\n\n";
+    {
+      strRlt += "exit\n\n";
+    }
     // strRlt = strRlt.replace(/\/\/\//g, "//www.bilibili.com/");
     //_log(strRlt);
     return strRlt;
@@ -239,9 +242,6 @@
         console.error(err);
       },
     });
-    // $.get("https://api.bilibili.com/x/v2/history/toview/web", function (data) {
-    //   _log(data);
-    // });
   }
 
   // 导出稍后再看为 .lnk 文件
@@ -257,7 +257,7 @@
           });
           // _log(item, index);
         });
-        _log("稍后再见",arrRlt.length);
+        _log("稍后再看", arrRlt.length);
         // 注册点击复制
         fnCopy("span.t", fnMKShell(arrRlt));
       });
