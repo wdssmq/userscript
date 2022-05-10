@@ -1,22 +1,4 @@
-import { curUrl, curDate, _log, $n, fnElChange } from './_base.js';
-
-// cookie 封装
-const ckeObj = {
-  setItem: function (key, value) {
-    const Days = 137;
-    const exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
-  },
-  getItem: function (key, def = "") {
-    const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
-    const arr = document.cookie.match(reg);
-    if (arr) {
-      return decodeURIComponent(arr[2]);
-    }
-    return def;
-  }
-};
+import { curUrl, curDate, _log, $n, ckeObj, fnElChange, } from './_base.js';
 
 // 日期转字符串
 const getDateStr = (date) => {
@@ -67,7 +49,7 @@ const diffDateDays = (date1, date2) => {
         return true;
       }
     } else {
-      fnElChange($n("#app"), fnCheckByDOM);
+      fnElChange($n("body"), fnCheckByDOM);
     }
     return false;
   }

@@ -19,6 +19,23 @@ function $n(e) {
 function $na(e) {
   return document.querySelectorAll(e);
 }
+// cookie 封装
+const ckeObj = {
+  setItem: function (key, value) {
+    const Days = 137;
+    const exp = new Date();
+    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+    document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
+  },
+  getItem: function (key, def = "") {
+    const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
+    const arr = document.cookie.match(reg);
+    if (arr) {
+      return decodeURIComponent(arr[2]);
+    }
+    return def;
+  }
+};
 // 元素变化监听
 const fnElChange = (el, fn = () => { }) => {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
@@ -36,18 +53,27 @@ const fnElChange = (el, fn = () => { }) => {
     subtree: true,
   });
 }
+// 点击指定元素复制内容
+function fnCopy(eTrig, content) {
+  $n(eTrig).addEventListener("click", function (e) {
+    GM_setClipboard(content);
+    this.style.color = "gray";
+  });
+}
 // ---------------------------------------------------
 export {
   curUrl,
   curDate,
   _curUrl,
-  // _curDate,
-  // _sleep,
+  _curDate,
+  _sleep,
   _log,
-  // _warn,
-  // _error,
+  _warn,
+  _error,
   // $,
   $n,
   $na,
+  ckeObj,
   fnElChange,
+  fnCopy,
 };
