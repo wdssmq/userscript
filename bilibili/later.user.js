@@ -41,24 +41,6 @@
   function $n(e) {
     return document.querySelector(e);
   }
-  // 元素变化监听
-  const fnElChange = (el, fn = () => { }) => {
-    const observer = new MutationObserver((mutationRecord, mutationObserver) => {
-      // _log('body attributes changed!!!'); // body attributes changed!!!
-      // _log('mutationRecord = ', mutationRecord); // [MutationRecord]
-      // _log('mutationObserver === observer', mutationObserver === observer); // true
-      fn(mutationRecord, mutationObserver);
-      mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
-    });
-    observer.observe(el, {
-      // attributes: false,
-      // attributeFilter: ["class"],
-      childList: true,
-      // characterData: false,
-      subtree: true,
-    });
-  };
-
   // cookie 封装
   const ckeObj = {
     setItem: function (key, value) {
@@ -76,6 +58,30 @@
       return def;
     }
   };
+  // 元素变化监听
+  const fnElChange = (el, fn = () => { }) => {
+    const observer = new MutationObserver((mutationRecord, mutationObserver) => {
+      // _log('body attributes changed!!!'); // body attributes changed!!!
+      // _log('mutationRecord = ', mutationRecord); // [MutationRecord]
+      // _log('mutationObserver === observer', mutationObserver === observer); // true
+      fn(mutationRecord, mutationObserver);
+      mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
+    });
+    observer.observe(el, {
+      // attributes: false,
+      // attributeFilter: ["class"],
+      childList: true,
+      // characterData: false,
+      subtree: true,
+    });
+  };
+  // 点击指定元素复制内容
+  function fnCopy(eTrig, content) {
+    $n(eTrig).addEventListener("click", function (e) {
+      GM_setClipboard(content);
+      this.style.color = "gray";
+    });
+  }
 
   // 日期转字符串
   const getDateStr = (date) => {
@@ -126,7 +132,7 @@
           return true;
         }
       } else {
-        fnElChange($n("#app"), fnCheckByDOM);
+        fnElChange($n("body"), fnCheckByDOM);
       }
       return false;
     };
@@ -149,23 +155,114 @@
   // 番剧链接改为我的追番
   (() => {
     let isDone = false;
+    // 获取 uid
+    const getUidByUrlOrCookie = (url) => {
+      let uid = null;
+      const match = url.match(/\d+/);
+      if (match) {
+        uid = match[0];
+        ckeObj.setItem("bilibili-helper-uid", uid);
+      } else {
+        uid = ckeObj.getItem("bilibili-helper-uid");
+      }
+      return uid;
+    };
+    // 更新链接
     const fnCheckByDOM = () => {
       if (!isDone) {
-        fnElChange($n("#app"), fnCheckByDOM);
+        fnElChange($n("body"), fnCheckByDOM);
       }
       const $pick = $n("a[href$='/anime/']");
-      const $pick2 = $n("a[href^='//space']");
-      // console.log($pick, $pick2);
-      if (null === $pick || null === $pick2) {
+      // const $pick2 = $n("a[href^='//space']");
+      const $pick2 = $n("a.header-entry-avatar");
+      // _log($pick, $pick2);
+
+      let usrUrl = $pick2 ? $pick2.href : "";
+      const uid = getUidByUrlOrCookie(usrUrl);
+      if (!$pick || !uid) {
         return;
       }
-      const uid = $pick2.href.match(/\d+/)[0];
       const url = `https://space.bilibili.com/${uid}/bangumi`;
       $pick.href = url;
       _log("番剧链接改为我的追番", url);
       isDone = true;
     };
     fnCheckByDOM();
+  })();
+
+  // 构造 Bash Shell 脚本
+  function fnMKShell(arrList) {
+    const today = new Date(); // 获得当前日期
+    const year = today.getFullYear(); // 获得年份
+    const month = today.getMonth() + 1; // 此方法获得的月份是从0---11，所以要加1才是当前月份
+    const day = today.getDate(); // 获得当前日期
+    const arrDate = [year, month, day];
+    let strRlt =
+      'if [ ! -d "bilibili-foldername" ]; then\n' +
+      "mkdir bilibili-foldername\n" +
+      "fi\n" +
+      "cd bilibili-foldername\n";
+    strRlt = strRlt.replace(/foldername/g, arrDate.join("-"));
+    /**
+     * e {title:"",href:""}
+     */
+    arrList.forEach(function (e, i) {
+      const serial = i + 1;
+      // _log(e);
+      const title = e.title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
+      const href = e.href || e.url;
+      // echo [InternetShortcut] > "*.url"
+      // echo "URL=*" >> "*.url"
+      strRlt += `echo [InternetShortcut] > "${serial}-${title}.url"\n`;
+      strRlt += `echo "URL=${href}" >> "${serial}-${title}.url"\n`;
+    });
+    strRlt += "exit\n\n";
+    // strRlt = strRlt.replace(/\/\/\//g, "//www.bilibili.com/");
+    //_log(strRlt);
+    return strRlt;
+    //$("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
+  }
+
+  // Ajax 封装
+  function fnGetAjax(callback = function () { }) {
+    $.ajax({
+      url: "https://api.bilibili.com/x/v2/history/toview/web",
+      type: "GET",
+      xhrFields: {
+        withCredentials: true, // 这里设置了withCredentials
+      },
+      success: function (data) {
+        // _log();
+        callback(data.data.list);
+      },
+      error: function (err) {
+        console.error(err);
+      },
+    });
+    // $.get("https://api.bilibili.com/x/v2/history/toview/web", function (data) {
+    //   _log(data);
+    // });
+  }
+
+  // 导出稍后再看为 .lnk 文件
+  (function () {
+    if (/#\/list|#\/video/g.test(location.href)) {
+      fnGetAjax(function (list) {
+        const arrRlt = [];
+        list.forEach((item, index) => {
+          arrRlt.push({
+            title: item.title,
+            href: `https://www.bilibili.com/video/${item.bvid}`,
+            bvid: item.bvid,
+          });
+          // _log(item, index);
+        });
+        _log("稍后再见",arrRlt.length);
+        // 注册点击复制
+        fnCopy("span.t", fnMKShell(arrRlt));
+      });
+      return false;
+    }
   })();
 
 })();
