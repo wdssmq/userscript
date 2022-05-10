@@ -243,9 +243,9 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
 
 --------
 
-name：「bilibili」- 稍后再看导出为.url
+name：「bilibili」大会员 B 币领取提醒
 
-desc：将 B 站的稍后再看列表导出为 *.url 文件
+desc：B 币领取提醒、稍后再看列表导出为 *.url 等
 
 url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
 
