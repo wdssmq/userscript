@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name        「其他」海腾之眼（贴吧防和谐）【停止维护】
 // @namespace   漆黒の翼
-// @version     1.3.5
 // @author      漆黒の翼
+// @version     1.3.6
 // @description 对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
+// @license     MIT
 // @link        https://greasyfork.org/zh-CN/scripts/24864
 // @null     ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
@@ -17,8 +18,8 @@
 // @include     http://tieba.baidu.com/*
 // @grant       none
 // ==/UserScript==
-/*jshint multistr: true */
-/*jshint esversion:6 */
+/* jshint multistr: true */
+/* jshint esversion:6 */
 (function () {
   function $n(e) {
     return document.querySelector(e);
