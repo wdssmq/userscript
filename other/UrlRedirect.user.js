@@ -30,10 +30,20 @@
   const _warn = (...args) => console.warn("[GM_]链接跳转助手\n", ...args);
   const _error = (...args) => console.error("[GM_链接跳转助手]\n", ...args);
 
+  // 获取链接中的参数
   function fnGetParamInUrl(name, url) {
     const match = RegExp('[?&]' + name + '=(?<value>[^&]*)').exec(url);
     return match && decodeURIComponent(match.groups.value);
   }
+
+  // 监测网址是否带有协议
+  function fnCheckUrl(url) {
+    if (url.indexOf("http") === 0) {
+      return url;
+    }
+    return "http://" + url;
+  }
+
 
   // 各种中转页跳过
   (() => {
@@ -41,8 +51,9 @@
       'pfurl',
     ]
     arrParamName.forEach((paramName) => {
-      const paramValue = fnGetParamInUrl(paramName, curUrl);
+      let paramValue = fnGetParamInUrl(paramName, curUrl);
       if (paramValue) {
+        paramValue = fnCheckUrl(paramValue);
         // _log(`${paramName}=${paramValue}`);
         window.location.href = paramValue;
       }
