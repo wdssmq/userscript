@@ -16,7 +16,7 @@
 // @grant        GM_addStyle
 // ==/UserScript==
 
-/** jshint esversion:6 **/
+/* jshint esversion:6 */
 (function () {
   "use strict";
 
