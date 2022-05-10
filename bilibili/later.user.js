@@ -1,16 +1,19 @@
 
 // ==UserScript==
-// @name         「bilibili」- 稍后再看导出为.url
+// @name         「bilibili」大会员 B 币领取提醒
 // @namespace    wdssmq.com
-// @version      0.2
+// @version      0.3
 // @author       沉冰浮水
-// @description  将 B 站的稍后再看列表导出为 *.url 文件
+// @description  B 币领取提醒、稍后再看列表导出为 *.url 等
 // @url          https://greasyfork.org/scripts/398415
-// ----------------------------
-// @link     https://afdian.net/@wdssmq
+// @null     ----------------------------
+// @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
+// @contributionAmount 5.93
+// @null     ----------------------------
 // @link     https://github.com/wdssmq/userscript
+// @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// ----------------------------
+// @null     ----------------------------
 // @include      https://www.bilibili.com/*
 // @include      https://t.bilibili.com/*
 // @include      https://manga.bilibili.com/account-center*
