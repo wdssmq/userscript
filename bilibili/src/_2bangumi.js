@@ -1,19 +1,35 @@
-import { _log, $n, fnElChange } from './_base';
+import { _log, $n, ckeObj, fnElChange } from './_base';
 
 // 番剧链接改为我的追番
 (() => {
   let isDone = false;
+  // 获取 uid
+  const getUidByUrlOrCookie = (url) => {
+    let uid = null;
+    const match = url.match(/\d+/);
+    if (match) {
+      uid = match[0];
+      ckeObj.setItem("bilibili-helper-uid", uid);
+    } else {
+      uid = ckeObj.getItem("bilibili-helper-uid");
+    }
+    return uid;
+  }
+  // 更新链接
   const fnCheckByDOM = () => {
     if (!isDone) {
-      fnElChange($n("#app"), fnCheckByDOM);
+      fnElChange($n("body"), fnCheckByDOM);
     }
     const $pick = $n("a[href$='/anime/']");
-    const $pick2 = $n("a[href^='//space']");
-    // console.log($pick, $pick2);
-    if (null === $pick || null === $pick2) {
+    // const $pick2 = $n("a[href^='//space']");
+    const $pick2 = $n("a.header-entry-avatar");
+    // _log($pick, $pick2);
+
+    let usrUrl = $pick2 ? $pick2.href : "";
+    const uid = getUidByUrlOrCookie(usrUrl);
+    if (!$pick || !uid) {
       return;
     }
-    const uid = $pick2.href.match(/\d+/)[0];
     const url = `https://space.bilibili.com/${uid}/bangumi`;
     $pick.href = url;
     _log("番剧链接改为我的追番", url);
