@@ -19,6 +19,7 @@ const lsObj = {
 };
 // 预置函数
 const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
+const _hash = () => location.hash.replace("#", "");
 // Get 封装
 function fnGetRequest(strURL, strData, fnCallback) {
   if (typeof strData === "function") {
@@ -56,4 +57,4 @@ function fnFormatTime() {
   ).trim();
 }
 
-export { $, UM, curHref, lsObj, _log, fnGetRequest, fnFormatTime };
+export { $, UM, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime };

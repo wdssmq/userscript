@@ -1,5 +1,5 @@
 // _devView.js | 开发者申请查看
-import { $, curHref, lsObj, _log, fnGetRequest, fnFormatTime } from './_base.js';
+import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_base.js';
 (() => {
   // CDN 地址替换
   function fnGetCDNUrl(url) {
@@ -63,6 +63,10 @@ import { $, curHref, lsObj, _log, fnGetRequest, fnFormatTime } from './_base.js'
     init: function (ymlList) {
       this.data = lsObj.getItem("gobDev", this.data);
       _log("gobDev init", this.data);
+      if (_hash() === "clear") {
+        _log("gobDev clear");
+        this.data.lstCheck = null;
+      }
       this.ymlList = ymlList;
     },
     checkUrl: function (url) {

@@ -1,3 +1,4 @@
+
 // ==UserScript==
 // @name         「xiuno」管理工具（QQ 群：189574683）
 // @namespace    沉冰浮水
@@ -21,6 +22,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 /* jshint esversion:6 */
+
 (function () {
   'use strict';
 
@@ -45,6 +47,7 @@
   };
   // 预置函数
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
+  const _hash = () => location.hash.replace("#", "");
   // Get 封装
   function fnGetRequest(strURL, strData, fnCallback) {
     if (typeof strData === "function") {
@@ -205,6 +208,10 @@
       init: function (ymlList) {
         this.data = lsObj.getItem("gobDev", this.data);
         _log("gobDev init", this.data);
+        if (_hash() === "clear") {
+          _log("gobDev clear");
+          this.data.lstCheck = null;
+        }
         this.ymlList = ymlList;
       },
       checkUrl: function (url) {
