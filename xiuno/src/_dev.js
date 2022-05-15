@@ -63,10 +63,6 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     init: function (ymlList) {
       this.data = lsObj.getItem("gobDev", this.data);
       _log("gobDev init", this.data);
-      if (_hash() === "clear") {
-        _log("gobDev clear");
-        this.data.lstCheck = null;
-      }
       this.ymlList = ymlList;
     },
     checkUrl: function (url) {
@@ -78,6 +74,10 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
         }
       });
       return rlt;
+    },
+    clear: function () {
+      this.data.lstLogs = [];
+      lsObj.setItem("gobDev", this.data);
     },
     save: function () {
       lsObj.setItem("gobDev", this.data);
@@ -102,6 +102,11 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
         });
       });
     }
+  }
+  if (_hash() === "clear") {
+    gobDev.clear();
+    window.location.href = curHref();
+    _log("gobDev clear");
   }
   gobDev.init(ymlList);
   gobDev.update();
