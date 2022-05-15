@@ -291,6 +291,8 @@
     const log = gobDev.checkUrl(curHref);
     _setBadge(log, $h4, "append");
 
+    _log('curLog', log);
+
     // 初始化
     $("div.message").each(function () {
       if ($(this).attr("isfirst") == 1) {
@@ -313,13 +315,13 @@
     const tplYML = `
 - id: #id#
   type: #type#
-  status: 进行中
-  rating:
+  status: #status#
+  rating: #rating#
   url: #url#
   date:
     - #date#
   reviewers:
-    - null
+    - #reviewers#
 `;
     // 构建 YML
     const styYML = fnStrtr(
@@ -327,14 +329,18 @@
       {
         id: objMatch[1],
         type: objMatch[2],
+        status: log ? log.status : "进行中",
+        rating: log ? log.rating : "",
         url: curHref,
-        date: fnFormatTime(),
+        date: log ? log.date[0] : fnFormatTime(),
+        reviewers: log ? log.reviewers.join("\n_4_- ") : 'null'
       },
       (str) => {
         str = str.replace(/\n/g, "\\|");
         // str = str.replace(/\s{6}/g, "_2__2_");
         // str = str.replace(/\s{4}/g, "_2_");
-        // str = str.replace(/_2_/g, "  ");
+        str = str.replace(/_4_/g, "_2__2_");
+        str = str.replace(/_2_/g, "  ");
         str = str.replace(/\\\|/g, "\n");
         const objMatch = title.match(/(通过|拒绝)/);
         if (objMatch) {
