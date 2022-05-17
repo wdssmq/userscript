@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」链接跳转
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      0.2
 // @author       沉冰浮水
 // @description  跳转到正确的链接
 // @license      MIT
@@ -16,7 +16,6 @@
 // @noframes
 // @match        https://jump.bdimg.com/f?kw=*
 // @match        https://c.pc.qq.com/middlem.html?pfurl=*
-// @icon         https://www.google.com/s2/favicons?domain=bdimg.com
 // @grant        none
 // ==/UserScript==
 
