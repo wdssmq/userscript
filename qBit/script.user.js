@@ -13,7 +13,7 @@
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
 // @match        http://127.0.0.1:8080/
-// @require      https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js
+// @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js
 // @grant        GM_xmlhttpRequest
 // jshint        esversion:6
 // ==/UserScript==
