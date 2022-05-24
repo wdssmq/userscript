@@ -49,7 +49,7 @@
   }
   function fnGetCDNUrl(url) {
     const arrMap = [
-      ["https://github.com/", "https://cdn.jsdelivr.net/gh/"],
+      ["https://github.com/", "https://fastly.jsdelivr.net/gh/"],
       ["/blob/", "@"]
     ]
     let cdnUrl = url;
