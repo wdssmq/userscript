@@ -250,7 +250,7 @@
     };
     if (_hash() === "clear") {
       gobDev.clear();
-      window.location.href = curHref();
+      window.location.href = _curHref();
       _log("gobDev clear");
     }
     gobDev.init(ymlList);
