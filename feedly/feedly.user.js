@@ -245,7 +245,7 @@
   }
 
   // 按规则给星标条目着色
-  function fnColorStars() {
+  function fnColorStars(offset = 0) {
     // _log("fnColorStars", curTime, cur4Minutes);
 
     const $stars = gob.$list;
@@ -263,8 +263,8 @@
 
       // _log("fnColorStars", href, hash);
 
-      const intNum = parseInt(hash + cur4Minutes + i);
-      // const intNum = parseInt(i + cur4Minutes);
+      // const intNum = parseInt(hash + cur4Minutes + i);
+      const intNum = parseInt(hash + cur4Minutes + offset);
 
       // _log("fnColorStars", intNum, intNum % 4);
 
@@ -273,12 +273,15 @@
         $e.parentNode.parentNode.style.backgroundColor = "#ddd";
       } else {
         $e.parentNode.parentNode.style.backgroundColor = "transparent";
-        if (isLock === "lock" || pickCount > 13) {
+        if (isLock === "lock" || pickCount > 7) {
           // console.log($e.parentNode.parentNode.classList);
           $e.parentNode.parentNode.style.backgroundColor = "#666";
         }
       }
     });
+    if (pickCount <= 4) {
+      fnColorStars(offset + 1);
+    }
   }
 
   // 星标文章导出为 *.url 文件
