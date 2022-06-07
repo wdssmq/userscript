@@ -1,4 +1,4 @@
-import { curDate, _curUrl, _log, $n, $na, fnElChange } from "./_base";
+import { curDate, _curUrl, _log, $n, $na, fnElChange, fnFindDomUp } from "./_base";
 
 // localStorage 封装
 const lsObj = {
@@ -196,14 +196,15 @@ function fnColorStars(offset = 0) {
   const $stars = gob.$list;
   const isLock = fnCheckControl(gob.data.diffStars);
   if (isLock === "lock") {
-    $n(".list-entries").style.backgroundColor = "#ddd";
+    $n(".list-entries").style.backgroundColor = "#666";
   }
   let pickCount = 0;
   [].forEach.call($stars, function ($e, i) {
     // _log("fnColorStars", $e, i);
     // _log("fnColorStars", "==============================");
 
-    const href = $e.href;
+    const $ago = fnFindDomUp($e, ".ago", 2);
+    const href = $e.href + $ago.innerHTML;
     const hash = parseInt(href.replace(/\D/g, ""));
 
     // _log("fnColorStars", href, hash);
@@ -211,9 +212,8 @@ function fnColorStars(offset = 0) {
     // const intNum = parseInt(hash + cur4Minutes + i);
     const intNum = parseInt(hash + cur4Minutes + offset);
 
-    // _log("fnColorStars", intNum, intNum % 4);
-
     if (intNum % 4 === 0) {
+      // _log("fnColorStars", intNum, intNum % 4);
       pickCount++;
       $e.parentNode.parentNode.style.backgroundColor = "#ddd";
     } else {

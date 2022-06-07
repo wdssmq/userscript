@@ -54,6 +54,22 @@
       subtree: true,
     });
   };
+  function fnFindDomUp(el, selector, up = 1) {
+    // _log("fnFindDomUp", el, selector, up);
+    const elParent = el.parentNode;
+    if (selector.indexOf(".") == 0 && elParent.className.indexOf(selector.split(".")[1]) > -1) {
+      return elParent;
+    }
+    const elFind = elParent.parentNode.querySelector(selector);
+    if (elFind) {
+      return elFind;
+    }
+    if (up > 1) {
+      return fnFindDomUp(elParent, selector, up - 1);
+    } else {
+      return null;
+    }
+  }
 
   // localStorage 封装
   const lsObj = {
@@ -251,14 +267,15 @@
     const $stars = gob.$list;
     const isLock = fnCheckControl(gob.data.diffStars);
     if (isLock === "lock") {
-      $n(".list-entries").style.backgroundColor = "#ddd";
+      $n(".list-entries").style.backgroundColor = "#666";
     }
     let pickCount = 0;
     [].forEach.call($stars, function ($e, i) {
       // _log("fnColorStars", $e, i);
       // _log("fnColorStars", "==============================");
 
-      const href = $e.href;
+      const $ago = fnFindDomUp($e, ".ago", 2);
+      const href = $e.href + $ago.innerHTML;
       const hash = parseInt(href.replace(/\D/g, ""));
 
       // _log("fnColorStars", href, hash);
@@ -266,9 +283,8 @@
       // const intNum = parseInt(hash + cur4Minutes + i);
       const intNum = parseInt(hash + cur4Minutes + offset);
 
-      // _log("fnColorStars", intNum, intNum % 4);
-
       if (intNum % 4 === 0) {
+        // _log("fnColorStars", intNum, intNum % 4);
         pickCount++;
         $e.parentNode.parentNode.style.backgroundColor = "#ddd";
       } else {
