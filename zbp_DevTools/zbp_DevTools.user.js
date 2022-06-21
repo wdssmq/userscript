@@ -18,6 +18,7 @@
 // @match     https://app.zblogcn.com/zb_system/admin/edit.php*id=*
 // @match     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php*
 // @match     https://app.zblogcn.com/?id=*
+// @match     https://user.zblogcn.com/trade/money/payout
 // @grant        none
 // ==/UserScript==
 
@@ -31,10 +32,35 @@
   // ---------------------------------------------------
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
   // ---------------------------------------------------
-  const $ = window.$ || unsafeWindow.$;
+  let $ = null;
+  try {
+    $ = window.$ || unsafeWindow.$;
+  } catch (e) {
+    // _error(e);
+  }
+  function $n(e) {
+    return document.querySelector(e);
+  }
+  // ---------------------------------------------------
+  const fnElChange = (el, fn = () => { }) => {
+    const observer = new MutationObserver((mutationRecord, mutationObserver) => {
+      // _log('mutationRecord = ', mutationRecord);
+      // _log('mutationObserver === observer', mutationObserver === observer);
+      fn(mutationRecord, mutationObserver);
+      // mutationObserver.disconnect();
+    });
+    observer.observe(el, {
+      // attributes: false,
+      // attributeFilter: ["class"],
+      childList: true,
+      // characterData: false,
+      subtree: true,
+    });
+  };
 
   // 前台编辑链接
   (() => {
+    if ($ === null) return;
     if ($(".app-content").text() === "") return false;
     const edtLink =
       "https://app.zblogcn.com/zb_system/admin/edit.php" +
@@ -66,6 +92,7 @@
 
   // Ajax 回显自动审核
   (() => {
+    if ($ === null) return;
     let $p = $("#response3 dl p");
     if ($p.length == 0 || $p.find("a").length == 1) {
       return;
@@ -102,6 +129,7 @@
   })();
 
   (() => {
+    if ($ === null) return;
     // 移除指定的节点
     function fnHide(t = "") {
       let curHtml;
@@ -202,7 +230,8 @@
                   // 订单计数
                   gob.intCount++;
                   // 匹配金额字符串
-                  let mltAMT = curHtml.match(/<td>￥([^<]+)<\/td>/);
+                  // let mltAMT = curHtml.match(/<td>￥([^<]+)<\/td>/);
+                  let mltAMT = curHtml.match(/<td>￥[^<]+\(([^<]+)\)<\/td>/);
                   // 金额累加
                   gob.add(mltAMT[1]);
                   // 添加节点
@@ -246,6 +275,17 @@
       const search = $("#search").val();
       // alert(search);
       fnSearch(search);
+    });
+  })();
+
+  (() => {
+    const $body = $n('body');
+    fnElChange($body, (mutationRecord, mutationObserver) => {
+      const $input = $n('.ivu-input-number-input');
+      const $amt = $n('.ivu-alert-message p b');
+      if ($input === null) return;
+      $input.value = $amt.innerText;
+      mutationObserver.disconnect();
     });
   })();
 
