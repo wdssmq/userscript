@@ -133,6 +133,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/qBit/script.user.js
 
 --------
 
+name：「Z-Blog」开发者工具（应用中心）
+
+desc：含订单搜索，附带隐藏未付订单，应用审核回显；
+
+url：https://github.com/wdssmq/userscript/blob/master/zbp_DevTools/zbp_DevTools.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_DevTools/zbp_DevTools.user.js
+
+--------
+
 name：「Z-Blog」Logo 生成
 
 desc：自动叠加历史图标制作新的图片
@@ -290,16 +300,6 @@ desc：用于辅助设置促销选项
 url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/promotion.user.js
 
 cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/promotion.user.js
-
---------
-
-name：「Z-Blog」开发者工具（应用中心）
-
-desc：含搜索订单，附带隐藏未付订单，应用审核回显；
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/DevTools.user.js
 
 --------
 
