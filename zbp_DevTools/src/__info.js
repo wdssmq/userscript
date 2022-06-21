@@ -18,6 +18,7 @@ const gm_banner = `
 // @match     https://app.zblogcn.com/zb_system/admin/edit.php*id=*
 // @match     https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php*
 // @match     https://app.zblogcn.com/?id=*
+// @match     https://user.zblogcn.com/trade/money/payout
 // @grant        none
 // ==/UserScript==
 
