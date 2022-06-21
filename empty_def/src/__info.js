@@ -18,6 +18,7 @@ const gm_banner = `
 // @match        <$URL$>
 // @grant        none
 // ==/UserScript==
+
 /* jshint esversion: 6 */
 `;
 
