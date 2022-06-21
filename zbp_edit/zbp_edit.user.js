@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name         「Z-Blog」前台编辑文章入口
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      0.3
 // @author       沉冰浮水
 // @description  配合主题以显示前台编辑入口
 // @license      MIT
