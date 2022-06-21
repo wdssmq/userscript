@@ -12,7 +12,12 @@ const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
 const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
 const _error = (...args) => console.error(`[${gm_name}]\n`, ...args);
 // ---------------------------------------------------
-const $ = window.$ || unsafeWindow.$;
+let $ = null;
+try {
+  $ = window.$ || unsafeWindow.$;
+} catch (e) {
+  // _error(e);
+}
 function $n(e) {
   return document.querySelector(e);
 }

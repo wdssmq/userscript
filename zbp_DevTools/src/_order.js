@@ -1,6 +1,7 @@
 import { _log, $ } from './_base';
 
 (() => {
+  if ($ === null) return;
   // 移除指定的节点
   function fnHide(t = "") {
     let curHtml;

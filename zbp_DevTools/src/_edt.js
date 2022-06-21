@@ -1,6 +1,7 @@
 import { _log, $ } from './_base';
 // 前台编辑链接
 (() => {
+  if ($ === null) return;
   if ($(".app-content").text() === "") return false;
   const edtLink =
     "https://app.zblogcn.com/zb_system/admin/edit.php" +

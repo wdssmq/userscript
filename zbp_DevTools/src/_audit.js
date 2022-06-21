@@ -2,6 +2,7 @@ import { _log, $ } from './_base';
 
 // Ajax 回显自动审核
 (() => {
+  if ($ === null) return;
   let $p = $("#response3 dl p");
   if ($p.length == 0 || $p.find("a").length == 1) {
     return;
