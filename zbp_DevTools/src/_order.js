@@ -101,7 +101,8 @@ import { _log, $ } from './_base';
                 // 订单计数
                 gob.intCount++;
                 // 匹配金额字符串
-                let mltAMT = curHtml.match(/<td>￥([^<]+)<\/td>/);
+                // let mltAMT = curHtml.match(/<td>￥([^<]+)<\/td>/);
+                let mltAMT = curHtml.match(/<td>￥[^<]+\(([^<]+)\)<\/td>/);
                 // 金额累加
                 gob.add(mltAMT[1]);
                 // 添加节点
