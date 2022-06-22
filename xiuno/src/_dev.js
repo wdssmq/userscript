@@ -104,8 +104,9 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     }
   }
   if (_hash() === "clear") {
+    // alert("clear");
     gobDev.clear();
-    window.location.href = _curHref();
+    window.location.href = curHref;
     _log("gobDev clear");
   }
   gobDev.init(ymlList);
