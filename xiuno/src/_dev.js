@@ -113,16 +113,26 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
   gobDev.update();
 
   // 根据 log 数据设置状态徽章
-  const _setBadge = function (log, $item = null, act = "after") {
+  const _setBadge = (log, $item = null, act = "after") => {
     // console.log("log", log);
-    let $badge = null;
-    if (log && log.status === "通过") {
-      $badge = $(`<span class="badge badge-success">${log.status}</span>`);
-    } else if (log) {
-      $badge = $(`<span class="badge badge-primary">${log.status}</span>`);
-    } else {
-      $badge = $(`<span class="badge badge-warning">未记录</span>`);
+    let badgeClass, $badge;
+    const status = log?.status || "未记录";
+    switch (status) {
+      case "通过":
+        badgeClass = 'badge-success';
+        break;
+      case "进行中":
+        badgeClass = 'badge-info';
+        break;
+      case "拒绝":
+        badgeClass = 'badge-danger';
+        break;
+      default:
+        badgeClass = 'badge-warning';
+        break;
     }
+    $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
+
     if (act === "after") {
       $item.after($badge);
     } else {
