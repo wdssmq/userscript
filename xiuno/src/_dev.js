@@ -103,14 +103,34 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
       });
     }
   }
-  if (_hash() === "clear") {
-    // alert("clear");
-    gobDev.clear();
-    window.location.href = curHref;
-    _log("gobDev clear");
-  }
+
   gobDev.init(ymlList);
   gobDev.update();
+
+  // 缓存清理封装
+  const _clearAct = (doClear = false) => {
+    const curHash = _hash();
+    if (curHash === "clearDone") {
+      window.location.href = `${curHref}`;
+      // window.location.reload();
+    } else if (doClear || curHash === "clear") {
+      gobDev.clear();
+      window.location.href = `${curHref}#clearDone`;
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  }
+  // 默认调用一次用于清后的跳转
+  _clearAct();
+
+  // 缓存清理按钮
+  const $btnClear = $(`<span class="small"><a href="javascript:;" title="清理缓存" class="badge badge-warning">清理缓存</a></span>`);
+  $btnClear.on("click", function () {
+    if (confirm("清理缓存？")) {
+      _clearAct(1);
+    }
+  });
 
   // 根据 log 数据设置状态徽章
   const _setBadge = (log, $item = null, act = "after") => {
@@ -134,9 +154,12 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
 
     if (act === "after") {
-      $item.after($badge);
+      // $item.after($badge);
+      $item.after($btnClear);
     } else {
       $item.append($badge);
+      $item.append(" ");
+      $item.append($btnClear);
     }
   }
 
