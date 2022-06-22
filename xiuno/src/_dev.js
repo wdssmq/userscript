@@ -154,8 +154,8 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
 
     if (act === "after") {
-      // $item.after($badge);
-      $item.after($btnClear);
+      $item.after($badge);
+      // $item.after($btnClear);
     } else {
       $item.append($badge);
       $item.append(" ");

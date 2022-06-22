@@ -299,8 +299,8 @@
       $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
 
       if (act === "after") {
-        // $item.after($badge);
-        $item.after($btnClear);
+        $item.after($badge);
+        // $item.after($btnClear);
       } else {
         $item.append($badge);
         $item.append(" ");
