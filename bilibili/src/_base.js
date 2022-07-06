@@ -54,9 +54,10 @@ const fnElChange = (el, fn = () => { }) => {
   });
 }
 // 点击指定元素复制内容
-function fnCopy(eTrig, content) {
+function fnCopy(eTrig, content,fnCB = () => { }) {
   $n(eTrig).addEventListener("click", function (e) {
     GM_setClipboard(content);
+    fnCB(e);
     this.style.color = "gray";
   });
 }

@@ -76,9 +76,10 @@
     });
   };
   // 点击指定元素复制内容
-  function fnCopy(eTrig, content) {
+  function fnCopy(eTrig, content,fnCB = () => { }) {
     $n(eTrig).addEventListener("click", function (e) {
       GM_setClipboard(content);
+      fnCB(e);
       this.style.color = "gray";
     });
   }
@@ -201,7 +202,7 @@
       'if [ ! -d "bilibili-foldername" ]; then\n' +
       "mkdir bilibili-foldername\n" +
       "fi\n" +
-      "cd bilibili-foldername\n";
+      "cd bilibili-foldername\n\n";
     strRlt = strRlt.replace(/foldername/g, arrDate.join("-"));
     /**
      * e {title:"",href:""}
@@ -209,6 +210,7 @@
     arrList.forEach(function (e, i) {
       const serial = i + 1;
       // _log(e);
+      // 移除不能用于文件名的字符
       let title = e.title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
       title = title.replace(/["'\s]/g, "");
       const href = e.href || e.url;
@@ -216,6 +218,7 @@
       // echo "URL=*" >> "*.url"
       strRlt += `echo [InternetShortcut] > "${serial}-${title}.url"\n`;
       strRlt += `echo "URL=${href}" >> "${serial}-${title}.url"\n`;
+      strRlt += "\n";
     });
     {
       strRlt += "exit\n\n";
@@ -247,6 +250,8 @@
   // 导出稍后再看为 .lnk 文件
   (function () {
     if (/#\/list|#\/video/g.test(location.href)) {
+      const tmpHTML = $("span.t").html();
+      $("span.t").html(tmpHTML + "「点击这里复制 bash shell 命令」");
       fnGetAjax(function (list) {
         const arrRlt = [];
         list.forEach((item, index) => {
@@ -258,8 +263,14 @@
           // _log(item, index);
         });
         _log("稍后再看", arrRlt.length);
+        let appCon = "「已复制」";
+        if (arrRlt.length > 37) {
+          appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
+        }
         // 注册点击复制
-        fnCopy("span.t", fnMKShell(arrRlt));
+        fnCopy("span.t", fnMKShell(arrRlt), () => {
+          $("span.t").html(tmpHTML + appCon);
+        });
       });
       return false;
     }
