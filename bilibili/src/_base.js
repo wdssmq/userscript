@@ -20,6 +20,11 @@ function $na(e) {
   return document.querySelectorAll(e);
 }
 // ---------------------------------------------------
+// 添加内容到指定元素后面
+function fnAfter($ne, e) {
+  const $e = typeof e === 'string' ? $n(e) : e;
+  $e.parentNode.insertBefore($ne, $e.nextSibling);
+}
 // 元素变化监听
 const fnElChange = (el, fn = () => { }) => {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
@@ -75,6 +80,7 @@ export {
   // $,
   $n,
   $na,
+  fnAfter,
   fnElChange,
   fnCopy,
   ckeObj,
