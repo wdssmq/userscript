@@ -6,3 +6,6 @@ import _2bangumi from './_2bangumi';
 
 // 稍后再看导出为 *.url
 import _later2url from './_later2url';
+
+// 关注列表增强
+import _follow from './_follow';

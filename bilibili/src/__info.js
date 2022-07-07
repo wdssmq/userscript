@@ -18,6 +18,7 @@ const gm_banner = `
 // @include      https://t.bilibili.com/*
 // @include      https://manga.bilibili.com/account-center*
 // @include      https://account.bilibili.com/account/big/myPackage
+// @match        https://space.bilibili.com/44744006/fans/follow*
 // @icon         https://www.bilibili.com/favicon.ico
 // @run-at       document-end
 // @grant        GM_setClipboard
