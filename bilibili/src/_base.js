@@ -19,23 +19,7 @@ function $n(e) {
 function $na(e) {
   return document.querySelectorAll(e);
 }
-// cookie 封装
-const ckeObj = {
-  setItem: function (key, value) {
-    const Days = 137;
-    const exp = new Date();
-    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
-  },
-  getItem: function (key, def = "") {
-    const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
-    const arr = document.cookie.match(reg);
-    if (arr) {
-      return decodeURIComponent(arr[2]);
-    }
-    return def;
-  }
-};
+// ---------------------------------------------------
 // 元素变化监听
 const fnElChange = (el, fn = () => { }) => {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
@@ -54,13 +38,30 @@ const fnElChange = (el, fn = () => { }) => {
   });
 }
 // 点击指定元素复制内容
-function fnCopy(eTrig, content,fnCB = () => { }) {
+function fnCopy(eTrig, content, fnCB = () => { }) {
   $n(eTrig).addEventListener("click", function (e) {
     GM_setClipboard(content);
     fnCB(e);
     this.style.color = "gray";
   });
 }
+// cookie 封装
+const ckeObj = {
+  setItem: function (key, value) {
+    const Days = 137;
+    const exp = new Date();
+    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+    document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
+  },
+  getItem: function (key, def = "") {
+    const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
+    const arr = document.cookie.match(reg);
+    if (arr) {
+      return decodeURIComponent(arr[2]);
+    }
+    return def;
+  }
+};
 // ---------------------------------------------------
 export {
   curUrl,
@@ -74,7 +75,7 @@ export {
   // $,
   $n,
   $na,
-  ckeObj,
   fnElChange,
   fnCopy,
+  ckeObj,
 };
