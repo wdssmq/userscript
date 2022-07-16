@@ -15,6 +15,7 @@ const gm_banner = `
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 // @noframes
+// @run-at       document-end
 // @match        <$URL$>
 // @grant        none
 // ==/UserScript==
