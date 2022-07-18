@@ -1,5 +1,7 @@
 import { _log, fnCopy } from "./_base";
 
+_log("_later2url.js", "开始");
+
 const bolDebug = false;
 
 // 构造 Bash Shell 脚本
@@ -61,8 +63,7 @@ function fnGetAjax(callback = function () { }) {
 // 导出稍后再看为 .lnk 文件
 (function () {
   if (/#\/list|#\/video/g.test(location.href)) {
-    const tmpHTML = $("span.t").html();
-    $("span.t").html(tmpHTML + "「点击这里复制 bash shell 命令」");
+    let tmpHTML = $("span.t").html();
     fnGetAjax(function (list) {
       const arrRlt = [];
       list.forEach((item, index) => {
@@ -73,7 +74,9 @@ function fnGetAjax(callback = function () { }) {
         });
         // _log(item, index);
       });
-      _log("稍后再看", arrRlt.length);
+      // _log("稍后再看", arrRlt.length);
+      tmpHTML = tmpHTML.replace(/0\//g, arrRlt.length + "/");
+      $("span.t").html(tmpHTML + "「点击这里复制 bash shell 命令」");
       let appCon = "「已复制」";
       if (arrRlt.length > 37) {
         appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
@@ -86,3 +89,5 @@ function fnGetAjax(callback = function () { }) {
     return false;
   }
 })();
+
+_log("_later2url.js", "结束");

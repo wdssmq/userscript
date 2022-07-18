@@ -201,6 +201,8 @@
     fnCheckByDOM();
   })();
 
+  _log("_later2url.js", "开始");
+
   // 构造 Bash Shell 脚本
   function fnMKShell(arrList) {
     const today = new Date(); // 获得当前日期
@@ -260,8 +262,7 @@
   // 导出稍后再看为 .lnk 文件
   (function () {
     if (/#\/list|#\/video/g.test(location.href)) {
-      const tmpHTML = $("span.t").html();
-      $("span.t").html(tmpHTML + "「点击这里复制 bash shell 命令」");
+      let tmpHTML = $("span.t").html();
       fnGetAjax(function (list) {
         const arrRlt = [];
         list.forEach((item, index) => {
@@ -272,7 +273,9 @@
           });
           // _log(item, index);
         });
-        _log("稍后再看", arrRlt.length);
+        // _log("稍后再看", arrRlt.length);
+        tmpHTML = tmpHTML.replace(/0\//g, arrRlt.length + "/");
+        $("span.t").html(tmpHTML + "「点击这里复制 bash shell 命令」");
         let appCon = "「已复制」";
         if (arrRlt.length > 37) {
           appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
@@ -285,6 +288,8 @@
       return false;
     }
   })();
+
+  _log("_later2url.js", "结束");
 
   // 关注列表增强
   (() => {
