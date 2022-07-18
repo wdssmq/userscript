@@ -1,4 +1,4 @@
-import { _log, fnCopy } from "./_base";
+import { _log, _getDateStr, fnCopy } from "./_base";
 
 _log("_later2url.js", "开始");
 
@@ -6,17 +6,13 @@ const bolDebug = false;
 
 // 构造 Bash Shell 脚本
 function fnMKShell(arrList) {
-  const today = new Date(); // 获得当前日期
-  const year = today.getFullYear(); // 获得年份
-  const month = today.getMonth() + 1; // 此方法获得的月份是从0---11，所以要加1才是当前月份
-  const day = today.getDate(); // 获得当前日期
-  const arrDate = [year, month, day];
+  const curDateStr = _getDateStr();
   let strRlt =
     'if [ ! -d "bilibili-foldername" ]; then\n' +
     "mkdir bilibili-foldername\n" +
     "fi\n" +
     "cd bilibili-foldername\n\n";
-  strRlt = strRlt.replace(/foldername/g, arrDate.join("-"));
+  strRlt = strRlt.replace(/foldername/g, curDateStr);
   /**
    * e {title:"",href:""}
    */

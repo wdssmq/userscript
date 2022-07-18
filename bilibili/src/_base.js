@@ -6,6 +6,10 @@ const curDate = new Date();
 // ---------------------------------------------------
 const _curUrl = () => { return window.location.href; };
 const _curDate = () => { return new Date(); };
+const _getDateStr = (date = curDate) => {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
+}
 const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // ---------------------------------------------------
 const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
@@ -74,6 +78,7 @@ export {
   _curUrl,
   _curDate,
   _sleep,
+  _getDateStr,
   _log,
   _warn,
   _error,
