@@ -65,6 +65,7 @@ function fnCopy(eTrig, content, fnCB = () => { }) {
     this.style.color = "gray";
   });
 }
+
 // cookie 封装
 const ckeObj = {
   setItem: function (key, value) {
