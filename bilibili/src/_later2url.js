@@ -5,37 +5,50 @@ _log("_later2url.js", "开始");
 const bolDebug = false;
 
 // 构造 Bash Shell 脚本
-function fnMKShell(arrList) {
+function fnMKShell(arrList, prefix = "") {
   const curDateStr = _getDateStr();
   let strRlt =
-    'if [ ! -d "bilibili-foldername" ]; then\n' +
-    "mkdir bilibili-foldername\n" +
+    'if [ ! -d "prefix-date" ]; then\n' +
+    "mkdir prefix-date\n" +
     "fi\n" +
-    "cd bilibili-foldername\n\n";
-  strRlt = strRlt.replace(/foldername/g, curDateStr);
+    "cd prefix-date\n\n";
+  strRlt = strRlt.replace(/prefix/g, prefix);
+  strRlt = strRlt.replace(/date/g, curDateStr);
+
   /**
-   * e {title:"",href:""}
+   * e {title:"", href:""}
    */
   arrList.forEach(function (e, i) {
     const serial = i + 1;
     // _log(e);
+
     // 移除不能用于文件名的字符
-    let title = e.title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
+    let title = e.title || e.innerText;
+    title = title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
     title = title.replace(/["'\s]/g, "");
+    // _log(title);
+
+    const lenTitle = title.length;
+    if (lenTitle >= 155) {
+      title = `标题过长丨${lenTitle}`;
+    }
+
+    // 获取文章链接
     const href = e.href || e.url;
-    // echo [InternetShortcut] > "*.url"
-    // echo "URL=*" >> "*.url"
-    strRlt += `echo [InternetShortcut] > "${serial}-${title}.url"\n`;
-    strRlt += `echo "URL=${href}" >> "${serial}-${title}.url"\n`;
+
+    // url 文件名
+    const urlFileName = `${serial}丨${title}.url`;
+
+    strRlt += `echo [InternetShortcut] > "${urlFileName}"\n`;
+    strRlt += `echo "URL=${href}" >> "${urlFileName}"\n`;
     strRlt += "\n";
   });
+
   if (!bolDebug) {
     strRlt += "exit\n\n";
   }
-  // strRlt = strRlt.replace(/\/\/\//g, "//www.bilibili.com/");
-  //_log(strRlt);
+
   return strRlt;
-  //$("body").innerHTML = strRlt.replace(/\n/g, "<br/>");
 }
 
 // Ajax 封装
@@ -78,7 +91,7 @@ function fnGetAjax(callback = function () { }) {
         appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
       }
       // 注册点击复制
-      fnCopy("span.t", fnMKShell(arrRlt), () => {
+      fnCopy("span.t", fnMKShell(arrRlt, "bilibili"), () => {
         $("span.t").html(tmpHTML + appCon);
       });
     });
