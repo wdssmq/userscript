@@ -1,7 +1,7 @@
 import { _log, $n, $na, fnElChange } from "./_base";
 import _config from "./_config";
 
-
+// 选项为 sc 时，则排除匹配 tc 字段的节点文本
 const _filter_map = {
   "tc": ["big5", "繁日双语", "繁体内嵌"],
   "sc": ["gb", "简日双语"],
