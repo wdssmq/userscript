@@ -33,6 +33,126 @@ QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
 ---start---
 
+name：「漫画」打包下载（QQ 群：189574683）
+
+desc：按章节打包下载漫画柜的资源
+
+url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
+
+--------
+
+name：Markdown-A-Textarea
+
+desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
+
+url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
+
+--------
+
+name：「Z-Blog」Logo 生成
+
+desc：自动叠加历史图标制作新的图片
+
+url：https://github.com/wdssmq/userscript/blob/master/zbp-GenLogo/zbp_GenLogo.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp-GenLogo/zbp_GenLogo.user.js
+
+--------
+
+name：「其他」海腾之眼（贴吧防和谐）【停止维护】
+
+desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
+
+url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/tieba/tieba.user.js
+
+--------
+
+name：「其他」EasyPHP 面板助手
+
+desc：新窗口打开站点；自动启用服务；书签功能；
+
+url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/EasyPHP/Dashboard.user.js
+
+--------
+
+name：「新浪微博」批量移除粉丝（QQ 群：189574683）
+
+desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
+
+url：https://github.com/wdssmq/userscript/blob/master/weibo/remove-fans.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/weibo/remove-fans.user.js
+
+--------
+
+name：「Z-Blog」插件工具 For 视频云点播
+
+desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/cloudVideo.tool.user.js
+
+--------
+
+name：「Z-Blog」使用 Markdown 编辑应用介绍
+
+desc：使用 Markdown 编辑应用说明
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/md-app-doc.user.js
+
+--------
+
+name：「Z-Blog」开发者工具（本地）
+
+desc：自动填写 Z-Blog 应用的配置项
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/DevTools.local.user.js
+
+--------
+
+name：「Z-Blog」应用中心促销工具
+
+desc：用于辅助设置促销选项
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/promotion.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/promotion.user.js
+
+--------
+
+name：「bilibili」大会员 B 币领取提醒
+
+desc：B 币领取提醒、稍后再看列表导出为 *.url 等
+
+url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/bilibili/later.user.js
+
+--------
+
+name：「Z-Blog」前台编辑文章入口
+
+desc：配合主题以显示前台编辑入口
+
+url：https://github.com/wdssmq/userscript/blob/master/zbp_edit/zbp_edit.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_edit/zbp_edit.user.js
+
+--------
+
 name：「水水」度盘接生成（QQ 群：189574683）
 
 desc：度盘分享文件时自动复制为 HTML 或 MarkDown
@@ -53,43 +173,33 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/pan/pan-2109.user.js
 
 --------
 
-name：「其他」EasyPHP 面板助手
+name：「水水」Resilio Sync 分享/备份助手「QQ 群：189574683」
 
-desc：新窗口打开站点；自动启用服务；书签功能；
+desc：快捷导出/分享 Sync 任务；
 
-url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/EasyPHP/Dashboard.user.js
-
---------
-
-name：「GitHub」获取文件的 jsDelivr 地址
-
-desc：获取项目文件的 CDN 地址
-
-url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Git/jsDelivr.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.user.js
 
 --------
 
-name：「水水」qBittorrent 管理脚本「QQ 群：189574683」
+name：「废弃」Resilio Sync 管理「QQ 群：189574683」
 
-desc：通过 WebUI 的 API 批量替换 Tracker
+desc：快捷导出/分享 Sync 任务；
 
-url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/qBit/script.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.old.user.js
 
 --------
 
-name：「Z-Blog」Logo 生成
+name：「Blog」写作助手
 
-desc：自动叠加历史图标制作新的图片
+desc：发布预定义文章到知乎、简书等豉
 
-url：https://github.com/wdssmq/userscript/blob/master/zbp-GenLogo/zbp_GenLogo.user.js
+url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp-GenLogo/zbp_GenLogo.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/blog/blog-helper.user.js
 
 --------
 
@@ -113,33 +223,43 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/other/UrlRedirect.use
 
 --------
 
-name：「其他」海腾之眼（贴吧防和谐）【停止维护】
+name：「GitHub」获取文件的 jsDelivr 地址
 
-desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
+desc：获取项目文件的 CDN 地址
 
-url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/tieba/tieba.user.js
-
---------
-
-name：「废弃」Resilio Sync 管理「QQ 群：189574683」
-
-desc：快捷导出/分享 Sync 任务；
-
-url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.old.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Git/jsDelivr.user.js
 
 --------
 
-name：「水水」Resilio Sync 分享/备份助手「QQ 群：189574683」
+name：「xiuno」管理工具（QQ 群：189574683）
 
-desc：快捷导出/分享 Sync 任务；
+desc：对不合规的内容加密处理
 
-url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js
+url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/xiuno/xiuno.user.js
+
+--------
+
+name：「水水」复制标题网址
+
+desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
+
+url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/copy/script.user.js
+
+--------
+
+name：「其他」sm.ms-helper
+
+desc：优化显示 sm.ms 图片查看
+
+url：https://github.com/wdssmq/userscript/blob/master/sm.ms/def.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/sm.ms/def.user.js
 
 --------
 
@@ -163,96 +283,6 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/QQ/GroupManageDuty.us
 
 --------
 
-name：「bilibili」大会员 B 币领取提醒
-
-desc：B 币领取提醒、稍后再看列表导出为 *.url 等
-
-url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/bilibili/later.user.js
-
---------
-
-name：「蜜柑计划」列表过滤（简繁/画质）
-
-desc：过滤蜜柑计划列表，按照简繁/画质过滤
-
-url：https://github.com/wdssmq/userscript/blob/master/Mikan_Proj/Mikan_Proj.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Mikan_Proj/Mikan_Proj.user.js
-
---------
-
-name：「漫画」打包下载（QQ 群：189574683）
-
-desc：按章节打包下载漫画柜的资源
-
-url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
-
---------
-
-name：「Z-Blog」前台编辑文章入口
-
-desc：配合主题以显示前台编辑入口
-
-url：https://github.com/wdssmq/userscript/blob/master/zbp_edit/zbp_edit.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_edit/zbp_edit.user.js
-
---------
-
-name：「新浪微博」批量移除粉丝（QQ 群：189574683）
-
-desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
-
-url：https://github.com/wdssmq/userscript/blob/master/weibo/remove-fans.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/weibo/remove-fans.user.js
-
---------
-
-name：「xiuno」管理工具（QQ 群：189574683）
-
-desc：对不合规的内容加密处理
-
-url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/xiuno/xiuno.user.js
-
---------
-
-name：Markdown-A-Textarea
-
-desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
-
-url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
-
---------
-
-name：「Z-Blog」开发者工具（应用中心）
-
-desc：含订单搜索，附带隐藏未付订单，应用审核回显；
-
-url：https://github.com/wdssmq/userscript/blob/master/zbp_DevTools/zbp_DevTools.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_DevTools/zbp_DevTools.user.js
-
---------
-
-name：「水水」复制标题网址
-
-desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
-
-url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/copy/script.user.js
-
---------
-
 name：「Feedly」Less Item
 
 desc：减少每次显示的条目数量
@@ -273,63 +303,33 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/feedly.user.js
 
 --------
 
-name：「Blog」写作助手
+name：「水水」qBittorrent 管理脚本「QQ 群：189574683」
 
-desc：发布预定义文章到知乎、简书等豉
+desc：通过 WebUI 的 API 批量替换 Tracker
 
-url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js
+url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/blog/blog-helper.user.js
-
---------
-
-name：「其他」sm.ms-helper
-
-desc：优化显示 sm.ms 图片查看
-
-url：https://github.com/wdssmq/userscript/blob/master/sm.ms/def.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/sm.ms/def.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/qBit/script.user.js
 
 --------
 
-name：「Z-Blog」应用中心促销工具
+name：「蜜柑计划」列表过滤（简繁/画质）
 
-desc：用于辅助设置促销选项
+desc：过滤蜜柑计划列表，按照简繁/画质过滤
 
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/promotion.user.js
+url：https://github.com/wdssmq/userscript/blob/master/Mikan_Proj/Mikan_Proj.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/promotion.user.js
-
---------
-
-name：「Z-Blog」开发者工具（本地）
-
-desc：自动填写 Z-Blog 应用的配置项
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/DevTools.local.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Mikan_Proj/Mikan_Proj.user.js
 
 --------
 
-name：「Z-Blog」插件工具 For 视频云点播
+name：「Z-Blog」开发者工具（应用中心）
 
-desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
+desc：含订单搜索，附带隐藏未付订单，应用审核回显；
 
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.user.js
+url：https://github.com/wdssmq/userscript/blob/master/zbp_DevTools/zbp_DevTools.user.js
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/cloudVideo.tool.user.js
-
---------
-
-name：「Z-Blog」使用 Markdown 编辑应用介绍
-
-desc：使用 Markdown 编辑应用说明
-
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/md-app-doc.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/md-app-doc.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_DevTools/zbp_DevTools.user.js
 
 --------
 
