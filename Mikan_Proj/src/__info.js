@@ -16,6 +16,7 @@ const gm_banner = `
 // @null         ----------------------------
 // @noframes
 // @match        https://mikanani.me/Home/Bangumi/*
+// @match        https://feedly.com/i/subscription/feed*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand

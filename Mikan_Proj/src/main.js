@@ -122,3 +122,7 @@ fnAutoExpand();
 //     fnMain();
 //   }
 // )
+
+import _feedly from "./_feedly";
+
+_feedly.regAction(fnEachNodeList, fnFilter, _filter);

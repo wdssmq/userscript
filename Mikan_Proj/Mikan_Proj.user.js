@@ -16,6 +16,7 @@
 // @null         ----------------------------
 // @noframes
 // @match        https://mikanani.me/Home/Bangumi/*
+// @match        https://feedly.com/i/subscription/feed*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
@@ -30,6 +31,8 @@
 
   const gm_name = "Mikan_Proj";
 
+  // ---------------------------------------------------
+  const _curUrl = () => { return window.location.href; };
   // ---------------------------------------------------
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
   function $na(e) {
@@ -78,6 +81,46 @@
   };
 
   _config.load();
+
+  const _feedly = {
+    data: {
+      curUrl: null,
+      // $itemList: [],
+      fnAction: () => { }
+    },
+    init: () => {
+      const curUrl = _curUrl();
+      _feedly.data.curUrl = curUrl;
+      _feedly.menuCommand(curUrl);
+    },
+    menuCommand: (curUrl = "") => {
+      if (curUrl.includes('feedly.com')) {
+        GM_registerMenuCommand("在 feedly 应用过滤",
+          () => {
+            _feedly.data.fnAction();
+          }
+        );
+      }
+    },
+    regAction: (fnEachNodeList, fnFilter, _filter) => {
+      _feedly.data.fnAction = () => {
+        const $list = _feedly.getList();
+        fnEachNodeList($list, ($item) => {
+          const curText = $item.querySelector('a.entry__title').innerText.toLowerCase();
+          if (fnFilter(curText, _filter)) {
+            $item.remove();
+          }
+        });
+      };
+    },
+    getList: () => {
+      const $list = $na(".list-entries article");
+      // _feedly.data.$itemList = $list;
+      return $list;
+    }
+  };
+
+  _feedly.init();
 
   // 选项为 sc 时，则排除匹配 tc 字段的节点文本
   const _filter_map = {
@@ -195,10 +238,6 @@
   }
   fnAutoExpand();
 
-  // fnElChange($n(".central-container"),
-  //   () => {
-  //     fnMain();
-  //   }
-  // )
+  _feedly.regAction(fnEachNodeList, fnFilter, _filter);
 
 })();
