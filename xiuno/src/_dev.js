@@ -24,16 +24,36 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     return Math.floor(timeStamp / 1000 / 60 / 60);
   }
 
-  // YML 地址列表
-  const useCDN = GM_getValue("useCDN", false);
-  let ymlList = GM_getValue("useCDN", ["2021H2", "2022H1"]);
-  ymlList = ymlList.map(yml => {
-    let url = `https://raw.githubusercontent.com/wdssmq/ReviewLog/main/data/${yml}.yml`;
-    if (useCDN) {
-      url = fnGetCDNUrl(url);
-    }
-    return url;
-  });
+  // 默认配置项
+  const defConfig = {
+    isNew: true,
+    useCDN: false,
+    ymlList: [
+      "2022H2",
+      "2022H1",
+      "2021H2",
+    ]
+  }
+
+  const curConfig = GM_getValue("_devConfig", defConfig);
+  if (curConfig.isNew) {
+    curConfig.isNew = false;
+    GM_setValue("_devConfig", curConfig);
+  }
+
+  // 初始化
+  function fnInitYML() {
+    const useCDN = curConfig.useCDN;
+    let ymlList = curConfig.ymlList;
+    ymlList = ymlList.map(yml => {
+      let url = `https://raw.githubusercontent.com/wdssmq/ReviewLog/main/data/${yml}.yml`;
+      if (useCDN) {
+        url = fnGetCDNUrl(url);
+      }
+      return url;
+    });
+    return ymlList;
+  }
 
   // 模板函数
   function fnStrtr(
@@ -60,10 +80,10 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
       lstLogs: [],
       lstCheck: null
     },
-    init: function (ymlList) {
+    init: function () {
       this.data = lsObj.getItem("gobDev", this.data);
       _log("gobDev init", this.data);
-      this.ymlList = ymlList;
+      this.ymlList = fnInitYML();
     },
     checkUrl: function (url) {
       let rlt = null;
@@ -104,7 +124,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     }
   }
 
-  gobDev.init(ymlList);
+  gobDev.init();
   gobDev.update();
 
   // 缓存清理封装
