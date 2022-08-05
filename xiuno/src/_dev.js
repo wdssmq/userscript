@@ -26,22 +26,23 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
 
   // 默认配置项
   const defConfig = {
-    isNew: true,
     useCDN: false,
     ymlList: [
       "2022H2",
       "2022H1",
       "2021H2",
-    ]
+    ],
+    isNew: true,
   }
 
+  // 配置项读取和首次保存
   const curConfig = GM_getValue("_devConfig", defConfig);
   if (curConfig.isNew) {
     curConfig.isNew = false;
     GM_setValue("_devConfig", curConfig);
   }
 
-  // 初始化
+  // 初始化 ymlList
   function fnInitYML() {
     const useCDN = curConfig.useCDN;
     let ymlList = curConfig.ymlList;
