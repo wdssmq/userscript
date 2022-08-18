@@ -1,13 +1,81 @@
 import { gm_name, gm_banner } from './src/__info.js';
-export default [
-  {
-    input: 'src/main.js',
-    output: {
-      name: gm_name,
-      file: `${gm_name}.user.js`,
-      format: 'iife',
-      banner: gm_banner
-    },
-    plugins: []
+import livereload from 'rollup-plugin-livereload';
+import replace from '@rollup/plugin-replace';
+import cors from '@fastify/cors'
+
+import dev from 'rollup-plugin-dev';
+import { bold, green, blue } from 'femtocolor';
+
+const gobConfig = {
+  log_header: blue('⚡︎dev-server'),
+  gm_file: `${gm_name}.user.js`,
+  gm_banner: gm_banner.trim() + '\n',
+}
+
+const prodConfig = {
+  input: 'src/main.js',
+  output: {
+    file: gobConfig.gm_file,
+    format: 'iife',
+    banner: gobConfig.gm_banner
   },
+  plugins: []
+};
+
+const devConfig = {
+  input: 'src/main.js',
+  output: {
+    dir: 'dev',
+    format: 'iife',
+    // banner: gobConfig.gm_banner
+  },
+  plugins: [
+    livereload({
+      inject: false,
+    }),
+    dev({
+      extend: cors,
+      origin: '*',
+      methods: ['GET'],
+      port: 3000,
+      host: '127.0.0.1',
+      onListen(server) {
+        server.log.info(gobConfig.log_header + " install script " + bold(green(`http://127.0.0.1:3000/dev/${gobConfig.gm_file}`)));
+        // server.register(cors, {
+        //   origin: "*",
+        //   methods: ["GET"]
+        // });
+
+        // // 获取对象 keys
+        const keys = Object.keys(server);
+        // const keys = Object.keys(this);
+        server.log.info(keys.join('\n'));
+      }
+    }),
+  ]
+};
+
+const loaderConfig = {
+  input: 'src/__dev.js',
+  output: {
+    file: `dev/${gobConfig.gm_file}`,
+    format: 'iife',
+    banner: gobConfig.gm_banner.replace(/(\/\/ @name\s+)/, "$1「dev」")
+  },
+  plugins: [
+    replace({
+      // 'process.env.NODE_ENV': JSON.stringify('production'),
+      // __buildDate__: () => JSON.stringify(new Date()),
+      // __buildVersion: 15
+      'placeholder.livereload.js': "http://localhost:35729/livereload.js?snipver=1",
+      'placeholder.user.js': `http://127.0.0.1:3000/dev/main.js`,
+    }),
+  ]
+};
+
+const config = process.env.NODE_ENV === 'dev' ? devConfig : prodConfig;
+
+export default [
+  loaderConfig,
+  config
 ];
