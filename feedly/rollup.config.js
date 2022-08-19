@@ -34,22 +34,15 @@ const devConfig = {
       inject: false,
     }),
     dev({
-      extend: cors,
-      origin: '*',
-      methods: ['GET'],
       port: 3000,
       host: '127.0.0.1',
       onListen(server) {
         server.log.info(gobConfig.log_header + " install script " + bold(green(`http://127.0.0.1:3000/dev/${gobConfig.gm_file}`)));
-        // server.register(cors, {
-        //   origin: "*",
-        //   methods: ["GET"]
-        // });
 
         // // 获取对象 keys
-        const keys = Object.keys(server);
+        // const keys = Object.keys(server);
         // const keys = Object.keys(this);
-        server.log.info(keys.join('\n'));
+        // server.log.info(keys.join('\n'));
       }
     }),
   ]
@@ -64,6 +57,7 @@ const loaderConfig = {
   },
   plugins: [
     replace({
+      preventAssignment: true,
       // 'process.env.NODE_ENV': JSON.stringify('production'),
       // __buildDate__: () => JSON.stringify(new Date()),
       // __buildVersion: 15

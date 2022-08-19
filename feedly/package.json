@@ -2,9 +2,7 @@
   "devDependencies": {
     "@rollup/plugin-replace": "^4.0.0",
     "rollup-plugin-dev": "^2.0.4",
-    "rollup-plugin-livereload": "^2.0.5",
-    "@fastify/cors": "^8.1.0",
-    "fastify-cors": "^6.1.0"
+    "rollup-plugin-livereload": "^2.0.5"
   },
   "scripts": {
     "build": "NODE_ENV=prod rollup -c",
