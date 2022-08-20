@@ -1,11 +1,11 @@
 import { _log, $n } from "./_base";
 // 自动标记已读
 (() => {
-  if (!$n("#box") || $n("#box").dataset.MarkRead === "bind") {
+  if (!$n("#root") || $n("#root").dataset.MarkRead === "bind") {
     return;
   }
   // _log("fnAutoMark", "自动标记已读");
-  $n("#box").dataset.MarkRead = "bind";
+  $n("#root").dataset.MarkRead = "bind";
 
   // 根据事件返回需要的 dom 元素
   const fnEventFilter = (eType, eTgt) => {
@@ -94,6 +94,6 @@ import { _log, $n } from "./_base";
     }
   };
   // 绑定监听事件
-  $n("#box").addEventListener("mouseup", fnEventHandler, false);
-  $n("#box").addEventListener("mouseover", fnEventHandler, false);
+  $n("#root").addEventListener("mouseup", fnEventHandler, false);
+  $n("#root").addEventListener("mouseover", fnEventHandler, false);
 })();

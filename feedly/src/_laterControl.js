@@ -115,7 +115,7 @@ function fnLaterMain(record, observer) {
   }
 }
 
-fnElChange($n("#box"), fnLaterMain);
+fnElChange($n("#root"), fnLaterMain);
 
 const curTime = Math.floor(curDate.getTime() / 1000);
 const curHours = Math.floor(curTime / 3600);
