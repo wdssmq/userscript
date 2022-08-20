@@ -1,4 +1,3 @@
-
 // ==UserScript==
 // @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
@@ -16,10 +15,13 @@
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
 // @match        https://feedly.com/*
+// @noframes
+// @run-at       document-end
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
 // ==/UserScript==
 /* jshint esversion: 6 */
+
 (function () {
   'use strict';
 
@@ -190,7 +192,7 @@
     }
   }
 
-  fnElChange($n("#box"), fnLaterMain);
+  fnElChange($n("#root"), fnLaterMain);
 
   const curTime = Math.floor(curDate.getTime() / 1000);
   const curHours = Math.floor(curTime / 3600);
@@ -357,7 +359,7 @@
   }
 
   // 星标文章导出为 *.url 文件
-  $n("#box").addEventListener("mouseup", function (event) {
+  $n("#root").addEventListener("mouseup", function (event) {
     if (event.target.innerHTML.indexOf("Read later") > -1 && $n(".list-entries > h2")) {
       const $el = event.target;
       console.log($el);
@@ -369,7 +371,7 @@
 
   // 拿回订阅源地址
   // 绑定监听事件到 div#box 上
-  $n("#box").addEventListener("mouseup", function (event) {
+  $n("#root").addEventListener("mouseup", function (event) {
     // 输出触发事件的元素
     // 根据内容判断是否执行相应操作
     const elText = event.target.innerHTML;
@@ -393,11 +395,11 @@
 
   // 自动标记已读
   (() => {
-    if (!$n("#box") || $n("#box").dataset.MarkRead === "bind") {
+    if (!$n("#root") || $n("#root").dataset.MarkRead === "bind") {
       return;
     }
     // _log("fnAutoMark", "自动标记已读");
-    $n("#box").dataset.MarkRead = "bind";
+    $n("#root").dataset.MarkRead = "bind";
 
     // 根据事件返回需要的 dom 元素
     const fnEventFilter = (eType, eTgt) => {
@@ -486,8 +488,8 @@
       }
     };
     // 绑定监听事件
-    $n("#box").addEventListener("mouseup", fnEventHandler, false);
-    $n("#box").addEventListener("mouseover", fnEventHandler, false);
+    $n("#root").addEventListener("mouseup", fnEventHandler, false);
+    $n("#root").addEventListener("mouseover", fnEventHandler, false);
   })();
 
 })();
