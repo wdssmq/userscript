@@ -16,10 +16,13 @@ const gm_banner = `
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
 // @match        https://feedly.com/*
+// @noframes
+// @run-at       document-end
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
 // ==/UserScript==
-/* jshint esversion: 6 */`;
+/* jshint esversion: 6 */
+`;
 
 const gm_name = "feedly";
 
