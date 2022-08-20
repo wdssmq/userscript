@@ -1,15 +1,14 @@
 import { gm_name, gm_banner } from './src/__info.js';
 import livereload from 'rollup-plugin-livereload';
 import replace from '@rollup/plugin-replace';
-import cors from '@fastify/cors'
 
 import dev from 'rollup-plugin-dev';
 import { bold, green, blue } from 'femtocolor';
 
 const gobConfig = {
-  log_header: blue('⚡︎dev-server'),
   gm_file: `${gm_name}.user.js`,
   gm_banner: gm_banner.trim() + '\n',
+  log_header: blue('⚡︎dev-server'),
 }
 
 const prodConfig = {
@@ -31,7 +30,7 @@ const devConfig = {
   },
   plugins: [
     livereload({
-      inject: false,
+      inject: false
     }),
     dev({
       port: 3000,
