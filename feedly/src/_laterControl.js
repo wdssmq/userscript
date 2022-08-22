@@ -218,14 +218,16 @@ function fnColorStars(offset = 0) {
       $e.parentNode.parentNode.style.backgroundColor = "#ddd";
     } else {
       $e.parentNode.parentNode.style.backgroundColor = "transparent";
-      if (cur4Minutes % 4 === 0 && intNum % 4 === 0) {
-        $e.parentNode.parentNode.remove();
-        return;
+      $e.parentNode.parentNode.style.display = "";
+      if (isLock || pickCount > 7) {
+        if (intNum % 4 !== 0) {
+          $e.parentNode.parentNode.style.display = "none";
+          return;
+        } else {
+          $e.parentNode.parentNode.style.backgroundColor = "#666";
+          // $e.parentNode.parentNode.style = $e.style.color = "#666";
+        }
       }
-      if (isLock) {
-        $e.parentNode.parentNode.style.backgroundColor = "#666";
-      }
-      // console.log($e.parentNode.parentNode.classList);
     }
   });
   if (pickCount <= 4) {
