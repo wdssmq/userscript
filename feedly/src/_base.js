@@ -4,13 +4,13 @@ import { gm_name } from "./__info";
 const curUrl = window.location.href;
 const curDate = new Date();
 // ---------------------------------------------------
-const _curUrl = () => { return window.location.href; };
-const _curDate = () => { return new Date(); };
+const _curUrl = () => { return window.location.href };
+const _curDate = () => { return new Date() };
 const _getDateStr = (date = curDate) => {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-}
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+};
+const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 // ---------------------------------------------------
 const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
 const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
@@ -38,8 +38,8 @@ const fnElChange = (el, fn = () => { }) => {
     // characterData: false,
     subtree: true,
   });
-}
-function fnRmovoDOM(el) {
+};
+function fnRemoveDOM(el) {
   el.parentNode.removeChild(el);
 }
 function fnFindDomUp(el, selector, up = 1) {
@@ -72,6 +72,6 @@ export {
   $n,
   $na,
   fnElChange,
-  fnRmovoDOM,
+  fnRemoveDOM,
   fnFindDomUp,
 };

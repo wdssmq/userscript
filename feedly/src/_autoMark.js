@@ -14,7 +14,7 @@ import { _log, $n } from "./_base";
     let pick = false;
     let objRlt = null, objDef = {
       $entry: null,
-      $btn: null
+      $btn: null,
     };
     if (eType === "mouseup") {
       if (
@@ -24,7 +24,7 @@ import { _log, $n } from "./_base";
           // 当前条目元素
           $entry: eTgt.parentNode.parentNode,
           // 标记已读的按钮
-          $btn: eTgt.parentNode.querySelector("button.EntryMarkAsReadButton")
+          $btn: eTgt.parentNode.querySelector("button.EntryMarkAsReadButton"),
         };
         pick = true;
       }
@@ -34,7 +34,7 @@ import { _log, $n } from "./_base";
           // 当前内容条目元素
           $entry: eTgt,
           // 标记已读的按钮
-          $btn: eTgt.querySelector("button.EntryMarkAsReadButton")
+          $btn: eTgt.querySelector("button.EntryMarkAsReadButton"),
         };
 
         // _log("fnEventFilter", "移入");
@@ -73,7 +73,7 @@ import { _log, $n } from "./_base";
       return objRlt;
     }
     return objDef;
-  }
+  };
   // 事件处理函数
   const fnEventHandler = (event) => {
     // 限制鼠标在元素右侧移入才会触发

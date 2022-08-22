@@ -21,6 +21,7 @@ const gm_banner = `
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
 // ==/UserScript==
+
 /* jshint esversion: 6 */
 `;
 

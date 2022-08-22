@@ -1,4 +1,4 @@
-import { _log, $n, $na } from './_base';
+import { _log, $n, $na } from "./_base";
 // 拿回订阅源地址
 // 绑定监听事件到 div#box 上
 $n("#root").addEventListener("mouseup", function (event) {
@@ -18,7 +18,7 @@ $n("#root").addEventListener("mouseup", function (event) {
     // 输出到页面中
     $n("#feedlyPageFX h2").insertAdjacentHTML(
       "beforeend",
-      `<div class="sub">${curUrl}</div>`
+      `<div class="sub">${curUrl}</div>`,
     );
   }
 }, false);
