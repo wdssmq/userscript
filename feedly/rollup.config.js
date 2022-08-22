@@ -1,74 +1,75 @@
-import { gm_name, gm_banner } from './src/__info.js';
-import livereload from 'rollup-plugin-livereload';
-import replace from '@rollup/plugin-replace';
+import { gm_name, gm_banner } from "./src/__info.js";
+import replace from "@rollup/plugin-replace";
+// import monkey from '#monkey'
 
-import dev from 'rollup-plugin-dev';
-import { bold, green, blue } from 'femtocolor';
+import monkey from "rollup-plugin-monkey";
+
+/*
+pnpm i https://github.com/wdssmq/rollup-plugin-monkey#v1
+*/
 
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
-  gm_banner: gm_banner.trim() + '\n',
-  log_header: blue('⚡︎dev-server'),
-}
+  gm_banner: gm_banner.trim() + "\n",
+  listen: {
+    host: "localhost",
+    port: "3000",
+  },
+  url: null,
+};
+
+gobConfig.url = `http://${gobConfig.listen.host}:${gobConfig.listen.port}`;
 
 const prodConfig = {
-  input: 'src/main.js',
+  input: "src/main.js",
   output: {
     file: gobConfig.gm_file,
-    format: 'iife',
-    banner: gobConfig.gm_banner
+    format: "iife",
+    banner: gobConfig.gm_banner,
   },
-  plugins: []
+  plugins: [],
 };
 
 const devConfig = {
-  input: 'src/main.js',
+  input: "src/main.js",
   output: {
-    dir: 'dev',
-    format: 'iife',
+    dir: "dev",
+    format: "iife",
     // banner: gobConfig.gm_banner
+    banner: "/* eslint-disable */\n",
   },
   plugins: [
-    livereload({
-      inject: false
+    monkey({
+      listen: gobConfig.listen,
+      onListen(web) {
+        web.server.log.info({
+          "msg": "{{header}} install script {{url}}",
+          "url": `${gobConfig.url}/dev/${gobConfig.gm_file}`,
+        });
+      },
     }),
-    dev({
-      port: 3000,
-      host: '127.0.0.1',
-      onListen(server) {
-        server.log.info(gobConfig.log_header + " install script " + bold(green(`http://127.0.0.1:3000/dev/${gobConfig.gm_file}`)));
-
-        // // 获取对象 keys
-        // const keys = Object.keys(server);
-        // const keys = Object.keys(this);
-        // server.log.info(keys.join('\n'));
-      }
-    }),
-  ]
+  ],
 };
 
 const loaderConfig = {
-  input: 'src/__dev.js',
+  input: "src/__dev.js",
   output: {
     file: `dev/${gobConfig.gm_file}`,
-    format: 'iife',
-    banner: gobConfig.gm_banner.replace(/(\/\/ @name\s+)/, "$1「dev」")
+    format: "iife",
+    banner: gobConfig.gm_banner.replace(/(\/\/ @name\s+)/, "$1「dev」"),
   },
   plugins: [
     replace({
       preventAssignment: true,
-      // 'process.env.NODE_ENV': JSON.stringify('production'),
-      // __buildDate__: () => JSON.stringify(new Date()),
-      // __buildVersion: 15
-      'placeholder.livereload.js': "http://localhost:35729/livereload.js?snipver=1",
-      'placeholder.user.js': `http://127.0.0.1:3000/dev/main.js`,
+      "placeholder.livereload.js": `${gobConfig.url}/livereload.js?snipver=1`,
+      "placeholder.user.js": `${gobConfig.url}/dev/main.js`,
     }),
-  ]
+  ],
 };
 
-const config = process.env.NODE_ENV === 'dev' ? devConfig : prodConfig;
+const config = process.env.NODE_ENV === "dev" ? devConfig : prodConfig;
 
 export default [
   loaderConfig,
-  config
+  config,
 ];
