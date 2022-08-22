@@ -20,7 +20,9 @@
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
 // ==/UserScript==
+
 /* jshint esversion: 6 */
+/* eslint-disable */
 
 (function () {
   'use strict';
@@ -29,9 +31,9 @@
 
   const curDate = new Date();
   // ---------------------------------------------------
-  const _curUrl = () => { return window.location.href; };
+  const _curUrl = () => { return window.location.href };
   const _getDateStr = (date = curDate) => {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
   };
   // ---------------------------------------------------
@@ -271,8 +273,8 @@
     // _log("fnColorStars", curTime, cur4Minutes);
 
     const $stars = gob.$list;
-    const isLock = fnCheckControl(gob.data.diffStars);
-    if (isLock === "lock") {
+    const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
+    if (isLock) {
       $n(".list-entries").style.backgroundColor = "#666";
     }
     let pickCount = 0;
@@ -289,22 +291,28 @@
       // const intNum = parseInt(hash + cur4Minutes + i);
       const intNum = parseInt(hash + cur4Minutes + offset);
 
-      if (intNum % 4 === 0) {
+      if (intNum % 7 === 0 && (!isLock || pickCount <= 7)) {
         // _log("fnColorStars", intNum, intNum % 4);
         pickCount++;
         $e.parentNode.parentNode.style.backgroundColor = "#ddd";
       } else {
         $e.parentNode.parentNode.style.backgroundColor = "transparent";
-        if (isLock === "lock" || pickCount > 7) {
-          // console.log($e.parentNode.parentNode.classList);
+        if (cur4Minutes % 4 === 0 && intNum % 4 === 0) {
+          $e.parentNode.parentNode.remove();
+          return;
+        }
+        if (isLock) {
           $e.parentNode.parentNode.style.backgroundColor = "#666";
         }
+        // console.log($e.parentNode.parentNode.classList);
       }
     });
     if (pickCount <= 4) {
       fnColorStars(offset + 1);
     }
   }
+
+  /* global GM_setClipboard:true */
 
   // nodeList 转换为 Array
   function fnNodeListToArray(nodeList) {
@@ -315,7 +323,7 @@
   function fnMKShell(arrList, prefix = "") {
     const curDateStr = _getDateStr();
     let strRlt =
-      'if [ ! -d "prefix-date" ]; then\n' +
+      "if [ ! -d \"prefix-date\" ]; then\n" +
       "mkdir prefix-date\n" +
       "fi\n" +
       "cd prefix-date\n\n";
@@ -388,7 +396,7 @@
       // 输出到页面中
       $n("#feedlyPageFX h2").insertAdjacentHTML(
         "beforeend",
-        `<div class="sub">${curUrl}</div>`
+        `<div class="sub">${curUrl}</div>`,
       );
     }
   }, false);
@@ -408,7 +416,7 @@
       let pick = false;
       let objRlt = null, objDef = {
         $entry: null,
-        $btn: null
+        $btn: null,
       };
       if (eType === "mouseup") {
         if (
@@ -418,7 +426,7 @@
             // 当前条目元素
             $entry: eTgt.parentNode.parentNode,
             // 标记已读的按钮
-            $btn: eTgt.parentNode.querySelector("button.EntryMarkAsReadButton")
+            $btn: eTgt.parentNode.querySelector("button.EntryMarkAsReadButton"),
           };
           pick = true;
         }
@@ -428,7 +436,7 @@
             // 当前内容条目元素
             $entry: eTgt,
             // 标记已读的按钮
-            $btn: eTgt.querySelector("button.EntryMarkAsReadButton")
+            $btn: eTgt.querySelector("button.EntryMarkAsReadButton"),
           };
 
           // _log("fnEventFilter", "移入");

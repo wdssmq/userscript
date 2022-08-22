@@ -45,7 +45,7 @@ const gob = {
     lsObj.setItem("feedly_bld_data", this.data);
     _log("save", gob);
   },
-}
+};
 
 // 判断当前地址是否是收藏页
 const fnCheckUrl = () => {
@@ -53,7 +53,7 @@ const fnCheckUrl = () => {
     return true;
   }
   return false;
-}
+};
 
 // 当前星标数获取
 function fnLaterGetItems(obj) {
@@ -194,8 +194,8 @@ function fnColorStars(offset = 0) {
   // _log("fnColorStars", curTime, cur4Minutes);
 
   const $stars = gob.$list;
-  const isLock = fnCheckControl(gob.data.diffStars);
-  if (isLock === "lock") {
+  const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
+  if (isLock) {
     $n(".list-entries").style.backgroundColor = "#666";
   }
   let pickCount = 0;
@@ -212,16 +212,20 @@ function fnColorStars(offset = 0) {
     // const intNum = parseInt(hash + cur4Minutes + i);
     const intNum = parseInt(hash + cur4Minutes + offset);
 
-    if (intNum % 4 === 0) {
+    if (intNum % 7 === 0 && (!isLock || pickCount <= 7)) {
       // _log("fnColorStars", intNum, intNum % 4);
       pickCount++;
       $e.parentNode.parentNode.style.backgroundColor = "#ddd";
     } else {
       $e.parentNode.parentNode.style.backgroundColor = "transparent";
-      if (isLock === "lock" || pickCount > 7) {
-        // console.log($e.parentNode.parentNode.classList);
+      if (cur4Minutes % 4 === 0 && intNum % 4 === 0) {
+        $e.parentNode.parentNode.remove();
+        return;
+      }
+      if (isLock) {
         $e.parentNode.parentNode.style.backgroundColor = "#666";
       }
+      // console.log($e.parentNode.parentNode.classList);
     }
   });
   if (pickCount <= 4) {
