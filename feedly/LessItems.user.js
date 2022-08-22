@@ -12,12 +12,12 @@
 
 /* jshint esversion: 6 */
 (function () {
-  'use strict';
+  "use strict";
   // 基础函数或变量
   const curUrl = window.location.href;
   const curDate = new Date();
   // const $ = window.$ || unsafeWindow.$;
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const _log = (...args) => console.log("[Less Item]\n", ...args);
   const _warn = (...args) => console.warn("[Less Item]\n", ...args);
   const _error = (...args) => console.error("[Less Item]\n", ...args);
@@ -166,7 +166,7 @@
         const $entry = fnFindDomUp(event.target, ".entry", 2);
         // 标记已读的按钮
         const $btn = event.target.parentNode.querySelector(
-          ".EntryMarkAsReadButton"
+          ".EntryMarkAsReadButton",
         );
 
         // _log("fnMarkRead", event.target);
