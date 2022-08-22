@@ -6,13 +6,13 @@ const curDate = new Date();
 
 // -------------------------------------
 
-const _curUrl = () => { return window.location.href; };
-const _curDate = () => { return new Date(); };
+const _curUrl = () => { return window.location.href };
+const _curDate = () => { return new Date() };
 const _getDateStr = (date = curDate) => {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-}
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+};
+const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // -------------------------------------
 
@@ -34,7 +34,7 @@ function $na(e) {
 
 // 添加内容到指定元素后面
 function fnAfter($ne, e) {
-  const $e = typeof e === 'string' ? $n(e) : e;
+  const $e = typeof e === "string" ? $n(e) : e;
   $e.parentNode.insertBefore($ne, $e.nextSibling);
 }
 
@@ -55,7 +55,7 @@ const fnElChange = (el, fn = () => { }) => {
     // characterData: false,
     subtree: true,
   });
-}
+};
 
 // -------------------------------------
 
