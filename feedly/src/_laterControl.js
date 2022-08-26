@@ -126,15 +126,16 @@ const fnCheckControl = (diff) => {
   const iTime = curHours;
   gob._time.cycle = iTime;
   gob._time.rem = iTime % 4;
-  // 累计已读少于 17 或者累计新增大于累计已读
-  if (diff.decr < 17 || diff.incr - diff.decr >= 4) {
-    return "default";
+  // diff.decr 累计已读
+  // diff.incr 累计新增
+  if (diff.decr >= 17 && diff.decr - diff.incr >= 4) {
+    if (iTime % 4 === 0) {
+      return "reset";
+    } else {
+      return "lock";
+    }
   }
-  // 每 4 小时且累计已读大于累计新增
-  if (iTime % 4 === 0 && diff.decr - diff.incr >= 4) {
-    return "reset";
-  }
-  return "lock";
+  return "default";
 };
 
 // 星标变动控制
