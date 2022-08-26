@@ -231,7 +231,7 @@ function fnColorStars(offset = 0) {
       }
     }
   });
-  if (pickCount <= 4) {
+  if (pickCount <= 4 && offset <= 4) {
     fnColorStars(offset + 1);
   }
 }
