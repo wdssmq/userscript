@@ -1,4 +1,3 @@
-
 // ==UserScript==
 // @name         「bilibili」大会员 B 币领取提醒
 // @namespace    wdssmq.com
@@ -25,24 +24,29 @@
 // @grant        GM_notification
 // @grant        GM.openInTab
 // ==/UserScript==
-/* jshint esversion:6 */
+
+/* jshint esversion: 6 */
+/* eslint-disable */
 
 (function () {
   'use strict';
 
   const gm_name = "later";
 
+  /* global GM_setClipboard */
+
   // 初始常量或函数
   const curUrl = window.location.href;
   const curDate = new Date();
   const _getDateStr = (date = curDate) => {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
   };
 
   // ---------------------------------------------------
 
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
+  const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
 
   // ---------------------------------------------------
 
@@ -58,19 +62,21 @@
 
   // 添加内容到指定元素后面
   function fnAfter($ne, e) {
-    const $e = typeof e === 'string' ? $n(e) : e;
+    const $e = typeof e === "string" ? $n(e) : e;
     $e.parentNode.insertBefore($ne, $e.nextSibling);
   }
 
   // ---------------------------------------------------
 
   // 元素变化监听
-  const fnElChange = (el, fn = () => { }) => {
+  const fnElChange = (el, fn = () => { }, onetime = true) => {
     const observer = new MutationObserver((mutationRecord, mutationObserver) => {
       // _log('mutationRecord = ', mutationRecord);
       // _log('mutationObserver === observer', mutationObserver === observer);
       fn(mutationRecord, mutationObserver);
-      mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
+      if (onetime) {
+        mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
+      }
     });
     observer.observe(el, {
       // attributes: false,
@@ -105,12 +111,14 @@
         return decodeURIComponent(arr[2]);
       }
       return def;
-    }
+    },
   };
+
+  /* global GM_notification GM */
 
   // 日期转字符串
   const getDateStr = (date) => {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("zh-CN", options);
   };
 
@@ -140,7 +148,7 @@
         onclick: () => {
           // window.location.href = bcoinUrl;
           GM.openInTab(bcoinUrl, false);
-        }
+        },
       });
     };
 
@@ -215,13 +223,15 @@
     fnCheckByDOM();
   })();
 
+  /* global GM_notification $ */
+
   _log("_later2url.js", "开始");
 
   // 构造 Bash Shell 脚本
   function fnMKShell(arrList, prefix = "") {
     const curDateStr = _getDateStr();
     let strRlt =
-      'if [ ! -d "prefix-date" ]; then\n' +
+      "if [ ! -d \"prefix-date\" ]; then\n" +
       "mkdir prefix-date\n" +
       "fi\n" +
       "cd prefix-date\n\n";
@@ -322,7 +332,7 @@
         let RSSHub = localStorage.RSSHub ? localStorage.RSSHub : "https://rsshub.app/bilibili/user/video/:uid/";
         localStorage.RSSHub = RSSHub;
         return RSSHub.replace(":uid", uid);
-      }
+      },
     };
     // 获取关注列表
     const fnGetFollowList = () => {
@@ -381,5 +391,42 @@
     fnCheckByDOM();
 
   })();
+
+  // 姑且引入一些大概会用到的函数 ↑
+
+  const $body = $n("body");
+
+  // 设置一个标记
+  let isDone = false;
+
+  // 用来实现实际功能的函数
+  const fnMain = () => {
+    // 视频播放时页面一直在变化，所以这里会一直调用
+    _warn("_cover => fnMain");
+    const $listCover = $na(".header-history-video__image");
+    // isDone 则控制这里只执行一次
+    if ($listCover.length > 0 && !isDone) {
+      isDone = true;
+      Array.from($listCover).forEach(($cover, index) => {
+        // _warn(`.header-history-video__image[${index}] = `, $cover);
+        // _warn("---");
+        const $coverImg = $cover.querySelector("img");
+        const $coverSource = $cover.querySelector("source");
+        // src 或 srcset 属性
+        let imgUrl = $coverImg.src;
+        let imgSrcset = $coverSource.getAttribute("srcset");
+        _warn("imgUrl = ", imgUrl);
+        _warn("imgSrcset = ", imgSrcset);
+        // 使用正则替换去除后边的内容
+        imgUrl = imgUrl.replace(/@.+$/, "");
+        imgSrcset = imgSrcset.replace(/@.+$/, "");
+        // 设置回去
+        $coverImg.src = imgUrl;
+        $coverSource.setAttribute("srcset", imgSrcset);
+      });
+    }
+  };
+  // 当页面内容产生变化时，触发函数 fnMain
+  fnElChange($body, fnMain, false);
 
 })();
