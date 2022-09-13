@@ -9,3 +9,6 @@ import _later2url from "./_later2url";
 
 // 关注列表增强
 import _follow from "./_follow";
+
+// 获取封面大图
+import _cover from "./_cover";
