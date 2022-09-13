@@ -8,3 +8,4 @@ empty_def.user.js
 node_modules
 .history
 dev
+pnpm-lock.yaml
