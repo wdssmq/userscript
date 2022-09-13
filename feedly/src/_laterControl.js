@@ -1,4 +1,4 @@
-import { curDate, _curUrl, _log, $n, $na, fnElChange, fnFindDomUp } from "./_base";
+import { curDate, _curUrl, _log, $n, $na, fnElChange, fnFindDom, fnFindDomUp } from "./_base";
 
 // localStorage 封装
 const lsObj = {
@@ -200,6 +200,12 @@ function fnColorStars(offset = 0) {
     $n(".list-entries").style.backgroundColor = "#666";
   }
   let pickCount = 0;
+  const oConfig = {
+    forMod: 13,
+    minPick: 4,
+    maxPick: 7,
+  };
+  _log("fnColorStars", "isLock", isLock);
   [].forEach.call($stars, function ($e, i) {
     // _log("fnColorStars", $e, i);
     // _log("fnColorStars", "==============================");
@@ -212,26 +218,29 @@ function fnColorStars(offset = 0) {
 
     // const intNum = parseInt(hash + cur4Minutes + i);
     const intNum = parseInt(hash + cur4Minutes + offset);
+    const $parent = $e.parentNode.parentNode;
+    // pickCount <= oConfig.maxPick
 
-    if (intNum % 7 === 0 && (!isLock || pickCount <= 7)) {
+    if (intNum % oConfig.forMod === 0 && i < 37) {
       // _log("fnColorStars", intNum, intNum % 4);
       pickCount++;
-      $e.parentNode.parentNode.style.backgroundColor = "#ddd";
+      $parent.style.backgroundColor = "#ddd";
     } else {
-      $e.parentNode.parentNode.style.backgroundColor = "transparent";
-      $e.parentNode.parentNode.style.display = "";
-      if (isLock || pickCount > 7) {
-        if (intNum % 4 !== 0) {
-          $e.parentNode.parentNode.style.display = "none";
-          return;
-        } else {
-          $e.parentNode.parentNode.style.backgroundColor = "#666";
-          // $e.parentNode.parentNode.style = $e.style.color = "#666";
-        }
+      $parent.style.backgroundColor = "transparent";
+      let styleColor = "";
+      // 符合条件时设置为透明
+      if (isLock || i >= 37) {
+        styleColor = "transparent";
       }
+      $parent.style.color = $e.style.color = styleColor;
+      [].forEach.call(fnFindDom($parent, "a, span, div>svg, .summary"), function ($item) {
+        // _log("fnColorStars", $item);
+        // $item.style.backgroundColor = styleColor;
+        $item.style.color = styleColor;
+      });
     }
   });
-  if (pickCount <= 4 && offset <= 4) {
+  if (pickCount <= oConfig.minPick && offset <= 4) {
     fnColorStars(offset + 1);
   }
 }

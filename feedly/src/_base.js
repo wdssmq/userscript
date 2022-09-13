@@ -42,6 +42,9 @@ const fnElChange = (el, fn = () => { }) => {
 function fnRemoveDOM(el) {
   el.parentNode.removeChild(el);
 }
+function fnFindDom(el, selector) {
+  return el.querySelectorAll(selector);
+}
 function fnFindDomUp(el, selector, up = 1) {
   // _log("fnFindDomUp", el, selector, up);
   const elParent = el.parentNode;
@@ -73,5 +76,6 @@ export {
   $na,
   fnElChange,
   fnRemoveDOM,
+  fnFindDom,
   fnFindDomUp,
 };
