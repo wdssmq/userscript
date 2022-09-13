@@ -1,3 +1,5 @@
+/* global GM_setClipboard */
+
 import { gm_name } from "./__info";
 
 // 初始常量或函数
@@ -6,13 +8,13 @@ const curDate = new Date();
 
 // ---------------------------------------------------
 
-const _curUrl = () => { return window.location.href; };
-const _curDate = () => { return new Date(); };
+const _curUrl = () => { return window.location.href };
+const _curDate = () => { return new Date() };
 const _getDateStr = (date = curDate) => {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-}
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+};
+const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // ---------------------------------------------------
 
@@ -34,19 +36,21 @@ function $na(e) {
 
 // 添加内容到指定元素后面
 function fnAfter($ne, e) {
-  const $e = typeof e === 'string' ? $n(e) : e;
+  const $e = typeof e === "string" ? $n(e) : e;
   $e.parentNode.insertBefore($ne, $e.nextSibling);
 }
 
 // ---------------------------------------------------
 
 // 元素变化监听
-const fnElChange = (el, fn = () => { }) => {
+const fnElChange = (el, fn = () => { }, onetime = true) => {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
     // _log('mutationRecord = ', mutationRecord);
     // _log('mutationObserver === observer', mutationObserver === observer);
     fn(mutationRecord, mutationObserver);
-    mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
+    if (onetime) {
+      mutationObserver.disconnect(); // 取消监听，正常应该在回调函数中根据条件决定是否取消
+    }
   });
   observer.observe(el, {
     // attributes: false,
@@ -55,7 +59,7 @@ const fnElChange = (el, fn = () => { }) => {
     // characterData: false,
     subtree: true,
   });
-}
+};
 
 // 点击指定元素复制内容
 function fnCopy(eTrig, content, fnCB = () => { }) {
@@ -81,7 +85,7 @@ const ckeObj = {
       return decodeURIComponent(arr[2]);
     }
     return def;
-  }
+  },
 };
 
 // ---------------------------------------------------

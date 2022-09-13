@@ -8,13 +8,13 @@ import { _log, $n, $na, fnAfter, fnElChange } from "./_base";
       let RSSHub = localStorage.RSSHub ? localStorage.RSSHub : "https://rsshub.app/bilibili/user/video/:uid/";
       localStorage.RSSHub = RSSHub;
       return RSSHub.replace(":uid", uid);
-    }
-  }
+    },
+  };
   // 获取关注列表
   const fnGetFollowList = () => {
     let $list = $na("li.list-item");
     return $list;
-  }
+  };
 
   // 针对每个关注列表项
   const fnUpView = ($up) => {
@@ -47,7 +47,7 @@ import { _log, $n, $na, fnAfter, fnElChange } from "./_base";
     `;
 
     fnAfter($p, $desc);
-  }
+  };
 
   // 页面元素更新监听
   const fnCheckByDOM = () => {

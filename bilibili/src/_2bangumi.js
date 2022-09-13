@@ -1,4 +1,4 @@
-import { _log, $n, ckeObj, fnElChange } from './_base';
+import { _log, $n, ckeObj, fnElChange } from "./_base";
 
 // 番剧链接改为我的追番
 (() => {
@@ -14,7 +14,7 @@ import { _log, $n, ckeObj, fnElChange } from './_base';
       uid = ckeObj.getItem("bilibili-helper-uid");
     }
     return uid;
-  }
+  };
   // 更新链接
   const fnCheckByDOM = () => {
     if (!isDone) {
@@ -34,6 +34,6 @@ import { _log, $n, ckeObj, fnElChange } from './_base';
     $pick.href = url;
     _log("番剧链接改为我的追番", url);
     isDone = true;
-  }
+  };
   fnCheckByDOM();
 })();

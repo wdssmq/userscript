@@ -25,7 +25,9 @@ const gm_banner = `
 // @grant        GM_notification
 // @grant        GM.openInTab
 // ==/UserScript==
-/* jshint esversion:6 */
+
+/* jshint esversion: 6 */
+/* eslint-disable */
 `;
 
 const gm_name = "later";

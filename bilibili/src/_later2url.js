@@ -1,3 +1,5 @@
+/* global GM_notification $ */
+
 import { _log, _getDateStr, fnCopy } from "./_base";
 
 _log("_later2url.js", "开始");
@@ -8,7 +10,7 @@ const bolDebug = false;
 function fnMKShell(arrList, prefix = "") {
   const curDateStr = _getDateStr();
   let strRlt =
-    'if [ ! -d "prefix-date" ]; then\n' +
+    "if [ ! -d \"prefix-date\" ]; then\n" +
     "mkdir prefix-date\n" +
     "fi\n" +
     "cd prefix-date\n\n";

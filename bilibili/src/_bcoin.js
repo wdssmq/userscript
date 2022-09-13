@@ -1,16 +1,18 @@
-import { curUrl, curDate, _log, $n, ckeObj, fnElChange, } from './_base.js';
+/* global GM_notification GM */
+
+import { curUrl, curDate, _log, $n, ckeObj, fnElChange } from "./_base.js";
 
 // 日期转字符串
 const getDateStr = (date) => {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options);
-}
+};
 
 // 判断日期间隔
 const diffDateDays = (date1, date2) => {
   const diff = date1.getTime() - date2.getTime();
   return diff / (1000 * 60 * 60 * 24);
-}
+};
 
 // B 币领取提醒
 (() => {
@@ -32,9 +34,9 @@ const diffDateDays = (date1, date2) => {
       onclick: () => {
         // window.location.href = bcoinUrl;
         GM.openInTab(bcoinUrl, false);
-      }
+      },
     });
-  }
+  };
 
   // 判断是否已经领取过
   const fnCheckByDOM = () => {
@@ -52,7 +54,7 @@ const diffDateDays = (date1, date2) => {
       fnElChange($n("body"), fnCheckByDOM);
     }
     return false;
-  }
+  };
 
   // _log($n("body").innerHTML);
   // _log(nxtDateStr, curMonth);
