@@ -9,3 +9,4 @@ node_modules
 .history
 dev
 pnpm-lock.yaml
+package-lock.json
