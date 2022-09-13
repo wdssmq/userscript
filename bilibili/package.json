@@ -1,0 +1,14 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_ENV=prod rollup -c",
+    "dev": "cross-env NODE_ENV=dev rollup -c -w",
+    "clear": "rm -rf dev"
+  },
+  "dependencies": {
+    "@rollup/plugin-replace": "^4.0.0",
+    "cross-env": "^7.0.3",
+    "rollup": "^2.79.0",
+    "rollup-plugin-monkey": "^1.0.2"
+  }
+}
