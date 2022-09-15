@@ -197,16 +197,16 @@ function fnColorStars(offset = 0) {
 
   const $stars = gob.$list;
   const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
-  if (isLock) {
-    $n(".list-entries").style.backgroundColor = "#666";
-  }
+  // if (isLock) {
+  //   $n(".list-entries").style.backgroundColor = "#666";
+  // }
   let pickCount = 0;
   const oConfig = {
     forMod: 13,
     minPick: 4,
     maxPick: 7,
   };
-  _log("fnColorStars", "isLock", isLock);
+  // _log("fnColorStars", "isLock", isLock);
   [].forEach.call($stars, function ($e, i) {
     // _log("fnColorStars", $e, i);
     // _log("fnColorStars", "==============================");
@@ -241,7 +241,7 @@ function fnColorStars(offset = 0) {
       });
     }
   });
-  if (pickCount <= oConfig.minPick && offset <= 4) {
+  if (pickCount <= oConfig.minPick && offset <= oConfig.forMod) {
     fnColorStars(offset + 1);
   }
 }
