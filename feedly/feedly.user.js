@@ -206,12 +206,13 @@
 
   const fnCheckControl = (diff) => {
     const iTime = curHours;
+    const modTime = iTime % 4;
     gob._time.cycle = iTime;
-    gob._time.rem = iTime % 4;
+    gob._time.rem = modTime;
     // diff.decr 累计已读
     // diff.incr 累计新增
     if (diff.decr >= 17 && diff.decr - diff.incr >= 4) {
-      if (iTime % 4 === 0) {
+      if (modTime === 0) {
         return "reset";
       } else {
         return "lock";
@@ -278,16 +279,16 @@
 
     const $stars = gob.$list;
     const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
-    if (isLock) {
-      $n(".list-entries").style.backgroundColor = "#666";
-    }
+    // if (isLock) {
+    //   $n(".list-entries").style.backgroundColor = "#666";
+    // }
     let pickCount = 0;
     const oConfig = {
       forMod: 13,
       minPick: 4,
       maxPick: 7,
     };
-    _log("fnColorStars", "isLock", isLock);
+    // _log("fnColorStars", "isLock", isLock);
     [].forEach.call($stars, function ($e, i) {
       // _log("fnColorStars", $e, i);
       // _log("fnColorStars", "==============================");
@@ -322,7 +323,7 @@
         });
       }
     });
-    if (pickCount <= oConfig.minPick && offset <= 4) {
+    if (pickCount <= oConfig.minPick && offset <= oConfig.forMod) {
       fnColorStars(offset + 1);
     }
   }
