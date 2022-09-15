@@ -124,12 +124,13 @@ const cur4Minutes = Math.floor(curTime / 240);
 
 const fnCheckControl = (diff) => {
   const iTime = curHours;
+  const modTime = iTime % 4;
   gob._time.cycle = iTime;
-  gob._time.rem = iTime % 4;
+  gob._time.rem = modTime;
   // diff.decr 累计已读
   // diff.incr 累计新增
   if (diff.decr >= 17 && diff.decr - diff.incr >= 4) {
-    if (iTime % 4 === 0) {
+    if (modTime === 0) {
       return "reset";
     } else {
       return "lock";
