@@ -217,15 +217,11 @@ function fnColorStars(offset = 0) {
 
     // _log("fnColorStars", href, hash);
 
-    // const intNum = parseInt(hash + cur4Minutes + i);
-    let intNum = parseInt(hash + cur4Minutes + offset);
-    if (offset == oConfig.forMod) {
-      intNum += i;
-    }
+    let intNum = parseInt(hash + cur4Minutes);
     const $parent = $e.parentNode.parentNode;
     // pickCount <= oConfig.maxPick
 
-    if (intNum % oConfig.forMod === 0 && i < 37) {
+    if (intNum % oConfig.forMod <= offset && i < 37) {
       // _log("fnColorStars", intNum, intNum % 4);
       pickCount++;
       $parent.style.backgroundColor = "#ddd";
