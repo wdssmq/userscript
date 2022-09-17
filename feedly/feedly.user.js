@@ -300,7 +300,10 @@
       // _log("fnColorStars", href, hash);
 
       // const intNum = parseInt(hash + cur4Minutes + i);
-      const intNum = parseInt(hash + cur4Minutes + offset);
+      let intNum = parseInt(hash + cur4Minutes + offset);
+      if (offset == oConfig.forMod) {
+        intNum += i;
+      }
       const $parent = $e.parentNode.parentNode;
       // pickCount <= oConfig.maxPick
 
@@ -323,7 +326,7 @@
         });
       }
     });
-    if (pickCount <= oConfig.minPick && offset <= oConfig.forMod) {
+    if (pickCount < oConfig.minPick && offset < oConfig.forMod) {
       fnColorStars(offset + 1);
     }
   }
