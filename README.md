@@ -14,6 +14,10 @@ GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/z
 
 QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
+> wdssmq/rollup-plugin-monkey: 使用 rollup 开发「GM\_脚本」：
+>
+> [https://github.com/wdssmq/rollup-plugin-monkey](https://github.com/wdssmq/rollup-plugin-monkey "wdssmq/rollup-plugin-monkey: 使用 rollup 开发「GM\_脚本」")
+
 ## 用于复制
 
 ```js
@@ -334,3 +338,17 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/sm.ms/def.user.js
 --------
 
 ---end---
+
+## up empty_def
+
+```bash
+PROJECT_SCRIPT=empty_def
+rm -rf ${PROJECT_SCRIPT}
+# 下载初始模板
+wget https://github.com/wdssmq/rollup-plugin-monkey/releases/latest/download/script_def.tar.gz
+tar -xzvf script_def.tar.gz
+mv script_def ${PROJECT_SCRIPT}
+# cd ${PROJECT_SCRIPT}
+eslint empty_def/**/*.js empty_def/*.mjs --fix
+rm -rf script_def.tar.gz
+```
