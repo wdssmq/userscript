@@ -10,3 +10,4 @@ node_modules
 dev
 pnpm-lock.yaml
 package-lock.json
+**/.eslintrc.yaml
