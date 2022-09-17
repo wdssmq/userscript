@@ -33,7 +33,7 @@
 
   // -------------------------------------
 
-  const _curUrl = () => { return window.location.href; };
+  const _curUrl = () => { return window.location.href };
   const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   // -------------------------------------
