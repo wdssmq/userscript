@@ -227,16 +227,6 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
 
 --------
 
-name：「Feedly」Less Item
-
-desc：减少每次显示的条目数量
-
-url：https://github.com/wdssmq/userscript/blob/master/feedly/LessItems.user.js
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/LessItems.user.js
-
---------
-
 name：「Feedly」中键标记已读 + 收藏导出为*.url
 
 desc：新标签页打开条目时自动标记为已读，收藏计数
@@ -294,6 +284,16 @@ desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Ma
 url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
 
 cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
+
+--------
+
+name：「Feedly」Less Item
+
+desc：减少每次显示的条目数量
+
+url：https://github.com/wdssmq/userscript/blob/master/LessItems/LessItems.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/LessItems/LessItems.user.js
 
 --------
 
