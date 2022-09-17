@@ -15,6 +15,7 @@
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 // @noframes
+// @run-at       document-end
 // @match       *://*/post/*.html*
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*
@@ -22,6 +23,7 @@
 // ==/UserScript==
 
 /* jshint esversion: 6 */
+/* eslint-disable */
 
 (function () {
   'use strict';
