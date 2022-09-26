@@ -1,4 +1,5 @@
 import { gm_name, gm_banner } from "./src/__info.js";
+import pkg from "./package.json";
 import replace from "@rollup/plugin-replace";
 
 // for prod
@@ -15,6 +16,7 @@ const gobConfig = {
 };
 
 gobConfig.url = `http://${gobConfig.listen.host}:${gobConfig.listen.port}`;
+gobConfig.gm_banner = gobConfig.gm_banner.replace("placeholder.pkg.version", pkg.version);
 
 const prodConfig = {
   input: "src/main.js",
