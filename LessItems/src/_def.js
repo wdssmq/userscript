@@ -48,7 +48,19 @@ async function fnAutoScroll($items, $blocks) {
 
 // 构建侧边栏
 function fnBuildSideBar($block) {
-  const $el = $n(".list.list-feed");
+  let $el = $n(".list.list-feed");
+  if (!$el) {
+    const $cols = $na(".row > div");
+    [].forEach.call($cols, ($e, i) => {
+      // 获取 $e 的类名
+      const strClass = $e.className;
+      const text = $e.innerText;
+      if (text === "") {
+        $e.innerHTML = "<div><div class=\"list list-feed\"></div>";
+        $el = $n(".list.list-feed");
+      }
+    });
+  }
   // 设置 fixed 定位
   $el.parentNode.style.position = "fixed";
   // 获取 $block 类名
