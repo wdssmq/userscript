@@ -49,6 +49,8 @@ const JSZip = (() => {
 })();
 
 let C_LEVEL = 1;
+let FILENAME_LENGTH = 2;
+
 const getCompressionOptions = () => {
   if (C_LEVEL === 0) return {};
   return {
@@ -56,8 +58,6 @@ const getCompressionOptions = () => {
     compressionOptions: { level: C_LEVEL },
   };
 };
-
-let FILENAME_LENGTH = 2;
 
 const gob = {
   lstImgUrl: null,
