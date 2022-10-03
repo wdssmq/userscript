@@ -13,6 +13,8 @@ module.exports = {
     "GM_addStyle": true,
     "GM_getValue": true,
     "GM_setValue": true,
+    "GM_xmlhttpRequest": true,
+    "GM_registerMenuCommand": true,
     "unsafeWindow": true,
     "$": true,
   },
