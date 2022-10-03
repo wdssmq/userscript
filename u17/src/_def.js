@@ -241,16 +241,17 @@ window.addEventListener("hashchange", async () => {
     alert("章节标题被截断，请刷新页面");
     return;
   }
-  if (gob.count > 4 && info.totalPage > 4) {
-    gob.count = 0;
-    $btnDL.classList.remove("running");
-    return;
-  }
-  if (info.curPage === "1" && $btnDL.classList.contains("running")) {
-    $btnDL.click();
-    gob.count++;
-    _log($n("#u17_btn_dl"));
-  }
+  // if (gob.count > 4) {
+  //   gob.count = 0;
+  //   $btnDL.classList.remove("running");
+  //   return;
+  // }
+  // if (info.curPage === "1" && $btnDL.classList.contains("running")) {
+  //   $btnDL.click();
+  //   if (info.totalPage > 4) {
+  //     gob.count++;
+  //   }
+  // }
 });
 
 fnBtnDL();
