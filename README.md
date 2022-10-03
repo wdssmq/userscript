@@ -247,6 +247,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/blog/blog-helper.user
 
 --------
 
+name：有妖气漫画下载
+
+desc：归档下载有妖气的漫画
+
+url：https://github.com/wdssmq/userscript/blob/master/u17/u17.user.js
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/u17/u17.user.js
+
+--------
+
 name：「漫画」打包下载（QQ 群：189574683）
 
 desc：按章节打包下载漫画柜的资源
