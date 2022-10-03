@@ -96,6 +96,7 @@
 
   let C_LEVEL = 1;
   let FILENAME_LENGTH = 2;
+
   const getCompressionOptions = () => {
     return {
       compression: "DEFLATE",
@@ -124,26 +125,27 @@
     const name = $n("a.comic_name").innerHTML; // 漫画名
     let chapter = $n("#current_chapter_name").innerHTML; // 章节
     if (chapter.includes("...")) {
-      chapter = fnChapterFromTitle();
+      chapter = fnChapterFromTitle(name);
     }
     const curImgUrl = fnGenUrl();
     const _pages = $n(".pagenum").innerText.trim().split("/"); // 页数
     return { name, chapter, curImgUrl, curPage: _pages[0], totalPage: _pages[1] };
   }
 
-  function fnChapterFromTitle() {
+  function fnChapterFromTitle(name) {
     const title = document.title;
-    const _chapter = title.match(/(\d+\s[^-]+) - /);
+    const _chapter = title.match(/^([^-]+) - /);
     if (_chapter) {
-      _log("chapter from title", _chapter);
-      return _chapter[1];
+      // _log("chapter from title", _chapter);
+      return _chapter[1].trim().replace(`《${name}》`, "");
     }
-    return null;
+    return "";
   }
 
   const fnDownload = async ($btn = null, oInfo) => {
     const info = oInfo;
-    if (info.chapter === gob.lstChapter) {
+    if (info.chapter == gob.lstChapter) {
+      _error("章节重复");
       return;
     } else {
       gob.lstChapter = info.chapter;
@@ -223,7 +225,7 @@
       return;
     }
     const info = fnGenInfo();
-    _log(info);
+    _log("fnMain", info);
     if (info.curPage > 1) {
       alert("请从第一页开始下载");
       return false;
@@ -273,7 +275,7 @@
   }
 
   window.addEventListener("hashchange", async () => {
-    await _sleep(593);
+    await _sleep(3000);
     const info = fnGenInfo();
     const $btnDL = $n("#u17_btn_dl");
     if (info.curPage == "1") {
@@ -284,17 +286,17 @@
       alert("章节标题被截断，请刷新页面");
       return;
     }
-    if (gob.count > 4) {
-      gob.count = 0;
-      $btnDL.classList.remove("running");
-      return;
-    }
-    if (info.curPage === "1" && $btnDL.classList.contains("running")) {
-      $btnDL.click();
-      if (info.totalPage > 4) {
-        gob.count++;
-      }
-    }
+    // if (gob.count > 4) {
+    //   gob.count = 0;
+    //   $btnDL.classList.remove("running");
+    //   return;
+    // }
+    // if (info.curPage === "1" && $btnDL.classList.contains("running")) {
+    //   $btnDL.click();
+    //   if (info.totalPage > 4) {
+    //     gob.count++;
+    //   }
+    // }
   });
 
   fnBtnDL();
