@@ -14,6 +14,7 @@ module.exports = {
     "GM_getValue": true,
     "GM_setValue": true,
     "unsafeWindow": true,
+    "$": true,
   },
   "rules": {
     "generator-star-spacing": 0, // generator 函数中 * 号前后的空格
