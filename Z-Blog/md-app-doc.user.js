@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Z-Blog」使用 Markdown 编辑应用介绍
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      0.1.1
 // @author       wdssmq
 // @description  使用 Markdown 编辑应用说明
 // @null     ----------------------------
@@ -14,21 +14,24 @@
 // @null     ----------------------------
 // @match        https://app.zblogcn.com/zb_system/admin/edit.php?*
 // @require      https://unpkg.com/turndown/dist/turndown.js
-// @require      https://cdn.jsdelivr.net/npm/marked/marked.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/marked/4.1.1/marked.min.js
 // @grant        none
 // ==/UserScript==
-/*jshint esversion: 8 */
+
+/* jshint esversion: 8 */
+/* globals editor_api marked TurndownService sContent */
+/* eslint no-useless-escape: 0 */
 (function () {
   "use strict";
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   let fnPost;
 
   function fnPostEvet() {
     fnPost = $("#btnPost")[0].onclick;
     // console.log(fnPost);
-    $("#btnPost").after(`<input class="button" style="width:180px;height:38px;" type="submit" value="提交" id="btnPost2"">`).hide();
+    $("#btnPost").after("<input class=\"button\" style=\"width:180px;height:38px;\" type=\"submit\" value=\"提交\" id=\"btnPost2\"\">").hide();
     $("#btnPost2")[0].onclick = function () {
       let oBody = editor_api.editor.content.get();
       // console.log(oBody);
@@ -40,7 +43,7 @@
         editor_api.editor.content.put(marked(oBody));
         return fnPost();
       }
-    }
+    };
   }
 
   function fnMain() {
