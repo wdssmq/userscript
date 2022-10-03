@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「其他」EasyPHP 面板助手
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      0.1.1
 // @author       沉冰浮水
 // @description  新窗口打开站点；自动启用服务；书签功能；
 // @null     ----------------------------
@@ -16,7 +16,7 @@
 // @grant        GM_getValue
 // @grant        GM_setValue
 // ==/UserScript==
-/*jshint esversion:6 */
+/* jshint esversion:6 */
 (function () {
   "use strict";
   let $ = typeof window.$ == "function" ? window.$ : unsafeWindow.jQuery;
@@ -54,7 +54,7 @@
     }
     const rootUrl = siteList[site].attr("href");
     siteList[site].after(
-      ` | <a title="${item.name}" class="list_alias_name" target="_blank" href="${rootUrl}${item.url}">${item.name}</a>`
+      ` | <a title="${item.name}" class="list_alias_name" target="_blank" href="${rootUrl}${item.url}">${item.name}</a>`,
     );
   });
 })();
