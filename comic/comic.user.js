@@ -21,7 +21,11 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
-/*jshint esversion:9 */
+
+/* jshint esversion:9 */
+/* global Comlink saveAs */
+
+
 // 本脚本综合以下项目实现
 // https://greasyfork.org/scripts/28410
 // https://greasyfork.org/scripts/375992
@@ -75,9 +79,9 @@
   const JSZip = (() => {
     const blob = new Blob(
       [
-        'importScripts("https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js","https://cdn.jsdelivr.net/npm/jszip@3.5.0/dist/jszip.min.js");class JSZipWorker{constructor(){this.zip=new JSZip}file(name,{data:data}){this.zip.file(name,data)}generateAsync(options,onUpdate){return this.zip.generateAsync(options,onUpdate).then(data=>Comlink.transfer({data:data},[data]))}}Comlink.expose(JSZipWorker);',
+        "importScripts(\"https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js\",\"https://cdn.jsdelivr.net/npm/jszip@3.5.0/dist/jszip.min.js\");class JSZipWorker{constructor(){this.zip=new JSZip}file(name,{data:data}){this.zip.file(name,data)}generateAsync(options,onUpdate){return this.zip.generateAsync(options,onUpdate).then(data=>Comlink.transfer({data:data},[data]))}}Comlink.expose(JSZipWorker);",
       ],
-      { type: "text/javascript" }
+      { type: "text/javascript" },
     );
     const worker = new Worker(URL.createObjectURL(blob));
     return Comlink.wrap(worker);
@@ -94,7 +98,7 @@
   1: lowest (best speed)
   ...
   9: highest (best compression)`,
-        C_LEVEL
+        C_LEVEL,
       );
       if (num === null) return;
       num = parseInt(num.trim());
@@ -116,8 +120,8 @@
     let num;
     do {
       num = prompt(
-        `Please input the minimum image filename length you want >=0, zeros will be padded to the start of filename when its length lower than this value:`,
-        FILENAME_LENGTH
+        "Please input the minimum image filename length you want >=0, zeros will be padded to the start of filename when its length lower than this value:",
+        FILENAME_LENGTH,
       );
       if (num === null) return;
       num = parseInt(num);
@@ -126,46 +130,11 @@
     GM_setValue("filename_length", num);
   });
 
-  // 下载线程数
-  let THREAD = GM_getValue("thread_num", 8);
-  GM_registerMenuCommand("Download Thread", () => {
-    let num;
-    do {
-      num = prompt(
-        "Please input the number of threads you want (1~32):",
-        THREAD
-      );
-      if (num === null) return;
-      num = parseInt(num);
-    } while (num.toString() == "NaN" || num < 1 || num > 32);
-    THREAD = num;
-    GM_setValue("thread_num", num);
-  });
+
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // 伪多线程
-  const multiThread = async (tasks, promiseFunc) => {
-    const threads = [];
-    let taskIndex = 0;
 
-    const run = (threadID) =>
-      new Promise(async (resolve) => {
-        while (true) {
-          let i = taskIndex++;
-          if (i >= tasks.length) break;
-          await promiseFunc(tasks[i], threadID);
-        }
-        resolve();
-      });
-
-    // 创建线程
-    for (let threadID = 0; threadID < THREAD; threadID++) {
-      await sleep(Math.min(2000 / THREAD, 300));
-      threads.push(run(threadID));
-    }
-    return Promise.all(threads);
-  };
 
   let curImgUrl = "";
   function fnGenUrl() {
@@ -209,21 +178,19 @@
     };
     // 下载并添加到zip
     // page 从1开始
-    const dlPromise = (url, page, threadID = 0) => {
+    const dlPromise = async (url, page, threadID = 0) => {
       const fileName = ((i) => {
         return `${String(i).padStart(FILENAME_LENGTH, 0)}.jpg`;
       })(page);
-      return get(url, "arraybuffer")
-        .then(async (data) => {
+      try {
+        const data = await get(url, "arraybuffer");
           await zip.file(fileName, Comlink.transfer({ data }, [data]));
           info.done++;
-        })
-        .catch(async (e) => {
+      } catch (e) {
           await zip.file(`${fileName}.bad.txt`, "");
           info.bad[page] = `${url}`;
           info.error++;
-          // throw e;
-        });
+      }
     };
     for (let page = 0; page < info.pages; page++) {
       const url = fnGenUrl();
@@ -249,7 +216,7 @@
           // }
           btnCompressingProgress(percent.toFixed(2));
           info.compressingPercent = percent;
-        })
+        }),
       );
       console.log(info);
       // console.log("Done");
