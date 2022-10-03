@@ -99,7 +99,8 @@ function fnChapterFromTitle(name) {
 
 const fnDownload = async ($btn = null, oInfo) => {
   const info = oInfo;
-  if (info.chapter === gob.lstChapter) {
+  if (info.chapter == gob.lstChapter) {
+    _error("章节重复");
     return;
   } else {
     gob.lstChapter = info.chapter;
@@ -179,7 +180,7 @@ async function fnMain($btn) {
     return;
   }
   const info = fnGenInfo();
-  _log(info);
+  _log("fnMain", info);
   if (info.curPage > 1) {
     alert("请从第一页开始下载");
     return false;
@@ -229,7 +230,7 @@ function fnBtnDL() {
 }
 
 window.addEventListener("hashchange", async () => {
-  await _sleep(593);
+  await _sleep(3000);
   const info = fnGenInfo();
   const $btnDL = $n("#u17_btn_dl");
   if (info.curPage == "1") {
