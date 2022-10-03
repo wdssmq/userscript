@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Markdown-A-Textarea
 // @namespace   wdssmq
-// @version     1.0.2
+// @version     1.0.3
 // @author      沉冰浮水
 // @description 在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
 // @link        https://greasyfork.org/zh-CN/scripts/29203
@@ -21,6 +21,8 @@
 // @grant       GM_addStyle
 // ==/UserScript==
 
+/* eslint no-useless-escape: 0 */
+/* global GM_addStyle */
 /* jshint multistr:true */
 function $n(e) {
   return document.querySelector(e);
@@ -34,12 +36,12 @@ function xml2md(xml) {
   if (xml.indexOf("isXML") > -1) {
     // 移除isXML
     md = md.replace(/\n?<!--isXML-->/g, "");
-    //行内
+    // 行内
 
-    //链接
-    md = md.replace(/<a href="([^"]+)" title="([^"]+)"\s*([^>]*)>(.+)<\/a>/g,'[$4]($1 "$2"){$3}');
-    //图片
-    md = md.replace(/<img src="([^"]+)" alt="([^"]+)"[^>]*>/g,'![$2]($1)');
+    // 链接
+    md = md.replace(/<a href="([^"]+)" title="([^"]+)"\s*([^>]*)>(.+)<\/a>/g,"[$4]($1 \"$2\"){$3}");
+    // 图片
+    md = md.replace(/<img src="([^"]+)" alt="([^"]+)"[^>]*>/g,"![$2]($1)");
     // 段落
     md = md.replace(/<p>/g, "");
     md = md.replace(/<\/p>/g, "\n\n");
@@ -53,7 +55,7 @@ function xml2md(xml) {
     // 格式化换行
     md = md.replace(/\n\n+/g, "\n\n");
     md = md.replace(/\n+$/g, "");
-    //修正
+    // 修正
     md = md.replace(/\){}/g, ")");
   }
   return md;
@@ -82,16 +84,16 @@ function md2xml(md) {
     // 行内标记
     xml = xml.replace(/([^\*]*)\*\*(.*)\*\*/g, "$1<b>$2</b>");
     xml = xml.replace(/([^\*]*)\*(.*)\*/g, "$1<i>$2</i>");
-    //图片
-    xml = xml.replace(/!\[([^\]]+)\]\(([^\s\)]+)[^\)]*\)/g, '<img src="$2" alt="$1" title="$1">');
+    // 图片
+    xml = xml.replace(/!\[([^\]]+)\]\(([^\s\)]+)[^\)]*\)/g, "<img src=\"$2\" alt=\"$1\" title=\"$1\">");
     console.log(xml);
-    //链接
-    xml = xml.replace(/\[(.+)\]\(([^\s\)]+)\s*"?([^"]+)*"?\)(?:{([^}]+)})?/g, '<a href="$2" title="$3" $4>$1</a>');
-    xml = xml.replace(/title=""/g,'title="点击链接查看"');
+    // 链接
+    xml = xml.replace(/\[(.+)\]\(([^\s\)]+)\s*"?([^"]+)*"?\)(?:{([^}]+)})?/g, "<a href=\"$2\" title=\"$3\" $4>$1</a>");
+    xml = xml.replace(/title=""/g,"title=\"点击链接查看\"");
     // xml = xml.replace(/\[(.+)\]\(([^\s\)]+)\)/g, '<a href="$2">$1</a>');
 
-    //修正
-    xml = xml.replace(/\s>/g,'>');
+    // 修正
+    xml = xml.replace(/\s>/g,">");
     xml = xml.replace(/2xml/g,"");
     // 添加 isXML
     xml += "\n<!--isXML-->";
@@ -99,30 +101,30 @@ function md2xml(md) {
   return xml;
 }
 
-window.addEventListener('load', function (e) {
+window.addEventListener("load", function (e) {
   var domTxa = $n("textarea.md-needed");
 
   if (!domTxa){
     return;
   }
   console.log(1);
-  domTxa.addEventListener('keyup', function () {
+  domTxa.addEventListener("keyup", function () {
     if(domTxa.value.indexOf("2xml") > -1){
       domTxa.value = md2xml(domTxa.value);
     }
   });
-  $n("input[type=submit]").addEventListener('mouseenter', function () {
+  $n("input[type=submit]").addEventListener("mouseenter", function () {
     domTxa.value = md2xml(domTxa.value);
   });
-  $n("input[type=submit]").addEventListener('mouseout', function () {
+  $n("input[type=submit]").addEventListener("mouseout", function () {
     domTxa.value = xml2md(domTxa.value);
   });
   $n(".md-toolbar").innerHTML = "<i style=\"clear:both;display: table;\"></i>";
 
-  //添加工具栏
+  // 添加工具栏
   addFeatures(domTxa);
 
-  GM_addStyle('\
+  GM_addStyle("\
 .md-button {\
 display: inline-block;\
 cursor: pointer;\
@@ -142,7 +144,7 @@ color: #333;}\
 clear: both;\
 padding: 0;\
 margin: 1px 1px 3px;\
-}');
+}");
 });
 
 function addFeatures(n) {
@@ -153,56 +155,58 @@ function addFeatures(n) {
   // btnMake(n, '<b>Test</b>', "test", function (e) {
   // n.value = md2xml(n.value)
   // });
-  btnMake(n, '<b>' + __('B') + '</b>', __('Bold'), '**');
-  btnMake(n, '<i>' + __('I') + '</i>', __('Italic'), '*');
-  btnMake(n, '<u>' + __('U') + '</u>', __('Underline'), '<u>', '</u>');
-  btnMake(n, '<s>' + __('S') + '</s>', __('Strikethrough'), '<s>', '</s>');
-  btnMake(n, '&lt;br&gt;', __('Force line break'), '<br>', '', true);
-  btnMake(n, '---', __('Horizontal line'), '\n\n---\n\n', '', true);
-  btnMake(n, __('URL'), __('Add URL to selected text'),
+  btnMake(n, "<b>" + __("B") + "</b>", __("Bold"), "**");
+  btnMake(n, "<i>" + __("I") + "</i>", __("Italic"), "*");
+  btnMake(n, "<u>" + __("U") + "</u>", __("Underline"), "<u>", "</u>");
+  btnMake(n, "<s>" + __("S") + "</s>", __("Strikethrough"), "<s>", "</s>");
+  btnMake(n, "&lt;br&gt;", __("Force line break"), "<br>", "", true);
+  btnMake(n, "---", __("Horizontal line"), "\n\n---\n\n", "", true);
+  btnMake(n, __("URL"), __("Add URL to selected text"),
           function (e) {
     try {
-      edWrapInTag('[', '](' + prompt(__('URL') + ':') + ')', edInit(e.target));
-    } catch (ex) {}
+      edWrapInTag("[", "](" + prompt(__("URL") + ":") + ")", edInit(e.target));
+    } catch (ex) {
+      console.log(ex);
+    }
   });
-  btnMake(n, __('Image (https)'), __('Convert selected https://url to inline image'), '![' + __('image') + '](', ')');
-  btnMake(n, __('Table'), __('Insert table template'), __('\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n'), '', true);
-  btnMake(n, __('Code'), __('Apply CODE markdown to selected text'),
+  btnMake(n, __("Image (https)"), __("Convert selected https://url to inline image"), "![" + __("image") + "](", ")");
+  btnMake(n, __("Table"), __("Insert table template"), __("\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n"), "", true);
+  btnMake(n, __("Code"), __("Apply CODE markdown to selected text"),
           function (e) {
     var ed = edInit(e.target);
-    if (ed.sel.indexOf('\n') < 0){
-      edWrapInTag('`', '`', ed);
+    if (ed.sel.indexOf("\n") < 0){
+      edWrapInTag("`", "`", ed);
     }
     else{
-      edWrapInTag(((ed.sel1 === 0) || (ed.text.charAt(ed.sel1 - 1) == '\n') ? '' : '\n') + '```' + (ed.sel.charAt(0) == '\n' ? '' : '\n'),
-                  (ed.sel.substr(-1) == '\n' ? '' : '\n') + '```' + (ed.text.substr(ed.sel2, 1) == '\n' ? '' : '\n'),
+      edWrapInTag(((ed.sel1 === 0) || (ed.text.charAt(ed.sel1 - 1) == "\n") ? "" : "\n") + "```" + (ed.sel.charAt(0) == "\n" ? "" : "\n"),
+                  (ed.sel.substr(-1) == "\n" ? "" : "\n") + "```" + (ed.text.substr(ed.sel2, 1) == "\n" ? "" : "\n"),
                   ed);}
   });
 }
 
 function btnMake(elTxa, label, title, tag1_or_cb, tag2, noWrap) {
-  var a = document.createElement('a');
-  a.className = 'md-button';
+  var a = document.createElement("a");
+  a.className = "md-button";
   a.innerHTML = label;
   a.title = title;
-  a.style.setProperty('float', 'right');
-  a.addEventListener('click',
-                     typeof(tag1_or_cb) == 'function' ? tag1_or_cb
+  a.style.setProperty("float", "right");
+  a.addEventListener("click",
+                     typeof(tag1_or_cb) == "function" ? tag1_or_cb
                      : noWrap ? function (e) {
     edInsertText(tag1_or_cb, edInit(e.target));
   }
                      : function (e) {
     edWrapInTag(tag1_or_cb, tag2, edInit(e.target));
   });
-  var elToolbar = elTxa.parentNode.querySelector('.md-toolbar');
-  //console.log(elToolbar);
+  var elToolbar = elTxa.parentNode.querySelector(".md-toolbar");
+  // console.log(elToolbar);
   a.textAreaNode = elTxa;
   elToolbar.insertBefore(a, elToolbar.firstElementChild);
 }
 
 function edInit(btn) {
   var ed = {
-    node: btn.textAreaNode
+    node: btn.textAreaNode,
   };
   ed.sel1 = ed.node.selectionStart;
   ed.sel2 = ed.node.selectionEnd;
@@ -224,7 +228,7 @@ function edInsertText(text, ed) {
 }
 
 var __ = (function (l, langs) {
-  var lang = langs[l] || langs[l.replace(/-.+/, '')];
+  var lang = langs[l] || langs[l.replace(/-.+/, "")];
   return lang ? function (text) {
     return lang[text] || text;
   }
@@ -233,72 +237,72 @@ var __ = (function (l, langs) {
   }; // No matching language, fallback to english
 })("zh-CN", {
   // Can be full name, or just the beginning part.
-  'zh-CN': {
-    'Bold': '粗体',
-    'Italic': '斜体',
-    'Underline': '下划线',
-    'Strikethrough': '删除线',
-    'Force line break': '强制换行',
-    'Horizontal line': '水平分割线',
-    'URL': '链接',
-    'Add URL to selected text': '为所选文字添加链接',
-    'Image (https)': '图片 (https)',
-    'Convert selected https://url to inline image': '将所选地址转换为行内图片',
-    'image': '图片描述', // Default image alt value
-    'Table': '表格',
-    'Insert table template': '插入表格模板',
-    'Code': '代码',
-    'Apply CODE markdown to selected text': '将选中代码围起来',
+  "zh-CN": {
+    "Bold": "粗体",
+    "Italic": "斜体",
+    "Underline": "下划线",
+    "Strikethrough": "删除线",
+    "Force line break": "强制换行",
+    "Horizontal line": "水平分割线",
+    "URL": "链接",
+    "Add URL to selected text": "为所选文字添加链接",
+    "Image (https)": "图片 (https)",
+    "Convert selected https://url to inline image": "将所选地址转换为行内图片",
+    "image": "图片描述", // Default image alt value
+    "Table": "表格",
+    "Insert table template": "插入表格模板",
+    "Code": "代码",
+    "Apply CODE markdown to selected text": "将选中代码围起来",
 
-    '\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n':
-    '\n| 表头 1 | 表头 2 |\n|-------|-------|\n| 表格 1 | 表格 2 |\n| 表格 3 | 表格 4 |\n'
+    "\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n":
+    "\n| 表头 1 | 表头 2 |\n|-------|-------|\n| 表格 1 | 表格 2 |\n| 表格 3 | 表格 4 |\n",
   },
-  'ru': {
-    'B': 'Ж',
-    'I': 'К',
-    'U': 'Ч',
-    'S': 'П',
-    'Bold': 'Жирный',
-    'Italic': 'Курсив',
-    'Underline': 'Подчеркнутый',
-    'Strikethrough': 'Перечеркнутый',
-    'Force line break': 'Новая строка',
-    'Horizontal line': 'Горизонтальная линия',
-    'URL': 'ссылка',
-    'Add URL to selected text': 'Добавить ссылку к выделенному тексту',
-    'Image (https)': 'Картинка (https)',
-    'Convert selected https://url to inline image': 'Преобразовать выделенный https:// адрес в картинку',
-    'image': 'картинка', // Default image alt value
-    'Table': 'Таблица',
-    'Insert table template': 'Вставить шаблон таблицы',
-    'Code': 'Код',
-    'Apply CODE markdown to selected text': 'Пометить выделенный фрагмент как программный код',
+  "ru": {
+    "B": "Ж",
+    "I": "К",
+    "U": "Ч",
+    "S": "П",
+    "Bold": "Жирный",
+    "Italic": "Курсив",
+    "Underline": "Подчеркнутый",
+    "Strikethrough": "Перечеркнутый",
+    "Force line break": "Новая строка",
+    "Horizontal line": "Горизонтальная линия",
+    "URL": "ссылка",
+    "Add URL to selected text": "Добавить ссылку к выделенному тексту",
+    "Image (https)": "Картинка (https)",
+    "Convert selected https://url to inline image": "Преобразовать выделенный https:// адрес в картинку",
+    "image": "картинка", // Default image alt value
+    "Table": "Таблица",
+    "Insert table template": "Вставить шаблон таблицы",
+    "Code": "Код",
+    "Apply CODE markdown to selected text": "Пометить выделенный фрагмент как программный код",
 
-    '\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n':
-    '\n| заголовок1 | заголовок2 |\n|-------|-------|\n| ячейка1 | ячейка2 |\n| ячейка3 | ячейка4 |\n'
+    "\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n":
+    "\n| заголовок1 | заголовок2 |\n|-------|-------|\n| ячейка1 | ячейка2 |\n| ячейка3 | ячейка4 |\n",
   },
-  'fr': {
-    'B': 'G',
-    'I': 'I',
-    'U': 'S',
-    'S': 'B',
-    'Bold': 'Gras',
-    'Italic': 'Italique',
-    'Underline': 'Souligné',
-    'Strikethrough': 'Barré',
-    'Force line break': 'Forcer le saut de ligne',
-    'Horizontal line': 'Ligne horizontale',
-    'URL': 'URL',
-    'Add URL to selected text': 'Ajouter URL au texte sélectionné',
-    'Image (https)': 'Image (https)',
-    'Convert selected https://url to inline image': 'Convertir https://url sélectionnés en images',
-    'image': 'image', // Default image alt value
-    'Table': 'Tableau',
-    'Insert table template': 'Insérer un modèle de table',
-    'Code': 'Code',
-    'Apply CODE markdown to selected text': 'Appliquer CODE markdown au texte sélectionné',
+  "fr": {
+    "B": "G",
+    "I": "I",
+    "U": "S",
+    "S": "B",
+    "Bold": "Gras",
+    "Italic": "Italique",
+    "Underline": "Souligné",
+    "Strikethrough": "Barré",
+    "Force line break": "Forcer le saut de ligne",
+    "Horizontal line": "Ligne horizontale",
+    "URL": "URL",
+    "Add URL to selected text": "Ajouter URL au texte sélectionné",
+    "Image (https)": "Image (https)",
+    "Convert selected https://url to inline image": "Convertir https://url sélectionnés en images",
+    "image": "image", // Default image alt value
+    "Table": "Tableau",
+    "Insert table template": "Insérer un modèle de table",
+    "Code": "Code",
+    "Apply CODE markdown to selected text": "Appliquer CODE markdown au texte sélectionné",
 
-    '\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n':
-    '\n| En-tête 1 | En-tête 2 |\n|-------|-------|\n| cellule 1 | cellule 2 |\n| cellule 3 | cellule 4 |\n'
-  }
+    "\n| head1 | head2 |\n|-------|-------|\n| cell1 | cell2 |\n| cell3 | cell4 |\n":
+    "\n| En-tête 1 | En-tête 2 |\n|-------|-------|\n| cellule 1 | cellule 2 |\n| cellule 3 | cellule 4 |\n",
+  },
 });
