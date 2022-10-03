@@ -18,7 +18,7 @@
 // @match        https://www.u17.com/comic/*.html
 // @match        https://www.u17.com/chapter/*.html
 // @require      https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js
-// @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js
+// @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -26,8 +26,31 @@
 /* eslint-disable */
 /* jshint esversion: 6 */
 
-(function () {
+(function (Comlink, saveAs) {
   'use strict';
+
+  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  function _interopNamespace(e) {
+    if (e && e.__esModule) return e;
+    var n = Object.create(null);
+    if (e) {
+      Object.keys(e).forEach(function (k) {
+        if (k !== 'default') {
+          var d = Object.getOwnPropertyDescriptor(e, k);
+          Object.defineProperty(n, k, d.get ? d : {
+            enumerable: true,
+            get: function () { return e[k]; }
+          });
+        }
+      });
+    }
+    n["default"] = e;
+    return Object.freeze(n);
+  }
+
+  var Comlink__namespace = /*#__PURE__*/_interopNamespace(Comlink);
+  var saveAs__default = /*#__PURE__*/_interopDefaultLegacy(saveAs);
 
   const gm_name = "u17";
 
@@ -46,6 +69,7 @@
   }
 
   /* global Comlink saveAs */
+
   // 网络请求
   const get = (url, responseType = "json", retry = 2) =>
     new Promise((resolve, reject) => {
@@ -91,7 +115,7 @@
       { type: "text/javascript" },
     );
     const worker = new Worker(URL.createObjectURL(blob));
-    return Comlink.wrap(worker);
+    return Comlink__namespace.wrap(worker);
   })();
 
   let C_LEVEL = 1;
@@ -175,7 +199,7 @@
       })(page);
       try {
         const data = await get(url, "arraybuffer");
-        await zip.file(fileName, Comlink.transfer({ data }, [data]));
+        await zip.file(fileName, Comlink__namespace.transfer({ data }, [data]));
         info.done++;
       } catch (e) {
         await zip.file(`${fileName}.bad.txt`, "");
@@ -200,7 +224,7 @@
       // let lastZipFile = "";
       const { data } = await zip.generateAsync(
         { type: "arraybuffer", ...getCompressionOptions() },
-        Comlink.proxy(({ percent, currentFile }) => {
+        Comlink__namespace.proxy(({ percent, currentFile }) => {
           // if (lastZipFile !== currentFile && currentFile) {
           //   lastZipFile = currentFile;
           //   console.log(`Compressing ${percent.toFixed(2)}%`, currentFile);
@@ -233,7 +257,7 @@
     const fnDL = await fnDownload($btn, info);
     const { data, name, error } = await fnDL();
     if (!error) {
-      saveAs(data, name);
+      saveAs__default["default"](data, name);
     } else {
       _error(error);
     }
@@ -301,4 +325,4 @@
 
   fnBtnDL();
 
-})();
+})(Comlink, saveAs);

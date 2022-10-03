@@ -9,6 +9,7 @@
     Reflect.set(_unsafeWindow, "unsafeWindow", _unsafeWindow);
     const mountedApiList = [];
     const unMountedApiList = [];
+
     apiList.forEach((s) => {
       const fn = Reflect.get(window, s);
       if (fn) {
@@ -42,6 +43,8 @@
   );
 })({
   "entryList": [
+    "https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js",
+    "https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.js",
     "placeholder.livereload.js",
     "placeholder.user.js",
   ],
@@ -69,5 +72,5 @@
     "GM_setValue",
     "GM_unregisterMenuCommand",
     "GM_xmlhttpRequest",
-  ],
+  ].concat(["Comlink", "saveAs"]),
 });

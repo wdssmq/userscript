@@ -1,5 +1,10 @@
 /* global Comlink saveAs */
 import { _log, _error, _sleep, $n, fnFindDom } from "./_base";
+
+import * as Comlink from "comlink";
+// import { saveAs } from "file-saver";
+import saveAs from "file-saver";
+
 // 网络请求
 const get = (url, responseType = "json", retry = 2) =>
   new Promise((resolve, reject) => {
