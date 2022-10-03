@@ -80,21 +80,21 @@ function fnGenInfo() {
   const name = $n("a.comic_name").innerHTML; // 漫画名
   let chapter = $n("#current_chapter_name").innerHTML; // 章节
   if (chapter.includes("...")) {
-    chapter = fnChapterFromTitle();
+    chapter = fnChapterFromTitle(name);
   }
   const curImgUrl = fnGenUrl();
   const _pages = $n(".pagenum").innerText.trim().split("/"); // 页数
   return { name, chapter, curImgUrl, curPage: _pages[0], totalPage: _pages[1] };
 }
 
-function fnChapterFromTitle() {
+function fnChapterFromTitle(name) {
   const title = document.title;
-  const _chapter = title.match(/(\d+\s[^-]+) - /);
+  const _chapter = title.match(/^([^-]+) - /);
   if (_chapter) {
-    _log("chapter from title", _chapter);
-    return _chapter[1];
+    // _log("chapter from title", _chapter);
+    return _chapter[1].trim().replace(`《${name}》`, "");
   }
-  return null;
+  return "";
 }
 
 const fnDownload = async ($btn = null, oInfo) => {
