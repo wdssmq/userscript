@@ -1,11 +1,8 @@
 import { gm_name, gm_banner } from "./src/__info.js";
 import replace from "@rollup/plugin-replace";
 
+// for prod
 import monkey from "rollup-plugin-monkey";
-
-/*
-pnpm i https://github.com/wdssmq/rollup-plugin-monkey#v1
-*/
 
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
@@ -42,8 +39,12 @@ const devConfig = {
       listen: gobConfig.listen,
       onListen(web) {
         web.server.log.info({
-          "msg": "{{header}} install script {{url}}",
+          "msg": "{{header}} install script for dev {{url}}",
           "url": `${gobConfig.url}/dev/${gobConfig.gm_file}`,
+        });
+        web.server.log.info({
+          "msg": "{{header}} install script for prod {{url}}",
+          "url": `${gobConfig.url}/${gobConfig.gm_file}`,
         });
       },
     }),
