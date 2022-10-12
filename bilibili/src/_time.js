@@ -59,6 +59,7 @@ document.addEventListener(
       if (gob.curTime > 0 && gob.curTime - gob.lstTime > 137) {
         fnUpTitle(gob.curTime);
         fnUpUrl(gob.curTime);
+        gob.lstTime = gob.curTime;
       }
     }
   },
