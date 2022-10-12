@@ -1,7 +1,7 @@
 import { gm_name, gm_banner } from "./src/__info.js";
 import replace from "@rollup/plugin-replace";
 
-import monkey from 'rollup-plugin-monkey'
+import monkey from "rollup-plugin-monkey";
 
 /*
 pnpm i https://github.com/wdssmq/rollup-plugin-monkey#v1
@@ -12,9 +12,9 @@ const gobConfig = {
   gm_banner: gm_banner.trim() + "\n",
   listen: {
     host: "localhost",
-    port: "3000"
+    port: "3000",
   },
-  url: null
+  url: null,
 };
 
 gobConfig.url = `http://${gobConfig.listen.host}:${gobConfig.listen.port}`;
@@ -24,9 +24,9 @@ const prodConfig = {
   output: {
     file: gobConfig.gm_file,
     format: "iife",
-    banner: gobConfig.gm_banner
+    banner: gobConfig.gm_banner,
   },
-  plugins: []
+  plugins: [],
 };
 
 const devConfig = {
@@ -35,7 +35,7 @@ const devConfig = {
     dir: "dev",
     format: "iife",
     // banner: gobConfig.gm_banner
-    banner: "/* eslint-disable */\n"
+    banner: "/* eslint-disable */\n",
   },
   plugins: [
     monkey({
@@ -43,11 +43,11 @@ const devConfig = {
       onListen(web) {
         web.server.log.info({
           "msg": "{{header}} install script {{url}}",
-          "url": `${gobConfig.url}/dev/${gobConfig.gm_file}`
+          "url": `${gobConfig.url}/dev/${gobConfig.gm_file}`,
         });
-      }
+      },
     }),
-  ]
+  ],
 };
 
 const loaderConfig = {
@@ -55,7 +55,7 @@ const loaderConfig = {
   output: {
     file: `dev/${gobConfig.gm_file}`,
     format: "iife",
-    banner: gobConfig.gm_banner.replace(/(\/\/ @name\s+)/, "$1「dev」")
+    banner: gobConfig.gm_banner.replace(/(\/\/ @name\s+)/, "$1「dev」"),
   },
   plugins: [
     replace({
@@ -63,7 +63,7 @@ const loaderConfig = {
       "placeholder.livereload.js": `${gobConfig.url}/livereload.js?snipver=1`,
       "placeholder.user.js": `${gobConfig.url}/dev/main.js`,
     }),
-  ]
+  ],
 };
 
 const rollupConfig = [prodConfig];
