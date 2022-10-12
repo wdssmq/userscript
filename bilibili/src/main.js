@@ -12,3 +12,6 @@ import _follow from "./_follow";
 
 // 获取封面大图
 import _cover from "./_cover";
+
+// 时间轴书签
+import _time from "./_time";
