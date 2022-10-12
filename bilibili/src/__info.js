@@ -2,7 +2,7 @@ const gm_banner = `
 // ==UserScript==
 // @name         「bilibili」大会员 B 币领取提醒
 // @namespace    wdssmq.com
-// @version      0.3
+// @version      0.4
 // @author       沉冰浮水
 // @description  B 币领取提醒、稍后再看列表导出为 *.url 等
 // @url          https://greasyfork.org/scripts/398415
@@ -20,6 +20,7 @@ const gm_banner = `
 // @include      https://account.bilibili.com/account/big/myPackage
 // @match        https://space.bilibili.com/44744006/fans/follow*
 // @icon         https://www.bilibili.com/favicon.ico
+// @noframes
 // @run-at       document-end
 // @grant        GM_setClipboard
 // @grant        GM_notification
