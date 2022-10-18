@@ -87,9 +87,9 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/feedly.user.js
 
 --------
 
-name：「Feedly」Less Item
+name：「Feedly」Less Items
 
-desc：减少每次显示的条目数量
+desc：Feedly 分次标记已读
 
 url：https://github.com/wdssmq/userscript/blob/master/LessItems/LessItems.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/LessItems/LessItems.user.js)」
 
