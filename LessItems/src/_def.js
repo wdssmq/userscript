@@ -1,10 +1,36 @@
 import { curDate, _curUrl, _sleep, _log, $n, $na, fnAfter, fnFindDom } from "./_base";
 
+const objDataSet = {
+  getDataSet(el, key, def) {
+    return el.dataset[key] || def;
+  },
+  setDataSet(el, key, val) {
+    el.dataset[key] = val;
+  },
+};
+
 const gob = {
-  intAutoScroll: 0,
-  maxAutoSCroll: 2,
-  curTimeMS: curDate.getTime(),
   intBlocks: 0,
+  maxBlocks: 4,
+  bolStopScroll: false,
+  curTimeMS: curDate.getTime(),
+  stopScroll(preCaB = () => { }) {
+    if (!gob.bolStopScroll) {
+      preCaB();
+      gob.bolStopScroll = true;
+      gob.setDataSet();
+    }
+  },
+  reset() {
+    gob.intBlocks = 0;
+    gob.bolStopScroll = false;
+  },
+  setDataSet() {
+    objDataSet.setDataSet($n("#header-title"), "stopScroll", "true");
+  },
+  getDataSet() {
+    return objDataSet.getDataSet($n("#header-title"), "stopScroll", "false");
+  },
 };
 
 function fnGetItems($baseEL = "body") {
@@ -18,32 +44,43 @@ function fnGetItems($baseEL = "body") {
 async function fnAutoScroll($items, $blocks) {
   const $h2End = $n(".list-entries > h2");
   const $endItem = $items[$items.length - 1];
+
   // // 阻止向下滚动
   // if (gob.intAutoScroll > 4 && !$h2End) {
   //   $blocks[$blocks.length - 1].scrollIntoView();
   // }
-  if ($blocks.length > gob.maxAutoSCroll + 2 || $h2End || !$endItem) {
-    // _log("fnAutoScroll", "自动滚动停止");
-    // _log("fnAutoScroll", gob.intAutoScroll);
+
+  if (!gob.bolStopScroll && $h2End) {
+    $h2End.scrollIntoView();
+  }
+  if (gob.intBlocks > gob.maxBlocks || $h2End || !$endItem) {
+    gob.stopScroll(
+      () => {
+        _log("fnAutoScroll", "自动滚动停止");
+        _log("fnAutoScroll", gob);
+      },
+    );
     return;
   }
   // dateset 不存在时，执行
   if ($endItem.dataset.scrollIntoView !== "done") {
     $endItem.scrollIntoView();
-    gob.intAutoScroll += 1;
+    gob.intBlocks = $blocks.length;
     $endItem.dataset.scrollIntoView = "done";
   }
   await _sleep(1000);
-  if (gob.intAutoScroll <= gob.maxAutoSCroll && !$h2End) {
-    // 隐藏最新的四个区块
-    [].forEach.call($blocks, ($e, i) => {
-      // 隐藏
-      // $e.remove();
-      $e.style.display = "none";
-      $e.classList.add("hidden");
-    });
-  }
-  fnLessItem();
+
+  //   // 隐藏最新的四个区块
+  // if (gob.intBlocks <= gob.maxBlocks && !$h2End) {
+  //   [].forEach.call($blocks, ($e, i) => {
+  //     // 隐藏
+  //     // $e.remove();
+  //     $e.style.display = "none";
+  //     $e.classList.add("hidden");
+  //   });
+  // }
+
+  fnLessItems();
 }
 
 // 构建侧边栏
@@ -134,10 +171,17 @@ function fnBuildSideBar($block) {
   }
 }
 
-function fnLessItem() {
+function fnLessItems() {
   // 判断页面地址
   if (_curUrl().indexOf("subscription/") === -1) {
     return;
+  }
+  if (gob.bolStopScroll) {
+    if (gob.getDataSet() == "false") {
+      gob.reset();
+    } else {
+      return;
+    }
   }
   const $items = fnGetItems();
   const $blocks = $na(".list-entries .EntryList__chunk");
@@ -150,9 +194,7 @@ function fnLessItem() {
     // 分配一个不重复的 class
     $e.classList.add("LessItem" + i);
     // $e.classList.add("LessItem");
-    if (gob.intAutoScroll > gob.maxAutoSCroll) {
-      fnBuildSideBar($e);
-    }
+    fnBuildSideBar($e);
   });
 }
 
@@ -174,8 +216,8 @@ async function fnOnLoad() {
   // 滚动条滚动时触发
   if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.LessItem !== "done") {
     $n("#feedlyFrame").dataset.LessItem = "done";
-    // $n("#feedlyFrame").addEventListener("mouseover", fnLessItem);
-    $n("#feedlyFrame").addEventListener("scroll", fnLessItem);
+    // $n("#feedlyFrame").addEventListener("mouseover", fnLessItems);
+    $n("#feedlyFrame").addEventListener("scroll", fnLessItems);
     _log("fnOnLoad", "列表滚动监听");
   }
 }
