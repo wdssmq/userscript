@@ -1,10 +1,10 @@
 const gm_banner = `
 // ==UserScript==
-// @name         「Feedly」Less Item
+// @name         「Feedly」Less Items
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      0.2
 // @author       沉冰浮水
-// @description  减少每次显示的条目数量
+// @description  Feedly 分次标记已读
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
