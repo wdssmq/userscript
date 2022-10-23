@@ -1,4 +1,4 @@
-import { _log, $n, ckeObj, fnElChange } from "./_base";
+import { _warn, $n, ckeObj, fnElChange } from "./_base";
 
 // 番剧链接改为我的追番
 (() => {
@@ -20,19 +20,19 @@ import { _log, $n, ckeObj, fnElChange } from "./_base";
     if (!isDone) {
       fnElChange($n("body"), fnCheckByDOM);
     }
-    const $pick = $n("a[href$='/anime/']");
-    // const $pick2 = $n("a[href^='//space']");
+    const $pick = $n("a[href*='/anime/']");
     const $pick2 = $n("a.header-entry-avatar");
-    // _log($pick, $pick2);
-
-    let usrUrl = $pick2 ? $pick2.href : "";
-    const uid = getUidByUrlOrCookie(usrUrl);
-    if (!$pick || !uid) {
+    const uid = $pick2 ? getUidByUrlOrCookie($pick2.href) : null;
+    if (!$pick || !$pick2 || !uid) {
       return;
     }
+
+    // debug
+    // _warn($pick, $pick2);
+
     const url = `https://space.bilibili.com/${uid}/bangumi`;
     $pick.href = url;
-    _log("番剧链接改为我的追番", url);
+    _warn("番剧链接改为我的追番", url);
     isDone = true;
   };
   fnCheckByDOM();
