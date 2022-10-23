@@ -4,7 +4,9 @@ import { $n, _warn, _curUrl } from "./_base.js";
 const gob = {
   lstTime: 0,
   curTime: 0,
+  isRunning: false,
   title: "",
+  step: 73,
 };
 
 const fnUpTitle = (time) => {
@@ -40,28 +42,45 @@ const fnGetTime = () => {
       return parseInt(arr[0]) * 60 + parseInt(arr[1]);
     }
   }
+  return 0;
+};
+
+const fnDelay = (time, fnc = () => { }) => {
+  if (gob.isRunning) {
+    return;
+  }
+  gob.isRunning = true;
+  setTimeout(() => {
+    fnc();
+    gob.isRunning = false;
+  }, time);
 };
 
 document.addEventListener(
   "mouseover",
   function (e) {
-    const $target = e.target;
-    // bpx-player-container bpx-state-no-cursor
-
-    // const $container = $n(".bpx-player-container");
-    // if ($container && !$container.classList.contains("bpx-state-no-cursor")) {
-    //   _warn("进度条", e.target);
-    //   return;
-    // }
-
-    if ($target.classList.contains("bpx-player-control-wrap")) {
-      gob.curTime = fnGetTime();
-      if (gob.curTime > 0 && gob.curTime - gob.lstTime > 137) {
-        fnUpTitle(gob.curTime);
-        fnUpUrl(gob.curTime);
-        gob.lstTime = gob.curTime;
+    // const $target = e.target;
+    fnDelay(1000, () => {
+      // bpx-player-container bpx-state-no-cursor
+      const $container = $n(".bpx-player-container");
+      let bolFlag = false;
+      if ($container && !$container.classList.contains("bpx-state-no-cursor")) {
+        gob.curTime = fnGetTime();
+        if (gob.curTime > 0 && gob.curTime - gob.lstTime > gob.step) {
+          bolFlag = true;
+        }
+        if (gob.curTime < gob.lstTime) {
+          bolFlag = true;
+        }
+        if (bolFlag) {
+          fnUpTitle(gob.curTime);
+          fnUpUrl(gob.curTime);
+          gob.lstTime = gob.curTime;
+        }
+        _warn("进度条触发", e.target);
+        return;
       }
-    }
+    });
   },
   false,
 );
