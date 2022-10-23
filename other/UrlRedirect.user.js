@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         「水水」链接跳转
+// @name         「水水」链接跳转「废弃」
 // @namespace    https://www.wdssmq.com/
 // @version      0.2
 // @author       沉冰浮水
