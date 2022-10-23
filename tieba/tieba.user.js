@@ -106,18 +106,18 @@
     if ($n("#Black-dialog") === null) {
       let div = document.createElement("div");
       div.className = "dialogJ dialogJshadow";
-      /*jshint multistr: true */
+      /* jshint multistr: true */
       let html =
-        '\
-<div class="uiDialogWrapper">\
-<div class="dialogJcontent" style="text-align:center;font-size: 14px;padding: 11px 13px;">\
-<span style="color:red">请按以下格式输入或调整已有内容</span><br />--要加密的内容--\
+        "\
+<div class=\"uiDialogWrapper\">\
+<div class=\"dialogJcontent\" style=\"text-align:center;font-size: 14px;padding: 11px 13px;\">\
+<span style=\"color:red\">请按以下格式输入或调整已有内容</span><br />--要加密的内容--\
 </div>\
-</div>';
+</div>";
       div.innerHTML = html;
       div.setAttribute(
         "style",
-        "position:fixed;bottom:37%;right:15px;z-index:10;opacity:0;display:none"
+        "position:fixed;bottom:37%;right:15px;z-index:10;opacity:0;display:none",
       );
       div.setAttribute("id", "Black-dialog");
       $n("body").insertBefore(div, $n("body").childNodes[0]);

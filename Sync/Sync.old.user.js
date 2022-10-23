@@ -21,14 +21,14 @@
 // jshint        esversion:6
 // ==/UserScript==
 
-(function() {
+(function () {
   "use strict";
   "esversion: 6";
   const $ = unsafeWindow.jQuery;
   const utWebUI = unsafeWindow.utWebUI;
-  //console.log(utWebUI.TOKEN);
+  // console.log(utWebUI.TOKEN);
   let dataFolders = {};
-  //let strRlt = "";
+  // let strRlt = "";
   // 定义函数
   function fnFmSize(int) {
     let rlt = [int / 1024 / 1024, "MB"];
@@ -49,7 +49,7 @@
     cfg = {
       fix: "#",
       type: "bak",
-      act: 0
+      act: 0,
     };
     GM_setValue("rs_cfg", cfg);
   }
@@ -57,7 +57,7 @@
     let str;
     str = prompt(
       `设置前缀[当前：${cfg.fix}][只读分享将只包含以此开头的任务]`,
-      cfg.fix
+      cfg.fix,
     );
     cfg.fix = str;
     cfg.type = "bak";
@@ -80,7 +80,7 @@
     // console.log(a);
     // console.log(n);
     let strRlt = "";
-    arr.forEach(el => {
+    arr.forEach((el) => {
       dataFolders[el.name] = el;
       if (cfg.type === "share" && el.name.indexOf(cfg.fix) !== 0) {
         return;
@@ -112,9 +112,9 @@
   }
   utWebUI.getSyncFolders().then(fnDo);
 
-  $(document).on("mouseover", "#copy-dialog", function(n) {
+  $(document).on("mouseover", "#copy-dialog", function (n) {
     if (!$(this).data("rsDone")) {
-      let $input = $('<textarea type="text" class="form-control"></textarea>');
+      let $input = $("<textarea type=\"text\" class=\"form-control\"></textarea>");
       let name = $(this)
         .find(".h5")
         .text()

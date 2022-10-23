@@ -27,7 +27,7 @@
 (function () {
   "use strict";
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   const $ = unsafeWindow.jQuery || window.jQuery;
 
@@ -92,7 +92,7 @@
     return async (
       callback = function (data) {
         return data;
-      }
+      },
     ) => {
       await fnPromise();
       return callback(rlt);
@@ -150,7 +150,7 @@
     let str;
     str = prompt(
       `设置前缀[当前：${cfg.fix}][只读分享将只包含以此开头的任务]`,
-      cfg.fix
+      cfg.fix,
     );
     GM_setValue("rs_cfg", str);
   });
@@ -204,6 +204,7 @@
     let name = syncItem.name,
       size = syncItem.size,
       key = syncItem.key;
+    // eslint-disable-next-line no-useless-escape
     name = name.replace(/[#^+\[\]【】「」]+/g, " #").trim();
     name = `${name}[${size}]`;
     return fnJoin(name, `\r\n${key}`);
@@ -225,7 +226,7 @@
       !$(this).data("rsDone")
     ) {
       const $input = $(
-        '<textarea type="text" class="form-control"></textarea>'
+        "<textarea type=\"text\" class=\"form-control\"></textarea>",
       );
       $input.mouseover(function () {
         $(this).select();

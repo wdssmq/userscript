@@ -20,7 +20,7 @@
   "use strict";
   // 工具函数
   const $ = window.$ || unsafeWindow.$;
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const _log = (...args) => console.log("[sm.ms-helper]", ...args);
   const _warn = (...args) => console.warn("[sm.ms-helper]", ...args);
   const _error = (...args) => console.error("[sm.ms-helper]", ...args);

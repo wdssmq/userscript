@@ -19,11 +19,11 @@
 /* jshint esversion:6 */
 (function () {
   "use strict";
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const s = document.createElement("script");
   s.setAttribute(
     "src",
-    "https://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js"
+    "https://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js",
   );
   document.head.appendChild(s);
 
@@ -37,18 +37,18 @@
     }
     $menuList.addClass("xnxf").show();
     const t = setInterval(function () {
-      if ($(".W_layer .W_btn_a").length === 0 && $('a[action-type="removeFan"]').length === 0) {
+      if ($(".W_layer .W_btn_a").length === 0 && $("a[action-type=\"removeFan\"]").length === 0) {
         clearInterval(t);
         return false;
       }
       // if ($('a[action-type="removeFan"]').length === 0) location.reload(true);
       if ($(".W_layer .W_btn_a").length === 0) {
-        $('a[action-type="removeFan"]')[0].click();
+        $("a[action-type=\"removeFan\"]")[0].click();
       } else {
         $(".W_layer .W_btn_a")[0].click();
       }
     }, 379);
-  };
+  }
 
   window.onload = async function () {
     let flag = false;
@@ -63,5 +63,5 @@
       }
     }
     fnDelThisPage();
-  }
+  };
 })();
