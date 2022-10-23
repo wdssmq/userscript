@@ -3,6 +3,7 @@ note-*
 *.draft.js
 *.url
 *.lnk
+*.tar.gz
 *.code-workspace
 empty_def.user.js
 node_modules

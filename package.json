@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore --ext .js ."
+    "lint": "eslint --ignore-path .gitignore --ext .js,.mjs ."
   },
   "dependencies": {
     "@rollup/plugin-replace": "^4.0.0",

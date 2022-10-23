@@ -10,13 +10,14 @@ module.exports = {
     "sourceType": "module",
   },
   "globals": {
-    "GM_addStyle": true,
-    "GM_getValue": true,
-    "GM_setValue": true,
-    "GM_xmlhttpRequest": true,
-    "GM_registerMenuCommand": true,
-    "unsafeWindow": true,
-    "$": true,
+    "GM_addStyle": "readonly",
+    "GM_getValue": "readonly",
+    "GM_setValue": "readonly",
+    "GM_setClipboard": "readonly",
+    "GM_xmlhttpRequest": "readonly",
+    "GM_registerMenuCommand": "readonly",
+    "unsafeWindow": "readonly",
+    "$": "readonly",
   },
   "rules": {
     "generator-star-spacing": 0, // generator 函数中 * 号前后的空格
