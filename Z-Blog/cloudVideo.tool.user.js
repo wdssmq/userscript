@@ -42,7 +42,7 @@
         fnTencent(elThis);
       }
     },
-    false
+    false,
   );
   // 阿里
   function fnAliyun(elThis) {
@@ -68,7 +68,7 @@
     let elA = document.createElement("a");
     elA.style.paddingLeft = "1em";
     elA.href = "javascript:;";
-    elA.innerHTML = `「cvp-复制代码」`;
+    elA.innerHTML = "「cvp-复制代码」";
     elA.addEventListener("click", function (e) {
       elA.innerHTML = "「cvp-复制成功」";
       GM_setClipboard(strCode);
@@ -99,7 +99,7 @@
     let elA = document.createElement("a");
     // elA.style.paddingLeft = "1em";
     elA.href = "javascript:;";
-    elA.innerHTML = `「cvp-复制代码」`;
+    elA.innerHTML = "「cvp-复制代码」";
     elA.setAttribute("class", "text-vm");
     elA.addEventListener("click", function (e) {
       elA.innerHTML = "「cvp-复制成功」";

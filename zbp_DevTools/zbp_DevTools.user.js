@@ -25,7 +25,7 @@
 /* jshint esversion: 6 */
 
 (function () {
-  'use strict';
+  "use strict";
 
   const gm_name = "zbp_DevTools";
 
@@ -67,7 +67,7 @@
       location.search +
       "&act=ArticleEdt";
     const domLink = $(
-      '<a title="编辑" target="_blank" href="' + edtLink + '">编辑</a>'
+      "<a title=\"编辑\" target=\"_blank\" href=\"" + edtLink + "\">编辑</a>",
     );
     domLink
       .css({
@@ -85,7 +85,7 @@
           $(this).css({
             color: "darkgray",
           });
-        }
+        },
       );
     $(".app-header-detail h3").append(domLink);
   })();
@@ -117,7 +117,7 @@
       if (i % 13 == 0) {
         fnGet((href) => {
           $p.html(
-            `自动审核完毕，<a target="_blank" href="${href}">请点击此处查看。</a>`
+            `自动审核完毕，<a target="_blank" href="${href}">请点击此处查看。</a>`,
           );
           clearInterval(t);
         });
@@ -152,7 +152,7 @@
       oDate: null,
       timeRan: {
         recent: null,
-        past: null
+        past: null,
       },
       // 订单计数
       intCount: 0,
@@ -180,7 +180,7 @@
             break;
         }
         return rltNum.toFixed(2);
-      }
+      },
     };
 
     // 实际调用
@@ -236,7 +236,7 @@
                   gob.add(mltAMT[1]);
                   // 添加节点
                   $("table:not(#tbStatistic) tbody").append(
-                    "<tr>" + curHtml + "</tr>\n"
+                    "<tr>" + curHtml + "</tr>\n",
                   );
                 }
               });
@@ -255,7 +255,7 @@
             <td></td>
           </tr>`;
             $("table:not(#tbStatistic) tbody").prepend(
-              strTR
+              strTR,
             );
             // _log(gob);
           }      },
@@ -265,9 +265,9 @@
 
     // 放置搜索框
     $(".SubMenu").append(
-      '<input id="search" style="float:left;margin-right: 2px;margin-top: 2px" type="text" value="">' +
-      '<a href="javascript:;" id="js-search"><span class="m-left">搜索</span></a>' +
-      '<span id="js-page"></span>'
+      "<input id=\"search\" style=\"float:left;margin-right: 2px;margin-top: 2px\" type=\"text\" value=\"\">" +
+      "<a href=\"javascript:;\" id=\"js-search\"><span class=\"m-left\">搜索</span></a>" +
+      "<span id=\"js-page\"></span>",
     );
 
     // 搜索触发
@@ -279,10 +279,10 @@
   })();
 
   (() => {
-    const $body = $n('body');
+    const $body = $n("body");
     fnElChange($body, (mutationRecord, mutationObserver) => {
-      const $input = $n('.ivu-input-number-input');
-      const $amt = $n('.ivu-alert-message p b');
+      const $input = $n(".ivu-input-number-input");
+      const $amt = $n(".ivu-alert-message p b");
       if ($input === null) return;
       $input.value = $amt.innerText;
       mutationObserver.disconnect();

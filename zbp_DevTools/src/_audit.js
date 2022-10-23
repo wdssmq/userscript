@@ -1,4 +1,4 @@
-import { _log, $ } from './_base';
+import { _log, $ } from "./_base";
 
 // Ajax 回显自动审核
 (() => {
@@ -27,7 +27,7 @@ import { _log, $ } from './_base';
     if (i % 13 == 0) {
       fnGet((href) => {
         $p.html(
-          `自动审核完毕，<a target="_blank" href="${href}">请点击此处查看。</a>`
+          `自动审核完毕，<a target="_blank" href="${href}">请点击此处查看。</a>`,
         );
         clearInterval(t);
       });

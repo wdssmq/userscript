@@ -26,7 +26,7 @@ import config from "./_config";
 
   // 随机颜色
   function fnRndColor() {
-    return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+    return "#" + ("00000" + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
   }
 
   function fnGetDefColor(i) {
@@ -63,7 +63,7 @@ import config from "./_config";
       `<div class="logo-text">
         <div class="line-1">${config.appText[0]}</div>
         <div class="line-2">${config.appText[1]}</div>
-      </div>`
+      </div>`,
     ).appendTo($curBox);
     imgList.forEach((href) => {
       const rndIndex = Math.round(Math.random() * 100);

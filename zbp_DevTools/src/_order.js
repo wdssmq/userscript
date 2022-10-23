@@ -1,4 +1,4 @@
-import { _log, $ } from './_base';
+import { _log, $ } from "./_base";
 
 (() => {
   if ($ === null) return;
@@ -24,7 +24,7 @@ import { _log, $ } from './_base';
     oDate: null,
     timeRan: {
       recent: null,
-      past: null
+      past: null,
     },
     // 订单计数
     intCount: 0,
@@ -52,8 +52,8 @@ import { _log, $ } from './_base';
           break;
       }
       return rltNum.toFixed(2);
-    }
-  }
+    },
+  };
 
   // 实际调用
   let gob;
@@ -108,7 +108,7 @@ import { _log, $ } from './_base';
                 gob.add(mltAMT[1]);
                 // 添加节点
                 $("table:not(#tbStatistic) tbody").append(
-                  "<tr>" + curHtml + "</tr>\n"
+                  "<tr>" + curHtml + "</tr>\n",
                 );
               }
             });
@@ -127,10 +127,10 @@ import { _log, $ } from './_base';
             <td></td>
           </tr>`;
           $("table:not(#tbStatistic) tbody").prepend(
-            strTR
+            strTR,
           );
           // _log(gob);
-        };
+        }
       },
       // end success
     });
@@ -138,9 +138,9 @@ import { _log, $ } from './_base';
 
   // 放置搜索框
   $(".SubMenu").append(
-    '<input id="search" style="float:left;margin-right: 2px;margin-top: 2px" type="text" value="">' +
-    '<a href="javascript:;" id="js-search"><span class="m-left">搜索</span></a>' +
-    '<span id="js-page"></span>'
+    "<input id=\"search\" style=\"float:left;margin-right: 2px;margin-top: 2px\" type=\"text\" value=\"\">" +
+    "<a href=\"javascript:;\" id=\"js-search\"><span class=\"m-left\">搜索</span></a>" +
+    "<span id=\"js-page\"></span>",
   );
 
   // 搜索触发

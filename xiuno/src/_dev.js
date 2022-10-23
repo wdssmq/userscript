@@ -1,14 +1,16 @@
+/* globals jsyaml*/
+
 // _devView.js | 开发者申请查看
-import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_base.js';
+import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_base.js";
 (() => {
   // CDN 地址替换
   function fnGetCDNUrl(url) {
     const arrMap = [
       ["https://github.com/", "https://cdn.jsdelivr.net/gh/"],
-      ["/blob/", "@"]
-    ]
+      ["/blob/", "@"],
+    ];
     let cdnUrl = url;
-    arrMap.forEach(line => {
+    arrMap.forEach((line) => {
       cdnUrl = cdnUrl.replace(line[0], line[1]);
     });
     return cdnUrl;
@@ -33,7 +35,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
       "2021H2",
     ],
     isNew: true,
-  }
+  };
 
   // 配置项读取和首次保存
   const curConfig = GM_getValue("_devConfig", defConfig);
@@ -46,7 +48,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
   function fnInitYML() {
     const useCDN = curConfig.useCDN;
     let ymlList = curConfig.ymlList;
-    ymlList = ymlList.map(yml => {
+    ymlList = ymlList.map((yml) => {
       let url = `https://raw.githubusercontent.com/wdssmq/ReviewLog/main/data/${yml}.yml`;
       if (useCDN) {
         url = fnGetCDNUrl(url);
@@ -62,7 +64,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     obj,
     callback = (str) => {
       return str;
-    }
+    },
   ) {
     let rltStr = str;
     for (const key in obj) {
@@ -79,7 +81,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
   const gobDev = {
     data: {
       lstLogs: [],
-      lstCheck: null
+      lstCheck: null,
     },
     init: function () {
       this.data = lsObj.getItem("gobDev", this.data);
@@ -88,7 +90,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     },
     checkUrl: function (url) {
       let rlt = null;
-      this.data.lstLogs.forEach(log => {
+      this.data.lstLogs.forEach((log) => {
         if (log.url.indexOf(url) > -1) {
           _log("checkUrl", url, log.url);
           rlt = log;
@@ -114,7 +116,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     },
     ajax: function () {
       const self = this;
-      this.ymlList.forEach(yml => {
+      this.ymlList.forEach((yml) => {
         fnGetRequest(yml, (responseText, url) => {
           const ymlObj = jsyaml.load(responseText, "utf8");
           const curLogs = self.data.lstLogs;
@@ -122,8 +124,8 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
           self.save();
         });
       });
-    }
-  }
+    },
+  };
 
   gobDev.init();
   gobDev.update();
@@ -141,12 +143,12 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
         window.location.reload();
       }, 1000);
     }
-  }
+  };
   // 默认调用一次用于清后的跳转
   _clearAct();
 
   // 缓存清理按钮
-  const $btnClear = $(`<span class="small"><a href="javascript:;" title="清理缓存" class="badge badge-warning">清理缓存</a></span>`);
+  const $btnClear = $("<span class=\"small\"><a href=\"javascript:;\" title=\"清理缓存\" class=\"badge badge-warning\">清理缓存</a></span>");
   $btnClear.on("click", function () {
     if (confirm("清理缓存？")) {
       _clearAct(1);
@@ -160,16 +162,16 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
     const status = log?.status || "未记录";
     switch (status) {
       case "通过":
-        badgeClass = 'badge-success';
+        badgeClass = "badge-success";
         break;
       case "进行中":
-        badgeClass = 'badge-info';
+        badgeClass = "badge-info";
         break;
       case "拒绝":
-        badgeClass = 'badge-danger';
+        badgeClass = "badge-danger";
         break;
       default:
-        badgeClass = 'badge-warning';
+        badgeClass = "badge-warning";
         break;
     }
     $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
@@ -182,7 +184,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
       $item.append(" ");
       $item.append($btnClear);
     }
-  }
+  };
 
   // 标题列表
   const $titleList = $("li.media .subject a");
@@ -206,15 +208,15 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
   const log = gobDev.checkUrl(curHref);
   _setBadge(log, $h4, "append");
 
-  _log('curLog', log);
+  _log("curLog", log);
 
   // 初始化
   $("div.message").each(function () {
     if ($(this).attr("isfirst") == 1) {
       $(this).prepend(
-        `<blockquote class="blockquote"><pre class="pre-yml"></pre></blockquote>`
+        "<blockquote class=\"blockquote\"><pre class=\"pre-yml\"></pre></blockquote>",
       );
-      $(".pre-yml").text(`标题格式错误`);
+      $(".pre-yml").text("标题格式错误");
     }
   });
 
@@ -248,7 +250,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
       rating: log ? log.rating : "",
       url: curHref,
       date: log ? log.date[0] : fnFormatTime(),
-      reviewers: log ? log.reviewers.join("\n_4_- ") : 'null'
+      reviewers: log ? log.reviewers.join("\n_4_- ") : "null",
     },
     (str) => {
       str = str.replace(/\n/g, "\\|");
@@ -262,7 +264,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from './_b
         str = str.replace(/status: 进行中/, `status: ${objMatch[1]}`);
       }
       return str;
-    }
+    },
   );
   // 插入 YML
   $(".pre-yml").text(`${styYML}`);

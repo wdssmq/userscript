@@ -1,9 +1,11 @@
+/* globals LZString jsyaml*/
+
 // _lz.js | 使用 lz-string 压缩字符串
 import { $, UM } from "./_base.js";
 (() => {
   // 定义按钮及提示信息
-  const $btnBad = $(` <a class="btn btn-primary">BAD</a>`);
-  const strTip = `<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>`;
+  const $btnBad = $(" <a class=\"btn btn-primary\">BAD</a>");
+  const strTip = "<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>";
 
   // 绑定点击事件
   $btnBad.css({ color: "#fff" }).click(function () {

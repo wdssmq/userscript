@@ -22,9 +22,10 @@
 // @grant        GM_getValue
 // ==/UserScript==
 /* jshint esversion:6 */
+/* global LZString jsyaml */
 
 (function () {
-  'use strict';
+  "use strict";
 
   const gm_name = "xiuno";
 
@@ -78,7 +79,7 @@
     objTime.getMinutes();
     objTime.getSeconds();
     return (
-      [strYear, strMonth, strDate].map((n) => n.toString().padStart(2, "0")).join("-") +
+      [strYear, strMonth, strDate].map(n => n.toString().padStart(2, "0")).join("-") +
       // " " +
       // [strHour, strMinute, strSecond].map((n) => n.toString().padStart(2, "0")).join(":") +
       ""
@@ -88,8 +89,8 @@
   // _lz.js | 使用 lz-string 压缩字符串
   (() => {
     // 定义按钮及提示信息
-    const $btnBad = $(` <a class="btn btn-primary">BAD</a>`);
-    const strTip = `<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>`;
+    const $btnBad = $(" <a class=\"btn btn-primary\">BAD</a>");
+    const strTip = "<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>";
 
     // 绑定点击事件
     $btnBad.css({ color: "#fff" }).click(function () {
@@ -139,7 +140,7 @@
       const pid = $me.data("pid");
       const $date = $me.find("span.date");
       $date.after(
-        `<a class="text-grey ml-2" title="获取当前楼层链接" href="${curHref}#${pid}">「楼层地址」</a>`
+        `<a class="text-grey ml-2" title="获取当前楼层链接" href="${curHref}#${pid}">「楼层地址」</a>`,
       );
     });
   })();
@@ -150,10 +151,10 @@
     function fnGetCDNUrl(url) {
       const arrMap = [
         ["https://github.com/", "https://cdn.jsdelivr.net/gh/"],
-        ["/blob/", "@"]
+        ["/blob/", "@"],
       ];
       let cdnUrl = url;
-      arrMap.forEach(line => {
+      arrMap.forEach((line) => {
         cdnUrl = cdnUrl.replace(line[0], line[1]);
       });
       return cdnUrl;
@@ -191,7 +192,7 @@
     function fnInitYML() {
       const useCDN = curConfig.useCDN;
       let ymlList = curConfig.ymlList;
-      ymlList = ymlList.map(yml => {
+      ymlList = ymlList.map((yml) => {
         let url = `https://raw.githubusercontent.com/wdssmq/ReviewLog/main/data/${yml}.yml`;
         if (useCDN) {
           url = fnGetCDNUrl(url);
@@ -207,7 +208,7 @@
       obj,
       callback = (str) => {
         return str;
-      }
+      },
     ) {
       let rltStr = str;
       for (const key in obj) {
@@ -224,7 +225,7 @@
     const gobDev = {
       data: {
         lstLogs: [],
-        lstCheck: null
+        lstCheck: null,
       },
       init: function () {
         this.data = lsObj.getItem("gobDev", this.data);
@@ -233,7 +234,7 @@
       },
       checkUrl: function (url) {
         let rlt = null;
-        this.data.lstLogs.forEach(log => {
+        this.data.lstLogs.forEach((log) => {
           if (log.url.indexOf(url) > -1) {
             _log("checkUrl", url, log.url);
             rlt = log;
@@ -259,7 +260,7 @@
       },
       ajax: function () {
         const self = this;
-        this.ymlList.forEach(yml => {
+        this.ymlList.forEach((yml) => {
           fnGetRequest(yml, (responseText, url) => {
             const ymlObj = jsyaml.load(responseText, "utf8");
             const curLogs = self.data.lstLogs;
@@ -267,7 +268,7 @@
             self.save();
           });
         });
-      }
+      },
     };
 
     gobDev.init();
@@ -291,7 +292,7 @@
     _clearAct();
 
     // 缓存清理按钮
-    const $btnClear = $(`<span class="small"><a href="javascript:;" title="清理缓存" class="badge badge-warning">清理缓存</a></span>`);
+    const $btnClear = $("<span class=\"small\"><a href=\"javascript:;\" title=\"清理缓存\" class=\"badge badge-warning\">清理缓存</a></span>");
     $btnClear.on("click", function () {
       if (confirm("清理缓存？")) {
         _clearAct(1);
@@ -305,16 +306,16 @@
       const status = log?.status || "未记录";
       switch (status) {
         case "通过":
-          badgeClass = 'badge-success';
+          badgeClass = "badge-success";
           break;
         case "进行中":
-          badgeClass = 'badge-info';
+          badgeClass = "badge-info";
           break;
         case "拒绝":
-          badgeClass = 'badge-danger';
+          badgeClass = "badge-danger";
           break;
         default:
-          badgeClass = 'badge-warning';
+          badgeClass = "badge-warning";
           break;
       }
       $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
@@ -351,15 +352,15 @@
     const log = gobDev.checkUrl(curHref);
     _setBadge(log, $h4, "append");
 
-    _log('curLog', log);
+    _log("curLog", log);
 
     // 初始化
     $("div.message").each(function () {
       if ($(this).attr("isfirst") == 1) {
         $(this).prepend(
-          `<blockquote class="blockquote"><pre class="pre-yml"></pre></blockquote>`
+          "<blockquote class=\"blockquote\"><pre class=\"pre-yml\"></pre></blockquote>",
         );
-        $(".pre-yml").text(`标题格式错误`);
+        $(".pre-yml").text("标题格式错误");
       }
     });
 
@@ -393,7 +394,7 @@
         rating: log ? log.rating : "",
         url: curHref,
         date: log ? log.date[0] : fnFormatTime(),
-        reviewers: log ? log.reviewers.join("\n_4_- ") : 'null'
+        reviewers: log ? log.reviewers.join("\n_4_- ") : "null",
       },
       (str) => {
         str = str.replace(/\n/g, "\\|");
@@ -407,7 +408,7 @@
           str = str.replace(/status: 进行中/, `status: ${objMatch[1]}`);
         }
         return str;
-      }
+      },
     );
     // 插入 YML
     $(".pre-yml").text(`${styYML}`);

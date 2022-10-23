@@ -1,13 +1,13 @@
-import { gm_name, gm_banner } from './src/__info.js';
+import { gm_name, gm_banner } from "./src/__info.js";
 export default [
   {
-    input: 'src/main.js',
+    input: "src/main.js",
     output: {
       name: gm_name,
       file: `${gm_name}.user.js`,
-      format: 'iife',
-      banner: gm_banner.trim()
+      format: "iife",
+      banner: gm_banner.trim(),
     },
-    plugins: []
+    plugins: [],
   },
 ];

@@ -24,7 +24,9 @@
 // @grant       GM_setValue
 // @grant       GM_registerMenuCommand
 // ==/UserScript==
-/*jshint esversion:6 */
+
+/* jshint esversion:6 */
+/* global zbp checkType moment */
 
 // localStorage 封装
 const lsObj = {
@@ -70,7 +72,7 @@ const lsObj = {
     };
     return html.replace(
       /<a href="[^"]+" (?<attrs>[^>]+)>(?<url>https:\/\/app.zblogcn.com\/\?id=(?<app_id>\d+))[^<]*<\/a>/,
-      fnRegxCB
+      fnRegxCB,
     );
     // 不需要回调处理的话是这样↓
     // return html.replace(
@@ -132,6 +134,7 @@ const lsObj = {
   const curPrice = $el
     .find("em")
     .html()
+    // eslint-disable-next-line no-useless-escape
     .replace(/[^\d\.]/g, "");
   if (curPrice <= 5.93) {
     return;
@@ -141,7 +144,7 @@ const lsObj = {
   $el
     .find("em")
     .after(
-      `<a class="gm-set-pm" href="/zb_users/plugin/AppBuy/shop/promotion.php#${location.search}${location.hash}">设置促销</a>`
+      `<a class="gm-set-pm" href="/zb_users/plugin/AppBuy/shop/promotion.php#${location.search}${location.hash}">设置促销</a>`,
     );
   $(".gm-set-pm").click(function (e) {
     zbp.cookie.set(ckeName, ckeValue, 7);
@@ -179,7 +182,7 @@ const lsObj = {
   if (location.hash !== "") {
     // "#?id=2027#7-7145891522"
     const match = location.hash.match(
-      /#\?id=(?<app_id>\d+)#(?<disc>\d)-(?<post_id>\d+)/
+      /#\?id=(?<app_id>\d+)#(?<disc>\d)-(?<post_id>\d+)/,
     );
     console.log(match);
     app_id_hash = match.groups["app_id"];
@@ -206,7 +209,7 @@ const lsObj = {
   objPB.isGM = true;
 
   if (!objPB.APIKey) {
-    $(".divHeader").append(' - <span class="star">未设置 PushBullet</span>');
+    $(".divHeader").append(" - <span class=\"star\">未设置 PushBullet</span>");
   }
 
   // 当前时间
@@ -350,7 +353,7 @@ const lsObj = {
                 console.log(res.status);
                 console.log(res.response);
               }
-            }
+            },
           );
 
         // 标记发送；不能放在回调中 - -；
@@ -388,7 +391,7 @@ const lsObj = {
   } else {
     document.getElementById("active").value = 1;
     $("textarea.description,#title").val(
-      gob.logAppList.arrAppNames[appid].replace(/\[[^\]]+\]/g, "").trim()
+      gob.logAppList.arrAppNames[appid].replace(/\[[^\]]+\]/g, "").trim(),
     );
   }
 

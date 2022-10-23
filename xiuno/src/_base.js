@@ -50,7 +50,7 @@ function fnFormatTime() {
   const strMinute = objTime.getMinutes();
   const strSecond = objTime.getSeconds();
   return (
-    [strYear, strMonth, strDate].map((n) => n.toString().padStart(2, "0")).join("-") +
+    [strYear, strMonth, strDate].map(n => n.toString().padStart(2, "0")).join("-") +
     // " " +
     // [strHour, strMinute, strSecond].map((n) => n.toString().padStart(2, "0")).join(":") +
     ""

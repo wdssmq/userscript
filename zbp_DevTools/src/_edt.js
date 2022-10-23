@@ -1,4 +1,4 @@
-import { _log, $ } from './_base';
+import { _log, $ } from "./_base";
 // 前台编辑链接
 (() => {
   if ($ === null) return;
@@ -8,7 +8,7 @@ import { _log, $ } from './_base';
     location.search +
     "&act=ArticleEdt";
   const domLink = $(
-    '<a title="编辑" target="_blank" href="' + edtLink + '">编辑</a>'
+    "<a title=\"编辑\" target=\"_blank\" href=\"" + edtLink + "\">编辑</a>",
   );
   domLink
     .css({
@@ -26,7 +26,7 @@ import { _log, $ } from './_base';
         $(this).css({
           color: "darkgray",
         });
-      }
+      },
     );
   $(".app-header-detail h3").append(domLink);
 })();
