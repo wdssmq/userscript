@@ -1,5 +1,3 @@
-/* global GM_setClipboard */
-
 import { gm_name } from "./__info";
 
 // 初始常量或函数

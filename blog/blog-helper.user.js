@@ -19,8 +19,10 @@
 // @match        https://i.cnblogs.com/posts/edit
 // @grant        GM_getValue
 // @grant        GM_setValue
-
 // ==/UserScript==
+
+/* global jsyaml */
+
 /* jshint esversion:6 */
 (function () {
   "use strict";
@@ -38,7 +40,7 @@
       document,
       null,
       XPathResult.ANY_TYPE,
-      null
+      null,
     );
     return result.iterateNext();
   }
@@ -116,16 +118,16 @@
     }
     rlt.doc = doc;
     if (globalInfo.site === "jianshu") {
-      oBody = oBody.replace(`---\n${arrBody[1]}---\n`, `\n`);
+      oBody = oBody.replace(`---\n${arrBody[1]}---\n`, "\n");
     } else if (globalInfo.site === "cnblogs") {
       oBody = oBody.replace(
         `---\n${arrBody[1]}---\n`,
-        `<!-- ---\n${arrBody[1]}--- -->\n`
+        `<!-- ---\n${arrBody[1]}--- -->\n`,
       );
     } else {
       oBody = oBody.replace(
         `---\n${arrBody[1]}---\n`,
-        `&lt;!-- ---\n${arrBody[1]}--- --&gt;\n`
+        `&lt;!-- ---\n${arrBody[1]}--- --&gt;\n`,
       );
     }
     // arrBody[1] = "null";
@@ -135,9 +137,9 @@
   };
 
   const fnAfterContent = (info, doc) => {
-    let tpl = `\n\n原文链接：[-origUrl-](-origUrl-)`;
+    let tpl = "\n\n原文链接：[-origUrl-](-origUrl-)";
     if ("jianshu" !== globalInfo.site) {
-      tpl += `\n\n微信公众号：「-WeChatOA-」`;
+      tpl += "\n\n微信公众号：「-WeChatOA-」";
     }
     for (const key in info) {
       if (Object.hasOwnProperty.call(info, key)) {
@@ -280,6 +282,6 @@
           break;
       }
     },
-    false
+    false,
   );
 })();

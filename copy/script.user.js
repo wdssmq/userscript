@@ -33,6 +33,7 @@
     let title = document.title.trim();
     title = title.replace(/^(.+吧-百度贴吧)--.+/, "$1");
     if (md) {
+      // eslint-disable-next-line no-useless-escape
       title = title.replace(/([_\[\]])/g, "\\$1");
     }
     if (location.host == "greasyfork.org") {
@@ -49,7 +50,7 @@
   GM_registerMenuCommand("复制HTML", () => {
     const [title, url] = fnGetInfo();
     GM_setClipboard(
-      `<p>${title}</p><p><a href="${url}" target="_blank" title="${title}">${url}</a></p>`
+      `<p>${title}</p><p><a href="${url}" target="_blank" title="${title}">${url}</a></p>`,
     );
   });
 

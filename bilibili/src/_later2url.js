@@ -1,5 +1,3 @@
-/* global GM_notification $ */
-
 import { _log, _getDateStr, fnCopy } from "./_base";
 
 _log("_later2url.js", "开始");

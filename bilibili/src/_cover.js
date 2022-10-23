@@ -32,6 +32,6 @@ const fnMain = () => {
       $coverSource.setAttribute("srcset", imgSrcset);
     });
   }
-}
+};
 // 当页面内容产生变化时，触发函数 fnMain
 fnElChange($body, fnMain, false);
