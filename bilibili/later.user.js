@@ -34,8 +34,6 @@
 
   const gm_name = "later";
 
-  /* global GM_setClipboard */
-
   // 初始常量或函数
   const curUrl = window.location.href;
   const curDate = new Date();
@@ -210,25 +208,23 @@
       if (!isDone) {
         fnElChange($n("body"), fnCheckByDOM);
       }
-      const $pick = $n("a[href$='/anime/']");
-      // const $pick2 = $n("a[href^='//space']");
+      const $pick = $n("a[href*='/anime/']");
       const $pick2 = $n("a.header-entry-avatar");
-      // _log($pick, $pick2);
-
-      let usrUrl = $pick2 ? $pick2.href : "";
-      const uid = getUidByUrlOrCookie(usrUrl);
-      if (!$pick || !uid) {
+      const uid = $pick2 ? getUidByUrlOrCookie($pick2.href) : null;
+      if (!$pick || !$pick2 || !uid) {
         return;
       }
+
+      // debug
+      // _warn($pick, $pick2);
+
       const url = `https://space.bilibili.com/${uid}/bangumi`;
       $pick.href = url;
-      _log("番剧链接改为我的追番", url);
+      _warn("番剧链接改为我的追番", url);
       isDone = true;
     };
     fnCheckByDOM();
   })();
-
-  /* global GM_notification $ */
 
   _log("_later2url.js", "开始");
 
@@ -439,7 +435,9 @@
   const gob = {
     lstTime: 0,
     curTime: 0,
+    isRunning: false,
     title: "",
+    step: 73,
   };
 
   const fnUpTitle = (time) => {
@@ -475,28 +473,45 @@
         return parseInt(arr[0]) * 60 + parseInt(arr[1]);
       }
     }
+    return 0;
+  };
+
+  const fnDelay = (time, fnc = () => { }) => {
+    if (gob.isRunning) {
+      return;
+    }
+    gob.isRunning = true;
+    setTimeout(() => {
+      fnc();
+      gob.isRunning = false;
+    }, time);
   };
 
   document.addEventListener(
     "mouseover",
     function (e) {
-      const $target = e.target;
-      // bpx-player-container bpx-state-no-cursor
-
-      // const $container = $n(".bpx-player-container");
-      // if ($container && !$container.classList.contains("bpx-state-no-cursor")) {
-      //   _warn("进度条", e.target);
-      //   return;
-      // }
-
-      if ($target.classList.contains("bpx-player-control-wrap")) {
-        gob.curTime = fnGetTime();
-        if (gob.curTime > 0 && gob.curTime - gob.lstTime > 137) {
-          fnUpTitle(gob.curTime);
-          fnUpUrl(gob.curTime);
-          gob.lstTime = gob.curTime;
+      // const $target = e.target;
+      fnDelay(1000, () => {
+        // bpx-player-container bpx-state-no-cursor
+        const $container = $n(".bpx-player-container");
+        let bolFlag = false;
+        if ($container && !$container.classList.contains("bpx-state-no-cursor")) {
+          gob.curTime = fnGetTime();
+          if (gob.curTime > 0 && gob.curTime - gob.lstTime > gob.step) {
+            bolFlag = true;
+          }
+          if (gob.curTime < gob.lstTime) {
+            bolFlag = true;
+          }
+          if (bolFlag) {
+            fnUpTitle(gob.curTime);
+            fnUpUrl(gob.curTime);
+            gob.lstTime = gob.curTime;
+          }
+          _warn("进度条触发", e.target);
+          return;
         }
-      }
+      });
     },
     false,
   );
