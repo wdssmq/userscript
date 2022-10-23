@@ -18,6 +18,8 @@
 // jshint        esversion:6
 // ==/UserScript==
 
+/* global MochaUI */
+
 (function () {
   "use strict";
   "esversion: 6";
@@ -30,19 +32,19 @@
 
   // 构建编辑入口
   $("#desktopNavbar>ul").append(
-    '<li><a class="js-modal"><b>→批量替换Tracker←</b></a></li>'
+    "<li><a class=\"js-modal\"><b>→批量替换Tracker←</b></a></li>",
   );
   let strHtml =
-    '<div style="padding:13px 23px;">\
-    <h2>分类：（必须指定分类，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;"><br>\
-    <h2>旧 Trakcer：<h2><input class="js-input" type="text" name="origUrl" style="width: 97%;"><br>\
-    <h2>新 Tracker：<h2><input class="js-input" type="text" name="newUrl" style="width: 97%;"><br>\
+    "<div style=\"padding:13px 23px;\">\
+    <h2>分类：（必须指定分类，区分大小写）<h2><input class=\"js-input\" type=\"text\" name=\"category\" style=\"width: 97%;\"><br>\
+    <h2>旧 Trakcer：<h2><input class=\"js-input\" type=\"text\" name=\"origUrl\" style=\"width: 97%;\"><br>\
+    <h2>新 Tracker：<h2><input class=\"js-input\" type=\"text\" name=\"newUrl\" style=\"width: 97%;\"><br>\
     <hr>\
-    <button class="js-replace">替换</button>\
+    <button class=\"js-replace\">替换</button>\
     <hr>\
-    「<a target="_blank" title="爱发电 - @wdssmq" href="https://afdian.net/@wdssmq" rel="nofollow">爱发电 - @wdssmq</a>」\
-    「<a target="_blank" title="QQ群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ群 - 我的咸鱼心</a>」\
-    </div>';
+    「<a target=\"_blank\" title=\"爱发电 - @wdssmq\" href=\"https://afdian.net/@wdssmq\" rel=\"nofollow\">爱发电 - @wdssmq</a>」\
+    「<a target=\"_blank\" title=\"QQ群 - 我的咸鱼心\" href=\"https://jq.qq.com/?_wv=1027&k=SRYaRV6T\" rel=\"nofollow\">QQ群 - 我的咸鱼心</a>」\
+    </div>";
   // 点击事件
   $("a.js-modal").click(function () {
     new MochaUI.Window({
@@ -109,7 +111,7 @@
     fnHttpGet(api.editTracker, { hash, origUrl, newUrl });
   }
 
-  //基础函数
+  // 基础函数
   function $n(e) {
     return document.querySelector(e);
   }
@@ -122,7 +124,7 @@
     objPar = {},
     callback = function (data) {
       console.log(data);
-    }
+    },
   ) {
     let strPar =
       Object.keys(objPar).length === 0
@@ -135,10 +137,10 @@
               );
             })
             .join("&");
-    //console.log(url);
+    // console.log(url);
     GM_xmlhttpRequest({
       method: "GET",
-      //data: JSON.stringify(data),
+      // data: JSON.stringify(data),
       url: url + strPar,
       headers: {
         "User-agent": window.navigator.userAgent,

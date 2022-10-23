@@ -18,7 +18,7 @@
 // ==/UserScript==
 // jshint       esversion:6
 (function () {
-  'use strict';
+  "use strict";
   // 基础函数或变量
   // const curUrl = window.location.href;
   // const curDate = new Date();
@@ -37,7 +37,7 @@
   }
   // 添加元素指定元素前
   function $i2be4($ne, e) {
-    const $e = typeof e === 'string' ? $n(e) : e;
+    const $e = typeof e === "string" ? $n(e) : e;
     $e.parentNode.insertBefore($ne, $e);
   }
 
@@ -60,27 +60,26 @@
       // characterData: false,
       subtree: true,
     });
-  }
+  };
 
   // 构建复制内容
   function fnBuid(url, pwd, title, type = 1) {
     if (type === 2) {
+      // eslint-disable-next-line no-useless-escape
       title = title.replace(/([_\[\]])/g, "\\$1");
     }
     switch (type) {
       case 1:
         return `<p>${title}</p><p>链接：<a href="${url}" target="_blank" title="${title}">${url}</a> 提取码：${pwd}</p>`;
-        break;
       case 2:
         return `${title}：\n\n链接：[${url}](${url} "${title}") 提取码：${pwd}`;
-        break;
     }
   }
 
   // 全局变量
   const gob ={
     lstUrl: "",
-  }
+  };
   const fnMain = (mutationRecord, mutationObserver) => {
     const $shareBox = $n(".nd-share");
     if (!$shareBox) {
@@ -137,7 +136,7 @@
     $i2be4($newel, $n(".wp-share-file__link-copy-wrapper"));
 
     _log("$shareBox = ", $shareBox);
-  }
+  };
 
   fnElChange($n("body"), fnMain);
 

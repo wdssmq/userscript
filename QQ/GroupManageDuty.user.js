@@ -18,7 +18,7 @@
 // ==/UserScript==
 /* jshint esversion:6 */
 (function () {
-  'use strict';
+  "use strict";
   function $n(e) {
     return document.querySelector(e);
   }
@@ -48,7 +48,7 @@
     //
     const elImg = $n("a.group-master-a+img");
     return elImg.getAttribute("id").replace(/\D/g, "");
-  }
+  };
 
   const fnGetMngs = () => {
     const elMngs = $na(".icon-group-manage");
@@ -87,15 +87,15 @@
     console.log("选取：");
     console.log(rltMngs);
     return rltMngs;
-  }
+  };
 
   const fnSetStyle = (pickMngs) => {
     pickMngs.forEach((id) => {
       const elMb = $n(`.mb${id}`);
       const elSpan = elMb.querySelector(".td-user-nick span");
       elSpan.style.color = "red";
-    })
-  }
+    });
+  };
 
   let config_done = false;
   function fnMain() {
@@ -107,7 +107,7 @@
   fnMain();
 
   // window.addEventListener('load', fnMain, false);
-  window.addEventListener('scroll', function () {
+  window.addEventListener("scroll", function () {
     fnMain();
   });
 })();

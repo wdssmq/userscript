@@ -18,7 +18,7 @@
 // ==/UserScript==
 
 (function () {
-  'use strict';
+  "use strict";
   function $n(e) {
     return document.querySelector(e);
   }
@@ -33,16 +33,16 @@
     $n(".del-member.disabled").removeAttribute("disabled");
     $n(".del-member.disabled").className = "del-member";
 
-    const mbList = $na('.mb .check-input');
+    const mbList = $na(".mb .check-input");
     for (let x = 0; x < 20; x++) {
-      mbList[x].setAttribute('checked', 'checked');
+      mbList[x].setAttribute("checked", "checked");
     }
     fnRun();
   }
-  window.addEventListener('scroll', function () {
+  window.addEventListener("scroll", function () {
     fnRun();
   });
-  $n('.select-result .submit').addEventListener('click', function () {
+  $n(".select-result .submit").addEventListener("click", function () {
     let t = setTimeout(function () {
       fnRun();
     }, 900);

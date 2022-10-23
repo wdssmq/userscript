@@ -22,7 +22,7 @@
 
 /* jshint esversion:6 */
 (function () {
-  'use strict';
+  "use strict";
   // 基础函数或变量
   const curUrl = window.location.href;
   // const curDate = new Date();
@@ -34,7 +34,7 @@
 
   // 获取链接中的参数
   function fnGetParamInUrl(name, url) {
-    const match = RegExp('[?&]' + name + '=(?<value>[^&]*)').exec(url);
+    const match = RegExp("[?&]" + name + "=(?<value>[^&]*)").exec(url);
     return match && decodeURIComponent(match.groups.value);
   }
 
@@ -50,8 +50,8 @@
   // 各种中转页跳过
   (() => {
     const arrParamName = [
-      'pfurl',
-      'gourl'
+      "pfurl",
+      "gourl",
     ];
     arrParamName.forEach((paramName) => {
       let paramValue = fnGetParamInUrl(paramName, curUrl);
@@ -66,7 +66,7 @@
   // 百度贴吧的各种链接统一
   (() => {
     const arrHostList = [
-      "jump.bdimg.com"
+      "jump.bdimg.com",
     ];
     const curHost = window.location.host;
     if (arrHostList.includes(curHost)) {

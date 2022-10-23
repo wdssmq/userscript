@@ -43,11 +43,11 @@
       .text()
       .replace(/分享文件\(夹\):|文件上传|上传完成/g, "");
     let html =
-      '<a href="' +
+      "<a href=\"" +
       url +
-      '" title="' +
+      "\" title=\"" +
       title +
-      '" target="_blank" rel="nofollow">' +
+      "\" target=\"_blank\" rel=\"nofollow\">" +
       url +
       "</a>";
     let value = "<p>度盘下载：" + html + " 提取密码：" + pwd + "</p>";
@@ -61,12 +61,12 @@
       //  $('.create-success').html([title,url,pwd].join("|"));
       //  $('.url').after('<div><input id="new-input" class="share-url" type="text" value="' + value.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '" readonly="readonly" spellingcheck="false"></div>');
       $(".url").after(
-        '<div><textarea id="new-input" readonly="readonly" spellingcheck="false">' +
+        "<div><textarea id=\"new-input\" readonly=\"readonly\" spellingcheck=\"false\">" +
           value
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;") +
-          "</textarea></div>"
+          "</textarea></div>",
       );
       $("#new-input")
         .css({
