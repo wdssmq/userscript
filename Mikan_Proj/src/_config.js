@@ -4,7 +4,7 @@ const _config = {
   data: {},
   dataOpt: {
     size: ["720", "1080"],
-    subtitle: ["tc", "sc"]
+    subtitle: ["tc", "sc"],
   },
   optToggle: (opt, ret = false) => {
     const dataOpt = _config.dataOpt;
@@ -27,19 +27,19 @@ const _config = {
             _this.optToggle(key);
             // 刷新页面
             window.location.reload();
-          }
-        )
+          },
+        );
       }
     }
   },
   load: () => {
     _config.data = GM_getValue("config", {
       size: "1080",
-      subtitle: "sc"
+      subtitle: "sc",
     });
     _config.menuCommand();
   },
-}
+};
 
 _config.load();
 

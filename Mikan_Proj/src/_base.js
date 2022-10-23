@@ -4,9 +4,9 @@ import { gm_name } from "./__info";
 const curUrl = window.location.href;
 const curDate = new Date();
 // ---------------------------------------------------
-const _curUrl = () => { return window.location.href; };
-const _curDate = () => { return new Date(); };
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const _curUrl = () => { return window.location.href };
+const _curDate = () => { return new Date() };
+const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 // ---------------------------------------------------
 const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
 const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
@@ -22,7 +22,7 @@ function $na(e) {
 // ---------------------------------------------------
 // 添加内容到指定元素后面
 function fnAfter($ne, e) {
-  const $e = typeof e === 'string' ? $n(e) : e;
+  const $e = typeof e === "string" ? $n(e) : e;
   $e.parentNode.insertBefore($ne, $e.nextSibling);
 }
 // 元素变化监听
@@ -40,7 +40,7 @@ const fnElChange = (el, fn = () => { }) => {
     // characterData: false,
     subtree: true,
   });
-}
+};
 // ---------------------------------------------------
 export {
   curUrl,

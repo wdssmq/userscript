@@ -4,7 +4,7 @@ const _feedly = {
   data: {
     curUrl: null,
     // $itemList: [],
-    fnAction: () => { }
+    fnAction: () => { },
   },
   init: () => {
     const curUrl = _curUrl();
@@ -12,11 +12,11 @@ const _feedly = {
     _feedly.menuCommand(curUrl);
   },
   menuCommand: (curUrl = "") => {
-    if (curUrl.includes('feedly.com')) {
+    if (curUrl.includes("feedly.com")) {
       GM_registerMenuCommand("在 feedly 应用过滤",
         () => {
           _feedly.data.fnAction();
-        }
+        },
       );
     }
   },
@@ -24,19 +24,19 @@ const _feedly = {
     _feedly.data.fnAction = () => {
       const $list = _feedly.getList();
       fnEachNodeList($list, ($item) => {
-        const curText = $item.querySelector('a.entry__title').innerText.toLowerCase();
+        const curText = $item.querySelector("a.entry__title").innerText.toLowerCase();
         if (fnFilter(curText, _filter)) {
           $item.remove();
         }
       });
-    }
+    };
   },
   getList: () => {
     const $list = $na(".list-entries article");
     // _feedly.data.$itemList = $list;
     return $list;
-  }
-}
+  },
+};
 
 _feedly.init();
 

@@ -20,7 +20,7 @@
 
 /** jshint esversion:6 **/
 (function () {
-  'use strict';
+  "use strict";
   function $n(e) {
     return document.querySelector(e);
   }
@@ -29,31 +29,31 @@
   }
   // 移除指定元素
   function fnRemove(e) {
-    const $e = typeof e === 'string' ? $n(e) : e;
+    const $e = typeof e === "string" ? $n(e) : e;
     $e.parentNode.removeChild($e);
   }
   // 添加子节点到指定元素
   function fnAppendChild($ne, e) {
-    const $e = typeof e === 'string' ? $n(e) : e;
+    const $e = typeof e === "string" ? $n(e) : e;
     $e.appendChild($ne);
   }
   // 添加元素指定元素前
   function fnAppendBefore($ne, e) {
-    const $e = typeof e === 'string' ? $n(e) : e;
+    const $e = typeof e === "string" ? $n(e) : e;
     $e.parentNode.insertBefore($ne, $e);
   }
   // 添加元素指定元素后
   function fnAppendAfter($ne, e) {
-    const $e = typeof e === 'string' ? $n(e) : e;
+    const $e = typeof e === "string" ? $n(e) : e;
     $e.parentNode.insertBefore($ne, $e.nextSibling);
   }
   function fnGetCDNUrl(url) {
     const arrMap = [
       ["https://github.com/", "https://fastly.jsdelivr.net/gh/"],
-      ["/blob/", "@"]
-    ]
+      ["/blob/", "@"],
+    ];
     let cdnUrl = url;
-    arrMap.forEach(line => {
+    arrMap.forEach((line) => {
       cdnUrl = cdnUrl.replace(line[0], line[1]);
     });
     return cdnUrl;
@@ -69,9 +69,9 @@
     if ($n(".files")) {
       const $list = $n(".files").querySelectorAll(".node-item-cdn");
       if ($list.length > 0) {
-        $list.forEach(el => {
+        $list.forEach((el) => {
           fnRemove(el);
-        })
+        });
       }
     }
     // 事件元素
@@ -89,7 +89,7 @@
     $cdn_a.title = `${$cur_a.innerText}`;
     $cdn_a.href = cdnUrl;
     $cdn_a.setAttribute("target", "_blank");
-    $cdn_a.innerHTML = `「cdn」`;
+    $cdn_a.innerHTML = "「cdn」";
     // 应用元素到页面中
     fnAppendAfter($cdn_a, $cur_a);
 

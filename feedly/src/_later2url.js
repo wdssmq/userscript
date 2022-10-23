@@ -1,5 +1,3 @@
-/* global GM_setClipboard:true */
-
 import { _log, _getDateStr, $n, $na } from "./_base";
 
 // nodeList 转换为 Array

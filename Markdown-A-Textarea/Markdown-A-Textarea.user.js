@@ -22,7 +22,6 @@
 // ==/UserScript==
 
 /* eslint no-useless-escape: 0 */
-/* global GM_addStyle */
 /* jshint multistr:true */
 function $n(e) {
   return document.querySelector(e);

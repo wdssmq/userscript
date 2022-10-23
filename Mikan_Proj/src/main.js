@@ -7,7 +7,7 @@ const _filter_map = {
   "sc": ["gb", "chs", "简日双语", "简体内嵌", "简体"],
   "720": ["720"],
   "1080": ["1080"],
-}
+};
 
 const fnGenFilter = (opt) => {
   const filter = {};
@@ -25,7 +25,7 @@ const fnGenFilter = (opt) => {
     filter["subtitle"] = _filter_map["tc"];
   }
   return filter;
-}
+};
 
 const _filter = fnGenFilter(_config.data);
 _log(_filter);

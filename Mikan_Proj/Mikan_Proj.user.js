@@ -27,12 +27,12 @@
 /* jshint esversion: 6 */
 
 (function () {
-  'use strict';
+  "use strict";
 
   const gm_name = "Mikan_Proj";
 
   // ---------------------------------------------------
-  const _curUrl = () => { return window.location.href; };
+  const _curUrl = () => { return window.location.href };
   // ---------------------------------------------------
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
   function $na(e) {
@@ -43,7 +43,7 @@
     data: {},
     dataOpt: {
       size: ["720", "1080"],
-      subtitle: ["tc", "sc"]
+      subtitle: ["tc", "sc"],
     },
     optToggle: (opt, ret = false) => {
       const dataOpt = _config.dataOpt;
@@ -66,7 +66,7 @@
               _this.optToggle(key);
               // 刷新页面
               window.location.reload();
-            }
+            },
           );
         }
       }
@@ -74,7 +74,7 @@
     load: () => {
       _config.data = GM_getValue("config", {
         size: "1080",
-        subtitle: "sc"
+        subtitle: "sc",
       });
       _config.menuCommand();
     },
@@ -86,7 +86,7 @@
     data: {
       curUrl: null,
       // $itemList: [],
-      fnAction: () => { }
+      fnAction: () => { },
     },
     init: () => {
       const curUrl = _curUrl();
@@ -94,11 +94,11 @@
       _feedly.menuCommand(curUrl);
     },
     menuCommand: (curUrl = "") => {
-      if (curUrl.includes('feedly.com')) {
+      if (curUrl.includes("feedly.com")) {
         GM_registerMenuCommand("在 feedly 应用过滤",
           () => {
             _feedly.data.fnAction();
-          }
+          },
         );
       }
     },
@@ -106,7 +106,7 @@
       _feedly.data.fnAction = () => {
         const $list = _feedly.getList();
         fnEachNodeList($list, ($item) => {
-          const curText = $item.querySelector('a.entry__title').innerText.toLowerCase();
+          const curText = $item.querySelector("a.entry__title").innerText.toLowerCase();
           if (fnFilter(curText, _filter)) {
             $item.remove();
           }
@@ -117,7 +117,7 @@
       const $list = $na(".list-entries article");
       // _feedly.data.$itemList = $list;
       return $list;
-    }
+    },
   };
 
   _feedly.init();
