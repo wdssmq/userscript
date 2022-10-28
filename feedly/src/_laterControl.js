@@ -1,4 +1,4 @@
-import { curDate, _curUrl, _log, $n, $na, fnElChange, fnFindDom, fnFindDomUp } from "./_base";
+import { curDate, _curUrl, _log, $n, $na, fnElChange, fnFindDom, fnFindDomUp, _warn } from "./_base";
 
 // localStorage 封装
 const lsObj = {
@@ -98,7 +98,7 @@ function fnLaterMain(record, observer) {
     return;
   }
   // 随机直接返回
-  if (Math.random() > 0.4) {
+  if (Math.random() > 0.6) {
     return;
   }
   gob._curStars = fnLaterGetItems(gob);
@@ -112,6 +112,7 @@ function fnLaterMain(record, observer) {
     $n("#feedlyFrame").addEventListener("scroll", fnLaterOnScroll);
     $n("#feedlyFrame").dataset.addEL = "done";
     _log("fnLaterMain", "绑定滚动监听");
+    observer.disconnect();
   }
 }
 
@@ -192,20 +193,29 @@ function fnLaterControl() {
 }
 
 // 按规则给星标条目着色
-function fnColorStars(offset = 0) {
+function fnColorStars(offset = 0, log = { count: 0, offset: 0, stop: false }) {
   // _log("fnColorStars", curTime, cur4Minutes);
 
   const $stars = gob.$list;
   const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
+  const $pickList = $na(".pick");
   // if (isLock) {
   //   $n(".list-entries").style.backgroundColor = "#666";
   // }
-  let pickCount = 0;
+  let pickCount = $pickList.length;
+  // _log("", $pickList, pickCount);
   const oConfig = {
     forMod: 13,
     minPick: 4,
     maxPick: 7,
+    lstPick: -4,
   };
+  if (pickCount >= oConfig.minPick) {
+    _log("fnColorStars", "已经选够了");
+    return;
+  } else {
+    pickCount = 0;
+  }
   // _log("fnColorStars", "isLock", isLock);
   [].forEach.call($stars, function ($e, i) {
     // _log("fnColorStars", $e, i);
@@ -217,16 +227,35 @@ function fnColorStars(offset = 0) {
 
     // _log("fnColorStars", href, hash);
 
-    let intNum = parseInt(hash + cur4Minutes);
+    let intNum = parseInt(hash + cur4Minutes) + offset;
     const $parent = $e.parentNode.parentNode;
-    // pickCount <= oConfig.maxPick
 
-    if (intNum % oConfig.forMod <= offset && i < 37) {
+    // pickCount <= oConfig.maxPick
+    // i - oConfig.lstPick >= oConfig.minPick / 2
+
+    const bolPick = (() => {
+      let rlt = true;
+      if (i >= 37) {
+        rlt = false;
+      }
+      if (i - oConfig.lstPick < oConfig.minPick / 2) {
+        rlt = false;
+      }
+      if ($parent.classList.contains("un-pick")) {
+        rlt = false;
+      }
+      return rlt;
+    })();
+
+    if (intNum % oConfig.forMod == 0 && bolPick) {
       // _log("fnColorStars", intNum, intNum % 4);
       pickCount++;
+      oConfig.lstPick = i;
       $parent.style.backgroundColor = "#ddd";
+      $parent.classList.add("pick");
     } else {
       $parent.style.backgroundColor = "transparent";
+      $parent.classList.remove("pick");
       let styleColor = "";
       // 符合条件时设置为透明
       if (isLock || i >= 37) {
@@ -239,8 +268,31 @@ function fnColorStars(offset = 0) {
         $item.style.color = styleColor;
       });
     }
+    // 判断并绑定鼠标移入事件
+    if ($parent.dataset.elBind !== "done") {
+      $parent.dataset.elBind = "done";
+      $parent.addEventListener("mouseenter", function (e) {
+        // 取消收藏的
+        const $saved = fnFindDom($parent, ".EntryReadLaterButton--saved");
+        _warn("fnColorStars", $saved);
+        if (!$saved || $saved.length === 0) {
+          $parent.classList.remove("pick");
+          $parent.classList.add("un-pick");
+        }
+      });
+    }
   });
-  if (pickCount < oConfig.minPick && offset < oConfig.forMod) {
-    fnColorStars(offset + 1);
+  if (pickCount > log.count) {
+    log.count = pickCount;
+    log.offset = offset;
+  }
+  if (pickCount <= oConfig.minPick && offset < oConfig.forMod && !log.stop) {
+    _log("fnColorStars", { pickCount, offset });
+    fnColorStars(offset + 1, log);
+  } else if (offset === oConfig.forMod) {
+    log.stop = true;
+    fnColorStars(log.offset, log);
+  } else {
+    _log("fnColorStars", { pickCount, offset, log });
   }
 }
