@@ -241,7 +241,7 @@ function fnColorStars(offset = 0, log = { count: 0, offset: 0, stop: false }) {
       if (i - oConfig.lstPick < oConfig.minPick / 2) {
         rlt = false;
       }
-      if ($parent.classList.contains("un-pick")) {
+      if ($parent.classList.contains("un-pick") || $parent.dataset.unPick == "1") {
         rlt = false;
       }
       return rlt;
@@ -274,10 +274,11 @@ function fnColorStars(offset = 0, log = { count: 0, offset: 0, stop: false }) {
       $parent.addEventListener("mouseenter", function (e) {
         // 取消收藏的
         const $saved = fnFindDom($parent, ".EntryReadLaterButton--saved");
-        _warn("fnColorStars", $saved);
+        // _warn("fnColorStars", $saved);
         if (!$saved || $saved.length === 0) {
           $parent.classList.remove("pick");
           $parent.classList.add("un-pick");
+          $parent.dataset.unPick = "1";
         }
       });
     }
@@ -286,13 +287,13 @@ function fnColorStars(offset = 0, log = { count: 0, offset: 0, stop: false }) {
     log.count = pickCount;
     log.offset = offset;
   }
+  // _log("fnColorStars", { pickCount, offset });
   if (pickCount <= oConfig.minPick && offset < oConfig.forMod && !log.stop) {
-    _log("fnColorStars", { pickCount, offset });
     fnColorStars(offset + 1, log);
   } else if (offset === oConfig.forMod) {
     log.stop = true;
     fnColorStars(log.offset, log);
   } else {
-    _log("fnColorStars", { pickCount, offset, log });
+    _log("fnColorStars", { log: JSON.stringify(log) });
   }
 }

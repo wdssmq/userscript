@@ -32,9 +32,12 @@
   const curDate = new Date();
   // ---------------------------------------------------
   const _curUrl = () => { return window.location.href };
+  const _getDateStr = (date = curDate) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
+  };
   // ---------------------------------------------------
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
-  const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
   // ---------------------------------------------------
   // const $ = window.$ || unsafeWindow.$;
   function $n(e) {
@@ -320,7 +323,7 @@
         if (i - oConfig.lstPick < oConfig.minPick / 2) {
           rlt = false;
         }
-        if ($parent.classList.contains("un-pick")) {
+        if ($parent.classList.contains("un-pick") || $parent.dataset.unPick == "1") {
           rlt = false;
         }
         return rlt;
@@ -353,10 +356,11 @@
         $parent.addEventListener("mouseenter", function (e) {
           // 取消收藏的
           const $saved = fnFindDom($parent, ".EntryReadLaterButton--saved");
-          _warn("fnColorStars", $saved);
+          // _warn("fnColorStars", $saved);
           if (!$saved || $saved.length === 0) {
             $parent.classList.remove("pick");
             $parent.classList.add("un-pick");
+            $parent.dataset.unPick = "1";
           }
         });
       }
@@ -365,16 +369,103 @@
       log.count = pickCount;
       log.offset = offset;
     }
+    // _log("fnColorStars", { pickCount, offset });
     if (pickCount <= oConfig.minPick && offset < oConfig.forMod && !log.stop) {
-      _log("fnColorStars", { pickCount, offset });
       fnColorStars(offset + 1, log);
     } else if (offset === oConfig.forMod) {
       log.stop = true;
       fnColorStars(log.offset, log);
     } else {
-      _log("fnColorStars", { pickCount, offset, log });
+      _log("fnColorStars", { log: JSON.stringify(log) });
     }
   }
+
+  // nodeList 转换为 Array
+  function fnNodeListToArray(nodeList) {
+    return Array.prototype.slice.call(nodeList);
+  }
+
+  // 构造 Bash Shell 脚本
+  function fnMKShell(arrList, prefix = "") {
+    const curDateStr = _getDateStr();
+    let strRlt =
+      "if [ ! -d \"prefix-date\" ]; then\n" +
+      "mkdir prefix-date\n" +
+      "fi\n" +
+      "cd prefix-date\n\n";
+    strRlt = strRlt.replace(/prefix/g, prefix);
+    strRlt = strRlt.replace(/date/g, curDateStr);
+
+    /**
+     * e {title:"", href:""}
+     */
+    arrList.forEach(function (e, i) {
+      const serial = i + 1;
+      // _log(e);
+
+      // 移除不能用于文件名的字符
+      let title = e.title || e.innerText;
+      title = title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
+      title = title.replace(/["'\s]/g, "");
+      // _log(title);
+
+      const lenTitle = title.length;
+      if (lenTitle >= 155) {
+        title = `标题过长丨${lenTitle}`;
+      }
+
+      // 获取文章链接
+      const href = e.href || e.url;
+
+      // url 文件名
+      const urlFileName = `${serial}丨${title}.url`;
+
+      strRlt += `echo [InternetShortcut] > "${urlFileName}"\n`;
+      strRlt += `echo "URL=${href}" >> "${urlFileName}"\n`;
+      strRlt += "\n";
+    });
+
+    {
+      strRlt += "exit\n\n";
+    }
+
+    return strRlt;
+  }
+
+  // 星标文章导出为 *.url 文件
+  $n("#root").addEventListener("mouseup", function (event) {
+    if (event.target.innerHTML.indexOf("Read later") > -1 && $n(".list-entries > h2")) {
+      const $el = event.target;
+      console.log($el);
+      const listItems = fnNodeListToArray($na("div.content a"));
+      GM_setClipboard(fnMKShell(listItems, "feedly"));
+      $n(".list-entries > h2").innerHTML = "已复制到剪贴板";
+    }
+  }, false);
+
+  // 拿回订阅源地址
+  // 绑定监听事件到 div#box 上
+  $n("#root").addEventListener("mouseup", function (event) {
+    // 输出触发事件的元素
+    // 根据内容判断是否执行相应操作
+    const elText = event.target.innerHTML;
+    if (
+      // elText.indexOf("Feed not found") > -1 ||
+      elText.indexOf("Wrong feed URL") > -1
+    ) {
+      // 内部再输出一次确定判断条件正确
+      console.log(event.target);
+      // 拿到解码后的订阅源地址
+      const curUrl = ((url) => {
+        return url.replace("https://feedly.com/i/subscription/feed/", "");
+      })(decodeURIComponent(curUrl));
+      // 输出到页面中
+      $n("#feedlyPageFX h2").insertAdjacentHTML(
+        "beforeend",
+        `<div class="sub">${curUrl}</div>`,
+      );
+    }
+  }, false);
 
   // 自动标记已读
   (() => {
