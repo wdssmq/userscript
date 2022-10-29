@@ -15,11 +15,12 @@
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
-// @match        https://jump.bdimg.com/f?kw=*
+// @match        https://jump.bdimg.com/f*
 // @match        https://jump2.bdimg.com/f*
 // @match        http://jump2.bdimg.com/safecheck/index?url=*
 // @match        https://c.pc.qq.com/middlem.html?pfurl=*
 // @match        https://mail.qq.com/cgi-bin/readtemplate?t=*
+// @match        https://www.jianshu.com/go-wild*
 // @grant        none
 // ==/UserScript==
 
@@ -29,6 +30,8 @@
 (function () {
   'use strict';
 
+  // 初始常量或函数
+  const curUrl = window.location.href;
   const curHost = window.location.host;
 
   // -------------------------------------
@@ -45,6 +48,12 @@
       return $dom[attrName];
     }
     return null;
+  }
+
+  // 获取链接中的参数
+  function fnGetParamInUrl(name, url) {
+    const match = RegExp("[?&]" + name + "=(?<value>[^&]*)").exec(url);
+    return match && decodeURIComponent(match.groups.value);
   }
 
   // 监测网址是否带有协议
@@ -70,6 +79,11 @@
       name: "QQ 邮箱",
       hostList: ["mail.qq.com"],
       url: fnGetUrlInDOM(".safety-url", "textContent"),
+    },
+    {
+      name: "简书",
+      hostList: ["www.jianshu.com"],
+      url: fnGetParamInUrl("url", curUrl),
     },
   ];
 

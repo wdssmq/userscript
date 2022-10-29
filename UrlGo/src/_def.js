@@ -1,4 +1,4 @@
-import { _log, curHost, $n } from "./_base";
+import { _log, curHost, curUrl, $n } from "./_base";
 
 // 从页面中获取链接
 function fnGetUrlInDOM(selector, attrName) {
@@ -38,6 +38,11 @@ const stieList = [
     name: "QQ 邮箱",
     hostList: ["mail.qq.com"],
     url: fnGetUrlInDOM(".safety-url", "textContent"),
+  },
+  {
+    name: "简书",
+    hostList: ["www.jianshu.com"],
+    url: fnGetParamInUrl("url", curUrl),
   },
 ];
 
