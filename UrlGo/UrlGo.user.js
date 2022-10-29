@@ -16,6 +16,7 @@
 // @noframes
 // @run-at       document-end
 // @match        https://jump.bdimg.com/f?kw=*
+// @match        https://jump2.bdimg.com/f*
 // @match        http://jump2.bdimg.com/safecheck/index?url=*
 // @match        https://c.pc.qq.com/middlem.html?pfurl=*
 // @match        https://mail.qq.com/cgi-bin/readtemplate?t=*
@@ -86,6 +87,7 @@
   // 百度贴吧的各种链接统一
   const arrHostList = [
     "jump.bdimg.com",
+    "jump2.bdimg.com",
   ];
 
   if (arrHostList.includes(curHost)) {
