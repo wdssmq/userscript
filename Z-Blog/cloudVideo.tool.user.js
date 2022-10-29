@@ -12,11 +12,12 @@
 // @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
-// @include      https://console.cloud.tencent.com/vod/media*
-// @include      https://vod.console.aliyun.com/
+// @match        https://console.cloud.tencent.com/vod/media*
+// @match        https://vod.console.aliyun.com/*
 // @grant        GM_setClipboard
-// jshint        esversion:6
 // ==/UserScript==
+
+/* jshint esversion:6 */
 (function () {
   "use strict";
   "esversion: 6";
