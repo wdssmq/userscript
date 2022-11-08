@@ -19,6 +19,7 @@
 // @run-at       document-end
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
+// @grant        GM_addStyle
 // ==/UserScript==
 
 /* jshint esversion: 6 */
@@ -38,6 +39,7 @@
   };
   // ---------------------------------------------------
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
+  const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
   // ---------------------------------------------------
   // const $ = window.$ || unsafeWindow.$;
   function $n(e) {
@@ -82,6 +84,11 @@
     }
   }
 
+  const curTime = Math.floor(curDate.getTime() / 1000);
+  const curHours = Math.floor(curTime / 3600);
+  // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
+  const cur4Minutes = Math.floor(curTime / 240);
+
   // localStorage 封装
   const lsObj = {
     setItem: function (key, value) {
@@ -97,37 +104,75 @@
   };
 
   // 数据读写封装
+  const gobInfo = {
+    // key: [默认值, 是否记录至 ls]
+    $$Stars: [null, 0],
+    bolUpd: [false, 0],
+    bolReset: [false, 1],
+    cntStars: [0, 0],
+    diffStars: [{ decr: 0, incr: 0 }, 1],
+    lstStars: [0, 1],
+  };
+  // decrease 减少
+  // increase 增加
   const gob = {
-    // 非 ls 字段
-    _loaded: false,
-    _curStars: 0,
+    _lsKey: `${gm_name}_data`,
+    _bolLoaded: false,
     _time: {
       cycle: 0,
       rem: 0,
     },
-    // ls 字段
-    data: {
-      bolReset: false,
-      lstStars: 0,
-      diffStars: { decr: 0, incr: 0 },
-      // decrease 减少
-      // increase 增加
+    data: {},
+    // 初始
+    init() {
+      // 根据 gobInfo 设置 gob 属性
+      for (const key in gobInfo) {
+        if (Object.hasOwnProperty.call(gobInfo, key)) {
+          const item = gobInfo[key];
+          this.data[key] = item[0];
+          Object.defineProperty(this, key, {
+            // value: item[0],
+            // writable: true,
+            get() { return this.data[key] },
+            set(value) { this.data[key] = value; },
+          });
+        }
+      }
+      return this;
     },
     // 读取
-    load: function () {
-      if (this._loaded) {
+    load() {
+      if (this._bolLoaded) {
         return;
       }
-      this._loaded = true;
-      this.data = lsObj.getItem("feedly_bld_data", this.data);
-      _log("load", gob);
+      const lsData = lsObj.getItem(this._lsKey, this.data);
+      _log("[log]gob.load()", lsData);
+      for (const key in lsData) {
+        if (Object.hasOwnProperty.call(lsData, key)) {
+          const item = lsData[key];
+          this.data[key] = item;
+        }
+      }
+      this._bolLoaded = true;
     },
     // 保存
-    save: function () {
-      lsObj.setItem("feedly_bld_data", this.data);
-      _log("save", gob);
+    save() {
+      const lsData = {};
+      for (const key in gobInfo) {
+        if (Object.hasOwnProperty.call(gobInfo, key)) {
+          const item = gobInfo[key];
+          if (item[1]) {
+            lsData[key] = this.data[key];
+          }
+        }
+      }
+      _log("[log]gob.save()", lsData);
+      lsObj.setItem(this._lsKey, lsData);
     },
   };
+
+  // 初始化
+  gob.init().load();
 
   // 判断当前地址是否是收藏页
   const fnCheckUrl = () => {
@@ -138,78 +183,21 @@
   };
 
   // 当前星标数获取
-  function fnLaterGetItems(obj) {
+  function fnGetItems(obj) {
     const $listWrap = $n("div.list-entries");
     if ($listWrap) {
-      obj.$list = $listWrap.querySelectorAll("div.content a");
-      return obj.$list.length;
+      obj.$$Stars = $listWrap.querySelectorAll("div.content>a");
+      return obj.$$Stars.length;
     }
     return 0;
   }
-
-  // 收藏数 View
-  function fnLaterViewStars() {
-    gob._curStars = fnLaterGetItems(gob);
-    const strText = `Read later（${gob._curStars} 丨 -${gob.data.diffStars.decr} 丨 +${gob.data.diffStars.incr}）（${gob._time.cycle} - ${gob._time.rem}）`;
-    $n("h1 #header-title").innerHTML = strText;
-    if ($n("header.header h2")) {
-      $n("header.header h2").innerHTML = strText;
-    }
-    $n("#header-title").innerHTML = strText;
-  }
-
-  // 滚动条滚动时触发
-  function fnLaterOnScroll() {
-    if (!fnCheckUrl()) {
-      return;
-    }
-    fnLaterViewStars();
-    fnColorStars();
-    // 全部条目加载后执行
-    if ($n(".list-entries > h2")) {
-      !gob._loaded && _log("fnLaterOnScroll", "页面加载完成");
-      fnLaterControl();
-    } else {
-      _log("fnLaterOnScroll", "页面加载中");
-    }
-  }
-
-  // 星标部分入口函数
-  function fnLaterMain(record, observer) {
-    if (!fnCheckUrl()) {
-      return;
-    }
-    // 随机直接返回
-    if (Math.random() > 0.6) {
-      return;
-    }
-    gob._curStars = fnLaterGetItems(gob);
-    if (gob._curStars === 0) {
-      return;
-    }
-    // observer.disconnect();
-    // 绑定事件
-    if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
-      fnLaterOnScroll();
-      $n("#feedlyFrame").addEventListener("scroll", fnLaterOnScroll);
-      $n("#feedlyFrame").dataset.addEL = "done";
-      _log("fnLaterMain", "绑定滚动监听");
-      observer.disconnect();
-    }
-  }
-
-  fnElChange($n("#root"), fnLaterMain);
-
-  const curTime = Math.floor(curDate.getTime() / 1000);
-  const curHours = Math.floor(curTime / 3600);
-  // const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
-  const cur4Minutes = Math.floor(curTime / 240);
 
   const fnCheckControl = (diff) => {
     const iTime = curHours;
     const modTime = iTime % 4;
     gob._time.cycle = iTime;
     gob._time.rem = modTime;
+    // _log("fnCheckControl", JSON.stringify(diff), iTime, modTime);
     // diff.decr 累计已读
     // diff.incr 累计新增
     if (diff.decr >= 17 && diff.decr - diff.incr >= 4) {
@@ -223,162 +211,232 @@
   };
 
   // 星标变动控制
-  function fnLaterControl() {
-    if (gob._loaded) {
-      return;
+  function fnControl() {
+    const $end = $n(".list-entries > h2");
+    if (!$end) {
+      _log("fnControl", "页面加载中");
+      return false;
     }
-    gob.load();
+
+    // 读取 gob 值备用
+    const strReset = gob.bolReset.toString();
+    let diffStars = gob.diffStars;
 
     // 解锁重置判断
-    if (gob.data.bolReset) {
-      gob.data.diffStars.decr = 0;
-      gob.data.diffStars.incr = 0;
+    if (gob.bolReset) {
+      diffStars = { decr: 0, incr: 0 };
     }
+    // decrease 减少
+    // increase 增加
 
     // 星标变化计数
-    const diff = gob._curStars - gob.data.lstStars;
+    const diff = gob.cntStars - gob.lstStars;
 
     // 写入新的星标数
-    gob.data.lstStars = gob._curStars;
+    gob.lstStars = gob.cntStars;
 
     // 初始化时直接返回
-    if (diff === gob._curStars) {
+    if (diff === gob.cntStars) {
       gob.save();
-      return;
+      return true;
     }
 
-    // 大于上一次记录
+    // 判断变化状态
     if (diff > 0) {
       // 新增星标计数
-      gob.data.diffStars.incr += Math.abs(diff);
+      diffStars.incr += Math.abs(diff);
     } else {
       // 已读星标计数
-      gob.data.diffStars.decr += Math.abs(diff);
+      diffStars.decr += Math.abs(diff);
     }
 
-    // 记录变量原始值
-    const strReset = gob.data.bolReset.toString();
-
-    // _log("fnLaterControl", strReset);
-
-    gob.data.bolReset = ((diff) => {
+    gob.bolReset = ((diff) => {
       if (fnCheckControl(diff) === "reset") {
         return true;
       }
       return false;
-    })(gob.data.diffStars);
+    })(diffStars);
 
     // 更新 localStorage 存储
-    if (diff !== 0 || strReset !== gob.data.bolReset.toString()) {
+    if (diff !== 0 || strReset !== gob.bolReset.toString()) {
+      gob.diffStars = diffStars;
       gob.save();
     }
+
+    return true;
   }
 
-  // 按规则给星标条目着色
-  function fnColorStars(offset = 0, log = { count: 0, offset: 0, stop: false }) {
-    // _log("fnColorStars", curTime, cur4Minutes);
+  // 收藏数 View
+  function fnViewStars() {
+    gob.cntStars = fnGetItems(gob);
+    // _log("fnViewStars", gob.cntStars);
+    const strText = `Read later（${gob.cntStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）（${gob._time.cycle} - ${gob._time.rem}）`;
+    $n("h1 #header-title").innerHTML = strText;
+    if ($n("header.header h2")) {
+      $n("header.header h2").innerHTML = strText;
+    }
+    $n("#header-title").innerHTML = strText;
+  }
 
-    const $stars = gob.$list;
+  gob.pickRule = {
+    forMod: 13,
+    minPick: 4,
+    maxPick: 7,
+    lstPick: 0,
+    pickList: [],
+  };
+
+  GM_addStyle(`
+  .pick,.pick:hover {
+    background-color: #ddd !important;
+  }
+  .un-mark {
+    background-color: #f6f7f8 !important;
+  }
+  .lock {
+    color: transparent !important;
+  }
+`);
+
+  // 按规则给星标条目着色
+  function fnColorStars(offset = 0) {
+    // begin fnColorStars
+    const $stars = gob.$$Stars;
     const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
-    const $pickList = $na(".pick");
-    // if (isLock) {
-    //   $n(".list-entries").style.backgroundColor = "#666";
-    // }
-    let pickCount = $pickList.length;
-    // _log("", $pickList, pickCount);
-    const oConfig = {
-      forMod: 13,
-      minPick: 4,
-      maxPick: 7,
-      lstPick: -4,
-    };
+    // console.log("fnColorStars", fnCheckControl(gob.data.diffStars), isLock);
+    const oConfig = gob.pickRule;
+    const $$pick = $na(".pick");
+    // ----------------------------
+    let pickCount = $$pick.length;
     if (pickCount >= oConfig.minPick) {
       _log("fnColorStars", "已经选够了");
       return;
-    } else {
-      pickCount = 0;
     }
-    // _log("fnColorStars", "isLock", isLock);
+    // ----------------------------
+    const fnPick = ($item, i) => {
+      if (i > 1 && i - oConfig.lstPick < oConfig.minPick / 2) {
+        return;
+      }
+      oConfig.lstPick = i;
+      $item.classList.add("pick");
+      pickCount += 1;
+    };
+    // ----------------------------
     [].forEach.call($stars, function ($e, i) {
-      // _log("fnColorStars", $e, i);
-      // _log("fnColorStars", "==============================");
-
+      // begin forEach
       const $ago = fnFindDomUp($e, ".ago", 2);
-      const href = $e.href + $ago.innerHTML;
-      const hash = parseInt(href.replace(/\D/g, ""));
-
-      // _log("fnColorStars", href, hash);
-
-      let intNum = parseInt(hash + cur4Minutes) + offset;
-      const $parent = $e.parentNode.parentNode;
-
-      // pickCount <= oConfig.maxPick
-      // i - oConfig.lstPick >= oConfig.minPick / 2
-
+      const href = $e.href;
+      const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
+      // _log("fnColorStars", $ago, href, hash);
+      const $item = $e.parentNode.parentNode;
+      if ($item.classList.contains("pick")) {
+        oConfig.lstPick = i;
+        return;
+      }
+      // ----------------------------
+      const $saved = fnFindDom($item, ".EntryReadLaterButton--saved");
+      if (!$saved) {
+        $item.classList.add("un-mark");
+      }
+      // ----------------------------
+      if (oConfig.pickList.includes(hash)) {
+        // fnPick($item);
+        return;
+      }
+      // ----------------------------
       const bolPick = (() => {
         let rlt = true;
         if (i >= 37) {
           rlt = false;
         }
-        if (i - oConfig.lstPick < oConfig.minPick / 2) {
-          rlt = false;
-        }
-        if ($parent.classList.contains("un-pick") || $parent.dataset.unPick == "1") {
+        if (pickCount >= oConfig.maxPick) {
           rlt = false;
         }
         return rlt;
       })();
-
+      // ----------------------------
+      let intNum = parseInt(hash + cur4Minutes) + offset;
       if (intNum % oConfig.forMod == 0 && bolPick) {
-        // _log("fnColorStars", intNum, intNum % 4);
-        pickCount++;
-        oConfig.lstPick = i;
-        $parent.style.backgroundColor = "#ddd";
-        $parent.classList.add("pick");
+        oConfig.pickList.push(hash);
+        fnPick($item, i);
       } else {
-        $parent.style.backgroundColor = "transparent";
-        $parent.classList.remove("pick");
-        let styleColor = "";
-        // 符合条件时设置为透明
         if (isLock || i >= 37) {
-          styleColor = "transparent";
+          $item.classList.add("lock");
+          [].forEach.call(fnFindDom($item, "a, span, div>svg, .summary"), function ($ite) {
+            $ite.classList.add("lock");
+          });
         }
-        $parent.style.color = $e.style.color = styleColor;
-        [].forEach.call(fnFindDom($parent, "a, span, div>svg, .summary"), function ($item) {
-          // _log("fnColorStars", $item);
-          // $item.style.backgroundColor = styleColor;
-          $item.style.color = styleColor;
-        });
       }
-      // 判断并绑定鼠标移入事件
-      if ($parent.dataset.elBind !== "done") {
-        $parent.dataset.elBind = "done";
-        $parent.addEventListener("mouseenter", function (e) {
-          // 取消收藏的
-          const $saved = fnFindDom($parent, ".EntryReadLaterButton--saved");
-          // _warn("fnColorStars", $saved);
-          if (!$saved || $saved.length === 0) {
-            $parent.classList.remove("pick");
-            $parent.classList.add("un-pick");
-            $parent.dataset.unPick = "1";
-          }
-        });
-      }
+      // end forEach
     });
-    if (pickCount > log.count) {
-      log.count = pickCount;
-      log.offset = offset;
+    // ----------------------------
+    if (pickCount <= oConfig.minPick) {
+      if (offset < oConfig.forMod) {
+        fnColorStars(offset + 1);
+        return;
+      } else {
+        _log("fnColorStars", "未能选够");
+        _log("fnColorStars", oConfig);
+        oConfig.pickList = [];
+        oConfig.lstPick = 0;
+      }
     }
-    // _log("fnColorStars", { pickCount, offset });
-    if (pickCount <= oConfig.minPick && offset < oConfig.forMod && !log.stop) {
-      fnColorStars(offset + 1, log);
-    } else if (offset === oConfig.forMod) {
-      log.stop = true;
-      fnColorStars(log.offset, log);
-    } else {
-      _log("fnColorStars", { log: JSON.stringify(log) });
+    // end fnColorStars
+  }
+
+  // 滚动条滚动时触发
+  function fnOnScroll() {
+    fnViewStars();
+    fnColorStars();
+  }
+
+  // 处理器函数
+  function fnHandler(e = null) {
+    if (!fnCheckUrl()) {
+      return;
+    }
+    // 判断是否为滚动事件
+    if (e && e.type === "scroll") {
+      fnOnScroll();
+    }
+    // 更新 ls 记录
+    let bolUpd = false;
+    if (!gob.bolUpd) {
+      bolUpd = fnControl();
+    }
+    if (bolUpd) {
+      _warn("fnHandler", gob.data);
+      gob.bolUpd = true;
     }
   }
+
+  // 星标部分入口函数
+  function fnMain(record, observer) {
+    if (!fnCheckUrl()) {
+      return;
+    }
+    // 随机直接返回
+    if (Math.random() > 0.6) {
+      return;
+    }
+    gob.cntStars = fnGetItems(gob);
+    _log("fnMain", gob.cntStars);
+    if (gob.cntStars === 0) {
+      return;
+    }
+    // observer.disconnect();
+    // 绑定事件
+    if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
+      // 加载后尝试执行一次
+      fnHandler();
+      $n("#feedlyFrame").addEventListener("scroll", fnHandler);
+      $n("#feedlyFrame").dataset.addEL = "done";
+      _log("fnMain", "绑定滚动监听");
+      observer.disconnect();
+    }
+  }
+
+  fnElChange($n("#root"), fnMain);
 
   // nodeList 转换为 Array
   function fnNodeListToArray(nodeList) {
