@@ -20,6 +20,7 @@ const gm_banner = `
 // @run-at       document-end
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
+// @grant        GM_addStyle
 // ==/UserScript==
 
 /* jshint esversion: 6 */

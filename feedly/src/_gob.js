@@ -1,5 +1,10 @@
-import { _log } from "./_base";
 import { gm_name } from "./__info";
+import { _log, curDate } from "./_base";
+
+const curTime = Math.floor(curDate.getTime() / 1000);
+const curHours = Math.floor(curTime / 3600);
+// const cur4Hours = Math.floor(curTime / (60 * 60 * 4));
+const cur4Minutes = Math.floor(curTime / 240);
 
 // localStorage 封装
 const lsObj = {
@@ -18,12 +23,22 @@ const lsObj = {
 // 数据读写封装
 const gobInfo = {
   // key: [默认值, 是否记录至 ls]
-  strTest: ["TEST", 0],
-  intTest: [0, 1],
+  $$Stars: [null, 0],
+  bolUpd: [false, 0],
+  bolReset: [false, 1],
+  cntStars: [0, 0],
+  diffStars: [{ decr: 0, incr: 0 }, 1],
+  lstStars: [0, 1],
 };
+// decrease 减少
+// increase 增加
 const gob = {
   _lsKey: `${gm_name}_data`,
   _bolLoaded: false,
+  _time: {
+    cycle: 0,
+    rem: 0,
+  },
   data: {},
   // 初始
   init() {
@@ -47,7 +62,7 @@ const gob = {
     if (this._bolLoaded) {
       return;
     }
-    const lsData = lsObj.getItem(this._lsKey, this._data);
+    const lsData = lsObj.getItem(this._lsKey, this.data);
     _log("[log]gob.load()", lsData);
     for (const key in lsData) {
       if (Object.hasOwnProperty.call(lsData, key)) {
@@ -76,16 +91,10 @@ const gob = {
 // 初始化
 gob.init().load();
 
-// ---------------------------------
-// 写入测试
-gob.intTest += 1;
-gob.save();
-_log("[TEST]---------------------");
-_log("[TEST]", gob);
-_log("[TEST]---------------------");
-// ---------------------------------
 
 export {
+  curHours,
+  cur4Minutes,
   lsObj,
   gob,
 };
