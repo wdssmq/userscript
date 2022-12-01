@@ -11,3 +11,6 @@ import _getFeedUrl from "./_getFeedUrl";
 // 自动标记已读
 import _autoMark from "./_autoMark";
 
+// 其他辅助功能
+import _other from "./_other";
+
