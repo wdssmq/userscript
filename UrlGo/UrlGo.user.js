@@ -21,6 +21,7 @@
 // @match        https://c.pc.qq.com/middlem.html?pfurl=*
 // @match        https://mail.qq.com/cgi-bin/readtemplate?t=*
 // @match        https://www.jianshu.com/go-wild*
+// @match        https://www.v2ex.com/t/*
 // @grant        none
 // ==/UserScript==
 
@@ -39,6 +40,14 @@
   // const $ = window.$ || unsafeWindow.$;
   function $n(e) {
     return document.querySelector(e);
+  }
+  function $na(e) {
+    return document.querySelectorAll(e);
+  }
+
+  // 指定元素内查找子元素
+  function fnFindDom(el, selector) {
+    return el.querySelectorAll(selector);
   }
 
   // 从页面中获取链接
@@ -108,5 +117,29 @@
     const newUrl = window.location.href.replace(curHost, "tieba.baidu.com");
     window.location.href = newUrl;
   }
+
+  // 指定元素中的链接增加 target="_blank"
+  const config = [
+      [".markdown_body", ".reply_content"],
+  ];
+
+  const fnSetBlank = ($a) => {
+      $a.setAttribute("target", "_blank");
+  };
+
+  config.forEach((e) => {
+      const selector = e.join(",");
+      const $$container = $na(selector);
+      // // print $$container
+      // _log($$container);
+      // 遍历 $$container
+      [].forEach.call($$container, ($el) => {
+          const $$a = fnFindDom($el, "a");
+          // _log($$a);
+          if ($$a.length > 0) {
+              [].map.call($$a, fnSetBlank);
+          }
+      });
+  });
 
 })();

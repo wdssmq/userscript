@@ -22,6 +22,7 @@ const gm_banner = `
 // @match        https://c.pc.qq.com/middlem.html?pfurl=*
 // @match        https://mail.qq.com/cgi-bin/readtemplate?t=*
 // @match        https://www.jianshu.com/go-wild*
+// @match        https://www.v2ex.com/t/*
 // @grant        none
 // ==/UserScript==
 
