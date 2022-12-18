@@ -9,6 +9,10 @@ rules:
   semi:
     - error
     - always
+    - omitLastInOneLineBlock: true
   quotes:
     - error
     - double
+  comma-dangle:
+    - warn
+    - always-multiline

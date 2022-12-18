@@ -6,8 +6,8 @@ const curDate = new Date();
 
 // -------------------------------------
 
-const _curUrl = () => { return window.location.href; };
-const _curDate = () => { return new Date(); };
+const _curUrl = () => { return window.location.href };
+const _curDate = () => { return new Date() };
 const _getDateStr = (date = curDate) => {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
@@ -16,9 +16,9 @@ const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // -------------------------------------
 
-const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
-const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
-const _error = (...args) => console.error(`[${gm_name}]\n`, ...args);
+const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
+const _warn = (...args) => console.warn(`[${gm_name}] |`, ...args);
+const _error = (...args) => console.error(`[${gm_name}] |`, ...args);
 
 // -------------------------------------
 
@@ -36,6 +36,11 @@ function $na(e) {
 function fnAfter($ne, e) {
   const $e = typeof e === "string" ? $n(e) : e;
   $e.parentNode.insertBefore($ne, $e.nextSibling);
+}
+
+// 指定元素内查找子元素
+function fnFindDom(el, selector) {
+  return el.querySelectorAll(selector);
 }
 
 // -------------------------------------
@@ -73,5 +78,6 @@ export {
   $n,
   $na,
   fnAfter,
+  fnFindDom,
   fnElChange,
 };
