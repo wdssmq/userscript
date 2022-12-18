@@ -297,6 +297,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
 
 --------
 
+name：「水水」时间轴助手
+
+desc：Z-BlogPHP mz_TimeLine 插件辅助脚本
+
+url：https://github.com/wdssmq/userscript/blob/master/zbp-TimeLine/zbp-TimeLine.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/zbp-TimeLine/zbp-TimeLine.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp-TimeLine/zbp-TimeLine.user.js
+
+--------
+
 name：「其他」sm.ms-helper
 
 desc：优化显示 sm.ms 图片查看
