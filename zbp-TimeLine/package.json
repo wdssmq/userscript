@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_ENV=prod rollup -c",
+    "dev": "cross-env NODE_ENV=dev rollup -c -w",
+    "lint": "eslint --ext .js,.mjs .",
+    "clear": "rm -rf dev"
+  },
+  "dependencies": {
+    "@rollup/plugin-replace": "^5.0.1",
+    "cross-env": "^7.0.3",
+    "open": "^8.4.0",
+    "rollup": "^3.2.3",
+    "rollup-plugin-monkey": "^1.0.3"
+  }
+}
