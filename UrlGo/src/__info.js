@@ -19,6 +19,7 @@ const gm_banner = `
 // @match        https://jump.bdimg.com/f*
 // @match        https://jump2.bdimg.com/f*
 // @match        http://jump2.bdimg.com/safecheck/index?url=*
+// @match        https://tieba.baidu.com/safecheck/index?url=*
 // @match        https://c.pc.qq.com/middlem.html?pfurl=*
 // @match        https://mail.qq.com/cgi-bin/readtemplate?t=*
 // @match        https://www.jianshu.com/go-wild*

@@ -26,7 +26,7 @@ function fnCheckUrl(url) {
 const stieList = [
   {
     name: "百度贴吧",
-    hostList: ["jump2.bdimg.com"],
+    hostList: ["jump2.bdimg.com", "tieba.baidu.com"],
     url: fnGetUrlInDOM("p.link", "textContent"),
   },
   {
