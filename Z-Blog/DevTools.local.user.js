@@ -105,7 +105,7 @@
         console.log(strDate, strAuthor);
         $(this).css({ color: "red" }).insertAfter("table tbody tr:first-child");
       }
-      if (/Todo|mzGrunt|FileIgnore/.test(curHtml)) {
+      if (/Todo|mzGrunt|FileIgnore|xnxf_SubMenu/.test(curHtml)) {
         $(this).css({
           color: "cornflowerblue",
         });
