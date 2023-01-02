@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Z-Blog」开发者工具（本地）
 // @namespace    https://www.wdssmq.com/
-// @version      0.3
+// @version      0.4
 // @author       沉冰浮水
 // @description  自动填写 Z-Blog 应用的配置项
 // @null     ----------------------------
@@ -30,7 +30,8 @@
   if (JSON.stringify(config) === "{}") {
     GM_setValue("config", {
       appUrl: "//jq.qq.com/?_wv=1027&k=555hND5",
-      appPHPVer: "5.4",
+      appAdapted: "162210",
+      appPHPVer: "5.6",
       appDesc: "置百丈玄冰而崩裂，掷须臾池水而漂摇。",
       authName: "沉冰浮水",
       authEmail: "wdssmq@qq.com",
@@ -61,6 +62,7 @@
       fnFill("#app_author_name", config.authName, 1);
       fnFill("#app_author_email", config.authEmail, 1);
       fnFill("#app_author_url", config.authUrl, 1);
+      fnFill("#app_adapted", config.appAdapted, 1);
       fnFill("#app_phpver", config.appPHPVer, 1);
       fnFill("#app_path", "main.php", 1);
       fnFill("#app_include", "include.php", 1);
@@ -71,7 +73,7 @@
 
     const app_id = $("#app_id").val();
     if (/LinksManage/.test(app_id)) {
-      fnFill("#app_phpver", "5.2", 1);
+      fnFill("#app_phpver", "5.4", 1);
     }
   })();
   (() => {
