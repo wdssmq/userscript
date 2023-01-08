@@ -1,4 +1,4 @@
-import { _log } from "./_base";
+import { _log, $n, $na } from "./_base";
 import { gm_name } from "./__info";
 
 // localStorage 封装
@@ -16,11 +16,6 @@ const lsObj = {
 };
 
 // 数据读写封装
-const gobInfo = {
-  // key: [默认值, 是否记录至 ls]
-  strTest: ["TEST", 0],
-  intTest: [0, 1],
-};
 const gob = {
   _lsKey: `${gm_name}_data`,
   _bolLoaded: false,
@@ -73,17 +68,18 @@ const gob = {
   },
 };
 
+// 初始化 gobInfo
+const gobInfo = {
+  // key: [默认值, 是否记录至 ls]
+  curImgUrl: ["", 0],
+  curInfo: [{}, 0],
+  autoNextC: [0, 1],
+  wgetImgs: [[], 1],
+  maxWget: [7, 0],
+};
+
 // 初始化
 gob.init().load();
-
-// ---------------------------------
-// 写入测试
-gob.intTest += 1;
-gob.save();
-_log("[TEST]---------------------");
-_log("[TEST]", gob);
-_log("[TEST]---------------------");
-// ---------------------------------
 
 export {
   lsObj,
