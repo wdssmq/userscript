@@ -5,7 +5,8 @@
     "build": "cross-env NODE_ENV=prod rollup -c",
     "dev": "cross-env NODE_ENV=dev rollup -c -w",
     "lint": "eslint --ext .js,.mjs .",
-    "clear": "rm -rf dev"
+    "clear": "rm -rf dev",
+    "up:ver": "npm version patch && npm run build"
   },
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.1",
