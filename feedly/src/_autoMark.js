@@ -1,4 +1,4 @@
-import { _log, $n } from "./_base";
+import { _log, $n, fnFindDomUp } from "./_base";
 // 自动标记已读
 (() => {
   if (!$n("#root") || $n("#root").dataset.MarkRead === "bind") {
@@ -18,13 +18,15 @@ import { _log, $n } from "./_base";
     };
     if (eType === "mouseup") {
       if (
-        eTgt.classList.contains("entry__title") && eTgt.nodeName === "A"
+        eTgt.classList.contains("EntryTitle") && eTgt.nodeName === "DIV"
       ) {
+        const $entry = fnFindDomUp(eTgt, "article.entry", 3);
+        const $btn = $entry.querySelector("button.EntryMarkAsReadButton");
         objRlt = {
           // 当前条目元素
-          $entry: eTgt.parentNode.parentNode,
+          $entry,
           // 标记已读的按钮
-          $btn: eTgt.parentNode.querySelector("button.EntryMarkAsReadButton"),
+          $btn,
         };
         pick = true;
       }
