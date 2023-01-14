@@ -13,7 +13,7 @@ const fnCheckUrl = () => {
 function fnGetItems(obj) {
   const $listWrap = $n("div.list-entries");
   if ($listWrap) {
-    obj.$$Stars = $listWrap.querySelectorAll("div.content>a");
+    obj.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyEntry__content>a");
     return obj.$$Stars.length;
   }
   return 0;
