@@ -1,5 +1,4 @@
 import { gm_name, gm_banner } from "./src/__info.js";
-import pkg from "./package.json";
 import replace from "@rollup/plugin-replace";
 
 // for prod
@@ -8,6 +7,7 @@ import monkey from "rollup-plugin-monkey";
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
   gm_banner: gm_banner.trim() + "\n",
+  gm_version: process.env.npm_package_version,
   listen: {
     host: "localhost",
     port: "3000",
@@ -16,7 +16,7 @@ const gobConfig = {
 };
 
 gobConfig.url = `http://${gobConfig.listen.host}:${gobConfig.listen.port}`;
-gobConfig.gm_banner = gobConfig.gm_banner.replace("placeholder.pkg.version", pkg.version);
+gobConfig.gm_banner = gobConfig.gm_banner.replace("placeholder.pkg.version", gobConfig.gm_version);
 
 const prodConfig = {
   input: "src/main.js",

@@ -1,5 +1,4 @@
-// vite plugin server and build *.user.js for Tampermonkey and Violentmonkey and Greasemonkey
-// https://github.com/lisonge/rollup-gm-loader
+// 本文件代码来自：https://github.com/lisonge/vite-plugin-monkey
 
  (({
   entryList = [],
