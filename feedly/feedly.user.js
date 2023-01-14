@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.0
+// @version      1.0.1
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
 // @link    https://github.com/wdssmq/userscript/tree/master/feedly
@@ -186,7 +186,7 @@
   function fnGetItems(obj) {
     const $listWrap = $n("div.list-entries");
     if ($listWrap) {
-      obj.$$Stars = $listWrap.querySelectorAll("div.content>a");
+      obj.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyEntry__content>a");
       return obj.$$Stars.length;
     }
     return 0;
@@ -544,13 +544,15 @@
       };
       if (eType === "mouseup") {
         if (
-          eTgt.classList.contains("entry__title") && eTgt.nodeName === "A"
+          eTgt.classList.contains("EntryTitle") && eTgt.nodeName === "DIV"
         ) {
+          const $entry = fnFindDomUp(eTgt, "article.entry", 3);
+          const $btn = $entry.querySelector("button.EntryMarkAsReadButton");
           objRlt = {
             // 当前条目元素
-            $entry: eTgt.parentNode.parentNode,
+            $entry,
             // 标记已读的按钮
-            $btn: eTgt.parentNode.querySelector("button.EntryMarkAsReadButton"),
+            $btn,
           };
           pick = true;
         }
