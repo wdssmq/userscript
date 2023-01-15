@@ -197,6 +197,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/bilibili/later.user.j
 
 --------
 
+name：「水水」自用知乎脚本
+
+desc：隐藏视频等辅助功能
+
+url：https://github.com/wdssmq/userscript/blob/master/zhihu/zhihu.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/zhihu/zhihu.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zhihu/zhihu.user.js
+
+--------
+
 name：有妖气漫画下载
 
 desc：归档下载有妖气的漫画
