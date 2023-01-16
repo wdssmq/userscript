@@ -17,10 +17,7 @@ const gm_banner = `
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
-
 // @match        https://bbs.zblogcn.com/*
-// @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
-// @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -32,4 +29,15 @@ const gm_banner = `
 
 const gm_name = "xiuno";
 
-export { gm_banner, gm_name };
+const gm_require = [
+  {
+    "url": "https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js",
+    "func": "LZString",
+  },
+  {
+    "url": "https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
+    "func": "jsyaml",
+  },
+];
+
+export { gm_banner, gm_name, gm_require };
