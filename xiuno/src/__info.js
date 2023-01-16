@@ -2,7 +2,7 @@ const gm_banner = `
 // ==UserScript==
 // @name         「xiuno」管理工具（QQ 群：189574683）
 // @namespace    沉冰浮水
-// @version      1.0
+// @version      placeholder.pkg.version
 // @description  对不合规的内容加密处理
 // @author       沉冰浮水
 // @link         https://greasyfork.org/zh-CN/scripts/419517

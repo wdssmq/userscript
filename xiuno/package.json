@@ -1,11 +1,17 @@
 {
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "NODE_ENV=prod rollup -c",
-    "dev": "NODE_ENV=dev rollup -c -w"
+    "build": "cross-env NODE_ENV=prod rollup -c",
+    "dev": "cross-env NODE_ENV=dev rollup -c -w",
+    "lint": "eslint --ext .js,.mjs .",
+    "clear": "rm -rf dev",
+    "up:ver": "npm version patch && npm run build"
   },
   "dependencies": {
-    "@rollup/plugin-replace": "^4.0.0",
-    "rollup-plugin-monkey": "^1.0.2"
+    "@rollup/plugin-replace": "^5.0.1",
+    "cross-env": "^7.0.3",
+    "rollup": "^3.2.3",
+    "rollup-plugin-monkey": "^1.0.3"
   }
 }
