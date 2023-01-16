@@ -1,13 +1,15 @@
-import { gm_name, gm_banner } from "./src/__info.js";
+import { gm_name, gm_banner, gm_require } from "./src/__info.js";
 import replace from "@rollup/plugin-replace";
 
 // for prod
-import monkey from "rollup-plugin-monkey";
+import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
   gm_banner: gm_banner.trim() + "\n",
   gm_version: process.env.npm_package_version,
+  gm_dev: monkeyPath.devJS,
+  ...monkeyRequire(gm_require),
   listen: {
     host: "localhost",
     port: "3000",
@@ -17,6 +19,9 @@ const gobConfig = {
 
 gobConfig.url = `http://${gobConfig.listen.host}:${gobConfig.listen.port}`;
 gobConfig.gm_banner = gobConfig.gm_banner.replace("placeholder.pkg.version", gobConfig.gm_version);
+if (gm_require.length > 0) {
+  gobConfig.gm_banner = gobConfig.gm_banner.replace("// ==/", gobConfig.gm_require + "\n// ==/");
+}
 
 const prodConfig = {
   input: "src/main.js",
@@ -54,7 +59,7 @@ const devConfig = {
 };
 
 const loaderConfig = {
-  input: "src/__dev.js",
+  input: gobConfig.gm_dev,
   output: {
     file: `dev/${gobConfig.gm_file}`,
     format: "iife",

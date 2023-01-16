@@ -33,14 +33,19 @@ function $na(e) {
 // -------------------------------------
 
 // 添加内容到指定元素后面
-function fnAfter($ne, e) {
-  const $e = typeof e === "string" ? $n(e) : e;
-  $e.parentNode.insertBefore($ne, $e.nextSibling);
+function fnAfter(newEl, el) {
+  el = typeof el === "string" ? $n(el) : el;
+  el.parentNode.insertBefore(newEl, el.nextSibling);
 }
 
 // 指定元素内查找子元素
 function fnFindDom(el, selector) {
-  return el.querySelectorAll(selector);
+  el = typeof el === "string" ? $n(el) : el;
+  const queryList = el.querySelectorAll(selector);
+  if (queryList.length === 1) {
+    return queryList[0];
+  }
+  return queryList.length > 1 ? queryList : null;
 }
 
 // -------------------------------------

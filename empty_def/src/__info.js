@@ -25,6 +25,13 @@ const gm_banner = `
 /* jshint esversion: 6 */
 `;
 
-const gm_name = "empty_def";
+const gm_name = "gm";
 
-export { gm_banner, gm_name };
+const gm_require = [
+  {
+    "url": "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js",
+    "func": "$",
+  },
+];
+
+export { gm_banner, gm_name, gm_require };
