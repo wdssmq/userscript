@@ -4,6 +4,9 @@ import replace from "@rollup/plugin-replace";
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 
+// console.log("typeof monkey：", typeof monkey);
+// // typeof monkey： function
+
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
   gm_banner: gm_banner.trim() + "\n",

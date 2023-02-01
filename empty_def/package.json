@@ -11,7 +11,7 @@
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.2",
     "cross-env": "^7.0.3",
-    "rollup": "^3.10.0",
-    "rollup-plugin-monkey": "^1.0.5"
+    "rollup": "^3.12.0",
+    "rollup-plugin-monkey": "^1.0.6"
   }
 }
