@@ -181,6 +181,7 @@
       $a.style.margin = "3px 0";
       // 点击事件
       $a.addEventListener("click", function () {
+        $n("#feedlyPageFX").style.maxWidth = "1024px";
         const $items = fnGetItems($block);
         const intPer = Math.floor($items.length / 4);
         const intClick = parseInt($block.dataset.click) || 0;
@@ -198,13 +199,15 @@
           if (!element) {
             continue;
           }
-          element.style.marginBottom = "11px";
-          element.style.padding = "5px";
+          // 调整样式以减少页面占用
+          element.querySelector(".MagazineEntry").style.marginBottom = 0;
+          element.querySelector(".MagazineEntry").style.maxWidth = "720px";
+          // 获取标记已读按钮
           const $btn = element.querySelector(
             ".EntryMarkAsReadButton",
           );
           $btnList.push($btn);
-          const $a = element.querySelector(".content > a");
+          const $a = element.querySelector(".MagazineEntry__content > a");
           strAlert += $a.textContent + "\n\n";
         }
         $block.dataset.click = intClick + 1;
@@ -246,9 +249,9 @@
     fnAutoScroll($items, $blocks);
     [].forEach.call($blocks, function ($e, i) {
       // 设置下边框
-      $e.style.borderBottom = "13px solid #444";
+      $e.style.borderBottom = "11px solid #444";
       // 设置下边距
-      $e.style.marginBottom = "13px";
+      $e.style.marginBottom = "11px";
       // 分配一个不重复的 class
       $e.classList.add("LessItem" + i);
       // $e.classList.add("LessItem");
