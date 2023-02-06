@@ -2,7 +2,7 @@ const gm_banner = `
 // ==UserScript==
 // @name         「Feedly」Less Items
 // @namespace    https://www.wdssmq.com/
-// @version      0.2
+// @version      placeholder.pkg.version
 // @author       沉冰浮水
 // @description  Feedly 分次标记已读
 // @license      MIT
@@ -28,4 +28,6 @@ const gm_banner = `
 
 const gm_name = "LessItems";
 
-export { gm_banner, gm_name };
+const gm_require = [];
+
+export { gm_banner, gm_name, gm_require };
