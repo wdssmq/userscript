@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Feedly」Less Items
 // @namespace    https://www.wdssmq.com/
-// @version      0.2
+// @version      1.0.0
 // @author       沉冰浮水
 // @description  Feedly 分次标记已读
 // @license      MIT
@@ -70,6 +70,8 @@
   const gob = {
     intBlocks: 0,
     maxBlocks: 4,
+    intUnread: 0,
+    minUnread: 37,
     bolStopScroll: false,
     curTimeMS: curDate.getTime(),
     stopScroll(preCaB = () => { }) {
@@ -192,6 +194,7 @@
         //   curOffset,
         // });
         $items[curOffset].scrollIntoView();
+        // $items[curOffset].style.borderTop = "4px solid #444";
         const $btnList = [];
         let strAlert = "";
         for (let i = 0; i < intPer; i++) {
@@ -235,6 +238,13 @@
   function fnLessItems() {
     // 判断页面地址
     if (_curUrl().indexOf("subscription/") === -1) {
+      return;
+    }
+    // 获取未读数
+    gob.intUnread = parseInt($n("span.MarkAsReadButton__unread-count").textContent);
+    // _log("fnLessItems", intUnread);
+    // 判断未读数
+    if (gob.intUnread < gob.minUnread) {
       return;
     }
     if (gob.bolStopScroll) {

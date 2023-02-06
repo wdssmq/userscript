@@ -12,6 +12,8 @@ const objDataSet = {
 const gob = {
   intBlocks: 0,
   maxBlocks: 4,
+  intUnread: 0,
+  minUnread: 37,
   bolStopScroll: false,
   curTimeMS: curDate.getTime(),
   stopScroll(preCaB = () => { }) {
@@ -178,6 +180,13 @@ function fnBuildSideBar($block) {
 function fnLessItems() {
   // 判断页面地址
   if (_curUrl().indexOf("subscription/") === -1) {
+    return;
+  }
+  // 获取未读数
+  gob.intUnread = parseInt($n("span.MarkAsReadButton__unread-count").textContent);
+  // _log("fnLessItems", intUnread);
+  // 判断未读数
+  if (gob.intUnread < gob.minUnread) {
     return;
   }
   if (gob.bolStopScroll) {
