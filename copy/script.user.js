@@ -47,19 +47,19 @@
     GM_setClipboard(title + "\n" + url);
   });
 
-  GM_registerMenuCommand("复制HTML", () => {
+  GM_registerMenuCommand("复制 HTML", () => {
     const [title, url] = fnGetInfo();
     GM_setClipboard(
       `<p>${title}</p><p><a href="${url}" target="_blank" title="${title}">${url}</a></p>`,
     );
   });
 
-  GM_registerMenuCommand("复制为Markdown[text]", () => {
+  GM_registerMenuCommand("复制为 Markdown[text]", () => {
     const [title, url] = fnGetInfo(true);
     GM_setClipboard(`[${title}](${url} "${title}")`);
   });
 
-  GM_registerMenuCommand("复制为Markdown[link]", () => {
+  GM_registerMenuCommand("复制为 Markdown[link]", () => {
     const [title, url] = fnGetInfo(true);
     GM_setClipboard(`${title}：\n\n[${url}](${url} "${title}")`);
   });
