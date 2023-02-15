@@ -12,6 +12,7 @@ function fnReplace(params) {
     ["?tdsourcetag=s_pctim_aiomsg", ""],
     // 哔哩哔哩
     [/\?spm_id_from=.+/, ""],
+    [/\?vd_source=.+/, ""],
   ];
   let newTitle = title;
   let newUrl = url;
