@@ -392,3 +392,19 @@ mv script_def ${PROJECT_SCRIPT}
 eslint empty_def/**/*.js empty_def/*.mjs --fix
 rm -rf script_def.tar.gz
 ```
+
+## postcss
+
+```bash
+cnpm i postcss rollup-plugin-postcss -d
+# less sass stylus 按需安装对应的依赖
+```
+
+```js
+import postcss from "rollup-plugin-postcss";
+
+[prodConfig, devConfig].forEach((config) => {
+  config.plugins.push(postcss());
+});
+
+```
