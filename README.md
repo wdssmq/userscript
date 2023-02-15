@@ -251,9 +251,9 @@ name：「水水」复制标题网址
 
 desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
 
-url：https://github.com/wdssmq/userscript/blob/master/copy/script.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/copy/script.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/copy/copy.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/copy/copy.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/copy/script.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/copy/copy.user.js
 
 --------
 
