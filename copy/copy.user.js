@@ -19,6 +19,7 @@
 // @include      https://*
 // @grant        GM_registerMenuCommand
 // @grant        GM_setClipboard
+// @require      https://greasyfork.org/scripts/460056-mzlibmenu/code/mzLibMenu.js?version=1149985
 // ==/UserScript==
 
 /* eslint-disable */
@@ -39,6 +40,7 @@
       ["?tdsourcetag=s_pctim_aiomsg", ""],
       // 哔哩哔哩
       [/\?spm_id_from=.+/, ""],
+      [/\?vd_source=.+/, ""],
     ];
     let newTitle = title;
     let newUrl = url;
