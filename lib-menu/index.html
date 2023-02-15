@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lib-menu</title>
+</head>
+
+<body>
+  <p>ctrl + m 查看；</p>
+  <p>mturco/context-menu: A small JavaScript library for adding context menus to any HTML element</p>
+  <p><a href="https://github.com/mturco/context-menu" target="_blank"
+      title="mturco/context-menu: A small JavaScript library for adding context menus to any HTML element">https://github.com/mturco/context-menu</a>
+  </p>
+
+  <script src="dist/lib-menu.js"></script>
+  <script>
+    // 定义菜单项
+    const demoItems = [
+      {
+        name: "Item 1",
+        fn: () => {
+          console.log("Item 1 clicked");
+        },
+      },
+      {}
+    ];
+    // 实例化菜单
+    const demoMenu = new mzLibMenu({ items: demoItems });
+  </script>
+</body>
+
+</html>
