@@ -6,6 +6,7 @@ note-*
 *.tar.gz
 *.code-workspace
 empty_def.user.js
+gm.user.js
 node_modules
 .history
 dev

@@ -25,7 +25,7 @@ const gm_banner = `
 /* jshint esversion: 6 */
 `;
 
-const gm_name = "gm";
+const gm_name = "empty_def";
 
 const gm_require = [
   {
