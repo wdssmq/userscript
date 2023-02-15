@@ -2,7 +2,9 @@
 
 一个居中显示的菜单，使用 `ctrl + m` 快捷键打开。
 
-## 示例
+## 使用
+
+· 示例
 
 ```html
   <p>ctrl + m 查看；</p>
@@ -23,6 +25,15 @@
     const demoMenu = new mzLibMenu({ items: demoItems });
   </script>
 ```
+
+· 「GM_脚本」中引用：
+
+```js
+// @require https://greasyfork.org/scripts/460056-mzlibmenu/code/mzLibMenu.js?version=1149985
+```
+发布地址：[https://greasyfork.org/zh-CN/scripts/460056](https://greasyfork.org/zh-CN/scripts/460056 "mzLibMenu")
+
+## 效果图
 
 ![001.png](./doc/001.png)
 
