@@ -8,7 +8,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "demo": "live-server --watch=index.html,lib-menu.js"
+    "demo": "live-server --watch=index.html,lib-menu.js",
+    "lint": "eslint --ext .js,.mjs ."
   },
   "repository": {
     "type": "git",
@@ -27,9 +28,6 @@
     "rollup-plugin-postcss": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/plugin-syntax-import-assertions": "^7.20.0",
     "eslint": "^8.34.0"
   }
 }
