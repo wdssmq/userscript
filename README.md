@@ -37,76 +37,6 @@ QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
 ---start---
 
-name：「Feedly」中键标记已读 + 收藏导出为*.url
-
-desc：新标签页打开条目时自动标记为已读，收藏计数
-
-url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/feedly/feedly.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/feedly.user.js
-
---------
-
-name：「bilibili」大会员 B 币领取提醒
-
-desc：B 币领取提醒、稍后再看列表导出为 *.url 等
-
-url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/bilibili/later.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/bilibili/later.user.js
-
---------
-
-name：有妖气漫画下载
-
-desc：归档下载有妖气的漫画
-
-url：https://github.com/wdssmq/userscript/blob/master/u17/u17.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/u17/u17.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/u17/u17.user.js
-
---------
-
-name：「水水」度盘接生成（QQ 群：189574683）
-
-desc：度盘分享文件时自动复制为 HTML 或 MarkDown
-
-url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/pan/pan.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/pan/pan.user.js
-
---------
-
-name：「废弃」度盘接生成（QQ 群：189574683）
-
-desc：分享资源后生成带描述的分享文本或 html 代码。
-
-url：https://github.com/wdssmq/userscript/blob/master/pan/pan-2109.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/pan/pan-2109.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/pan/pan-2109.user.js
-
---------
-
-name：「水水」Resilio Sync 分享/备份助手「QQ 群：189574683」
-
-desc：快捷导出/分享 Sync 任务；
-
-url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Sync/Sync.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.user.js
-
---------
-
-name：「废弃」Resilio Sync 管理「QQ 群：189574683」
-
-desc：快捷导出/分享 Sync 任务；
-
-url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Sync/Sync.old.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.old.user.js
-
---------
-
 name：「水水」时间轴助手
 
 desc：Z-BlogPHP mz_TimeLine 插件辅助脚本
@@ -114,86 +44,6 @@ desc：Z-BlogPHP mz_TimeLine 插件辅助脚本
 url：https://github.com/wdssmq/userscript/blob/master/zbp-TimeLine/zbp-TimeLine.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/zbp-TimeLine/zbp-TimeLine.user.js)」
 
 cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp-TimeLine/zbp-TimeLine.user.js
-
---------
-
-name：「其他」sm.ms-helper
-
-desc：优化显示 sm.ms 图片查看
-
-url：https://github.com/wdssmq/userscript/blob/master/sm.ms/def.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/sm.ms/def.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/sm.ms/def.user.js
-
---------
-
-name：Markdown-A-Textarea
-
-desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
-
-url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
-
---------
-
-name：「水水」链接跳转
-
-desc：跳转到正确的链接
-
-url：https://github.com/wdssmq/userscript/blob/master/UrlGo/UrlGo.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/UrlGo/UrlGo.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/UrlGo/UrlGo.user.js
-
---------
-
-name：「xiuno」管理工具（QQ 群：189574683）
-
-desc：对不合规的内容加密处理
-
-url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/xiuno/xiuno.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/xiuno/xiuno.user.js
-
---------
-
-name：「水水」qBittorrent 管理脚本「QQ 群：189574683」
-
-desc：通过 WebUI 的 API 批量替换 Tracker
-
-url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/qBit/script.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/qBit/script.user.js
-
---------
-
-name：「QQ 群」批量踢人（QQ 群：189574683）
-
-desc：自动选择 20 名成员
-
-url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupMemberRemove.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/QQ/GroupMemberRemove.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/QQ/GroupMemberRemove.user.js
-
---------
-
-name：「QQ 群」今天谁值日
-
-desc：用于确定值日生/doge
-
-url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/QQ/GroupManageDuty.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/QQ/GroupManageDuty.user.js
-
---------
-
-name：「蜜柑计划」列表过滤（简繁/画质）
-
-desc：过滤蜜柑计划列表，按照简繁/画质过滤
-
-url：https://github.com/wdssmq/userscript/blob/master/Mikan_Proj/Mikan_Proj.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Mikan_Proj/Mikan_Proj.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Mikan_Proj/Mikan_Proj.user.js
 
 --------
 
@@ -207,33 +57,23 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_edit/zbp_edit.use
 
 --------
 
-name：「Feedly」Less Items
+name：「其他」sm.ms-helper
 
-desc：Feedly 分次标记已读
+desc：优化显示 sm.ms 图片查看
 
-url：https://github.com/wdssmq/userscript/blob/master/LessItems/LessItems.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/LessItems/LessItems.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/sm.ms/def.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/sm.ms/def.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/LessItems/LessItems.user.js
-
---------
-
-name：「漫画」打包下载（QQ 群：189574683）
-
-desc：按章节打包下载漫画柜的资源
-
-url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/comic/comic.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/sm.ms/def.user.js
 
 --------
 
-name：「水水」自用知乎脚本
+name：「水水」链接跳转
 
-desc：隐藏视频等辅助功能
+desc：跳转到正确的链接
 
-url：https://github.com/wdssmq/userscript/blob/master/zhihu/zhihu.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/zhihu/zhihu.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/UrlGo/UrlGo.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/UrlGo/UrlGo.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zhihu/zhihu.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/UrlGo/UrlGo.user.js
 
 --------
 
@@ -247,33 +87,53 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp-GenLogo/zbp_GenLo
 
 --------
 
-name：「水水」复制标题网址
+name：「漫画」打包下载（QQ 群：189574683）
 
-desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
+desc：按章节打包下载漫画柜的资源
 
-url：https://github.com/wdssmq/userscript/blob/master/copy/copy.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/copy/copy.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/comic/comic.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/comic/comic.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/copy/copy.user.js
-
---------
-
-name：「其他」海腾之眼（贴吧防和谐）【停止维护】
-
-desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
-
-url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/tieba/tieba.user.js)」
-
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/tieba/tieba.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/comic/comic.user.js
 
 --------
 
-name：「Z-Blog」开发者工具（应用中心）
+name：「GitHub」获取文件的 jsDelivr 地址
 
-desc：含订单搜索，附带隐藏未付订单，应用审核回显；
+desc：获取项目文件的 CDN 地址
 
-url：https://github.com/wdssmq/userscript/blob/master/zbp_DevTools/zbp_DevTools.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/zbp_DevTools/zbp_DevTools.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Git/jsDelivr.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_DevTools/zbp_DevTools.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Git/jsDelivr.user.js
+
+--------
+
+name：「其他」EasyPHP 面板助手
+
+desc：新窗口打开站点；自动启用服务；书签功能；
+
+url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/EasyPHP/Dashboard.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/EasyPHP/Dashboard.user.js
+
+--------
+
+name：「水水」qBittorrent 管理脚本「QQ 群：189574683」
+
+desc：通过 WebUI 的 API 批量替换 Tracker
+
+url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/qBit/script.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/qBit/script.user.js
+
+--------
+
+name：「蜜柑计划」列表过滤（简繁/画质）
+
+desc：过滤蜜柑计划列表，按照简繁/画质过滤
+
+url：https://github.com/wdssmq/userscript/blob/master/Mikan_Proj/Mikan_Proj.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Mikan_Proj/Mikan_Proj.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Mikan_Proj/Mikan_Proj.user.js
 
 --------
 
@@ -287,13 +147,13 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/weibo/remove-fans.use
 
 --------
 
-name：「Z-Blog」插件工具 For 视频云点播
+name：「Blog」写作助手
 
-desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
+desc：发布预定义文章到知乎、简书等豉
 
-url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Z-Blog/cloudVideo.tool.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/blog/blog-helper.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/cloudVideo.tool.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/blog/blog-helper.user.js
 
 --------
 
@@ -304,6 +164,16 @@ desc：自动填写 Z-Blog 应用的配置项
 url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/DevTools.local.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Z-Blog/DevTools.local.user.js)」
 
 cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/DevTools.local.user.js
+
+--------
+
+name：「Z-Blog」插件工具 For 视频云点播
+
+desc：用于快捷得到`[cloudVideo:tencent:${strID}]${strTitle}[/cloudVideo]`格式的代码；
+
+url：https://github.com/wdssmq/userscript/blob/master/Z-Blog/cloudVideo.tool.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Z-Blog/cloudVideo.tool.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/cloudVideo.tool.user.js
 
 --------
 
@@ -327,23 +197,133 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/promotion.user
 
 --------
 
-name：「GitHub」获取文件的 jsDelivr 地址
+name：「水水」Resilio Sync 分享/备份助手「QQ 群：189574683」
 
-desc：获取项目文件的 CDN 地址
+desc：快捷导出/分享 Sync 任务；
 
-url：https://github.com/wdssmq/userscript/blob/master/Git/jsDelivr.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Git/jsDelivr.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Sync/Sync.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Git/jsDelivr.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.user.js
 
 --------
 
-name：「Blog」写作助手
+name：「废弃」Resilio Sync 管理「QQ 群：189574683」
 
-desc：发布预定义文章到知乎、简书等豉
+desc：快捷导出/分享 Sync 任务；
 
-url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/blog/blog-helper.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/Sync/Sync.old.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Sync/Sync.old.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/blog/blog-helper.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Sync/Sync.old.user.js
+
+--------
+
+name：「bilibili」大会员 B 币领取提醒
+
+desc：B 币领取提醒、稍后再看列表导出为 *.url 等
+
+url：https://github.com/wdssmq/userscript/blob/master/bilibili/later.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/bilibili/later.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/bilibili/later.user.js
+
+--------
+
+name：「Feedly」中键标记已读 + 收藏导出为*.url
+
+desc：新标签页打开条目时自动标记为已读，收藏计数
+
+url：https://github.com/wdssmq/userscript/blob/master/feedly/feedly.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/feedly/feedly.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/feedly/feedly.user.js
+
+--------
+
+name：Markdown-A-Textarea
+
+desc：在需要的地方启用 MarkDown 语法，添加格式帮助链接及 Markdown 工具栏
+
+url：https://github.com/wdssmq/userscript/blob/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/Markdown-A-Textarea/Markdown-A-Textarea.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Markdown-A-Textarea/Markdown-A-Textarea.user.js
+
+--------
+
+name：「QQ 群」今天谁值日
+
+desc：用于确定值日生/doge
+
+url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupManageDuty.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/QQ/GroupManageDuty.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/QQ/GroupManageDuty.user.js
+
+--------
+
+name：「QQ 群」批量踢人（QQ 群：189574683）
+
+desc：自动选择 20 名成员
+
+url：https://github.com/wdssmq/userscript/blob/master/QQ/GroupMemberRemove.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/QQ/GroupMemberRemove.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/QQ/GroupMemberRemove.user.js
+
+--------
+
+name：「水水」度盘接生成（QQ 群：189574683）
+
+desc：度盘分享文件时自动复制为 HTML 或 MarkDown
+
+url：https://github.com/wdssmq/userscript/blob/master/pan/pan.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/pan/pan.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/pan/pan.user.js
+
+--------
+
+name：「废弃」度盘接生成（QQ 群：189574683）
+
+desc：分享资源后生成带描述的分享文本或 html 代码。
+
+url：https://github.com/wdssmq/userscript/blob/master/pan/pan-2109.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/pan/pan-2109.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/pan/pan-2109.user.js
+
+--------
+
+name：「Z-Blog」开发者工具（应用中心）
+
+desc：含订单搜索，附带隐藏未付订单，应用审核回显；
+
+url：https://github.com/wdssmq/userscript/blob/master/zbp_DevTools/zbp_DevTools.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/zbp_DevTools/zbp_DevTools.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp_DevTools/zbp_DevTools.user.js
+
+--------
+
+name：有妖气漫画下载
+
+desc：归档下载有妖气的漫画
+
+url：https://github.com/wdssmq/userscript/blob/master/u17/u17.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/u17/u17.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/u17/u17.user.js
+
+--------
+
+name：「其他」海腾之眼（贴吧防和谐）【停止维护】
+
+desc：对贴吧发言进行混淆，浏览已加密内容时可自动还原；QQ 群：189574683
+
+url：https://github.com/wdssmq/userscript/blob/master/tieba/tieba.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/tieba/tieba.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/tieba/tieba.user.js
+
+--------
+
+name：「水水」复制标题网址
+
+desc：复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
+
+url：https://github.com/wdssmq/userscript/blob/master/copy/copy.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/copy/copy.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/copy/copy.user.js
 
 --------
 
@@ -367,13 +347,33 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/other/typecho.in.user
 
 --------
 
-name：「其他」EasyPHP 面板助手
+name：「水水」自用知乎脚本
 
-desc：新窗口打开站点；自动启用服务；书签功能；
+desc：隐藏视频等辅助功能
 
-url：https://github.com/wdssmq/userscript/blob/master/EasyPHP/Dashboard.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/EasyPHP/Dashboard.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/zhihu/zhihu.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/zhihu/zhihu.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/EasyPHP/Dashboard.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zhihu/zhihu.user.js
+
+--------
+
+name：「Feedly」Less Items
+
+desc：Feedly 分次标记已读
+
+url：https://github.com/wdssmq/userscript/blob/master/LessItems/LessItems.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/LessItems/LessItems.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/LessItems/LessItems.user.js
+
+--------
+
+name：「xiuno」管理工具（QQ 群：189574683）
+
+desc：对不合规的内容加密处理
+
+url：https://github.com/wdssmq/userscript/blob/master/xiuno/xiuno.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/xiuno/xiuno.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/xiuno/xiuno.user.js
 
 --------
 
