@@ -6,7 +6,6 @@
     "@rollup/plugin-replace": "^4.0.0",
     "cross-env": "^7.0.3",
     "rollup": "^2.79.0",
-    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-monkey": "/home/wdssmq/Git/rollup-plugin-monkey"
   },
   "devDependencies": {
