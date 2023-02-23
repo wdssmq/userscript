@@ -48,7 +48,7 @@ function fnColorStars(offset = 0) {
   // ----------------------------
   [].forEach.call($stars, function ($e, i) {
     // begin forEach
-    const $ago = fnFindDomUp($e, ".ago", 2);
+    const $ago = fnFindDom(fnFindDomUp($e,"div.TitleOnlyEntry"), ".ago");
     const href = $e.href;
     const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
     // _log("fnColorStars", $ago, href, hash);
