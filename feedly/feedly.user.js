@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.2
+// @version      1.0.3
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
 // @link    https://github.com/wdssmq/userscript/tree/master/feedly
@@ -319,7 +319,7 @@
     // ----------------------------
     [].forEach.call($stars, function ($e, i) {
       // begin forEach
-      const $ago = fnFindDomUp($e, ".ago");
+      const $ago = fnFindDom(fnFindDomUp($e,"div.TitleOnlyEntry"), ".ago");
       const href = $e.href;
       const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
       // _log("fnColorStars", $ago, href, hash);
