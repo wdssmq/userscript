@@ -25,13 +25,14 @@ $(function () {
 
   // 设置文章为回收
   $("#edtTitle").after(
-    "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> [设置为回收]</a>",
+    "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> 「设置为回收」</a>",
   );
   let editor_api = window.editor_api;
   $(".js-empty").click(function () {
     $("#edtTitle").val("回收");
     $("#edtTag").val("回收");
     $("#edtDateTime").datetimepicker("setDate", (new Date()));
+    $("#cmbPostStatus").val("1");
     let strMore = "";
     if (typeof window.EDITORMD == "object") {
       strMore = "\n\n<!--more-->";
