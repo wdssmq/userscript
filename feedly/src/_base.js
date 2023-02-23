@@ -45,22 +45,18 @@ function fnRemoveDOM(el) {
 function fnFindDom(el, selector) {
   return el.querySelectorAll(selector);
 }
-function fnFindDomUp(el, selector, up = 1) {
-  // _log("fnFindDomUp", el, selector, up);
-  const elParent = el.parentNode;
-  if (selector.indexOf(".") == 0 && elParent.className.indexOf(selector.split(".")[1]) > -1) {
-    return elParent;
+// 原生 js 实现 jquery 的 closest 方法
+function fnFindDomUp(el, selector) {
+  const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+  while (el) {
+    if (matchesSelector.call(el, selector)) {
+      break;
+    }
+    el = el.parentElement;
   }
-  const elFind = elParent.parentNode.querySelector(selector);
-  if (elFind) {
-    return elFind;
-  }
-  if (up > 1) {
-    return fnFindDomUp(elParent, selector, up - 1);
-  } else {
-    return null;
-  }
+  return el;
 }
+// ---------------------------------------------------
 export {
   curUrl,
   curDate,

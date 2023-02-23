@@ -20,8 +20,9 @@ import { _log, $n, fnFindDomUp } from "./_base";
       if (
         eTgt.classList.contains("EntryTitle") && eTgt.nodeName === "DIV"
       ) {
-        const $entry = fnFindDomUp(eTgt, "article.entry", 3);
+        const $entry = fnFindDomUp(eTgt, "article.entry");
         const $btn = $entry.querySelector("button.EntryMarkAsReadButton");
+        // _log("fnEventFilter", $entry, $btn);
         objRlt = {
           // 当前条目元素
           $entry,
