@@ -2,7 +2,7 @@ const gm_banner = `
 // ==UserScript==
 // @name         「Z-Blog」前台编辑文章入口
 // @namespace    https://www.wdssmq.com/
-// @version      0.3
+// @version      placeholder.pkg.version
 // @author       沉冰浮水
 // @description  配合主题以显示前台编辑入口
 // @license      MIT
@@ -28,4 +28,11 @@ const gm_banner = `
 
 const gm_name = "zbp_edit";
 
-export { gm_banner, gm_name };
+const gm_require = [
+  // {
+  //   "url": "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js",
+  //   "func": "$",
+  // },
+];
+
+export { gm_banner, gm_name, gm_require };
