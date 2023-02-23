@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
 // @link    https://github.com/wdssmq/userscript/tree/master/feedly
@@ -67,21 +67,16 @@
   function fnFindDom(el, selector) {
     return el.querySelectorAll(selector);
   }
-  function fnFindDomUp(el, selector, up = 1) {
-    // _log("fnFindDomUp", el, selector, up);
-    const elParent = el.parentNode;
-    if (selector.indexOf(".") == 0 && elParent.className.indexOf(selector.split(".")[1]) > -1) {
-      return elParent;
+  // 原生 js 实现 jquery 的 closest 方法
+  function fnFindDomUp(el, selector) {
+    const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+    while (el) {
+      if (matchesSelector.call(el, selector)) {
+        break;
+      }
+      el = el.parentElement;
     }
-    const elFind = elParent.parentNode.querySelector(selector);
-    if (elFind) {
-      return elFind;
-    }
-    if (up > 1) {
-      return fnFindDomUp(elParent, selector, up - 1);
-    } else {
-      return null;
-    }
+    return el;
   }
 
   const curTime = Math.floor(curDate.getTime() / 1000);
@@ -324,7 +319,7 @@
     // ----------------------------
     [].forEach.call($stars, function ($e, i) {
       // begin forEach
-      const $ago = fnFindDomUp($e, ".ago", 2);
+      const $ago = fnFindDomUp($e, ".ago");
       const href = $e.href;
       const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
       // _log("fnColorStars", $ago, href, hash);
@@ -492,12 +487,12 @@
 
   // 星标文章导出为 *.url 文件
   $n("#root").addEventListener("mouseup", function (event) {
-    if (event.target.innerHTML.indexOf("Read later") > -1 && $n(".list-entries > h2")) {
-      const $el = event.target;
-      console.log($el);
-      const listItems = fnNodeListToArray($na("div.content a"));
+    const $target = event.target;
+    // console.log($target,$target.innerText);
+    if ($target.innerText.indexOf("END OF FEED") > -1) {
+      const listItems = fnNodeListToArray($na("div.TitleOnlyEntry__content a"));
       GM_setClipboard(fnMKShell(listItems, "feedly"));
-      $n(".list-entries > h2").innerHTML = "已复制到剪贴板";
+      $target.innerText = "已复制到剪贴板";
     }
   }, false);
 
@@ -546,8 +541,9 @@
         if (
           eTgt.classList.contains("EntryTitle") && eTgt.nodeName === "DIV"
         ) {
-          const $entry = fnFindDomUp(eTgt, "article.entry", 3);
+          const $entry = fnFindDomUp(eTgt, "article.entry");
           const $btn = $entry.querySelector("button.EntryMarkAsReadButton");
+          // _log("fnEventFilter", $entry, $btn);
           objRlt = {
             // 当前条目元素
             $entry,
