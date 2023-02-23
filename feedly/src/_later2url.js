@@ -56,11 +56,11 @@ function fnMKShell(arrList, prefix = "") {
 
 // 星标文章导出为 *.url 文件
 $n("#root").addEventListener("mouseup", function (event) {
-  if (event.target.innerHTML.indexOf("Read later") > -1 && $n(".list-entries > h2")) {
-    const $el = event.target;
-    console.log($el);
-    const listItems = fnNodeListToArray($na("div.content a"));
+  const $target = event.target;
+  // console.log($target,$target.innerText);
+  if ($target.innerText.indexOf("END OF FEED") > -1) {
+    const listItems = fnNodeListToArray($na("div.TitleOnlyEntry__content a"));
     GM_setClipboard(fnMKShell(listItems, "feedly"));
-    $n(".list-entries > h2").innerHTML = "已复制到剪贴板";
+    $target.innerText = "已复制到剪贴板";
   }
 }, false);
