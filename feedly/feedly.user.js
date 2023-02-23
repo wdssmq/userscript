@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.3
+// @version      1.0.4
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
 // @link    https://github.com/wdssmq/userscript/tree/master/feedly
@@ -488,6 +488,10 @@
   // 星标文章导出为 *.url 文件
   $n("#root").addEventListener("mouseup", function (event) {
     const $target = event.target;
+    // 判断是 h2 标签
+    if ($target.tagName !== "H2") {
+      return;
+    }
     // console.log($target,$target.innerText);
     if ($target.innerText.indexOf("END OF FEED") > -1) {
       const listItems = fnNodeListToArray($na("div.TitleOnlyEntry__content a"));
