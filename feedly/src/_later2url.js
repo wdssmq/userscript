@@ -57,6 +57,10 @@ function fnMKShell(arrList, prefix = "") {
 // 星标文章导出为 *.url 文件
 $n("#root").addEventListener("mouseup", function (event) {
   const $target = event.target;
+  // 判断是 h2 标签
+  if ($target.tagName !== "H2") {
+    return;
+  }
   // console.log($target,$target.innerText);
   if ($target.innerText.indexOf("END OF FEED") > -1) {
     const listItems = fnNodeListToArray($na("div.TitleOnlyEntry__content a"));
