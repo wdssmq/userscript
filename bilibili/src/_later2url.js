@@ -71,7 +71,14 @@ function fnGetAjax(callback = function () { }) {
 
 // 导出稍后再看为 .lnk 文件
 (function () {
-  if (/#\/list|#\/video/g.test(location.href)) {
+  // 跳转到标准播放页
+  const urlMatch = /list\/watchlater\?bvid=(\w+)/.exec(location.href);
+  if (urlMatch) {
+    const bvid = urlMatch[1];
+    location.href = `https://www.bilibili.com/video/${bvid}`;
+    return;
+  }
+  if (/watchlater/.test(location.href)) {
     let tmpHTML = $("span.t").html();
     fnGetAjax(function (list) {
       const arrRlt = [];

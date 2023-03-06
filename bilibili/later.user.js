@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「bilibili」大会员 B 币领取提醒
 // @namespace    wdssmq.com
-// @version      0.4
+// @version      1.0.0
 // @author       沉冰浮水
 // @description  B 币领取提醒、稍后再看列表导出为 *.url 等
 // @url          https://greasyfork.org/scripts/398415
@@ -295,7 +295,14 @@
 
   // 导出稍后再看为 .lnk 文件
   (function () {
-    if (/#\/list|#\/video/g.test(location.href)) {
+    // 跳转到标准播放页
+    const urlMatch = /list\/watchlater\?bvid=(\w+)/.exec(location.href);
+    if (urlMatch) {
+      const bvid = urlMatch[1];
+      location.href = `https://www.bilibili.com/video/${bvid}`;
+      return;
+    }
+    if (/watchlater/.test(location.href)) {
       let tmpHTML = $("span.t").html();
       fnGetAjax(function (list) {
         const arrRlt = [];
