@@ -23,6 +23,7 @@
 // @match        https://mail.qq.com/cgi-bin/readtemplate?t=*
 // @match        https://www.jianshu.com/go-wild*
 // @match        https://www.v2ex.com/t/*
+// @match        https://link.zhihu.com/*
 // @grant        none
 // ==/UserScript==
 
@@ -94,6 +95,10 @@
       name: "简书",
       hostList: ["www.jianshu.com"],
       url: fnGetParamInUrl("url", curUrl),
+    }, {
+      name: "知乎",
+      hostList: ["link.zhihu.com"],
+      url: fnGetUrlInDOM("p.link", "textContent"),
     },
   ];
 

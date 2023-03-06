@@ -43,6 +43,10 @@ const stieList = [
     name: "简书",
     hostList: ["www.jianshu.com"],
     url: fnGetParamInUrl("url", curUrl),
+  }, {
+    name: "知乎",
+    hostList: ["link.zhihu.com"],
+    url: fnGetUrlInDOM("p.link", "textContent"),
   },
 ];
 
