@@ -2,7 +2,7 @@ const gm_banner = `
 // ==UserScript==
 // @name         「bilibili」大会员 B 币领取提醒
 // @namespace    wdssmq.com
-// @version      0.4
+// @version      placeholder.pkg.version
 // @author       沉冰浮水
 // @description  B 币领取提醒、稍后再看列表导出为 *.url 等
 // @url          https://greasyfork.org/scripts/398415
@@ -33,4 +33,11 @@ const gm_banner = `
 
 const gm_name = "later";
 
-export { gm_banner, gm_name };
+const gm_require = [
+  // {
+  //   "url": "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js",
+  //   "func": "$",
+  // },
+];
+
+export { gm_banner, gm_name, gm_require };
