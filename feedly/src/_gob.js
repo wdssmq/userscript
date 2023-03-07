@@ -1,5 +1,5 @@
 import { gm_name } from "./__info";
-import { _log, curDate } from "./_base";
+import { _log, curDate, $n } from "./_base";
 
 const curTime = Math.floor(curDate.getTime() / 1000);
 const curHours = Math.floor(curTime / 3600);
@@ -90,6 +90,17 @@ const gob = {
 
 // 初始化
 gob.init().load();
+
+// 星标条目获取
+gob.GetStarItems = () => {
+  const $listWrap = $n("div.list-entries");
+  // _log("gob.GetStarItems", $listWrap);
+  if ($listWrap) {
+    gob.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyLayout__title>a");
+    gob.cntStars = gob.$$Stars.length;
+    // _log("gob.GetStarItems", gob.$$Stars, gob.cntStars);
+  }
+};
 
 
 export {

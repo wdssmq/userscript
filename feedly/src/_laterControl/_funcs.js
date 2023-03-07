@@ -9,16 +9,6 @@ const fnCheckUrl = () => {
   return false;
 };
 
-// 当前星标数获取
-function fnGetItems(obj) {
-  const $listWrap = $n("div.list-entries");
-  if ($listWrap) {
-    obj.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyEntry__content>a");
-    return obj.$$Stars.length;
-  }
-  return 0;
-}
-
 const fnCheckControl = (diff) => {
   const iTime = curHours;
   const modTime = iTime % 4;
@@ -95,7 +85,8 @@ function fnControl() {
 
 // 收藏数 View
 function fnViewStars() {
-  gob.cntStars = fnGetItems(gob);
+  // gob.cntStars = fnGetItems(gob);
+  gob.GetStarItems();
   // _log("fnViewStars", gob.cntStars);
   const strText = `Read later（${gob.cntStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）（${gob._time.cycle} - ${gob._time.rem}）`;
   $n("h1 #header-title").innerHTML = strText;
@@ -108,7 +99,6 @@ function fnViewStars() {
 
 export {
   fnCheckUrl,
-  fnGetItems,
   fnCheckControl,
   fnControl,
   fnViewStars,

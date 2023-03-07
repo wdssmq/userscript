@@ -1,6 +1,6 @@
 import { _curUrl, _log, $n, fnElChange, _warn } from "./_base";
 import { gob } from "./_gob";
-import { fnCheckUrl, fnGetItems, fnControl } from "./_laterControl/_funcs";
+import { fnCheckUrl, fnControl } from "./_laterControl/_funcs";
 import { fnViewStars } from "./_laterControl/_funcs";
 import { fnColorStars } from "./_laterControl/_colorStars";
 
@@ -39,8 +39,8 @@ function fnMain(record, observer) {
   if (Math.random() > 0.6) {
     return;
   }
-  gob.cntStars = fnGetItems(gob);
-  _log("fnMain", gob.cntStars);
+  gob.GetStarItems();
+  _log("_laterCtrl fnMain", { cntStars: gob.cntStars });
   if (gob.cntStars === 0) {
     return;
   }

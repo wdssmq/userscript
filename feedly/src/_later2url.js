@@ -1,4 +1,5 @@
 import { _log, _getDateStr, $n, $na } from "./_base";
+import { gob } from "./_gob";
 
 // nodeList 转换为 Array
 function fnNodeListToArray(nodeList) {
@@ -56,6 +57,7 @@ function fnMKShell(arrList, prefix = "") {
 
 // 星标文章导出为 *.url 文件
 $n("#root").addEventListener("mouseup", function (event) {
+  gob.GetStarItems();
   const $target = event.target;
   // 判断是 h2 标签
   if ($target.tagName !== "H2") {
@@ -63,7 +65,7 @@ $n("#root").addEventListener("mouseup", function (event) {
   }
   // console.log($target,$target.innerText);
   if ($target.innerText.indexOf("END OF FEED") > -1) {
-    const listItems = fnNodeListToArray($na("div.TitleOnlyEntry__content a"));
+    const listItems = fnNodeListToArray(gob.$$Stars);
     GM_setClipboard(fnMKShell(listItems, "feedly"));
     $target.innerText = "已复制到剪贴板";
   }
