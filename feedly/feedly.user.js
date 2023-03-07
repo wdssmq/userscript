@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.4
+// @version      1.0.5
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
 // @link    https://github.com/wdssmq/userscript/tree/master/feedly
@@ -169,6 +169,17 @@
   // 初始化
   gob.init().load();
 
+  // 星标条目获取
+  gob.GetStarItems = () => {
+    const $listWrap = $n("div.list-entries");
+    // _log("gob.GetStarItems", $listWrap);
+    if ($listWrap) {
+      gob.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyLayout__title>a");
+      gob.cntStars = gob.$$Stars.length;
+      // _log("gob.GetStarItems", gob.$$Stars, gob.cntStars);
+    }
+  };
+
   // 判断当前地址是否是收藏页
   const fnCheckUrl = () => {
     if ("https://feedly.com/i/saved" === _curUrl()) {
@@ -176,16 +187,6 @@
     }
     return false;
   };
-
-  // 当前星标数获取
-  function fnGetItems(obj) {
-    const $listWrap = $n("div.list-entries");
-    if ($listWrap) {
-      obj.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyEntry__content>a");
-      return obj.$$Stars.length;
-    }
-    return 0;
-  }
 
   const fnCheckControl = (diff) => {
     const iTime = curHours;
@@ -263,7 +264,8 @@
 
   // 收藏数 View
   function fnViewStars() {
-    gob.cntStars = fnGetItems(gob);
+    // gob.cntStars = fnGetItems(gob);
+    gob.GetStarItems();
     // _log("fnViewStars", gob.cntStars);
     const strText = `Read later（${gob.cntStars} 丨 -${gob.diffStars.decr} 丨 +${gob.diffStars.incr}）（${gob._time.cycle} - ${gob._time.rem}）`;
     $n("h1 #header-title").innerHTML = strText;
@@ -414,8 +416,8 @@
     if (Math.random() > 0.6) {
       return;
     }
-    gob.cntStars = fnGetItems(gob);
-    _log("fnMain", gob.cntStars);
+    gob.GetStarItems();
+    _log("_laterCtrl fnMain", { cntStars: gob.cntStars });
     if (gob.cntStars === 0) {
       return;
     }
@@ -487,6 +489,7 @@
 
   // 星标文章导出为 *.url 文件
   $n("#root").addEventListener("mouseup", function (event) {
+    gob.GetStarItems();
     const $target = event.target;
     // 判断是 h2 标签
     if ($target.tagName !== "H2") {
@@ -494,7 +497,7 @@
     }
     // console.log($target,$target.innerText);
     if ($target.innerText.indexOf("END OF FEED") > -1) {
-      const listItems = fnNodeListToArray($na("div.TitleOnlyEntry__content a"));
+      const listItems = fnNodeListToArray(gob.$$Stars);
       GM_setClipboard(fnMKShell(listItems, "feedly"));
       $target.innerText = "已复制到剪贴板";
     }
