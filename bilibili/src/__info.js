@@ -1,6 +1,6 @@
 const gm_banner = `
 // ==UserScript==
-// @name         「bilibili」大会员 B 币领取提醒
+// @name         「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等；
 // @namespace    wdssmq.com
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
