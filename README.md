@@ -385,7 +385,7 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/Z-Blog/cloudVideo.too
 PROJECT_SCRIPT=empty_def
 rm -rf ${PROJECT_SCRIPT}
 # 下载初始模板
-wget https://github.com/wdssmq/rollup-plugin-monkey/releases/latest/download/script_def.tar.gz
+wget https://ghproxy.com/https://github.com/wdssmq/rollup-plugin-monkey/releases/latest/download/script_def.tar.gz
 tar -xzvf script_def.tar.gz
 mv script_def ${PROJECT_SCRIPT}
 # cd ${PROJECT_SCRIPT}
