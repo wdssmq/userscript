@@ -91,9 +91,9 @@ name：「水水」qBittorrent 管理脚本「QQ 群：189574683」
 
 desc：通过 WebUI 的 API 批量替换 Tracker
 
-url：https://github.com/wdssmq/userscript/blob/master/qBit/script.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/qBit/script.user.js)」
+url：https://github.com/wdssmq/userscript/blob/master/qBit/qBit.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/qBit/qBit.user.js)」
 
-cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/qBit/script.user.js
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/qBit/qBit.user.js
 
 --------
 
