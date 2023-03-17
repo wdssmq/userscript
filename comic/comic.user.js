@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「漫画」打包下载（QQ 群：189574683）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.0
+// @version      1.0.1
 // @author       沉冰浮水
 // @description  按章节打包下载漫画柜的资源
 // @license      MIT
@@ -55,7 +55,7 @@
   function fnGenUrl() {
     // 用于下载图片
     const imgUrl = $n(".mangaFile").getAttribute("src");
-    _log("[log]fnGenUrl()", imgUrl);
+    _log("[log]fnGenUrl()\n", imgUrl);
     // return encodeURI(imgUrl);
     return imgUrl;
   }
@@ -170,7 +170,7 @@
         return;
       }
       const lsData = lsObj.getItem(this._lsKey, this.data);
-      _log("[log]gob.load()", lsData);
+      _log("[log]gob.load()\n", lsData);
       for (const key in lsData) {
         if (Object.hasOwnProperty.call(lsData, key)) {
           const item = lsData[key];
@@ -190,7 +190,7 @@
           }
         }
       }
-      _log("[log]gob.save()", lsData);
+      _log("[log]gob.save()\n", lsData);
       lsObj.setItem(this._lsKey, lsData);
     },
   };
@@ -249,32 +249,43 @@
 
   const fnGenFistPage = (auto = false) => {
     // _log("[log]fnGenFistPage()", auto);
-    const wgetImgs = gob.wgetImgs;
-    if (wgetImgs.length >= gob.maxWget) {
-      _log("[log]\n", wgetImgs);
-      gob.autoNextC = 0;
-      gob.save();
-      return;
-    } else {
-      gob.autoNextC = auto ? 1 : 0;
-    }
+    // 当前页面信息
     const curPage = {
       url: gob.curImgUrl,
       name: gob.curInfo.name,
       chapter: gob.curInfo.chapter,
     };
-    if (!fnCheckFistPage(curPage, wgetImgs)) {
+    // 已收集的首图
+    const wgetImgs = gob.wgetImgs;
+    // 检查当前页面是否已收集，并写入变量
+    const bolHasWget = fnCheckFistPage(curPage, wgetImgs);
+    _log("[log]fnGenFistPage\n", wgetImgs, "\n", curPage, "\n", bolHasWget);
+    // 重复收集或收集数量达到上限，停止自动收集
+    if (bolHasWget || wgetImgs.length >= gob.maxWget) {
+      gob.autoNextC = 0;
+      // gob.save();
+      // return;
+    } else {
+      gob.autoNextC = auto ? 1 : 0;
+    }
+    // 自动下载，并加入已收集列表
+    if (!bolHasWget) {
       fnDLImg(curPage);
       wgetImgs.push(curPage);
       gob.wgetImgs = wgetImgs;
-      gob.save();
+      // gob.save();
     }
-    _log("[log]fnGenFistPage()", JSON.stringify(gob.wgetImgs));
+    // 询问是否重复下载
+    if (bolHasWget && confirm("已收集过该首图，是否重复下载？")) {
+        fnDLImg(curPage);
+    }
+    _log("[log]fnGenFistPage\n", gob.wgetImgs, "\n", gob.autoNextC);
     if (gob.autoNextC && $n(".nextC")) {
       setTimeout(() => {
         $n(".nextC").click();
       }, 3000);
     }
+    gob.save();
   };
 
   const fnBtn = () => {
