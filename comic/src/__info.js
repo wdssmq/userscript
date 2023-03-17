@@ -26,4 +26,19 @@ const gm_banner = `
 
 const gm_name = "comic";
 
+const gm_require = [
+  // {
+  //   "url": "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js",
+  //   "func": "$",
+  // },
+  {
+    "url": "https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js",
+    "func": "Comlink",
+  },
+  {
+    "url": "https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js",
+    "func": "saveAs",
+  },
+];
+
 export { gm_banner, gm_name };

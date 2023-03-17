@@ -11,6 +11,6 @@
     "@rollup/plugin-replace": "^5.0.2",
     "cross-env": "^7.0.3",
     "rollup": "^3.2.3",
-    "rollup-plugin-monkey": "^1.0.3"
+    "rollup-plugin-monkey": "~/Git/rollup-plugin-monkey"
   }
 }
