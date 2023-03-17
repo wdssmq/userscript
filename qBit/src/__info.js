@@ -5,6 +5,7 @@ const gm_banner = `
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
+// @license      MIT
 // @null     ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
 // @contributionAmount 5.93
