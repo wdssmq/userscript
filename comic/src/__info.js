@@ -41,4 +41,4 @@ const gm_require = [
   },
 ];
 
-export { gm_banner, gm_name };
+export { gm_banner, gm_name, gm_require };

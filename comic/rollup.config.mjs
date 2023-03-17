@@ -2,7 +2,7 @@ import { gm_name, gm_banner, gm_require } from "./src/__info.js";
 import replace from "@rollup/plugin-replace";
 
 // for prod
-import monkey from "rollup-plugin-monkey";
+import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 
 // console.log("typeof monkey：", typeof monkey);
 // // typeof monkey： function
