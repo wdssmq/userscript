@@ -43,7 +43,7 @@ const gob = {
       return;
     }
     const lsData = lsObj.getItem(this._lsKey, this.data);
-    _log("[log]gob.load()", lsData);
+    _log("[log]gob.load()\n", lsData);
     for (const key in lsData) {
       if (Object.hasOwnProperty.call(lsData, key)) {
         const item = lsData[key];
@@ -63,7 +63,7 @@ const gob = {
         }
       }
     }
-    _log("[log]gob.save()", lsData);
+    _log("[log]gob.save()\n", lsData);
     lsObj.setItem(this._lsKey, lsData);
   },
 };

@@ -6,7 +6,7 @@ import { _log, $n, $na } from "./_base";
 function fnGenUrl() {
   // 用于下载图片
   const imgUrl = $n(".mangaFile").getAttribute("src");
-  _log("[log]fnGenUrl()", imgUrl);
+  _log("[log]fnGenUrl()\n", imgUrl);
   // return encodeURI(imgUrl);
   return imgUrl;
 }

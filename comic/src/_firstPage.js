@@ -43,32 +43,43 @@ const fnCheckFistPage = (cur, list) => {
 
 const fnGenFistPage = (auto = false) => {
   // _log("[log]fnGenFistPage()", auto);
-  const wgetImgs = gob.wgetImgs;
-  if (wgetImgs.length >= gob.maxWget) {
-    _log("[log]\n", wgetImgs);
-    gob.autoNextC = 0;
-    gob.save();
-    return;
-  } else {
-    gob.autoNextC = auto ? 1 : 0;
-  }
+  // 当前页面信息
   const curPage = {
     url: gob.curImgUrl,
     name: gob.curInfo.name,
     chapter: gob.curInfo.chapter,
   };
-  if (!fnCheckFistPage(curPage, wgetImgs)) {
+  // 已收集的首图
+  const wgetImgs = gob.wgetImgs;
+  // 检查当前页面是否已收集，并写入变量
+  const bolHasWget = fnCheckFistPage(curPage, wgetImgs);
+  _log("[log]fnGenFistPage\n", wgetImgs, "\n", curPage, "\n", bolHasWget);
+  // 重复收集或收集数量达到上限，停止自动收集
+  if (bolHasWget || wgetImgs.length >= gob.maxWget) {
+    gob.autoNextC = 0;
+    // gob.save();
+    // return;
+  } else {
+    gob.autoNextC = auto ? 1 : 0;
+  }
+  // 自动下载，并加入已收集列表
+  if (!bolHasWget) {
     fnDLImg(curPage);
     wgetImgs.push(curPage);
     gob.wgetImgs = wgetImgs;
-    gob.save();
+    // gob.save();
   }
-  _log("[log]fnGenFistPage()", JSON.stringify(gob.wgetImgs));
+  // 询问是否重复下载
+  if (bolHasWget && confirm("已收集过该首图，是否重复下载？")) {
+      fnDLImg(curPage);
+  }
+  _log("[log]fnGenFistPage\n", gob.wgetImgs, "\n", gob.autoNextC);
   if (gob.autoNextC && $n(".nextC")) {
     setTimeout(() => {
       $n(".nextC").click();
     }, 3000);
   }
+  gob.save();
 };
 
 const fnBtn = () => {
