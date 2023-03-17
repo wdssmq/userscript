@@ -1,4 +1,4 @@
-import { _log, $n, $na } from "./_base";
+import { _log, _sleep, $n, $na } from "./_base";
 
 // -----------------------
 
@@ -17,24 +17,6 @@ function fnGenInfo() {
   const pages = $na("option").length; // 总页数
   return { name, chapter, pages };
 }
-
-// 单图查看
-const setCurImgLink = () => {
-  if ($n("#curimg")) {
-    $n("#curimg").href = fnGenUrl();
-    return;
-  }
-  const $imgLink = document.createElement("a");
-  $imgLink.id = "curimg";
-  $imgLink.innerHTML = "查看单图";
-  $imgLink.className = "btn-red";
-  $imgLink.href = fnGenUrl();
-  $imgLink.target = "_blank";
-  $imgLink.style.background = "#0077D1";
-  $imgLink.style.cursor = "pointer";
-  $n(".main-btn").insertBefore($imgLink, $n("#viewList"));
-};
-setCurImgLink();
 
 // 网络请求
 const fnGet = (url, responseType = "json", retry = 2) =>
@@ -74,6 +56,24 @@ const fnGet = (url, responseType = "json", retry = 2) =>
     }
   });
 
+
+// 单图查看
+const setCurImgLink = () => {
+  if ($n("#curimg")) {
+    $n("#curimg").href = fnGenUrl();
+    return;
+  }
+  const $imgLink = document.createElement("a");
+  $imgLink.id = "curimg";
+  $imgLink.innerHTML = "查看单图";
+  $imgLink.className = "btn-red";
+  $imgLink.href = fnGenUrl();
+  $imgLink.target = "_blank";
+  $imgLink.style.background = "#0077D1";
+  $imgLink.style.cursor = "pointer";
+  $n(".main-btn").insertBefore($imgLink, $n("#viewList"));
+};
+setCurImgLink();
 
 window.addEventListener("hashchange", () => {
   setCurImgLink();
