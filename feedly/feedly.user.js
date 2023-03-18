@@ -321,11 +321,11 @@
     // ----------------------------
     [].forEach.call($stars, function ($e, i) {
       // begin forEach
-      const $ago = fnFindDom(fnFindDomUp($e,"div.TitleOnlyEntry"), ".ago");
+      const $ago = fnFindDom(fnFindDomUp($e, "div.TitleOnlyLayout"), ".ago");
       const href = $e.href;
       const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
       // _log("fnColorStars", $ago, href, hash);
-      const $item = $e.parentNode.parentNode;
+      const $item = fnFindDomUp($e, ".entry");
       if ($item.classList.contains("pick")) {
         oConfig.lstPick = i;
         return;
