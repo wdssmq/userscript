@@ -70,6 +70,12 @@ function fnAddBatchCopy($th, magnetList) {
   $th.appendChild($btn);
 }
 
+// 过滤磁力链接中的 tr
+function fnRemoveTracker(magnet) {
+  const regex = /&tr=.+?(?=&|$)/g;
+  return magnet.replace(regex, '');
+}
+
 
 // main
 function fnMain() {
@@ -94,7 +100,8 @@ function fnMain() {
     }
     const curText = $curA.innerText.toLowerCase();
     // data-clipboard-text
-    const magnet = $curB.getAttribute("data-clipboard-text");
+    let magnet = $curB.getAttribute("data-clipboard-text");
+    magnet = fnRemoveTracker(magnet);
     if (fnFilter(curText, _filter)) {
       _log(`${curText} ${magnet}`);
       $tr.remove();

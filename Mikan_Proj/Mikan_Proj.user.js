@@ -1,8 +1,7 @@
-
 // ==UserScript==
 // @name         「蜜柑计划」列表过滤（简繁/画质）
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      1.0.0
 // @author       沉冰浮水
 // @description  过滤蜜柑计划列表，按照简繁/画质过滤
 // @license      MIT
@@ -15,6 +14,7 @@
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 // @noframes
+// @run-at       document-end
 // @match        https://mikanani.me/Home/Bangumi/*
 // @match        https://feedly.com/i/subscription/feed*
 // @grant        GM_getValue
@@ -24,10 +24,11 @@
 // @grant        GM_setClipboard
 // ==/UserScript==
 
+/* eslint-disable */
 /* jshint esversion: 6 */
 
 (function () {
-  "use strict";
+  'use strict';
 
   const gm_name = "Mikan_Proj";
 
@@ -191,6 +192,12 @@
     $th.appendChild($btn);
   }
 
+  // 过滤磁力链接中的 tr
+  function fnRemoveTracker(magnet) {
+    const regex = /&tr=.+?(?=&|$)/g;
+    return magnet.replace(regex, '');
+  }
+
 
   // main
   function fnMain() {
@@ -215,7 +222,8 @@
       }
       const curText = $curA.innerText.toLowerCase();
       // data-clipboard-text
-      const magnet = $curB.getAttribute("data-clipboard-text");
+      let magnet = $curB.getAttribute("data-clipboard-text");
+      magnet = fnRemoveTracker(magnet);
       if (fnFilter(curText, _filter)) {
         _log(`${curText} ${magnet}`);
         $tr.remove();
