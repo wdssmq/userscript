@@ -73,6 +73,7 @@ const loaderConfig = {
       preventAssignment: true,
       "placeholder.livereload.js": `${gobConfig.url}/livereload.js?snipver=1`,
       "placeholder.user.js": `${gobConfig.url}/dev/main.js`,
+      "placeholder.gm_api": gobConfig.gm_api,
     }),
   ],
 };
