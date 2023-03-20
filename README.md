@@ -389,6 +389,7 @@ wget https://ghproxy.com/https://github.com/wdssmq/rollup-plugin-monkey/releases
 tar -xzvf script_def.tar.gz
 mv script_def ${PROJECT_SCRIPT}
 # cd ${PROJECT_SCRIPT}
+sed -i "s/\"script_def\"/\"${PROJECT_SCRIPT}\"/" ${PROJECT_SCRIPT}/src/__info.js
 eslint empty_def/**/*.js empty_def/*.mjs --fix
 rm -rf script_def.tar.gz
 ```
