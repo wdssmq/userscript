@@ -10,3 +10,6 @@ import _dev from "./_dev.js";
 
 // 编辑器 blockquote
 import _blockquote from "./_blockquote.js";
+
+// 编辑器
+import _editor from "./_editor.js";

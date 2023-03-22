@@ -21,6 +21,7 @@ const gm_banner = `
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_addStyle
 // ==/UserScript==
 
 /* eslint-disable */
@@ -37,6 +38,10 @@ const gm_require = [
   {
     "url": "https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
     "func": "jsyaml",
+  },
+  {
+    "url": "https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js",
+    "func": "showdown",
   },
 ];
 
