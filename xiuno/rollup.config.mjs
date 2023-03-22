@@ -1,19 +1,12 @@
 import { gm_name, gm_banner, gm_require } from "./src/__info.js";
 import replace from "@rollup/plugin-replace";
 
-let monkey;
 // for prod
-import main, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
+import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 
-// console.log(typeof main);
-// console.log(main);
 
-if (typeof main === "function") {
-  monkey = main;
-} else {
-  monkey = main.default;
-}
-
+// console.log("typeof monkey：", typeof monkey);
+// // typeof monkey： function
 
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
@@ -81,6 +74,7 @@ const loaderConfig = {
       preventAssignment: true,
       "placeholder.livereload.js": `${gobConfig.url}/livereload.js?snipver=1`,
       "placeholder.user.js": `${gobConfig.url}/dev/main.js`,
+      "placeholder.gm_api": gobConfig.gm_api,
     }),
   ],
 };
