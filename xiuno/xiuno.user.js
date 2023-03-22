@@ -1,31 +1,36 @@
-
 // ==UserScript==
 // @name         「xiuno」管理工具（QQ 群：189574683）
-// @namespace    沉冰浮水
-// @version      1.0
-// @description  对不合规的内容加密处理
+// @namespace    https://www.wdssmq.com/
+// @version      1.0.1
 // @author       沉冰浮水
+// @description  对不合规的内容加密处理
+// @license      MIT
 // @link         https://greasyfork.org/zh-CN/scripts/419517
-// @null     ----------------------------
+// @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
 // @contributionAmount 5.93
-// @null     ----------------------------
-// @link     https://github.com/wdssmq/userscript
-// @link     https://afdian.net/@wdssmq
-// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @null     ----------------------------
+// @null         ----------------------------
+// @link         https://github.com/wdssmq/userscript
+// @link         https://afdian.net/@wdssmq
+// @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null         ----------------------------
+// @noframes
+// @run-at       document-end
 // @match        https://bbs.zblogcn.com/*
-// @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
-// @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_addStyle
+// @require      https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js
+// @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js
+// @require      https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js
 // ==/UserScript==
-/* jshint esversion:6 */
-/* global LZString jsyaml */
+
+/* eslint-disable */
+/* jshint esversion: 6 */
 
 (function () {
-  "use strict";
+  'use strict';
 
   const gm_name = "xiuno";
 
@@ -86,7 +91,7 @@
     ).trim();
   }
 
-  // _lz.js | 使用 lz-string 压缩字符串
+  /* globals LZString jsyaml*/
   (() => {
     // 定义按钮及提示信息
     const $btnBad = $(" <a class=\"btn btn-primary\">BAD</a>");
@@ -145,7 +150,7 @@
     });
   })();
 
-  // _devView.js | 开发者申请查看
+  /* globals jsyaml*/
   (() => {
     // CDN 地址替换
     function fnGetCDNUrl(url) {
@@ -412,6 +417,211 @@
     );
     // 插入 YML
     $(".pre-yml").text(`${styYML}`);
+  })();
+
+  // 引入元素插入
+  (() => {
+    if (typeof UM === "undefined") {
+      return;
+    }
+
+    // 引用标签插入封装
+    function fnBlockQuote() {
+      const umObj = UM.getEditor("message");
+      if (!umObj.isFocus()) {
+        umObj.focus(true);
+      }
+      const addHTML = `<blockquote class="blockquote"><p><br></p></blockquote><p><br></p>`;
+      // umObj.execCommand("insertHtml", addHTML);
+      umObj.setContent(addHTML, true);
+    }
+
+    // 添加引用按钮
+    $("head").append('<style>.edui-icon-blockquote:before{content:"\\f10d";}');
+    (() => {
+      const $btn = $.eduibutton({
+        icon: "blockquote",
+        click: function () {
+          fnBlockQuote();
+        },
+        title: UM.getEditor("message").getLang("labelMap")["blockquote"] || "",
+      });
+      $(".edui-btn-name-insertcode").after($btn);
+    })();
+
+    // 自动排版函数封装
+    function fnAutoFormat() {
+      const umObj = UM.getEditor("message");
+      let strHTML = umObj.getContent();
+      strHTML = strHTML.replace(
+        /<blockquote>/g,
+        '<blockquote class="blockquote">'
+      );
+      // 第二个参数为 true 表示追加；
+      umObj.setContent(strHTML, false);
+    }
+
+    // 添加自动排版按钮
+    $("head").append('<style>.edui-btn-auto-format:before{content:"fix";}');
+    (() => {
+      const $btn = $.eduibutton({
+        icon: "auto-format",
+        click: function () {
+          fnAutoFormat();
+        },
+        title: "自动排版",
+      });
+      $(".edui-btn-name-insertcode").after($btn);
+    })();
+  })();
+
+  class GM_editor {
+    $def
+    defEditor = null
+    htmlContent = ""
+    $md
+    mdEditor = null
+    mdContent = ""
+    defOption = {
+      init($md) { },
+      autoSync: false,
+      curType: "html"
+    }
+    option = {}
+    constructor(option) {
+      this.option = Object.assign({}, this.defOption, option);
+      this.init();
+      this.option.init(this.$md);
+      this.getContent("html").covert2("md").syncContent("md");
+    }
+    init() {
+      const _this = this;
+      this.$def = $(".edui-container");
+      this.$md = this.createMdEditor();
+      // 获取 $def 的高度并设置给 $md
+      this.$md.height(this.$def.height());
+      this.$md.find("#message_md").height(this.$def.find(".edui-body-container").height());
+      // 编辑器操作对象
+      this.defEditor = UM.getEditor("message");
+      this.mdEditor = {
+        // 内容变化时触发
+        addListener(type, fn) {
+          if (type === "contentChange") {
+            // _log(_this.$md);
+            _this.$md.find("#message_md").on("input", fn);
+          }
+        },
+        // 获取内容
+        getContent() {
+          return _this.$md.find("#message_md").val();
+        },
+        // 写入内容
+        setContent(content) {
+          _this.$md.find("#message_md").text(content);
+        }
+      };
+      if (this.option.autoSync) {
+        this.defEditor.addListener("contentChange", () => {
+          if (_this.option.curType === "md") {
+            return;
+          }
+          this.getContent("html").covert2("md").syncContent("md");
+        });
+        this.mdEditor.addListener("contentChange", () => {
+          if (_this.option.curType === "html") {
+            return;
+          }
+          this.getContent("md").covert2("html").syncContent("html");
+        });
+      }
+    }
+    // 读取内容
+    getContent(type = "html") {
+      if (type === "html") {
+        this.htmlContent = this.defEditor.getContent();
+      } else if (type === "md") {
+        this.mdContent = this.mdEditor.getContent();
+      }
+      return this;
+    }
+    // 封装转换函数
+    covert2(to = "md") {
+      const converter = new showdown.Converter();
+      if (to === "md") {
+        this.mdContent = converter.makeMarkdown(this.htmlContent);
+      } else if (to === "html") {
+        this.htmlContent = converter.makeHtml(this.mdContent);
+      }
+      return this;
+    }
+    // 封装同步函数
+    syncContent(to = "md") {
+      if (to === "md") {
+        this.mdEditor.setContent(this.mdContent);
+      } else if (to === "html") {
+        this.defEditor.setContent(this.htmlContent, false);
+      }
+    }
+    // 切换编辑器
+    switchEditor() {
+      this.$def.toggle();
+      this.$md.toggle();
+      // 根据结果设置 curType
+      this.option.curType = this.$def.css("display") === "none" ? "md" : "html";
+    }
+    // 创建 markdown 编辑器
+    createMdEditor() {
+      return $(`
+      <div class="mdui-container" style="display: none;">
+        <div class="mdui-body">
+          <textarea id="message_md" name="message_md" placeholder="markdown" class="mdui-text"></textarea>
+        </div>
+      </div>
+    `);
+    }
+  }
+
+  GM_addStyle(`
+  .mdui-container {
+    border: 1px solid #d4d4d4;
+    padding: 5px 10px;
+  }
+  .mdui-text {
+    border: none;
+    width: 100%;
+    min-height: 300px;
+    height: auto;
+  }
+`);
+
+  const main = () => {
+    const gm_editor = new GM_editor({
+      init($md) {
+        $(".edui-container").after($md);
+      },
+      autoSync: true
+    });
+
+    // .card-header 后追加切换按钮
+    $(".card .card-header").append(`
+  <button class="btn btn-primary" type="button" id="btnSwitchEditor">切换编辑器</button>
+`);
+
+    // 切换编辑器
+    $("#btnSwitchEditor").click(() => {
+      gm_editor.switchEditor();
+    });
+  };
+
+  (() => {
+    if ($("#message").length === 0) {
+      return;
+    }
+    _log("editor.js");
+    const $def = $(".edui-container");
+    if ($def.length > 0) {
+      main();
+    }
   })();
 
 })();
