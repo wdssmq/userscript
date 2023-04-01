@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「xiuno」管理工具（QQ 群：189574683）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  对不合规的内容加密处理
 // @license      MIT
@@ -17,6 +17,7 @@
 // @noframes
 // @run-at       document-end
 // @match        https://bbs.zblogcn.com/*
+// @match        https://app.zblogcn.com/zb_system/admin/edit.php*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -37,6 +38,7 @@
   // 初始变量
   const $ = window.jQuery || unsafeWindow.jQuery;
   const UM = window.UM || unsafeWindow.UM;
+  const UE = window.UE || unsafeWindow.UE;
   const curHref = location.href.replace(location.hash, "");
   // localStorage 封装
   const lsObj = {
@@ -152,6 +154,11 @@
 
   /* globals jsyaml*/
   (() => {
+    // _log(curHref);
+    if (curHref.indexOf("bbs.zblogcn.com") === -1) {
+      return;
+    }
+    _log("devView");
     // CDN 地址替换
     function fnGetCDNUrl(url) {
       const arrMap = [
@@ -496,13 +503,10 @@
     }
     init() {
       const _this = this;
-      this.$def = $(".edui-container");
+      this.$def = this.option.$defContainer || $(".edui-container");
       this.$md = this.createMdEditor();
-      // 获取 $def 的高度并设置给 $md
-      this.$md.height(this.$def.height());
-      this.$md.find("#message_md").height(this.$def.find(".edui-body-container").height());
       // 编辑器操作对象
-      this.defEditor = UM.getEditor("message");
+      this.defEditor = this.option.defEditor || UM.getEditor("message");
       this.mdEditor = {
         // 内容变化时触发
         addListener(type, fn) {
@@ -562,12 +566,29 @@
         this.defEditor.setContent(this.htmlContent, false);
       }
     }
+    // 自动设置 #message_md 的高度
+    autoSetHeight() {
+      const $mdText = this.$md.find("#message_md");
+      // 自动设置高度
+      $mdText.height(0);
+      $mdText.height($mdText[0].scrollHeight + 4);
+      // 判断并绑定 input 事件
+      if ($mdText.data("bindInput")) {
+        return;
+      }
+      $mdText.data("bindInput", true);
+      $mdText.on("input", () => {
+        this.autoSetHeight();
+      });
+    }
     // 切换编辑器
     switchEditor() {
       this.$def.toggle();
       this.$md.toggle();
       // 根据结果设置 curType
       this.option.curType = this.$def.css("display") === "none" ? "md" : "html";
+      // 切换后自动设置高度
+      this.autoSetHeight();
     }
     // 创建 markdown 编辑器
     createMdEditor() {
@@ -582,9 +603,15 @@
   }
 
   GM_addStyle(`
+  .is-pulled-right {
+    float: right;
+  }
   .mdui-container {
     border: 1px solid #d4d4d4;
     padding: 5px 10px;
+  }
+  .mdui-container:focus-within {
+    border: 1px solid #4caf50;
   }
   .mdui-text {
     border: none;
@@ -592,9 +619,14 @@
     min-height: 300px;
     height: auto;
   }
+  .mdui-text:focus,
+  .mdui-text:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
 `);
 
-  const main = () => {
+  const mainForBBS = () => {
     const gm_editor = new GM_editor({
       init($md) {
         $(".edui-container").after($md);
@@ -602,10 +634,46 @@
       autoSync: true
     });
 
-    // .card-header 后追加切换按钮
-    $(".card .card-header").append(`
+    const btnSwitchEditor = `
   <button class="btn btn-primary" type="button" id="btnSwitchEditor">切换编辑器</button>
+  `;
+
+    // 判断是否有 name 为 fid 的 select
+    if ($("select[name='fid']").length === 0) {
+      // quotepid 后追加一行 .form-group
+      $("input[name='quotepid']").after(`<div class="form-group"><span></span></div>`);
+    }
+
+
+    // name 为 quotepid 的 input 下一行追加切换按钮
+    $("input[name='quotepid'] + .form-group").addClass("d-flex justify-content-between").append(btnSwitchEditor);
+
+    // 切换编辑器
+    $("#btnSwitchEditor").click(() => {
+      gm_editor.switchEditor();
+    });
+  };
+
+  const mainForAPP = () => {
+    const gm_editor = new GM_editor({
+      init($md) {
+        $("#editor_content").after($md);
+        // const $mdText = $md.find("#message_md");
+        // $mdText.height($("#editor_content").height() - 10);
+        $(".mdui-body").css({
+          paddingTop: ".3em",
+        });
+      },
+      $defContainer: $("#editor_content"),
+      defEditor: UE.getEditor('editor_content'),
+      autoSync: true
+    });
+
+    // # cheader 元素内部追加切换按钮
+    $("#cheader").append(`
+  <span class="is-pulled-right">「<a href="javascript:;" class="btn btn-primary" id="btnSwitchEditor" title="切换编辑器">切换编辑器</a>」</span>
 `);
+
 
     // 切换编辑器
     $("#btnSwitchEditor").click(() => {
@@ -614,14 +682,15 @@
   };
 
   (() => {
-    if ($("#message").length === 0) {
+    if (curHref.indexOf("edit.php") > -1) {
+      // _log(UE)
+      const editor_api = window.editor_api || unsafeWindow.editor_api;
+      editor_api.editor.content.obj.ready(mainForAPP);
+    }
+    if ($("textarea#message").length === 0) {
       return;
     }
-    _log("editor.js");
-    const $def = $(".edui-container");
-    if ($def.length > 0) {
-      main();
-    }
+    mainForBBS();
   })();
 
 })();
