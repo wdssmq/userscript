@@ -144,7 +144,7 @@ GM_addStyle(`
   }
 `)
 
-const main = () => {
+const mainForBBS = () => {
   const gm_editor = new GM_editor({
     init($md) {
       $(".edui-container").after($md);
@@ -152,10 +152,46 @@ const main = () => {
     autoSync: true
   });
 
-  // name 为 quotepid 的 input 下一行追加切换按钮
-  $("input[name='quotepid'] + .form-group").addClass("d-flex justify-content-between").append(`
+  const btnSwitchEditor = `
   <button class="btn btn-primary" type="button" id="btnSwitchEditor">切换编辑器</button>
+  `;
+
+  // 判断是否有 name 为 fid 的 select
+  if ($("select[name='fid']").length === 0) {
+    // quotepid 后追加一行 .form-group
+    $("input[name='quotepid']").after(`<div class="form-group"><span></span></div>`);
+  }
+
+
+  // name 为 quotepid 的 input 下一行追加切换按钮
+  $("input[name='quotepid'] + .form-group").addClass("d-flex justify-content-between").append(btnSwitchEditor);
+
+  // 切换编辑器
+  $("#btnSwitchEditor").click(() => {
+    gm_editor.switchEditor();
+  });
+}
+
+const mainForAPP = () => {
+  const gm_editor = new GM_editor({
+    init($md) {
+      $("#editor_content").after($md);
+      // const $mdText = $md.find("#message_md");
+      // $mdText.height($("#editor_content").height() - 10);
+      $(".mdui-body").css({
+        paddingTop: ".3em",
+      });
+    },
+    $defContainer: $("#editor_content"),
+    defEditor: UE.getEditor('editor_content'),
+    autoSync: true
+  });
+
+  // # cheader 元素内部追加切换按钮
+  $("#cheader").append(`
+  <span class="is-pulled-right">「<a href="javascript:;" class="btn btn-primary" id="btnSwitchEditor" title="切换编辑器">切换编辑器</a>」</span>
 `);
+
 
   // 切换编辑器
   $("#btnSwitchEditor").click(() => {
@@ -164,12 +200,13 @@ const main = () => {
 }
 
 (() => {
-  if ($("#message").length === 0) {
+  if (curHref.indexOf("edit.php") > -1) {
+    // _log(UE)
+    const editor_api = window.editor_api || unsafeWindow.editor_api;
+    editor_api.editor.content.obj.ready(mainForAPP);
+  }
+  if ($("textarea#message").length === 0) {
     return;
   }
-  _log("editor.js");
-  const $def = $(".edui-container");
-  if ($def.length > 0) {
-    main();
-  }
+  mainForBBS();
 })();

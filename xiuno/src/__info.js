@@ -18,6 +18,7 @@ const gm_banner = `
 // @noframes
 // @run-at       document-end
 // @match        https://bbs.zblogcn.com/*
+// @match        https://app.zblogcn.com/zb_system/admin/edit.php*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
