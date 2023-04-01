@@ -3,6 +3,11 @@
 // _devView.js | 开发者申请查看
 import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_base.js";
 (() => {
+  // _log(curHref);
+  if (curHref.indexOf("bbs.zblogcn.com") === -1) {
+    return;
+  }
+  _log("devView");
   // CDN 地址替换
   function fnGetCDNUrl(url) {
     const arrMap = [
