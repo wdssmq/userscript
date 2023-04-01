@@ -1,4 +1,4 @@
-import { $, UM, _log } from "./_base.js";
+import { $, UM, UE, _log, curHref } from "./_base.js";
 
 class GM_editor {
   $def
@@ -21,13 +21,10 @@ class GM_editor {
   }
   init() {
     const _this = this;
-    this.$def = $(".edui-container");
+    this.$def = this.option.$defContainer || $(".edui-container");
     this.$md = this.createMdEditor();
-    // 获取 $def 的高度并设置给 $md
-    this.$md.height(this.$def.height());
-    this.$md.find("#message_md").height(this.$def.find(".edui-body-container").height());
     // 编辑器操作对象
-    this.defEditor = UM.getEditor("message");
+    this.defEditor = this.option.defEditor || UM.getEditor("message");
     this.mdEditor = {
       // 内容变化时触发
       addListener(type, fn) {
@@ -87,12 +84,29 @@ class GM_editor {
       this.defEditor.setContent(this.htmlContent, false);
     }
   }
+  // 自动设置 #message_md 的高度
+  autoSetHeight() {
+    const $mdText = this.$md.find("#message_md");
+    // 自动设置高度
+    $mdText.height(0);
+    $mdText.height($mdText[0].scrollHeight + 4);
+    // 判断并绑定 input 事件
+    if ($mdText.data("bindInput")) {
+      return;
+    }
+    $mdText.data("bindInput", true);
+    $mdText.on("input", () => {
+      this.autoSetHeight();
+    });
+  }
   // 切换编辑器
   switchEditor() {
     this.$def.toggle();
     this.$md.toggle();
     // 根据结果设置 curType
     this.option.curType = this.$def.css("display") === "none" ? "md" : "html";
+    // 切换后自动设置高度
+    this.autoSetHeight();
   }
   // 创建 markdown 编辑器
   createMdEditor() {
@@ -107,6 +121,9 @@ class GM_editor {
 }
 
 GM_addStyle(`
+  .is-pulled-right {
+    float: right;
+  }
   .mdui-container {
     border: 1px solid #d4d4d4;
     padding: 5px 10px;
@@ -120,8 +137,10 @@ GM_addStyle(`
     min-height: 300px;
     height: auto;
   }
+  .mdui-text:focus,
   .mdui-text:focus-visible {
     outline: none;
+    box-shadow: none;
   }
 `)
 

@@ -3,6 +3,7 @@ import { gm_name } from "./__info";
 // 初始变量
 const $ = window.jQuery || unsafeWindow.jQuery;
 const UM = window.UM || unsafeWindow.UM;
+const UE = window.UE || unsafeWindow.UE;
 const curHref = location.href.replace(location.hash, "");
 // localStorage 封装
 const lsObj = {
@@ -57,4 +58,4 @@ function fnFormatTime() {
   ).trim();
 }
 
-export { $, UM, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime };
+export { $, UM, UE, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime };
