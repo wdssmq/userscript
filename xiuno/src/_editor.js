@@ -133,8 +133,8 @@ const main = () => {
     autoSync: true
   });
 
-  // .card-header 后追加切换按钮
-  $(".card .card-header").append(`
+  // name 为 quotepid 的 input 下一行追加切换按钮
+  $("input[name='quotepid'] + .form-group").addClass("d-flex justify-content-between").append(`
   <button class="btn btn-primary" type="button" id="btnSwitchEditor">切换编辑器</button>
 `);
 
