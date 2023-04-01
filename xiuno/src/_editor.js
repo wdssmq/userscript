@@ -111,11 +111,17 @@ GM_addStyle(`
     border: 1px solid #d4d4d4;
     padding: 5px 10px;
   }
+  .mdui-container:focus-within {
+    border: 1px solid #4caf50;
+  }
   .mdui-text {
     border: none;
     width: 100%;
     min-height: 300px;
     height: auto;
+  }
+  .mdui-text:focus-visible {
+    outline: none;
   }
 `)
 
