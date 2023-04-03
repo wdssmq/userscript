@@ -3,7 +3,7 @@
 // @namespace    https://www.wdssmq.com/
 // @version      1.0.0
 // @author       沉冰浮水
-// @description  批量删除豆瓣日志什么的
+// @description  辅助删除日记什么的
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
@@ -63,6 +63,7 @@
     // key: [默认值, 是否记录至 ls]
     keepList: [[], true],
     lstPageUrl: ["", true],
+    infoList: [[], false],
   };
   const gob = {
     _lsKey: `${gm_name}_data`,
@@ -172,10 +173,10 @@
     return;
   };
 
-  const fnDelNotes = () => {
+  const fnMngNotes = () => {
     fnCheckPageUrl(true);
     const $$notes = fnGetNotes();
-    // 循环删除
+    // 遍历元素
     $$notes.each(function () {
       // 元素节点
       const $note = $(this);
@@ -183,12 +184,15 @@
       const $noteFooter = $note.find(".note-ft");
       const $noteSNS = $note.find(".sns-bar");
       const $delBtn = $note.find(".note-footer-stat-del a");
-      // _log($allBtn);
+
       // 日志信息
       const noteInfo = {
         title: $noteTitle.text(),
         url: $note.data("url"),
+        $delBtn,
       };
+      gob.infoList.push(noteInfo);
+     //  _log(gob.infoList);
       // 判断
       const bolKeep = fnCheckKeep(noteInfo);
       if (bolKeep) {
@@ -219,10 +223,11 @@
       // // 点击删除按钮
       // $delBtn[0].click();
       // delRunning = true;
-      _log("fnDelNote", $delBtn, noteInfo);
+      _log("noteInfo", noteInfo);
     });
+    // _log(gob.data);
   };
 
-  fnDelNotes();
+  fnMngNotes();
 
 })();
