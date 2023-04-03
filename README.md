@@ -117,6 +117,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/tieba/tieba.user.js
 
 --------
 
+name：「水水」豆瓣助手
+
+desc：批量删除豆瓣日志什么的
+
+url：https://github.com/wdssmq/userscript/blob/master/douban/douban.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/douban/douban.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/douban/douban.user.js
+
+--------
+
 name：「新浪微博」批量移除粉丝（QQ 群：189574683）
 
 desc：批量移除新浪微博粉丝（话说我已经不用微博了为什么要留着这个）
