@@ -20,6 +20,7 @@ const gobInfo = {
   // key: [默认值, 是否记录至 ls]
   keepList: [[], true],
   lstPageUrl: ["", true],
+  infoList: [[], false],
 };
 const gob = {
   _lsKey: `${gm_name}_data`,

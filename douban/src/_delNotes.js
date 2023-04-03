@@ -54,28 +54,30 @@ const fnSetKeep = ($note, info) => {
   return;
 };
 
-const fnDelNotes = () => {
+const fnGenDelTask = (info, type = "add") => {
+  const $$notes = fnGetNotes();
+};
+
+const fnMngNotes = () => {
   fnCheckPageUrl(true);
   const $$notes = fnGetNotes();
-  let delRunning = false;
-  // 循环删除
+  // 遍历元素
   $$notes.each(function () {
-    // 如果正在删除，则跳过
-    if (delRunning) {
-      return;
-    }
     // 元素节点
     const $note = $(this);
     const $noteTitle = $note.find("h3>a");
     const $noteFooter = $note.find(".note-ft");
     const $noteSNS = $note.find(".sns-bar");
     const $delBtn = $note.find(".note-footer-stat-del a");
-    // _log($allBtn);
+
     // 日志信息
     const noteInfo = {
       title: $noteTitle.text(),
       url: $note.data("url"),
+      $delBtn,
     };
+    gob.infoList.push(noteInfo);
+   //  _log(gob.infoList);
     // 判断
     const bolKeep = fnCheckKeep(noteInfo);
     if (bolKeep) {
@@ -106,10 +108,11 @@ const fnDelNotes = () => {
     // // 点击删除按钮
     // $delBtn[0].click();
     // delRunning = true;
-    _log("fnDelNote", $delBtn, noteInfo);
+    _log("noteInfo", noteInfo);
   });
+  // _log(gob.data);
 };
 
-fnDelNotes();
+fnMngNotes();
 
 
