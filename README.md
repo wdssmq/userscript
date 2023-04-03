@@ -119,7 +119,7 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/tieba/tieba.user.js
 
 name：「水水」豆瓣助手
 
-desc：批量删除豆瓣日志什么的
+desc：辅助删除日记什么的
 
 url：https://github.com/wdssmq/userscript/blob/master/douban/douban.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/douban/douban.user.js)」
 
