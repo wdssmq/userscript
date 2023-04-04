@@ -19,6 +19,8 @@ const lsObj = {
 const gobInfo = {
   // key: [默认值, 是否记录至 ls]
   keepList: [[], true],
+  delList: [[], true],
+  autoDel: [false, true],
   lstPageUrl: ["", true],
   infoList: [[], false],
 };
