@@ -1,6 +1,34 @@
 import { _log, _warn, $, curUrl, _curUrl } from "./_base";
 import { gob } from "./_gob";
 
+// 判断是否首次执行
+const fnCheckFirst = () => {
+  const { userAgreed } = gob;
+  const fnNext = (bolAgree) => {
+    if (bolAgree) {
+      swal("请刷新网页使用脚本功能", "您已同意使用本脚本！", "success");
+    } else {
+      swal("请刷新网页重新选择或删除脚本", "须在上一步点击「继续」方可使用！", "info");
+    }
+  };
+  if (!userAgreed) {
+    // 提示
+    swal({
+      icon: "warning",
+      title: "注意！ - 豆瓣助手",
+      text: "请认真筛选要删除的日记，删除后无法恢复！",
+      buttons: ["取消", "继续"],
+    }).then((bolAgree) => {
+      // _warn("fnCheckFirst", { bolAgree });
+      if (bolAgree) {
+        gob.userAgreed = true;
+        gob.save();
+      }
+      fnNext(bolAgree);
+    });
+  }
+}
+
 const fnCheckKeep = (info) => {
   const { url } = info;
   const { keepList } = gob;
@@ -190,6 +218,11 @@ const fnAddDelBtn = ($note) => {
 
 // 初始函数
 const fnMngNotes = () => {
+  const { userAgreed } = gob;
+  // 判断是否已同意
+  if (!userAgreed) {
+    return;
+  }
   // 判断是否在缓存的页面
   const bolPage = fnCheckPageUrl(true);
   if (!bolPage) {
@@ -254,4 +287,5 @@ const fnMngNotes = () => {
   // _log(gob.data);
 };
 
+fnCheckFirst();
 fnMngNotes();

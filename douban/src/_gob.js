@@ -18,10 +18,12 @@ const lsObj = {
 // 数据读写封装
 const gobInfo = {
   // key: [默认值, 是否记录至 ls]
+  userAgreed: [false, true],
   keepList: [[], true],
   delList: [[], true],
   autoDel: [false, true],
   lstPageUrl: ["", true],
+  // 运行时获取
   infoList: [[], false],
 };
 const gob = {
