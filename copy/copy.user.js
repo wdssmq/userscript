@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」复制标题网址
 // @namespace    https://www.wdssmq.com/
-// @version      2.1.1
+// @version      2.1.2
 // @author       沉冰浮水
 // @description  复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
 // @license      MIT
@@ -19,7 +19,6 @@
 // @include      https://*
 // @grant        GM_registerMenuCommand
 // @grant        GM_setClipboard
-// @require      https://greasyfork.org/scripts/460056-mzlibmenu/code/mzLibMenu.js?version=1149985
 // ==/UserScript==
 
 /* eslint-disable */
@@ -27,6 +26,26 @@
 
 (function () {
   'use strict';
+
+  // -------------------------------------
+
+  // const $ = window.$ || unsafeWindow.$;
+  function $n(e) {
+    return document.querySelector(e);
+  }
+  function $na(e) {
+    return document.querySelectorAll(e);
+  }
+
+  // 指定元素内查找子元素
+  function fnFindDom(el, selector) {
+    el = typeof el === "string" ? $n(el) : el;
+    const queryList = el.querySelectorAll(selector);
+    if (queryList.length === 1) {
+      return queryList[0];
+    }
+    return queryList.length > 1 ? queryList : null;
+  }
 
   function fnReplace(params) {
     const { url, title } = params;
@@ -89,6 +108,31 @@
   GM_registerMenuCommand("复制为 Markdown「link」", () => {
     const [title, url] = fnGetInfo(true);
     GM_setClipboard(`${title}：\n\n[${url}](${url} "${title}")`);
+  });
+
+  // 指定元素中的链接增加 target="_blank"
+  const config = [
+      [".markdown_body", ".reply_content"],
+      ["#additional-info"],
+  ];
+
+  const fnSetBlank = ($a) => {
+      $a.setAttribute("target", "_blank");
+  };
+
+  config.forEach((e) => {
+      const selector = e.join(",");
+      const $$container = $na(selector);
+      // // print $$container
+      // _log($$container);
+      // 遍历 $$container
+      [].forEach.call($$container, ($el) => {
+          const $$a = fnFindDom($el, "a");
+          // _log($$a);
+          if ($$a.length > 0) {
+              [].map.call($$a, fnSetBlank);
+          }
+      });
   });
 
 })();
