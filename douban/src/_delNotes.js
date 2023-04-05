@@ -247,9 +247,6 @@ const fnMngNotes = () => {
     $noteSNS.hide();
     // 显示删除按钮
     $noteFooter.show().prepend("<br>");
-    // // 点击删除按钮
-    // $delBtn[0].click();
-    // delRunning = true;
     // _log("noteInfo", noteInfo);
   });
   // 添加删除按钮

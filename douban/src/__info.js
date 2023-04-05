@@ -16,7 +16,7 @@ const gm_banner = `
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
-// @match        https://www.douban.com/people/*
+// @match        https://www.douban.com/people/*/notes*
 // @match        http://localhost:3000/
 // @grant        none
 // ==/UserScript==
