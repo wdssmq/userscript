@@ -29,10 +29,10 @@ const gm_banner = `
 const gm_name = "copy";
 
 const gm_require = [
-  {
-    "url": "https://greasyfork.org/scripts/460056-mzlibmenu/code/mzLibMenu.js?version=1149985",
-    "func": "mzLibMenu",
-  },
+  // {
+  //   "url": "https://greasyfork.org/scripts/460056-mzlibmenu/code/mzLibMenu.js?version=1149985",
+  //   "func": "mzLibMenu",
+  // },
 ];
 
 export { gm_banner, gm_name, gm_require };
