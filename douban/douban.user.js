@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」豆瓣助手
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  辅助删除日记什么的
 // @license      MIT
@@ -15,10 +15,11 @@
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
-// @match        https://www.douban.com/people/*
+// @match        https://www.douban.com/people/*/notes*
 // @match        http://localhost:3000/
 // @grant        none
 // @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js
+// @require      https://unpkg.com/sweetalert/dist/sweetalert.min.js
 // ==/UserScript==
 
 /* eslint-disable */
@@ -62,10 +63,12 @@
   // 数据读写封装
   const gobInfo = {
     // key: [默认值, 是否记录至 ls]
+    userAgreed: [false, true],
     keepList: [[], true],
     delList: [[], true],
     autoDel: [false, true],
     lstPageUrl: ["", true],
+    // 运行时获取
     infoList: [[], false],
   };
   const gob = {
@@ -122,6 +125,34 @@
 
   // 初始化
   gob.init().load();
+
+  // 判断是否首次执行
+  const fnCheckFirst = () => {
+    const { userAgreed } = gob;
+    const fnNext = (bolAgree) => {
+      if (bolAgree) {
+        swal("请刷新网页使用脚本功能", "您已同意使用本脚本！", "success");
+      } else {
+        swal("请刷新网页重新选择或删除脚本", "须在上一步点击「继续」方可使用！", "info");
+      }
+    };
+    if (!userAgreed) {
+      // 提示
+      swal({
+        icon: "warning",
+        title: "注意！ - 豆瓣助手",
+        text: "请认真筛选要删除的日记，删除后无法恢复！",
+        buttons: ["取消", "继续"],
+      }).then((bolAgree) => {
+        // _warn("fnCheckFirst", { bolAgree });
+        if (bolAgree) {
+          gob.userAgreed = true;
+          gob.save();
+        }
+        fnNext(bolAgree);
+      });
+    }
+  };
 
   const fnCheckKeep = (info) => {
     const { url } = info;
@@ -312,6 +343,11 @@
 
   // 初始函数
   const fnMngNotes = () => {
+    const { userAgreed } = gob;
+    // 判断是否已同意
+    if (!userAgreed) {
+      return;
+    }
     // 判断是否在缓存的页面
     const bolPage = fnCheckPageUrl(true);
     if (!bolPage) {
@@ -369,9 +405,6 @@
       $noteSNS.hide();
       // 显示删除按钮
       $noteFooter.show().prepend("<br>");
-      // // 点击删除按钮
-      // $delBtn[0].click();
-      // delRunning = true;
       // _log("noteInfo", noteInfo);
     });
     // 添加删除按钮
@@ -379,6 +412,7 @@
     // _log(gob.data);
   };
 
+  fnCheckFirst();
   fnMngNotes();
 
 })();
