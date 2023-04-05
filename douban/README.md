@@ -14,12 +14,21 @@ QQ 群：[189574683](https://jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 >
 > [https://github.com/wdssmq/rollup-plugin-monkey](https://github.com/wdssmq/rollup-plugin-monkey "wdssmq/rollup-plugin-monkey: 使用 rollup 开发「GM\_脚本」")
 
+## 获取安装
+
+GreasyFork：[https://greasyfork.org/zh-CN/scripts/463310](https://greasyfork.org/zh-CN/scripts/463310 "「水水」豆瓣助手")
+
+GitHub：[https://github.com/wdssmq/userscript/tree/master/douban](https://github.com/wdssmq/userscript/tree/master/douban "userscript/douban at master · wdssmq/userscript")
+
 ## 说明
+
+「[原始 README 查看](https://github.com/wdssmq/userscript/tree/master/douban#%E8%AF%B4%E6%98%8E "原始 README 查看")」
+「[README RAW](https://raw.githubusercontent.com/wdssmq/userscript/master/douban/README.md "README RAW")」
 
 · 辅助删除豆瓣日记
 
 - 可以选择保留指定条目，记录在本地（localStorage），执行删除时会跳过；
-- 最多连续删除 10 条，仍然需要手动点击删除确认；
+- 最多连续删除 10 条，对于每一篇日记仍然需要手动点击删除确认；
 - 删除后会自动跳到第一页，所以同样记录了分页链接自动跳转后继续执行，直到遍历完任务列表；
 
 ## 演示
