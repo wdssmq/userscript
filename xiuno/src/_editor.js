@@ -1,18 +1,20 @@
+/* global showdown */
+
 import { $, UM, UE, _log, curHref } from "./_base.js";
 
 class GM_editor {
-  $def
-  defEditor = null
-  htmlContent = ""
-  $md
-  mdEditor = null
-  mdContent = ""
+  $def;
+  defEditor = null;
+  htmlContent = "";
+  $md;
+  mdEditor = null;
+  mdContent = "";
   defOption = {
     init($md) { },
     autoSync: false,
-    curType: "html"
-  }
-  option = {}
+    curType: "html",
+  };
+  option = {};
   constructor(option) {
     this.option = Object.assign({}, this.defOption, option);
     this.init();
@@ -40,20 +42,20 @@ class GM_editor {
       // 写入内容
       setContent(content) {
         _this.$md.find("#message_md").text(content);
-      }
+      },
     };
     if (this.option.autoSync) {
       this.defEditor.addListener("contentChange", () => {
         if (_this.option.curType === "md") {
           return;
         }
-        this.getContent("html").covert2("md").syncContent("md")
+        this.getContent("html").covert2("md").syncContent("md");
       });
       this.mdEditor.addListener("contentChange", () => {
         if (_this.option.curType === "html") {
           return;
         }
-        this.getContent("md").covert2("html").syncContent("html")
+        this.getContent("md").covert2("html").syncContent("html");
       });
     }
   }
@@ -142,14 +144,14 @@ GM_addStyle(`
     outline: none;
     box-shadow: none;
   }
-`)
+`);
 
 const mainForBBS = () => {
   const gm_editor = new GM_editor({
     init($md) {
       $(".edui-container").after($md);
     },
-    autoSync: true
+    autoSync: true,
   });
 
   const btnSwitchEditor = `
@@ -159,7 +161,7 @@ const mainForBBS = () => {
   // 判断是否有 name 为 fid 的 select
   if ($("select[name='fid']").length === 0) {
     // quotepid 后追加一行 .form-group
-    $("input[name='quotepid']").after(`<div class="form-group"><span></span></div>`);
+    $("input[name='quotepid']").after("<div class=\"form-group\"><span></span></div>");
   }
 
 
@@ -170,7 +172,7 @@ const mainForBBS = () => {
   $("#btnSwitchEditor").click(() => {
     gm_editor.switchEditor();
   });
-}
+};
 
 const mainForAPP = () => {
   const gm_editor = new GM_editor({
@@ -183,8 +185,8 @@ const mainForAPP = () => {
       });
     },
     $defContainer: $("#editor_content"),
-    defEditor: UE.getEditor('editor_content'),
-    autoSync: true
+    defEditor: UE.getEditor("editor_content"),
+    autoSync: true,
   });
 
   // # cheader 元素内部追加切换按钮
@@ -197,7 +199,7 @@ const mainForAPP = () => {
   $("#btnSwitchEditor").click(() => {
     gm_editor.switchEditor();
   });
-}
+};
 
 (() => {
   if (curHref.indexOf("edit.php") > -1) {

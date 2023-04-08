@@ -78,7 +78,7 @@ function fnCheckObj(obj, schema) {
     }
     // 针对每个键值的模式
     const valueSchema = schema[key];
-    valueSchema.forEach(itemSchema => {
+    valueSchema.forEach((itemSchema) => {
       const msg = itemSchema.msg;
       for (const check in itemSchema) {
         if (Object.hasOwnProperty.call(itemSchema, check)) {

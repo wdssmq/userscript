@@ -1,13 +1,13 @@
 class HttpRequest {
   constructor() {
-    if (typeof GM_xmlhttpRequest === 'undefined') {
-      throw new Error('GM_xmlhttpRequest is not defined');
+    if (typeof GM_xmlhttpRequest === "undefined") {
+      throw new Error("GM_xmlhttpRequest is not defined");
     }
   }
 
   get(url, headers = {}) {
     return this.request({
-      method: 'GET',
+      method: "GET",
       url,
       headers,
     });
@@ -21,7 +21,7 @@ class HttpRequest {
     }
 
     return this.request({
-      method: 'POST',
+      method: "POST",
       url,
       data: formData,
       headers,

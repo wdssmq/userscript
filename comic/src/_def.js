@@ -1,3 +1,5 @@
+/* global Comlink, saveAs */
+
 import { _log, _sleep, $n, $na } from "./_base";
 
 // -----------------------

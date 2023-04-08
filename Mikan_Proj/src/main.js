@@ -73,7 +73,7 @@ function fnAddBatchCopy($th, magnetList) {
 // 过滤磁力链接中的 tr
 function fnRemoveTracker(magnet) {
   const regex = /&tr=.+?(?=&|$)/g;
-  return magnet.replace(regex, '');
+  return magnet.replace(regex, "");
 }
 
 

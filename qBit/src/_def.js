@@ -1,9 +1,11 @@
+/* global jQuery, __GM_api, MochaUI */
+
 import { _log, curUrl, fnCheckObj } from "./_base";
 import { http } from "./_http";
 const jq = jQuery;
 
-if (typeof __GM_api !== 'undefined') {
-  _log(__GM_api)
+if (typeof __GM_api !== "undefined") {
+  _log(__GM_api);
 }
 
 const gob = {
@@ -14,7 +16,7 @@ const gob = {
     listTorrent: [],
     tips: {
       tit: {},
-      btn: {}
+      btn: {},
     },
     modalShow: false,
   },
@@ -23,7 +25,7 @@ const gob = {
   parseReq(res, type = "text") {
     // _log(res.finalUrl, "\n", res.status, res.response);
     if (res.status !== 200) {
-      throw new Error('API Http Request Err');
+      throw new Error("API Http Request Err");
     }
     if (type === "json") {
       return JSON.parse(res.response);
@@ -45,12 +47,12 @@ const gob = {
   // 替换 Tracker： torrents/editTracker
   apiEdtTracker(hash, origUrl, newUrl) {
     const url = gob.apiUrl("torrents/editTracker");
-    gob.http.post(url, { hash, origUrl, newUrl })
+    gob.http.post(url, { hash, origUrl, newUrl });
   },
   // 添加 Tracker： torrents/addTrackers
   apiAddTracker(hash, urls) {
     const url = gob.apiUrl("torrents/addTrackers");
-    gob.http.post(url, { hash, urls })
+    gob.http.post(url, { hash, urls });
   },
   // 获取 API 版本信息
   apiInfo(fn = () => { }) {
@@ -83,8 +85,8 @@ const gob = {
     gob.apiInfo(() => {
       _log(gob.data);
     });
-  }
-}
+  },
+};
 
 gob.init();
 
@@ -112,7 +114,7 @@ const strHtml = `
 jq(".js-modal").click(function () {
   new MochaUI.Window({
     id: "js-modal",
-    title: `批量替换 Tracker <span class="js-tip-tit"></span>`,
+    title: "批量替换 Tracker <span class=\"js-tip-tit\"></span>",
     loadMethod: "iframe",
     contentURL: "",
     scrollbars: true,
@@ -128,24 +130,24 @@ jq(".js-modal").click(function () {
   gob.data.modalShow = true;
   gob.upTips("tit", {
     qbt: gob.data.qbtVer,
-    api: gob.data.apiVer
-  })
+    api: gob.data.apiVer,
+  });
 });
 
 const schemeObj = {
   category: [
     {
       not: "",
-      msg: "不能为空"
-    }
+      msg: "不能为空",
+    },
   ],
   newUrl: [
     {
       not: "",
-      msg: "不能为空"
-    }
+      msg: "不能为空",
+    },
   ],
-}
+};
 
 jq(document).on("click", ".js-replace", function () {
   // alert(jq(".js-input[name=category]").val());
@@ -156,7 +158,7 @@ jq(document).on("click", ".js-replace", function () {
   };
 
   try {
-    fnCheckObj(obj, schemeObj)
+    fnCheckObj(obj, schemeObj);
   } catch (error) {
     alert(error);
     return;
@@ -173,13 +175,13 @@ jq(document).on("click", ".js-replace", function () {
       if (obj.origUrl !== "") {
         gob.apiEdtTracker(item.hash, obj.origUrl, obj.newUrl);
       } else {
-        gob.apiAddTracker(item.hash, obj.newUrl)
+        gob.apiAddTracker(item.hash, obj.newUrl);
       }
     });
     gob.upTips("btn", {
       num: list.length,
-      msg: "操作成功"
-    })
+      msg: "操作成功",
+    });
   });
 
   return;

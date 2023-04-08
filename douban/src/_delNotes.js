@@ -1,3 +1,5 @@
+/* global swal */
+
 import { _log, _warn, $, curUrl, _curUrl } from "./_base";
 import { gob } from "./_gob";
 
@@ -27,7 +29,7 @@ const fnCheckFirst = () => {
       fnNext(bolAgree);
     });
   }
-}
+};
 
 const fnCheckKeep = (info) => {
   const { url } = info;
