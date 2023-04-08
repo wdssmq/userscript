@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore --ext .js,.mjs ."
+    "lint": "eslint --ignore-path .gitignore --ext .js,.mjs . --fix"
   },
   "dependencies": {
     "@rollup/plugin-replace": "^4.0.0",
@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@babel/eslint-parser": "^7.19.1",
+    "@babel/eslint-parser": "^7.21.3",
     "@babel/plugin-syntax-import-assertions": "^7.20.0",
     "eslint": "^8.34.0"
   }
