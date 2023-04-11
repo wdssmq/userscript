@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」自用贴吧辅助
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.0
+// @version      1.0.1
 // @author       沉冰浮水
 // @description  置百丈玄冰而崩裂，掷须臾池水而漂摇。
 // @license      MIT
@@ -15,6 +15,7 @@
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
+// @match        https://tieba.baidu.com
 // @match        https://tieba.baidu.com/index.html
 // @grant        none
 // ==/UserScript==
@@ -116,6 +117,9 @@
   const fnMain = () => {
     // 导航设置
     const $sub_nav_list = $n(".sub_nav_list");
+    if (!$sub_nav_list) {
+      return;
+    }
     // 宽度 100%
     $sub_nav_list.style.width = "100%";
     // 匹配「个性动态」元素
