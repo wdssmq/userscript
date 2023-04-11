@@ -4,6 +4,9 @@ import { fnAfter, fnAppendStart, $n, _warn } from "./_base";
 const fnMain = () => {
   // 导航设置
   const $sub_nav_list = $n(".sub_nav_list");
+  if (!$sub_nav_list) {
+    return;
+  }
   // 宽度 100%
   $sub_nav_list.style.width = "100%";
   // 匹配「个性动态」元素

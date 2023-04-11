@@ -16,6 +16,7 @@ const gm_banner = `
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
+// @match        https://tieba.baidu.com
 // @match        https://tieba.baidu.com/index.html
 // @grant        none
 // ==/UserScript==
