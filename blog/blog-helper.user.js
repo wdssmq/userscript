@@ -1,287 +1,241 @@
 // ==UserScript==
 // @name         「Blog」写作助手
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      1.0.0
 // @author       沉冰浮水
-// @description  发布预定义文章到知乎、简书等豉
-// @null     ----------------------------
+// @description  发布预定义文章到知乎、简书等平台
+// @license      MIT
+// @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
 // @contributionAmount 5.93
-// @null     ----------------------------
-// @link     https://github.com/wdssmq/userscript
-// @link     https://afdian.net/@wdssmq
-// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @null     ----------------------------
-// @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.0.0/js-yaml.min.js
-// @match        https://editor.csdn.net/md*
-// @match        https://www.jianshu.com/writer*
-// @match        https://www.cnblogs.com/*/*
-// @match        https://i.cnblogs.com/posts/edit
-// @grant        GM_getValue
-// @grant        GM_setValue
+// @null         ----------------------------
+// @link         https://github.com/wdssmq/userscript
+// @link         https://afdian.net/@wdssmq
+// @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null         ----------------------------
+// @noframes
+// @run-at       document-end
+// @match        https://geeknote.net/*/dashboard/posts/new
+// @match        https://geeknote.net/*/dashboard/posts/*/edit
+// @match        http://localhost:3000/
+// @grant        none
+// @require      https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js
 // ==/UserScript==
 
-/* global jsyaml */
+/* eslint-disable */
+/* jshint esversion: 6 */
 
-/* jshint esversion:6 */
 (function () {
-  "use strict";
-  let $ = window.$ || unsafeWindow.$;
+  'use strict';
 
+  const gm_name = "blog-helper";
+
+  // 初始常量或函数
+  const curUrl = window.location.href;
+
+  // -------------------------------------
+
+  const _log = (...args) => console.log(`[${gm_name}]`, ...args);
+
+  // -------------------------------------
+
+  // const $ = window.$ || unsafeWindow.$;
   function $n(e) {
     return document.querySelector(e);
   }
-  function $na(e) {
-    return document.querySelectorAll(e);
-  }
-  function $xpath(xpath) {
-    const result = document.evaluate(
-      xpath,
-      document,
-      null,
-      XPathResult.ANY_TYPE,
-      null,
-    );
-    return result.iterateNext();
-  }
 
-  // 配置项
-  const objInfo = GM_getValue("objInfo", null);
-  if (!objInfo) {
-    GM_setValue("objInfo", {
-      origUrl: "https://www.wdssmq.com/post/-alias-.html",
-      form: "沉冰浮水",
-      WeChatOA: "水水不想说",
-    });
-  }
-  console.log("objInfo", objInfo);
-
-  const globalInfo = {
-    hashBody: "",
-    isBodyChanged: (hashBodyNew) => {
-      if (hashBodyNew !== globalInfo.hashBody) {
-        globalInfo.hashBody = hashBodyNew;
-        return true;
+  // localStorage 封装
+  const lsObj = {
+    setItem: function (key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+    getItem: function (key, def = "") {
+      const item = localStorage.getItem(key);
+      if (item) {
+        return JSON.parse(item);
       }
-      console.log("isBodyChanged", "文本未改变");
-      return false;
+      return def;
     },
   };
 
-  globalInfo.site = (() => {
-    const list = ["jianshu", "csdn", "cnblogs"];
+  // 数据读写封装
+  const gobInfo = {
+    // key: [默认值, 是否记录至 ls]
+    $title: [null, false],
+    $content: [null, false],
+    title: ["", false],
+    content: ["", false],
+    doc: [{}, false],
+    site: ["", false],
+  };
+  const gob = {
+    _lsKey: `${gm_name}_data`,
+    _bolLoaded: false,
+    data: {},
+    // 初始
+    init() {
+      // 根据 gobInfo 设置 gob 属性
+      for (const key in gobInfo) {
+        if (Object.hasOwnProperty.call(gobInfo, key)) {
+          const item = gobInfo[key];
+          this.data[key] = item[0];
+          Object.defineProperty(this, key, {
+            // value: item[0],
+            // writable: true,
+            get() { return this.data[key] },
+            set(value) { this.data[key] = value; },
+          });
+        }
+      }
+      return this;
+    },
+    // 读取
+    load() {
+      if (this._bolLoaded) {
+        return;
+      }
+      const lsData = lsObj.getItem(this._lsKey, this.data);
+      _log("[gob.load()]\n", lsData);
+      for (const key in lsData) {
+        if (Object.hasOwnProperty.call(lsData, key)) {
+          const item = lsData[key];
+          this.data[key] = item;
+        }
+      }
+      this._bolLoaded = true;
+    },
+    // 保存
+    save() {
+      const lsData = {};
+      for (const key in gobInfo) {
+        if (Object.hasOwnProperty.call(gobInfo, key)) {
+          const item = gobInfo[key];
+          if (item[1]) {
+            lsData[key] = this.data[key];
+          }
+        }
+      }
+      _log("[log]gob.save()", lsData);
+      lsObj.setItem(this._lsKey, lsData);
+    },
+    // 读取数据
+    dataPost() {
+      return {
+        title: gob.title,
+        content: gob.content,
+        doc: gob.doc,
+      };
+    },
+  };
+
+  // 初始化
+  gob.init().load();
+
+  const fnGeekNote = () => {
+    _log("[fnGeekNote()]");
+    gob.setTags = (tags) => {
+      const $select = $n("select.selector__select");
+      // 移除所有 option
+      $select.innerHTML = "";
+      // const tpl = "<option value=\"-tag-\" selected=\"true\">-tag-</option>";
+      tags.forEach((tag) => {
+        const $option = document.createElement("option");
+        $option.value = tag;
+        $option.innerHTML = tag;
+        $option.selected = true;
+        $option.setAttribute("selected", "true");
+        $select.appendChild($option);
+      });
+    };
+
+    gob.setPost = () => {
+      const { title, content, doc } = gob.dataPost();
+      if (doc.title) {
+        gob.$title.value = doc.title;
+        gob.title = title || doc.title;
+      }
+      if (doc.tags) {
+        const $input = $n("input.selector__input");
+        $input.value = doc.tags.join(",");
+        gob.setTags(doc.tags);
+      }
+      gob.$content.value = content;
+    };
+
+    gob.getPost = () => {
+      if (!gob.$title || !gob.$content) {
+        return;
+      }
+      gob.title = gob.$title.value;
+      gob.content = gob.$content.value;
+      // ----------
+      gob.yml2json();
+      gob.setPost();
+      // ----------
+      return gob.dataPost();
+    };
+
+    gob.bind = () => {
+      // if (gob.$title) {
+      //   gob.$title.addEventListener("input", () => {
+      //     const post = gob.getPost();
+      //     // _log("gob.bind()\n", post);
+      //   });
+      // }
+      if (gob.$content) {
+        gob.$content.addEventListener("change", () => {
+          const post = gob.getPost();
+          _log("[gob.bind()]\n", post);
+        });
+      }
+    };
+
+    gob.$title = $n("#post_title");
+    gob.$content = $n("#post_content");
+
+    gob.bind();
+  };
+
+  /* global jsyaml */
+
+  gob.yml2json = () => {
+    let content = gob.content;
+    content = content.replace(/<!-- ---\n(?<yml>title:[\s\S]*?)\n--- -->\n\n/, "---\n$<yml>\n---\n\n");
+    // _log("[gob.yml2json()]\n", content);
+    const match = content.match(/---\n(?<yml>title:[\s\S]*?)\n---\n\n(?<con>[\s\S]*)/);
+    // _log("gob.yml2json()\n", match);
+    if (!match) {
+      return;
+    }
+    const { yml, con } = match.groups;
+    gob.doc = jsyaml.load(yml, "utf8");
+    // tags 处理
+    if (!gob.doc.tags) {
+      gob.doc.tags = [];
+    } else if (!Array.isArray(gob.doc.tags)) {
+      gob.doc.tags = [gob.doc.tags];
+    }
+    // 处理 content
+    content = `<!-- ---\n${yml}\n--- -->\n\n${con}`;
+    gob.content = content;
+  };
+
+  gob.site = (() => {
+    const list = ["jianshu", "csdn", "cnblogs", "geeknote"];
     let rlt = "";
-    list.forEach((element) => {
-      if (location.host.indexOf(element) > -1) {
-        rlt = element;
+    list.forEach((name) => {
+      if (curUrl.indexOf(name) > -1) {
+        rlt = name;
       }
     });
     return rlt;
   })();
 
-  console.log("globalInfo", globalInfo);
 
-  function fnHashVal(string) {
-    let hash = 0,
-      i,
-      chr;
-    if (string.length === 0) return hash;
-    for (i = 0; i < string.length; i++) {
-      chr = string.charCodeAt(i);
-      hash = (hash << 5) - hash + chr;
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
+  switch (gob.site) {
+    case "geeknote":
+      fnGeekNote();
+      break;
   }
 
-  const fnYAML2JSON = (oBody) => {
-    const rlt = { err: 0, msg: "" };
-    oBody = oBody.replace(/<!-- ---|--- -->/g, "---");
-    // console.log(oBody);
-
-    // 拆分为数组
-    const arrBody = oBody.split("---\n");
-    // console.log(arrBody);
-
-    // YAML 文本
-    const strYaml = arrBody[1];
-    // console.log(strYaml);
-
-    // 解析为 json,解析失败直接返回
-    const doc = jsyaml.load(strYaml, "utf8");
-    if (!doc || doc === "undefined") {
-      rlt.err = 1;
-      rlt.msg = "解析失败";
-      rlt.doc = "";
-      rlt.content = oBody;
-      return rlt;
-    }
-    rlt.doc = doc;
-    if (globalInfo.site === "jianshu") {
-      oBody = oBody.replace(`---\n${arrBody[1]}---\n`, "\n");
-    } else if (globalInfo.site === "cnblogs") {
-      oBody = oBody.replace(
-        `---\n${arrBody[1]}---\n`,
-        `<!-- ---\n${arrBody[1]}--- -->\n`,
-      );
-    } else {
-      oBody = oBody.replace(
-        `---\n${arrBody[1]}---\n`,
-        `&lt;!-- ---\n${arrBody[1]}--- --&gt;\n`,
-      );
-    }
-    // arrBody[1] = "null";
-    rlt.content = oBody;
-    console.log(rlt);
-    return rlt;
-  };
-
-  const fnAfterContent = (info, doc) => {
-    let tpl = "\n\n原文链接：[-origUrl-](-origUrl-)";
-    if ("jianshu" !== globalInfo.site) {
-      tpl += "\n\n微信公众号：「-WeChatOA-」";
-    }
-    for (const key in info) {
-      if (Object.hasOwnProperty.call(info, key)) {
-        const element = info[key];
-        const reg = new RegExp(`-${key}-`, "g");
-        tpl = tpl.replace(reg, element);
-      }
-    }
-    for (const key in doc) {
-      if (Object.hasOwnProperty.call(doc, key)) {
-        const element = doc[key];
-        const reg = new RegExp(`-${key}-`, "g");
-        tpl = tpl.replace(reg, element);
-      }
-    }
-    return tpl;
-  };
-
-  const fnMainCSDN = ($el) => {
-    if (
-      $el.innerHTML == "发布文章" &&
-      $el.nodeName.toLowerCase() == "h3" &&
-      globalInfo.origUrl
-    ) {
-      $el.innerHTML = globalInfo.origUrl;
-    }
-    const $title = $(".article-bar__title");
-    const $editor = $(".editor");
-    if ($title.length == 0 || $editor.length == 0) {
-      return;
-    }
-    if (globalInfo.curTitle) {
-      $title.val(globalInfo.curTitle);
-    }
-    const oBody = $editor.text();
-    // 文本修改前仅执行一次
-    const curHash = fnHashVal(oBody);
-    if (!globalInfo.isBodyChanged(curHash)) {
-      return;
-    }
-    const { err, msg, doc, content } = fnYAML2JSON(oBody);
-    // console.log("fnMainCSDN", err, msg, doc);
-    if (err == 0 && content.indexOf("原文链接：") === -1) {
-      globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
-      globalInfo.curTitle = doc.title;
-      $editor.find("pre").html(content.trim() + fnAfterContent(objInfo, doc));
-      $title.val(doc.title);
-    } else if (err > 0) {
-      console.log("fnMainCSDN", err, msg);
-      // globalInfo.hashBody = "";
-    }
-  };
-
-  const fnMainJianshu = ($el) => {
-    const $title = $n("._24i7u");
-    const $editor = $n("#arthur-editor");
-    if (!$title || !$editor) {
-      return;
-    }
-    const oBody = $editor.value;
-    // 文本修改前仅执行一次
-    const curHash = fnHashVal(oBody);
-    if (!globalInfo.isBodyChanged(curHash)) {
-      return;
-    }
-    const { err, msg, doc, content } = fnYAML2JSON(oBody);
-    if (err == 0 && content.indexOf("原文链接：") === -1) {
-      globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
-      globalInfo.curTitle = doc.title;
-      globalInfo.title = doc.title;
-      $editor.value = content.trim() + fnAfterContent(objInfo, doc);
-      $title.value = doc.title;
-      $editor.dataset.verDone = 1;
-    } else {
-      console.log("解析未执行", msg);
-    }
-    if (globalInfo.curTitle) {
-      console.log(globalInfo.curTitle);
-      $title.value = globalInfo.curTitle;
-    }
-  };
-
-  const fnMainCnBlogs = ($el) => {
-    const $title = $n("#post-title");
-    const $editor = $n("#md-editor");
-    if (!$title || !$editor) {
-      return;
-    }
-    const oBody = $editor.value;
-    // 文本修改前仅执行一次
-    const curHash = fnHashVal(oBody);
-    if (!globalInfo.isBodyChanged(curHash)) {
-      return;
-    }
-    let lstMsg = "";
-    const { err, msg, doc, content } = fnYAML2JSON(oBody);
-    if (err == 0 && content.indexOf("原文链接：") === -1) {
-      globalInfo.origUrl = objInfo.origUrl.replace(/-alias-/g, doc.alias);
-      globalInfo.curTitle = doc.title;
-      globalInfo.title = doc.title;
-      $editor.value = content.trim() + fnAfterContent(objInfo, doc);
-      $title.value = doc.title;
-      $editor.dataset.verDone = 1;
-    } else if (lstMsg !== msg) {
-      console.log("解析未执行", msg);
-      lstMsg = msg;
-    }
-    if (globalInfo.curTitle) {
-      $title.value = globalInfo.curTitle;
-    }
-  };
-
-  const fnCnBlogsInit = () => {
-    if ($n("#blog_nav_sitehome")) {
-      $n("#blog_nav_sitehome").style.display = "none";
-    }
-    // // 移除多余空格
-    // const $text = $xpath('//*[@id="mylinks"]/text()[1]');
-    // console.log($text);
-    // // $text.remove();
-    // $text.innerHTML = "";
-  };
-
-  document.addEventListener(
-    "mouseover",
-    function (e) {
-      const $el = e.target;
-      switch (globalInfo.site) {
-        case "jianshu":
-          fnMainJianshu($el);
-          break;
-        case "csdn":
-          fnMainCSDN($el);
-          break;
-        case "cnblogs":
-          fnCnBlogsInit();
-          fnMainCnBlogs();
-          break;
-        default:
-          break;
-      }
-    },
-    false,
-  );
 })();
