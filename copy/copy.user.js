@@ -114,6 +114,7 @@
   const config = [
       [".markdown_body", ".reply_content"],
       ["#additional-info"],
+      ["div.forum_table table"],
   ];
 
   const fnSetBlank = ($a) => {
