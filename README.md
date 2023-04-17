@@ -87,6 +87,16 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/u17/u17.user.js
 
 --------
 
+name：「水水」Inoreader 功能增强
+
+desc：自用脚本，导出星标收藏为 *.url 文件等
+
+url：https://github.com/wdssmq/userscript/blob/master/inoreader/inoreader.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/inoreader/inoreader.user.js)」
+
+cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/inoreader/inoreader.user.js
+
+--------
+
 name：「GitHub」获取文件的 jsDelivr 地址
 
 desc：获取项目文件的 CDN 地址
@@ -329,7 +339,7 @@ cdn：https://cdn.jsdelivr.net/gh/wdssmq/userscript@master/zbp-GenLogo/zbp_GenLo
 
 name：「Blog」写作助手
 
-desc：发布预定义文章到知乎、简书等豉
+desc：发布预定义文章到知乎、简书等平台
 
 url：https://github.com/wdssmq/userscript/blob/master/blog/blog-helper.user.js 「[raw](https://github.com/wdssmq/userscript/raw/master/blog/blog-helper.user.js)」
 
