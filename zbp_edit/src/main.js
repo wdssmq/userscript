@@ -1,4 +1,4 @@
-import { _log, $ } from "./_base";
+import { _log, $, curUrl } from "./_base";
 
 $(function () {
   // 添加编辑按钮
@@ -24,6 +24,9 @@ $(function () {
   $(".cmt-edit").css({ color: "#175199" });
 
   // 设置文章为回收
+  if (curUrl.indexOf("zblogcn.com") > -1) {
+    return;
+  }
   $("#edtTitle").after(
     "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> 「设置为回收」</a>",
   );

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Z-Blog」前台编辑文章入口
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  配合主题以显示前台编辑入口
 // @license      MIT
@@ -27,6 +27,8 @@
 (function () {
   'use strict';
 
+  // 初始常量或函数
+  const curUrl = window.location.href;
   // ---------------------------------------------------
   const $ = window.$ || unsafeWindow.$;
 
@@ -54,6 +56,9 @@
     $(".cmt-edit").css({ color: "#175199" });
 
     // 设置文章为回收
+    if (curUrl.indexOf("zblogcn.com") > -1) {
+      return;
+    }
     $("#edtTitle").after(
       "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> 「设置为回收」</a>",
     );
