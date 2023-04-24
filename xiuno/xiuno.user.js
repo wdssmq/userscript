@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「xiuno」管理工具（QQ 群：189574683）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.2
+// @version      1.0.3
 // @author       沉冰浮水
 // @description  对不合规的内容加密处理
 // @license      MIT
@@ -438,13 +438,13 @@
       if (!umObj.isFocus()) {
         umObj.focus(true);
       }
-      const addHTML = `<blockquote class="blockquote"><p><br></p></blockquote><p><br></p>`;
+      const addHTML = "<blockquote class=\"blockquote\"><p><br></p></blockquote><p><br></p>";
       // umObj.execCommand("insertHtml", addHTML);
       umObj.setContent(addHTML, true);
     }
 
     // 添加引用按钮
-    $("head").append('<style>.edui-icon-blockquote:before{content:"\\f10d";}');
+    $("head").append("<style>.edui-icon-blockquote:before{content:\"\\f10d\";}");
     (() => {
       const $btn = $.eduibutton({
         icon: "blockquote",
@@ -462,14 +462,14 @@
       let strHTML = umObj.getContent();
       strHTML = strHTML.replace(
         /<blockquote>/g,
-        '<blockquote class="blockquote">'
+        "<blockquote class=\"blockquote\">",
       );
       // 第二个参数为 true 表示追加；
       umObj.setContent(strHTML, false);
     }
 
     // 添加自动排版按钮
-    $("head").append('<style>.edui-btn-auto-format:before{content:"fix";}');
+    $("head").append("<style>.edui-btn-auto-format:before{content:\"fix\";}");
     (() => {
       const $btn = $.eduibutton({
         icon: "auto-format",
@@ -482,19 +482,21 @@
     })();
   })();
 
+  /* global showdown */
+
   class GM_editor {
-    $def
-    defEditor = null
-    htmlContent = ""
-    $md
-    mdEditor = null
-    mdContent = ""
+    $def;
+    defEditor = null;
+    htmlContent = "";
+    $md;
+    mdEditor = null;
+    mdContent = "";
     defOption = {
       init($md) { },
       autoSync: false,
-      curType: "html"
-    }
-    option = {}
+      curType: "html",
+    };
+    option = {};
     constructor(option) {
       this.option = Object.assign({}, this.defOption, option);
       this.init();
@@ -522,7 +524,7 @@
         // 写入内容
         setContent(content) {
           _this.$md.find("#message_md").text(content);
-        }
+        },
       };
       if (this.option.autoSync) {
         this.defEditor.addListener("contentChange", () => {
@@ -631,7 +633,7 @@
       init($md) {
         $(".edui-container").after($md);
       },
-      autoSync: true
+      autoSync: true,
     });
 
     const btnSwitchEditor = `
@@ -641,7 +643,7 @@
     // 判断是否有 name 为 fid 的 select
     if ($("select[name='fid']").length === 0) {
       // quotepid 后追加一行 .form-group
-      $("input[name='quotepid']").after(`<div class="form-group"><span></span></div>`);
+      $("input[name='quotepid']").after("<div class=\"form-group\"><span></span></div>");
     }
 
 
@@ -665,8 +667,8 @@
         });
       },
       $defContainer: $("#editor_content"),
-      defEditor: UE.getEditor('editor_content'),
-      autoSync: true
+      defEditor: UE.getEditor("editor_content"),
+      autoSync: true,
     });
 
     // # cheader 元素内部追加切换按钮
@@ -682,15 +684,16 @@
   };
 
   (() => {
+    // 判断是否在应用中心编辑页
     if (curHref.indexOf("edit.php") > -1) {
       // _log(UE)
       const editor_api = window.editor_api || unsafeWindow.editor_api;
       editor_api.editor.content.obj.ready(mainForAPP);
     }
-    if ($("textarea#message").length === 0) {
-      return;
+    // 判断是否在论坛发帖、回帖页
+    if ($("textarea#message").length > 0 && $("li.newpost").length === 0) {
+      mainForBBS();
     }
-    mainForBBS();
   })();
 
 })();
