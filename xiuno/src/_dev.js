@@ -243,6 +243,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
   status: #status#
   rating: #rating#
   url: #url#
+  git: #git#
   date:
     - #date#
   reviewers:
@@ -257,6 +258,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
       status: log ? log.status : "进行中",
       rating: log ? log.rating : "",
       url: curHref,
+      git: log ? log.git : "",
       date: log ? log.date[0] : fnFormatTime(),
       reviewers: log ? log.reviewers.join("\n_4_- ") : "null",
     },
