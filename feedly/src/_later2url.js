@@ -11,6 +11,13 @@ const bolDebug = false;
 // 构造 Bash Shell 脚本
 function fnMKShell(arrList, prefix = "") {
   const curDateStr = _getDateStr();
+  const _lenTitle = (title) => {
+    // 获取长度，中文算两个字符
+    const len = title.length;
+    const len2 = title.replace(/[\u4e00-\u9fa5]/g, "").length;
+    return len2 + (len - len2) * 2;
+
+  };
   let strRlt =
     "if [ ! -d \"prefix-date\" ]; then\n" +
     "mkdir prefix-date\n" +
@@ -32,9 +39,10 @@ function fnMKShell(arrList, prefix = "") {
     title = title.replace(/["'\s]/g, "");
     // _log(title);
 
-    const lenTitle = title.length;
-    if (lenTitle >= 155) {
-      title = `标题过长丨${lenTitle}`;
+    const lenTitle = _lenTitle(title);
+    // 判断太长时截取
+    if (lenTitle >= 137) {
+      title = title.substring(0, 69); // 截取前 69 个字符
     }
 
     // 获取文章链接
