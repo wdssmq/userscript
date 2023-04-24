@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「xiuno」管理工具（QQ 群：189574683）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.3
+// @version      1.0.4
 // @author       沉冰浮水
 // @description  对不合规的内容加密处理
 // @license      MIT
@@ -186,18 +186,20 @@
     const defConfig = {
       useCDN: false,
       ymlList: [
+        "2023H1",
         "2022H2",
         "2022H1",
         "2021H2",
       ],
+      ver: "2023-04-24",
       isNew: true,
     };
 
     // 配置项读取和首次保存
     const curConfig = GM_getValue("_devConfig", defConfig);
-    if (curConfig.isNew) {
+    if (curConfig.isNew || curConfig.ver !== defConfig.ver) {
       curConfig.isNew = false;
-      GM_setValue("_devConfig", curConfig);
+      GM_setValue("_devConfig", defConfig);
     }
 
     // 初始化 ymlList
@@ -274,6 +276,7 @@
         const self = this;
         this.ymlList.forEach((yml) => {
           fnGetRequest(yml, (responseText, url) => {
+            _log("ajax", url);
             const ymlObj = jsyaml.load(responseText, "utf8");
             const curLogs = self.data.lstLogs;
             self.data.lstLogs = curLogs.concat(ymlObj);
@@ -391,6 +394,7 @@
   status: #status#
   rating: #rating#
   url: #url#
+  git: #git#
   date:
     - #date#
   reviewers:
@@ -405,6 +409,7 @@
         status: log ? log.status : "进行中",
         rating: log ? log.rating : "",
         url: curHref,
+        git: log ? log.git : "",
         date: log ? log.date[0] : fnFormatTime(),
         reviewers: log ? log.reviewers.join("\n_4_- ") : "null",
       },
