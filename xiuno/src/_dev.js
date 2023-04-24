@@ -35,18 +35,20 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
   const defConfig = {
     useCDN: false,
     ymlList: [
+      "2023H1",
       "2022H2",
       "2022H1",
       "2021H2",
     ],
+    ver: "2023-04-24",
     isNew: true,
   };
 
   // 配置项读取和首次保存
   const curConfig = GM_getValue("_devConfig", defConfig);
-  if (curConfig.isNew) {
+  if (curConfig.isNew || curConfig.ver !== defConfig.ver) {
     curConfig.isNew = false;
-    GM_setValue("_devConfig", curConfig);
+    GM_setValue("_devConfig", defConfig);
   }
 
   // 初始化 ymlList
@@ -123,6 +125,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
       const self = this;
       this.ymlList.forEach((yml) => {
         fnGetRequest(yml, (responseText, url) => {
+          _log("ajax", url);
           const ymlObj = jsyaml.load(responseText, "utf8");
           const curLogs = self.data.lstLogs;
           self.data.lstLogs = curLogs.concat(ymlObj);
