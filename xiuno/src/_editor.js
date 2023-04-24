@@ -202,13 +202,14 @@ const mainForAPP = () => {
 };
 
 (() => {
+  // 判断是否在应用中心编辑页
   if (curHref.indexOf("edit.php") > -1) {
     // _log(UE)
     const editor_api = window.editor_api || unsafeWindow.editor_api;
     editor_api.editor.content.obj.ready(mainForAPP);
   }
-  if ($("textarea#message").length === 0) {
-    return;
+  // 判断是否在论坛发帖、回帖页
+  if ($("textarea#message").length > 0 && $("li.newpost").length === 0) {
+    mainForBBS();
   }
-  mainForBBS();
 })();
