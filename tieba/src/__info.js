@@ -18,6 +18,7 @@ const gm_banner = `
 // @run-at       document-end
 // @match        https://tieba.baidu.com
 // @match        https://tieba.baidu.com/index.html
+// @match        https://tieba.baidu.com/i/i/forum*
 // @grant        none
 // ==/UserScript==
 
