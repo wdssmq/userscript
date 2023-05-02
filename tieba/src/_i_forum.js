@@ -24,19 +24,6 @@ const fnMain = () => {
   // 插入到导航栏
   fnAfter($nav_i, $nav_personal);
 
-
-  /* // #right_wrap
-  const $right_wrap = $n("#right_wrap");
-  _warn($right_wrap)
-  const $h3_i = document.createElement("h3");
-  $h3_i.className = "right_title";
-  $h3_i.innerHTML = `
-    <a href="https://tieba.baidu.com/i/i/forum?&pn=2" class="right_title_link" target="_blank">
-      我关注的贴吧
-    </a>
-  `;
-  // 插入到侧栏
-  fnAppendStart($h3_i, $right_wrap); */
 };
 
 try {
