@@ -25,18 +25,19 @@ const fnFixReply = () => {
           查看回复
       </a>
     `;
-      //
+      // 添加链接到页面
       fnAfter($u_notify_replay, $n(".sys_notify .category_item"));
     },
   };
 
   // 监听页面改动
   fnElChange($body, () => {
-    const $sys_notify = $n("div.u_notity_bd > ul");
-    if (!$sys_notify) {
+    const $sys_notify = $n("div.u_notity_bd");
+    if (!$sys_notify || $sys_notify.textContent.indexOf("查看私信") === -1) {
       return;
     }
     if (!loadCheck.check($sys_notify.textContent)) {
+      // _warn($sys_notify.textContent.replace(/\s+/g, " "));
       loadCheck.addLink($sys_notify);
       // loadCheck.clearDelay()
       return;
