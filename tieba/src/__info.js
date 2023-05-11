@@ -15,7 +15,7 @@ const gm_banner = `
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 // @noframes
-// @run-at       document-end
+// @run-at       document-start
 // @match        https://tieba.baidu.com
 // @match        https://tieba.baidu.com/index.html
 // @match        https://tieba.baidu.com/i/i/forum*
@@ -24,6 +24,8 @@ const gm_banner = `
 
 /* eslint-disable */
 /* jshint esversion: 6 */
+
+console.firebug = true;
 `;
 
 const gm_name = "tieba";
