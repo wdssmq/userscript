@@ -19,13 +19,17 @@ const gm_banner = `
 // @match        https://tieba.baidu.com
 // @match        https://tieba.baidu.com/index.html
 // @match        https://tieba.baidu.com/i/i/forum*
-// @grant        none
+// @grant        GM_addStyle
 // ==/UserScript==
 
 /* eslint-disable */
 /* jshint esversion: 6 */
 
-console.firebug = true;
+if (unsafeWindow.console) {
+  unsafeWindow.console.firebug = true;
+} else {
+  console.firebug = true;
+}
 `;
 
 const gm_name = "tieba";

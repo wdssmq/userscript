@@ -1,29 +1,12 @@
-import { _error, $n, fnFindDom } from "./_base";
+import { _warn, $n, fnFindDom } from "./_base";
 import { gob } from "./_gob";
-
-// debug
-const _debug = (...args) => {
-  // 第一个参数
-  const arg0 = args[0];
-  if (!arg0) return;
-  let className;
-  if (typeof arg0 === "string") {
-    className = arg0;
-  }
-  let el = $n(`.${className}`);
-  if (!el) {
-    el = document.createElement("div");
-    el.className = className;
-    document.body.appendChild(el);
-  }
-  el.innerText = args.join(" ");
-};
 
 gob.addLink = (link) => {
   const { linkLog } = gob;
   if (linkLog.indexOf(link) === -1) {
     linkLog.push(link);
   }
+  _warn("addLink()\n", linkLog);
 };
 
 gob.checkLink = () => {
