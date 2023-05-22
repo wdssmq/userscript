@@ -3,5 +3,5 @@ import { gob } from "./_gob";
 
 fnElChange($n("#reader_pane"), function () {
   gob.GetStarItems();
-  // _log(gob.$$Stars);
+  // _log("def\n", gob.$$Stars);
 });

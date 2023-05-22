@@ -73,7 +73,8 @@ const gob = {
   // 获取星标项目
   GetStarItems() {
     // const $$Stars = $na("div.article");
-    const $$Stars = $na("div.article .article_title_wrapper a");
+    const $$Stars = $na(".article_title_wrapper a, div.article_magazine_title a.article_magazine_title_link");
+    // _log("GetStarItems\n", $$Stars);
     if ($$Stars.length === 0) {
       return;
     }
