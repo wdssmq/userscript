@@ -69,6 +69,16 @@
     $e.parentNode.insertBefore($ne, $e.nextSibling);
   }
 
+  // 指定元素内查找子元素
+  function fnFindDom(el, selector) {
+    el = typeof el === "string" ? $n(el) : el;
+    const queryList = el.querySelectorAll(selector);
+    if (queryList.length === 1) {
+      return queryList[0];
+    }
+    return queryList.length > 1 ? queryList : null;
+  }
+
   // ---------------------------------------------------
 
   // 元素变化监听
@@ -92,7 +102,9 @@
 
   // 点击指定元素复制内容
   function fnCopy(eTrig, content, fnCB = () => { }) {
-    $n(eTrig).addEventListener("click", function (e) {
+    // 判断 eTrig 是否为字符串
+    const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
+    $eTrig.addEventListener("click", function (e) {
       GM_setClipboard(content);
       fnCB(e);
       this.style.color = "gray";
@@ -292,6 +304,49 @@
       },
     });
   }
+
+  // 分 p 链接获取
+  (() => {
+    const selectorMap = {
+      epListBox: ".eplist_ep_list_wrapper__PzLHa",
+      epListTitle: ".eplist_list_title__JwP3d h4",
+      // epList: ".imageList_wrap__pDHvN",
+      epList: ".imageList_wrap__pDHvN .imageListItem_wrap__HceXs a",
+    };
+    const $$epListBox = $na(selectorMap.epListBox);
+    if ($$epListBox.length === 0) {
+      return;
+    }
+    const fnGetLinkList = ($epList) => {
+      // _log("fnOnCLick", $epList);
+      const arrList = Array.prototype.map.call($epList, ($item, index) => {
+        const href = $item.href;
+        const title = $item.innerText.replace(/\n.+/g, "");
+        return {
+          href,
+          title,
+        };
+      });
+      _log("arrList", arrList);
+      return arrList;
+    };
+    
+    const elListDom = [];
+    // 遍历 NodeList，不能直接使用 forEach
+    Array.prototype.forEach.call($$epListBox, ($epListBox, index) => {
+      const $epListTitle = fnFindDom($epListBox, selectorMap.epListTitle);
+      const $epList = fnFindDom($epListBox, selectorMap.epList);
+      const textTitle = $epListTitle.innerText;
+      // 注册点击复制
+      fnCopy($epListTitle, fnMKShell(fnGetLinkList($epList), textTitle));
+      elListDom.push({
+        box: $epListBox,
+        title: $epListTitle,
+        list: $epList,
+      });
+    });
+    console.log(elListDom);
+  })();
 
   // 导出稍后再看为 .lnk 文件
   (function () {

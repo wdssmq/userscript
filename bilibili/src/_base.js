@@ -38,6 +38,16 @@ function fnAfter($ne, e) {
   $e.parentNode.insertBefore($ne, $e.nextSibling);
 }
 
+// 指定元素内查找子元素
+function fnFindDom(el, selector) {
+  el = typeof el === "string" ? $n(el) : el;
+  const queryList = el.querySelectorAll(selector);
+  if (queryList.length === 1) {
+    return queryList[0];
+  }
+  return queryList.length > 1 ? queryList : null;
+}
+
 // ---------------------------------------------------
 
 // 元素变化监听
@@ -61,7 +71,9 @@ const fnElChange = (el, fn = () => { }, onetime = true) => {
 
 // 点击指定元素复制内容
 function fnCopy(eTrig, content, fnCB = () => { }) {
-  $n(eTrig).addEventListener("click", function (e) {
+  // 判断 eTrig 是否为字符串
+  const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
+  $eTrig.addEventListener("click", function (e) {
     GM_setClipboard(content);
     fnCB(e);
     this.style.color = "gray";
@@ -102,6 +114,7 @@ export {
   $n,
   $na,
   fnAfter,
+  fnFindDom,
   fnElChange,
   fnCopy,
   ckeObj,
