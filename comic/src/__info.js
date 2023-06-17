@@ -17,6 +17,7 @@ const gm_banner = `
 // @noframes
 // @run-at       document-end
 // @match        https://www.manhuagui.com/comic/*/*.html
+// @match        https://tw.manhuagui.com/comic/*/*.html
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 

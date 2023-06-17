@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「漫画」打包下载（QQ 群：189574683）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.2
+// @version      1.0.3
 // @author       沉冰浮水
 // @description  按章节打包下载漫画柜的资源
 // @license      MIT
@@ -16,6 +16,7 @@
 // @noframes
 // @run-at       document-end
 // @match        https://www.manhuagui.com/comic/*/*.html
+// @match        https://tw.manhuagui.com/comic/*/*.html
 // @grant        GM_xmlhttpRequest
 // @require      https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js
 // @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js
@@ -52,6 +53,8 @@
     const $e = typeof e === "string" ? $n(e) : e;
     $e.parentNode.insertBefore($ne, $e.nextSibling);
   }
+
+  /* global Comlink, saveAs */
 
   // -----------------------
 
