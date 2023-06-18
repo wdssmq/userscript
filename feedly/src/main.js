@@ -14,3 +14,6 @@ import _autoMark from "./_autoMark";
 // 其他辅助功能
 import _other from "./_other";
 
+// 侧栏体验优化
+import _sidebar from "./_sidebar";
+
