@@ -22,8 +22,8 @@ const gm_banner = `
 // @grant        none
 // ==/UserScript==
 
-/* jshint esversion: 6 */
 /* eslint-disable */
+/* jshint esversion: 6 */
 `;
 
 const gm_name = "zbp_edit";
