@@ -1,6 +1,8 @@
 import { _log, $, curUrl } from "./_base";
+import _mdToc from "./_mdToc";
 
 $(function () {
+  _mdToc();
   // 添加编辑按钮
   $(".js-edt")
     .each(function () {
