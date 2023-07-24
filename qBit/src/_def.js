@@ -108,7 +108,7 @@ jq("#desktopNavbar>ul").append(
 // 构建编辑框
 const strHtml = `
 <div style="padding:13px 23px;">\
-    <h2>分类：（必须指定分类，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;"><br>\
+    <h2>分类：（不能是「全部」或「未分类」，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;" placeholder="包含要修改项目的分类或新建一个"><br>\
     <h2>旧 Trakcer：<h2><input class="js-input" type="text" name="origUrl" style="width: 97%;"><br>\
     <h2>新 Tracker：<h2><input class="js-input" type="text" name="newUrl" style="width: 97%;"><br>\
     <h2>子串模式：<input class="js-input" type="checkbox" name="matchSubstr" value="matchSubstr">仅替换链接中的部分文本<h2>\
@@ -116,7 +116,7 @@ const strHtml = `
     <button class="js-replace">替换</button>\
     <span class="js-tip-btn"></span>\
     <hr>\
-    「<a target="_blank" title="爱发电 - @wdssmq" href="https://afdian.net/@wdssmq" rel="nofollow">爱发电 - @wdssmq</a>」\
+    「<a target="_blank" title="投喂支持" href="https://www.wdssmq.com/guestbook.html#h3-u6295u5582u652Fu6301" rel="nofollow">投喂支持</a>」\
     「<a target="_blank" title="QQ 群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ 群 - 我的咸鱼心</a>」\
 </div>
 `;

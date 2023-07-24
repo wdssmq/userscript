@@ -16,7 +16,7 @@ const gm_banner = `
 // @null     ----------------------------
 // @noframes
 // @run-at       document-end
-// @match        http://127.0.0.1:8080
+// @include      http://*:8088/
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
