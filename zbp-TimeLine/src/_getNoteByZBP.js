@@ -17,11 +17,19 @@ function formatJSON(obj) {
   return strJSON;
 }
 
-// Tags 特殊处理
-function formatTags(obj) {
+// Tags 等特殊处理
+function formatData(obj) {
   if (obj.Tags) {
     obj.Desc = obj.Desc.replace(obj.Tags.join(" "), "").trim();
-    obj.Tags = obj.Tags.join(", ");
+    obj.Tags = obj.Tags.join(", ").replace(/#/g, "");
+  }
+  if (obj.Source) {
+    // 为 yml 格式添加引号
+    obj.Source = `"${obj.Source}"`;
+  }
+  // Desc 截取 59 个字符
+  if (obj.Desc && obj.Desc.length > 59) {
+    obj.Desc = obj.Desc.slice(0, 53) + "…";
   }
   return obj;
 }
@@ -29,7 +37,7 @@ function formatTags(obj) {
 // 对象转 yaml
 function obj2yaml(obj) {
   let strYaml = "";
-  obj = formatTags(obj);
+  obj = formatData(obj);
   Object.keys(obj).forEach((key) => {
     strYaml += `${key}: ${obj[key]}\n`;
   });
