@@ -57,10 +57,12 @@
   const noteScheme$1 = {
     item: {
       "Title": "node:.post-title a",
-      "Type": 1,
-      "Url": "node:.post-title a",
-      "Text": "node:.post-intro",
+      "Desc": "node:.post-intro",
+      "Image": null,
       "Source": "[url=https://www.wdssmq.com]沉冰浮水的博客[/url]",
+      "Tags": "node:.post-intro .a-tag",
+      "Type": "文章",
+      "Url": "node:.post-title a",
     },
     parent: ".post",
     remove: "span.a-tag",
@@ -78,13 +80,36 @@
 
   // alert("getNoteByZBP");
 
+  // 格式化 JSON
   function formatJSON(obj) {
     let strJSON = JSON.stringify(obj);
     Object.keys(obj).forEach((key) => {
       const reg = new RegExp(`("${key}":)`);
       strJSON = strJSON.replace(reg, "\n$1 ");
     });
+    // 花括号换行
+    strJSON = strJSON.replace(/({)\n*/g, "$1\n");
+    strJSON = strJSON.replace(/\n*(})/g, "\n$1");
     return strJSON;
+  }
+
+  // Tags 特殊处理
+  function formatTags(obj) {
+    if (obj.Tags) {
+      obj.Desc = obj.Desc.replace(obj.Tags.join(" "), "").trim();
+      obj.Tags = obj.Tags.join(", ");
+    }
+    return obj;
+  }
+
+  // 对象转 yaml
+  function obj2yaml(obj) {
+    let strYaml = "";
+    obj = formatTags(obj);
+    Object.keys(obj).forEach((key) => {
+      strYaml += `${key}: ${obj[key]}\n`;
+    });
+    return strYaml;
   }
 
   function btnToggle($btn, text) {
@@ -93,6 +118,29 @@
     setTimeout(() => {
       $btn.text = tmp;
     }, 3000);
+  }
+
+  // 添加复制按钮及事件的封装
+  function addCopyBtn($btnWrap, note, btnCon = "复制", copyType = "json") {
+    const $btn = document.createElement("a");
+    $btn.href = "javascript:;";
+    $btn.classList.add("is-pulled-right");
+    $btn.textContent = btnCon;
+    $btn.title = btnCon;
+    $btnWrap.appendChild($btn);
+    // 由 copyType 决定复制的内容
+    let copyText = "";
+    if ("json" === copyType) {
+      copyText = formatJSON(note);
+    } else if ("yaml" === copyType) {
+      copyText = obj2yaml(note);
+    }
+    // 复制按钮事件
+    $btn.addEventListener("click", () => {
+      _log("copyText", copyText);
+      GM_setClipboard(copyText);
+      btnToggle($btn, "复制成功");
+    });
   }
 
   const noteScheme = config.noteScheme;
@@ -106,11 +154,22 @@
     const note = {};
     Object.keys(noteScheme.item).forEach((key) => {
       const selector = noteScheme.item[key];
+      if (!selector) {
+        return;
+      }
       if (typeof selector === "string" && selector.indexOf("node:") === 0) {
         const $node = fnFindDom($item, selector.slice(5));
         // _log("selector", selector);
         // _log("$node", $node);
-        if ($node) {
+        // 判断是否是 nodeList
+        if ($node && $node.length) {
+          _log("$node", $node);
+          const arr = [];
+          Array.from($node).forEach(($n) => {
+            arr.push($n.textContent.trim());
+          });
+          note[key] = arr;
+        } else if ($node) {
           if ("Url" === key) {
             note[key] = $node.href;
           } else {
@@ -125,17 +184,10 @@
     const $btnWrap = fnFindDom($item, noteScheme.btnWrap);
     // _log("$btnWrap", $btnWrap);
     if ($btnWrap) {
-      const $btn = document.createElement("a");
-      $btn.href = "javascript:;";
-      $btn.classList.add("is-pulled-right");
-      $btn.textContent = "复制";
-      $btnWrap.appendChild($btn);
-      $btn.addEventListener("click", () => {
-        const text = formatJSON(note);
-        _log("text", text);
-        GM_setClipboard(text);
-        btnToggle($btn, "复制成功");
-      });
+      addCopyBtn($btnWrap, note, "复制 JSON", "json");
+      // insertAdjacentHTML 添加一个 span
+      $btnWrap.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
+      addCopyBtn($btnWrap, note, "复制 YAML", "yaml");
     }
   });
 
