@@ -17,6 +17,7 @@ const gm_banner = `
 // @noframes
 // @run-at       document-end
 // @match        https://www.wdssmq.com/*
+// @match        https://github.com/wdssmq/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_setClipboard

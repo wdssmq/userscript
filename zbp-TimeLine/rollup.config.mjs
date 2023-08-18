@@ -11,7 +11,7 @@ const gobConfig = {
   gm_version: process.env.npm_package_version,
   listen: {
     host: "localhost",
-    port: "3000",
+    port: "3010",
   },
   url: null,
 };
