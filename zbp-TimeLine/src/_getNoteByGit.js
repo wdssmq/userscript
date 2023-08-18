@@ -28,23 +28,24 @@ async function git_repoInfo() {
 // update noteScheme
 function git_noteScheme(repoInfo) {
   const { path, desc, tags } = repoInfo;
-  noteScheme.item.Source = "[url=https://github.com/wdssmq]wdssmq (沉冰浮水)@github[/url]";
-  noteScheme.item.Url = curUrl;
-  noteScheme.item.Title = `GitHub - ${path}`;
   noteScheme.item.Desc = desc;
+  noteScheme.item.Source = "[url=https://github.com/wdssmq]wdssmq (沉冰浮水)@github[/url]";
   noteScheme.item.Tags = ["GitHub"].concat(tags);
+  noteScheme.item.Title = `GitHub - ${path}`;
+  noteScheme.item.Type = "代码";
+  noteScheme.item.Url = curUrl;
   // _log("noteScheme", noteScheme);
 }
 
 // 设置复制按钮
 function git_btnCopy() {
-  const $base = $n(".BorderGrid-cell>h2");
+  const $base = $n(".BorderGrid-cell>div");
   // _log("$base", $base);
   if (!$base) return;
-  addCopyBtn($base, noteScheme.item, "复制 JSON", "json");
+  addCopyBtn($base, noteScheme.item, "复制 YAML", "yaml");
   // insertAdjacentHTML 添加一个 span
   $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
-  addCopyBtn($base, noteScheme.item, "复制 YAML", "yaml");
+  addCopyBtn($base, noteScheme.item, "复制 JSON", "json");
 }
 
 (async () => {
