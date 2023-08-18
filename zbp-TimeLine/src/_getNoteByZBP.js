@@ -1,33 +1,9 @@
 import { $n, $na, fnFindDom } from "./_base";
 import { _log } from "./_base";
 import config from "./_config";
-import { formatJSON, formatYAML, btnToggle } from "./_func";
+import { formatJSON, formatYAML, addCopyBtn, btnToggle } from "./_func";
 
 // alert("getNoteByZBP");
-
-
-// 添加复制按钮及事件的封装
-function addCopyBtn($btnWrap, note, btnCon = "复制", copyType = "json") {
-  const $btn = document.createElement("a");
-  $btn.href = "javascript:;";
-  $btn.classList.add("is-pulled-right");
-  $btn.textContent = btnCon;
-  $btn.title = btnCon;
-  $btnWrap.appendChild($btn);
-  // 由 copyType 决定复制的内容
-  let copyText = "";
-  if ("json" === copyType) {
-    copyText = formatJSON(note);
-  } else if ("yaml" === copyType) {
-    copyText = formatYAML(note);
-  }
-  // 复制按钮事件
-  $btn.addEventListener("click", () => {
-    _log("copyText", copyText);
-    GM_setClipboard(copyText);
-    btnToggle($btn, "复制成功");
-  });
-}
 
 const noteScheme = config.noteScheme;
 const $items = $na(noteScheme.parent);

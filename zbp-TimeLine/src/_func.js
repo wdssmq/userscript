@@ -1,3 +1,5 @@
+import { _log } from "./_base";
+
 // 格式化 JSON
 function formatJSON(obj) {
   let strJSON = JSON.stringify(obj);
@@ -38,6 +40,30 @@ function formatYAML(obj) {
   return strYaml;
 }
 
+// 添加复制按钮及事件的封装
+function addCopyBtn($btnWrap, note, btnCon = "复制", copyType = "json") {
+  const $btn = document.createElement("a");
+  $btn.href = "javascript:;";
+  $btn.classList.add("is-pulled-right");
+  $btn.textContent = btnCon;
+  $btn.title = btnCon;
+  $btnWrap.appendChild($btn);
+  // 由 copyType 决定复制的内容
+  let copyText = "";
+  if ("json" === copyType) {
+    copyText = formatJSON(note);
+  } else if ("yaml" === copyType) {
+    copyText = formatYAML(note);
+  }
+  // 复制按钮事件
+  $btn.addEventListener("click", () => {
+    _log("copyText", copyText);
+    GM_setClipboard(copyText);
+    btnToggle($btn, "复制成功");
+  });
+}
+
+// 按钮文本切换
 function btnToggle($btn, text) {
   const tmp = $btn.text;
   $btn.text = text;
@@ -46,4 +72,4 @@ function btnToggle($btn, text) {
   }, 3000);
 }
 
-export { formatJSON, formatYAML, btnToggle };
+export { formatJSON, formatYAML, addCopyBtn, btnToggle };
