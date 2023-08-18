@@ -18,6 +18,7 @@ const gm_banner = `
 // @run-at       document-end
 // @match        https://www.wdssmq.com/*
 // @match        https://github.com/wdssmq/*
+// @match        https://www.bilibili.com/video/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_setClipboard
