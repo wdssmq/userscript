@@ -17,6 +17,7 @@
 // @run-at       document-end
 // @match        https://www.wdssmq.com/*
 // @match        https://github.com/wdssmq/*
+// @match        https://www.bilibili.com/video/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_setClipboard
@@ -58,7 +59,7 @@
   }
 
   // note 条目格式定义
-  const noteScheme$2 = {
+  const noteScheme$3 = {
     item: {
       "Title": "node:.post-title a",
       "Desc": "node:.post-intro",
@@ -76,9 +77,9 @@
 
   // 初始化配置
   const config = GM_getValue("config", {});
-  if (JSON.stringify(config) === "{}" || config.noteScheme.ver !== noteScheme$2.ver) {
+  if (JSON.stringify(config) === "{}" || config.noteScheme.ver !== noteScheme$3.ver) {
     GM_setValue("config", {
-      noteScheme: noteScheme$2,
+      noteScheme: noteScheme$3,
     });
   }
 
@@ -156,17 +157,17 @@
 
   // alert("getNoteByZBP");
 
-  const noteScheme$1 = config.noteScheme;
-  const $items = $na(noteScheme$1.parent);
+  const noteScheme$2 = config.noteScheme;
+  const $items = $na(noteScheme$2.parent);
   Array.from($items).forEach(($item) => {
     // 移除不需要的元素
-    const $remove = fnFindDom($item, noteScheme$1.remove);
+    const $remove = fnFindDom($item, noteScheme$2.remove);
     if ($remove) {
       $remove.remove();
     }
     const note = {};
-    Object.keys(noteScheme$1.item).forEach((key) => {
-      const selector = noteScheme$1.item[key];
+    Object.keys(noteScheme$2.item).forEach((key) => {
+      const selector = noteScheme$2.item[key];
       if (!selector) {
         return;
       }
@@ -194,7 +195,7 @@
       }
     });
     // 添加复制按钮
-    const $btnWrap = fnFindDom($item, noteScheme$1.btnWrap);
+    const $btnWrap = fnFindDom($item, noteScheme$2.btnWrap);
     // _log("$btnWrap", $btnWrap);
     if ($btnWrap) {
       addCopyBtn($btnWrap, note, "复制 JSON", "json");
@@ -225,7 +226,7 @@
 
   // const themeName = _themeName();
 
-  const noteScheme = config.noteScheme;
+  const noteScheme$1 = config.noteScheme;
 
   // 获取 github 仓库基本信息
   async function git_repoInfo() {
@@ -250,12 +251,12 @@
   // update noteScheme
   function git_noteScheme(repoInfo) {
     const { path, desc, tags } = repoInfo;
-    noteScheme.item.Desc = desc;
-    noteScheme.item.Source = "[url=https://github.com/wdssmq]wdssmq (沉冰浮水)@github[/url]";
-    noteScheme.item.Tags = ["GitHub"].concat(tags);
-    noteScheme.item.Title = `GitHub - ${path}`;
-    noteScheme.item.Type = "代码";
-    noteScheme.item.Url = curUrl;
+    noteScheme$1.item.Desc = desc;
+    noteScheme$1.item.Source = "[url=https://github.com/wdssmq]wdssmq (沉冰浮水)@github[/url]";
+    noteScheme$1.item.Tags = ["GitHub"].concat(tags);
+    noteScheme$1.item.Title = `GitHub - ${path}`;
+    noteScheme$1.item.Type = "代码";
+    noteScheme$1.item.Url = curUrl;
     // _log("noteScheme", noteScheme);
   }
 
@@ -264,10 +265,10 @@
     const $base = $n(".BorderGrid-cell>div");
     // _log("$base", $base);
     if (!$base) return;
-    addCopyBtn($base, noteScheme.item, "复制 YAML", "yaml");
+    addCopyBtn($base, noteScheme$1.item, "复制 YAML", "yaml");
     // insertAdjacentHTML 添加一个 span
     $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
-    addCopyBtn($base, noteScheme.item, "复制 JSON", "json");
+    addCopyBtn($base, noteScheme$1.item, "复制 JSON", "json");
   }
 
   (async () => {
@@ -279,5 +280,56 @@
 
 
   // Object.keys(noteScheme.item).forEach((key) => {
+
+  const noteScheme = config.noteScheme;
+
+  const mapNode = {
+    $title: "h1.video-title",
+    $desc: ".desc-info-text",
+    $btnSpan: ".js-note-btn",
+    $btnWrap: ".video-info-detail .video-info-detail-list",
+  };
+
+  // update noteScheme
+  function bili_noteScheme() {
+    noteScheme.item.Tags = ["哔哩哔哩"];
+    noteScheme.item.Type = "视频";
+    noteScheme.item.Url = "https://www.bilibili.com/video/" + window.__INITIAL_STATE__.bvid;
+    noteScheme.item.Title = $n(mapNode.$title).innerText.trim();
+    noteScheme.item.Desc = $n(mapNode.$desc).innerText.trim().replace(/\n/g, " ");
+    noteScheme.item.Source = "[url=https://space.bilibili.com/44744006]沉冰浮水@bilibili[/url]";
+    // _log("noteScheme", noteScheme);
+  }
+
+  // 设置复制按钮
+  function bili_btnCopy() {
+    const $btnWrap = $n(mapNode.$btnWrap);
+    if (!$btnWrap) return;
+    addCopyBtn($btnWrap, noteScheme.item, "复制 YAML", "yaml");
+    // insertAdjacentHTML 添加一个 span
+    $btnWrap.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right js-note-btn\">&nbsp;&nbsp;</span>");
+    addCopyBtn($btnWrap, noteScheme.item, "复制 JSON", "json");
+  }
+
+
+  (async () => {
+    if (!curUrl.includes("www.bilibili.com/video")) return;
+    const fnMain = () => {
+      const $btnSpan = $n(mapNode.$btnSpan);
+      // _log("$btnSpan", $btnSpan);
+      if ($btnSpan) return;
+      const $title = $n(mapNode.$title);
+      const $desc = $n(mapNode.$desc);
+      if ($title && $desc) {
+        bili_noteScheme();
+        bili_btnCopy();
+      }
+    };
+    const $body = $n("body");
+
+    // 监听鼠标移动事件，绑定到 body 上
+    $body.addEventListener("mousemove", fnMain, false);
+
+  })();
 
 })();
