@@ -6,3 +6,6 @@ import _getNoteByGit from "./_getNoteByGit";
 
 // _getNoteByBili
 import _getNoteByBili from "./_getNoteByBili";
+
+// _getNoteByZBA
+import _getNoteByZBA from "./_getNoteByZBA";
