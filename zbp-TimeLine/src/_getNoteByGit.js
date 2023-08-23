@@ -55,5 +55,3 @@ function git_btnCopy() {
   git_btnCopy();
 })();
 
-
-// Object.keys(noteScheme.item).forEach((key) => {

@@ -57,24 +57,3 @@ Array.from($items).forEach(($item) => {
 });
 
 // _log("notes", notes);
-
-// // 从 link:href 中获取主题名
-// function _themeName() {
-//   let themeName = "";
-//   const $links = $na("link");
-//   Array.from($links).forEach(($link) => {
-//     const href = $link.getAttribute("href");
-//     if (href.includes("zb_users/theme/")) {
-//       const match = href.match(/theme\/(.*)\/css/);
-//       if (match) {
-//         themeName = match[1];
-//         _log("themeName", themeName);
-//       }
-//     }
-//   });
-//   return themeName;
-// }
-
-// const themeName = _themeName();
-
-

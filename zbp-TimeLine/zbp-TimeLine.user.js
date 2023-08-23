@@ -18,6 +18,7 @@
 // @match        https://www.wdssmq.com/*
 // @match        https://github.com/wdssmq/*
 // @match        https://www.bilibili.com/video/*
+// @match        https://app.zblogcn.com/?id=*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_setClipboard
@@ -59,7 +60,7 @@
   }
 
   // note 条目格式定义
-  const noteScheme$3 = {
+  const noteScheme$4 = {
     item: {
       "Title": "node:.post-title a",
       "Desc": "node:.post-intro",
@@ -77,9 +78,9 @@
 
   // 初始化配置
   const config = GM_getValue("config", {});
-  if (JSON.stringify(config) === "{}" || config.noteScheme.ver !== noteScheme$3.ver) {
+  if (JSON.stringify(config) === "{}" || config.noteScheme.ver !== noteScheme$4.ver) {
     GM_setValue("config", {
-      noteScheme: noteScheme$3,
+      noteScheme: noteScheme$4,
     });
   }
 
@@ -157,17 +158,17 @@
 
   // alert("getNoteByZBP");
 
-  const noteScheme$2 = config.noteScheme;
-  const $items = $na(noteScheme$2.parent);
+  const noteScheme$3 = config.noteScheme;
+  const $items = $na(noteScheme$3.parent);
   Array.from($items).forEach(($item) => {
     // 移除不需要的元素
-    const $remove = fnFindDom($item, noteScheme$2.remove);
+    const $remove = fnFindDom($item, noteScheme$3.remove);
     if ($remove) {
       $remove.remove();
     }
     const note = {};
-    Object.keys(noteScheme$2.item).forEach((key) => {
-      const selector = noteScheme$2.item[key];
+    Object.keys(noteScheme$3.item).forEach((key) => {
+      const selector = noteScheme$3.item[key];
       if (!selector) {
         return;
       }
@@ -195,7 +196,7 @@
       }
     });
     // 添加复制按钮
-    const $btnWrap = fnFindDom($item, noteScheme$2.btnWrap);
+    const $btnWrap = fnFindDom($item, noteScheme$3.btnWrap);
     // _log("$btnWrap", $btnWrap);
     if ($btnWrap) {
       addCopyBtn($btnWrap, note, "复制 JSON", "json");
@@ -207,26 +208,7 @@
 
   // _log("notes", notes);
 
-  // // 从 link:href 中获取主题名
-  // function _themeName() {
-  //   let themeName = "";
-  //   const $links = $na("link");
-  //   Array.from($links).forEach(($link) => {
-  //     const href = $link.getAttribute("href");
-  //     if (href.includes("zb_users/theme/")) {
-  //       const match = href.match(/theme\/(.*)\/css/);
-  //       if (match) {
-  //         themeName = match[1];
-  //         _log("themeName", themeName);
-  //       }
-  //     }
-  //   });
-  //   return themeName;
-  // }
-
-  // const themeName = _themeName();
-
-  const noteScheme$1 = config.noteScheme;
+  const noteScheme$2 = config.noteScheme;
 
   // 获取 github 仓库基本信息
   async function git_repoInfo() {
@@ -251,12 +233,12 @@
   // update noteScheme
   function git_noteScheme(repoInfo) {
     const { path, desc, tags } = repoInfo;
-    noteScheme$1.item.Desc = desc;
-    noteScheme$1.item.Source = "[url=https://github.com/wdssmq]wdssmq (沉冰浮水)@github[/url]";
-    noteScheme$1.item.Tags = ["GitHub"].concat(tags);
-    noteScheme$1.item.Title = `GitHub - ${path}`;
-    noteScheme$1.item.Type = "代码";
-    noteScheme$1.item.Url = curUrl;
+    noteScheme$2.item.Desc = desc;
+    noteScheme$2.item.Source = "[url=https://github.com/wdssmq]wdssmq (沉冰浮水)@github[/url]";
+    noteScheme$2.item.Tags = ["GitHub"].concat(tags);
+    noteScheme$2.item.Title = `GitHub - ${path}`;
+    noteScheme$2.item.Type = "代码";
+    noteScheme$2.item.Url = curUrl;
     // _log("noteScheme", noteScheme);
   }
 
@@ -265,10 +247,10 @@
     const $base = $n(".BorderGrid-cell>div");
     // _log("$base", $base);
     if (!$base) return;
-    addCopyBtn($base, noteScheme$1.item, "复制 YAML", "yaml");
+    addCopyBtn($base, noteScheme$2.item, "复制 YAML", "yaml");
     // insertAdjacentHTML 添加一个 span
     $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
-    addCopyBtn($base, noteScheme$1.item, "复制 JSON", "json");
+    addCopyBtn($base, noteScheme$2.item, "复制 JSON", "json");
   }
 
   (async () => {
@@ -278,10 +260,7 @@
     git_btnCopy();
   })();
 
-
-  // Object.keys(noteScheme.item).forEach((key) => {
-
-  const noteScheme = config.noteScheme;
+  const noteScheme$1 = config.noteScheme;
 
   const mapNode = {
     $title: "h1.video-title",
@@ -292,12 +271,12 @@
 
   // update noteScheme
   function bili_noteScheme() {
-    noteScheme.item.Tags = ["哔哩哔哩"];
-    noteScheme.item.Type = "视频";
-    noteScheme.item.Url = "https://www.bilibili.com/video/" + window.__INITIAL_STATE__.bvid;
-    noteScheme.item.Title = $n(mapNode.$title).innerText.trim();
-    noteScheme.item.Desc = $n(mapNode.$desc).innerText.trim().replace(/\n/g, " ");
-    noteScheme.item.Source = "[url=https://space.bilibili.com/44744006]沉冰浮水@bilibili[/url]";
+    noteScheme$1.item.Tags = ["哔哩哔哩"];
+    noteScheme$1.item.Type = "视频";
+    noteScheme$1.item.Url = "https://www.bilibili.com/video/" + window.__INITIAL_STATE__.bvid;
+    noteScheme$1.item.Title = $n(mapNode.$title).innerText.trim();
+    noteScheme$1.item.Desc = $n(mapNode.$desc).innerText.trim().replace(/\n/g, " ");
+    noteScheme$1.item.Source = "[url=https://space.bilibili.com/44744006]沉冰浮水@bilibili[/url]";
     // _log("noteScheme", noteScheme);
   }
 
@@ -305,10 +284,10 @@
   function bili_btnCopy() {
     const $btnWrap = $n(mapNode.$btnWrap);
     if (!$btnWrap) return;
-    addCopyBtn($btnWrap, noteScheme.item, "复制 YAML", "yaml");
+    addCopyBtn($btnWrap, noteScheme$1.item, "复制 YAML", "yaml");
     // insertAdjacentHTML 添加一个 span
     $btnWrap.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right js-note-btn\">&nbsp;&nbsp;</span>");
-    addCopyBtn($btnWrap, noteScheme.item, "复制 JSON", "json");
+    addCopyBtn($btnWrap, noteScheme$1.item, "复制 JSON", "json");
   }
 
 
@@ -330,6 +309,54 @@
     // 监听鼠标移动事件，绑定到 body 上
     $body.addEventListener("mousemove", fnMain, false);
 
+  })();
+
+  const noteScheme = config.noteScheme;
+
+  // 应用信息获取
+  function zba_appInfo() {
+    const appInfo = {};
+    appInfo.title = document.title;
+    appInfo.desc = document.title;
+    appInfo.img = (() => {
+      const $img = $n(".app-header-image>img");
+      if (!$img) return "";
+      return $img.src.replace("-logo", "");
+    })();
+    // _log("img", img);
+    appInfo.url = curUrl;
+    return appInfo;
+  }
+
+  // update noteScheme
+  function zba_noteScheme() {
+    const { title, desc, img, url } = zba_appInfo();
+
+    noteScheme.item.Desc = desc;
+    noteScheme.item.Image = img;
+    noteScheme.item.Source = "[url=https://app.zblogcn.com/?auth=6401c4a7-89cd-48f9-a68b-d6464d8c3bc8]沉冰浮水 - Z-Blog 应用中心[/url]";
+    noteScheme.item.Tags = ["Z-BlogPHP", "Z-BlogPHP_插件"];
+    noteScheme.item.Title = `Z-BlogPHP - ${title}`;
+    noteScheme.item.Type = "代码";
+    noteScheme.item.Url = url.replace(/#.+/g, "");
+    // _log("noteScheme", noteScheme);
+  }
+
+  // 设置复制按钮
+  function zba_btnCopy() {
+    const $base = $n(".app-download");
+    // _log("$base", $base);
+    if (!$base) return;
+    addCopyBtn($base, noteScheme.item, "复制 YAML", "yaml");
+    // insertAdjacentHTML 添加一个 span
+    $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
+    addCopyBtn($base, noteScheme.item, "复制 JSON", "json");
+  }
+
+  (async () => {
+    if (!curUrl.includes("zblogcn.com/?id=")) return;
+    zba_noteScheme();
+    zba_btnCopy();
   })();
 
 })();
