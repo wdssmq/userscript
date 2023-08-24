@@ -1,4 +1,4 @@
-name: readme
+name: Build
 on:
   push:
     branches:
@@ -6,9 +6,9 @@ on:
       - master
 jobs:
   def:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
-      TZ: Asia/Shanghai # https://xirikm.net/2020/215-1
+      TZ: Asia/Shanghai
     steps:
       # Checkout
       - name: Checkout
