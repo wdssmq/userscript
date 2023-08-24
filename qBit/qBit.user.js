@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」qBittorrent 管理脚本「QQ 群：189574683」
 // @namespace    http://沉冰浮水.tk/
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
 // @license      MIT
@@ -15,7 +15,6 @@
 // @null     ----------------------------
 // @noframes
 // @run-at       document-end
-// @match        http://127.0.0.1:8080
 // @include      http://*:8088/
 // @grant        GM_xmlhttpRequest
 // @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js
