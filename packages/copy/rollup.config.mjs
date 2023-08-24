@@ -8,7 +8,7 @@ import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 // // typeof monkey： function
 
 const gobConfig = {
-  gm_file: `${gm_name}.user.js`,
+  gm_file: `../../dist/${gm_name}.user.js`,
   gm_banner: gm_banner.trim() + "\n",
   gm_version: process.env.npm_package_version,
   gm_dev: monkeyPath.devJS,

@@ -6,7 +6,7 @@
 
 更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
-GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork")
+<!-- GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork") -->
 
 QQ 群：[189574683](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心") [![QQ群](https://pub.idqqimg.com/wpa/images/group.png "QQ群")](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
@@ -20,13 +20,13 @@ QQ 群：[189574683](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心") [![QQ�
 ```markdown
 <!-- 普通文本 -->
 
-「水水」复制标题网址
-https://greasyfork.org/zh-CN/scripts/28056
+wdssmq/userscript: 各种猴子脚本
+https://github.com/wdssmq/userscript
 
 <!-- HTML -->
 
-<p>「水水」复制标题网址</p>
-<p><a href="https://greasyfork.org/zh-CN/scripts/28056" target="_blank" title="「水水」复制标题网址">https://greasyfork.org/zh-CN/scripts/28056</a></p>
+<p>wdssmq/userscript: 各种猴子脚本</p>
+<p><a href="https://github.com/wdssmq/userscript" target="_blank" title="wdssmq/userscript: 各种猴子脚本">https://github.com/wdssmq/userscript</a></p>
 
 ```
 
@@ -34,12 +34,18 @@ https://greasyfork.org/zh-CN/scripts/28056
 
 <!-- MD 格式 「text」 -->
 
-[「水水」复制标题网址](https://greasyfork.org/zh-CN/scripts/28056 "「水水」复制标题网址")
+[wdssmq/userscript: 各种猴子脚本](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
 <!-- MD 格式 「link」 -->
 
-「水水」复制标题网址：
+wdssmq/userscript: 各种猴子脚本：
 
-[https://greasyfork.org/zh-CN/scripts/28056](https://greasyfork.org/zh-CN/scripts/28056 "「水水」复制标题网址")
+[https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
+
+<!-- MD 格式 「引用」 -->
+
+> wdssmq/userscript: 各种猴子脚本
+>
+> [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
 ```
