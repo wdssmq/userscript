@@ -7,9 +7,13 @@ note-*
 *.code-workspace
 empty_def.user.js
 gm.user.js
-node_modules
-.history
 dev
 pnpm-lock.yaml
 package-lock.json
 **/.eslintrc.yaml
+
+# 2023-08-24
+__pycache__
+_debug_*
+.history
+node_modules
