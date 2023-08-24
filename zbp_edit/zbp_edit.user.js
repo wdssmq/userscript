@@ -30,7 +30,7 @@
   // 初始常量或函数
   const curUrl = window.location.href;
   // ---------------------------------------------------
-  const $$1 = window.$ || unsafeWindow.$;
+  const $ = window.$ || unsafeWindow.$;
 
   function _mdToc () {
     const postTitle = $(".post-title");
@@ -40,12 +40,18 @@
     const _setAnchorLink = (el, $refLink) => {
       const anchorId = el.attr("id");
       const title = $refLink.attr("name");
+      // 锚点链接目标
+      const arrHash = [
+        `#${anchorId}`,
+        `#${title}`,
+      ];
 
       const $a = $("<a>")
-        .attr("href", `#${anchorId}`)
+        .attr("href", "#")
         .attr("title", title)
         .html("#")
         .addClass("header-anchor")
+        .data("hash", arrHash[0])
         .css({
           borderBottom: "none",
           marginRight: "3px",
@@ -53,6 +59,11 @@
           visibility: "hidden",
         })
         .click(() => {
+          // 根据 data-hash 属性，切换锚点链接目标
+          const hash = $a.data("hash");
+          const newHash = arrHash.filter(item => item !== hash)[0];
+          $a.attr("href", newHash);
+          $a.data("hash", newHash);
           document.title = `${title} - ${postTitle.text()}`;
         });
       const $span = el.find(".header-link");
@@ -86,43 +97,43 @@
 
   }
 
-  $$1(function () {
+  $(function () {
     _mdToc();
     // 添加编辑按钮
-    $$1(".js-edt")
+    $(".js-edt")
       .each(function () {
-        const id = $$1(this).data("id");
-        const type = $$1(this).data("type");
+        const id = $(this).data("id");
+        const type = $(this).data("type");
         const act = type ? "PageEdt" : "ArticleEdt";
-        $$1(this).html(
+        $(this).html(
           `[<a title="编辑" rel="external" href="${window.bloghost}zb_system/cmd.php?act=${act}&id=${id}">编辑</a>]`,
         );
       })
       .removeClass("is-hidden hidden");
 
     // 清理评论失效网址
-    $$1(".cmt-tips").each(function () {
-      const $this = $$1(this);
+    $(".cmt-tips").each(function () {
+      const $this = $(this);
       const authName = $this.data("name");
       $this.append(
         ` <a class="cmt-edit" title="查找编辑" rel="external" href="${window.bloghost}zb_users/plugin/cmt2rss/main.php?act=update&read_getWord=${authName}" target="_blank">查找编辑</a>`,
       );
     });
-    $$1(".cmt-edit").css({ color: "#175199" });
+    $(".cmt-edit").css({ color: "#175199" });
 
     // 设置文章为回收
     if (curUrl.indexOf("zblogcn.com") > -1) {
       return;
     }
-    $$1("#edtTitle").after(
+    $("#edtTitle").after(
       "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> 「设置为回收」</a>",
     );
     let editor_api = window.editor_api;
-    $$1(".js-empty").click(function () {
-      $$1("#edtTitle").val("回收");
-      $$1("#edtTag").val("回收");
-      $$1("#edtDateTime").datetimepicker("setDate", (new Date()));
-      $$1("#cmbPostStatus").val("1");
+    $(".js-empty").click(function () {
+      $("#edtTitle").val("回收");
+      $("#edtTag").val("回收");
+      $("#edtDateTime").datetimepicker("setDate", (new Date()));
+      $("#cmbPostStatus").val("1");
       let strMore = "";
       if (typeof window.EDITORMD == "object") {
         strMore = "\n\n<!--more-->";

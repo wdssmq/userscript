@@ -1,4 +1,4 @@
-import { _log } from "./_base";
+import { $, _log } from "./_base";
 
 export default function () {
   const postTitle = $(".post-title");
@@ -8,12 +8,18 @@ export default function () {
   const _setAnchorLink = (el, $refLink) => {
     const anchorId = el.attr("id");
     const title = $refLink.attr("name");
+    // 锚点链接目标
+    const arrHash = [
+      `#${anchorId}`,
+      `#${title}`,
+    ];
 
     const $a = $("<a>")
-      .attr("href", `#${anchorId}`)
+      .attr("href", "#")
       .attr("title", title)
       .html("#")
       .addClass("header-anchor")
+      .data("hash", arrHash[0])
       .css({
         borderBottom: "none",
         marginRight: "3px",
@@ -21,6 +27,11 @@ export default function () {
         visibility: "hidden",
       })
       .click(() => {
+        // 根据 data-hash 属性，切换锚点链接目标
+        const hash = $a.data("hash");
+        const newHash = arrHash.filter(item => item !== hash)[0];
+        $a.attr("href", newHash);
+        $a.data("hash", newHash);
         document.title = `${title} - ${postTitle.text()}`;
       });
     const $span = el.find(".header-link");
