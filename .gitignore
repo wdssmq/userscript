@@ -17,3 +17,4 @@ __pycache__
 _debug_*
 .history
 node_modules
+/packages/**/*.user.js
