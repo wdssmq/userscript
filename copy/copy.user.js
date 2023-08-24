@@ -110,6 +110,17 @@
     GM_setClipboard(`${title}：\n\n[${url}](${url} "${title}")`);
   });
 
+  const tplMarkQuote = `
+> {title}
+>
+> [{url}]({url} "{title}")
+`;
+
+  GM_registerMenuCommand("复制为 Markdown「引用」", () => {
+    const [title, url] = fnGetInfo(true);
+    GM_setClipboard(tplMarkQuote.replace(/\{title\}/g, title).replace(/\{url\}/g, url));
+  });
+
   // 指定元素中的链接增加 target="_blank"
   const config = [
       [".markdown_body", ".reply_content"],

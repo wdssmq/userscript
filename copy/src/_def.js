@@ -62,3 +62,14 @@ GM_registerMenuCommand("复制为 Markdown「link」", () => {
   const [title, url] = fnGetInfo(true);
   GM_setClipboard(`${title}：\n\n[${url}](${url} "${title}")`);
 });
+
+const tplMarkQuote = `
+> {title}
+>
+> [{url}]({url} "{title}")
+`;
+
+GM_registerMenuCommand("复制为 Markdown「引用」", () => {
+  const [title, url] = fnGetInfo(true);
+  GM_setClipboard(tplMarkQuote.replace(/\{title\}/g, title).replace(/\{url\}/g, url));
+});
