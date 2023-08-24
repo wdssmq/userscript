@@ -10,7 +10,7 @@
 
 更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
-GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork")
+<!-- GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork") -->
 
 QQ 群：[189574683](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心") [![QQ群](https://pub.idqqimg.com/wpa/images/group.png "QQ群")](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
 
@@ -18,6 +18,7 @@ QQ 群：[189574683](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心") [![QQ�
 >
 > [https://github.com/wdssmq/rollup-plugin-monkey](https://github.com/wdssmq/rollup-plugin-monkey "wdssmq/rollup-plugin-monkey: 使用 rollup 开发「GM\_脚本」")
 
+<!--
 ## 用于复制
 
 ```js
@@ -30,14 +31,11 @@ QQ 群：[189574683](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心") [![QQ�
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 ```
+-->
 
 ## 已有项目
 
-注：安装相应浏览器扩展后点击各脚本页的 raw 即可安装。
-
----start---
-
----end---
+占位
 
 ## up empty_def
 
