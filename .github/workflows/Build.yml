@@ -40,6 +40,17 @@ jobs:
           GIT_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           pipenv run build
+      # Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      # Install Deps && Build Astro
+      - name: Install Deps && Build Astro
+        run: |
+          cd site-astro
+          npm install
+          npm run build
       # Commit Changes To Git
       - name: Commit files
         run: |
