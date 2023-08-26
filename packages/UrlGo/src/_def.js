@@ -28,6 +28,7 @@ const siteList = [
     name: "百度贴吧",
     hostList: ["jump2.bdimg.com", "tieba.baidu.com"],
     url: fnGetUrlInDOM("p.link", "textContent"),
+    tipNode: [$n("p.content"), "after"]
   },
   {
     name: "QQ 客户端",
@@ -56,7 +57,7 @@ const siteList = [
 function fnShowTip(tipNode, text, url) {
   console.log(text);
   const $node = tipNode[0];
-  const $insertTips = `<p class="go-tips" style="color: red;">
+  const $insertTips = `<p class="go-tips" style="color: red;text-align: center;">
   <span>${text}</span>
   <a href="${url}" title="点击跳转">点击跳转</a>
   </p>`;
@@ -93,7 +94,9 @@ siteList.forEach((site) => {
         cntDown--;
       }, 1000);
     } else {
-      window.location.href = newUrl;
+      setTimeout(() => {
+        window.location.href = newUrl;
+      }, 10000);
     }
   }
 });
