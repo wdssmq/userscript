@@ -1,23 +1,29 @@
 ---
 interface Props {
-	title: string;
+	links: string[];
 	body: string;
 	href: string;
 }
 
-const { href, title, body } = Astro.props;
+const { links, title, body } = Astro.props;
 ---
 
 <li class="link-card">
-	<a href={href}>
+  <div class="link-body">
 		<h2>
-			{title}
+			<a class="title" href={links.docUrl} title={title} target="_blank">{title}</a>
 			<span>&rarr;</span>
+			<a href={links.docUrl} title={title} target="_blank">「文档说明」</a>
+			<a href={links.gitUrl} title={title} target="_blank">「在线查看代码」</a>
 		</h2>
 		<p>
 			{body}
 		</p>
-	</a>
+    <p>
+       <a href={links.gitUrlRaw} title="安装脚本 - RAW" target="_blank">「安装脚本 - RAW」</a>
+       <a href={links.cdnUrl} title="安装脚本 - CDN" target="_blank">「安装脚本 - CDN」</a>
+    </p>
+  </div>
 </li>
 <style>
 	.link-card {
@@ -32,7 +38,7 @@ const { href, title, body } = Astro.props;
 		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 	}
-	.link-card > a {
+	.link-card > div {
 		width: 100%;
 		text-decoration: none;
 		line-height: 1.4;
@@ -47,6 +53,12 @@ const { href, title, body } = Astro.props;
 		font-size: 1.25rem;
 		transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 	}
+  a {
+    text-decoration: none;
+  }
+  h2 a.title {
+    color: inherit;
+  }
 	p {
 		margin-top: 0.5rem;
 		margin-bottom: 0;
@@ -58,4 +70,10 @@ const { href, title, body } = Astro.props;
 	.link-card:is(:hover, :focus-within) h2 {
 		color: rgb(var(--accent-light));
 	}
+  .link-card:is(:hover, :focus-within) a {
+    text-decoration: underline;
+  }
+  .link-card:is(:hover, :focus-within) a:hover {
+    text-decoration: none;
+  }
 </style>
