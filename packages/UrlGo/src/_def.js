@@ -23,7 +23,7 @@ function fnCheckUrl(url) {
   return "http://" + url;
 }
 
-const stieList = [
+const siteList = [
   {
     name: "百度贴吧",
     hostList: ["jump2.bdimg.com", "tieba.baidu.com"],
@@ -33,11 +33,13 @@ const stieList = [
     name: "QQ 客户端",
     hostList: ["c.pc.qq.com"],
     url: fnGetUrlInDOM("#url", "textContent"),
+    tipNode: [$n("p.ui-title"), "after"]
   },
   {
     name: "QQ 邮箱",
     hostList: ["mail.qq.com"],
     url: fnGetUrlInDOM(".safety-url", "textContent"),
+    tipNode: [$n(".safety-url"), "after"]
   },
   {
     name: "简书",
@@ -50,12 +52,47 @@ const stieList = [
   },
 ];
 
+// 显示提示
+function fnShowTip(tipNode, text, url) {
+  console.log(text);
+  const $node = tipNode[0];
+  const $insertTips = `<p class="go-tips" style="color: red;">
+  <span>${text}</span>
+  <a href="${url}" title="点击跳转">点击跳转</a>
+  </p>`;
+  const $tips = $n(".go-tips");
+  // 判断是否已经有提示
+  if ($tips) {
+    $tips.querySelector("span").textContent = text;
+    return;
+  }
+  switch (tipNode[1]) {
+    default:
+    case "after":
+      $node.insertAdjacentHTML("afterend", $insertTips);
+      break;
+  }
+}
+
 // 各种中转页跳过
-stieList.forEach((site) => {
+siteList.forEach((site) => {
   const { name, hostList, url } = site;
   if (hostList.includes(curHost)) {
-    if (url) {
-      const newUrl = fnCheckUrl(url);
+    if (!url) {
+      return;
+    }
+    const newUrl = fnCheckUrl(url);
+    if (site.tipNode) {
+      let cntDown = 5;
+      setInterval(() => {
+        if (cntDown <= 0) {
+          window.location.href = newUrl;
+          return;
+        }
+        fnShowTip(site.tipNode, `即将跳转到，剩余 ${cntDown} 秒`, newUrl);
+        cntDown--;
+      }, 1000);
+    } else {
       window.location.href = newUrl;
     }
   }
