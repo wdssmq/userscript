@@ -13,7 +13,8 @@ updateDate: {updateDate}
 # heroImage: {heroImage}
 gitUrl: {gitUrl}
 gitUrlRaw: {gitUrlRaw}
-cndUrl: {cndUrl}
+cdnUrl: {cdnUrl}
+docUrl: {docUrl}
 tags: []
 ---\n"""
 
@@ -28,7 +29,7 @@ def gm_read_js(file_js, file_name):
     gm_info = {
         "name": name[0],
         "desc": desc[0],
-        "file": file_name.replace(".user.js", ""),
+        "file_gm": file_name.replace(".user.js", ""),
         "file_full": file_name,
         "body": "",
     }
@@ -40,15 +41,18 @@ def gm_read_doc(file_doc):
         con_md = f.read()
     return con_md
 
-def gm_build_link(branch, path, file):
+def gm_build_link(branch, gm_info):
     """拼接脚本链接"""
-    git_url = f"https://github.com/wdssmq/userscript/blob/{branch}/{path}/{file}"
+    file_full = gm_info["file_full"]
+    git_url = f"https://github.com/wdssmq/userscript/blob/{branch}/dist/{file_full}"
     git_url_raw = f"{git_url}?raw=true"
-    cnd_url = f"https://cdn.jsdelivr.net/gh/wdssmq/userscript@{branch}/{path}/{file}"
+    cnd_url = f"https://cdn.jsdelivr.net/gh/wdssmq/userscript@{branch}/dist/{file_full}"
+    doc_url = f"https://github.com/wdssmq/userscript/tree/main/packages/{gm_info['file_gm']}#readme"
     return {
         "gitUrl": git_url,
         "gitUrlRaw": git_url_raw,
-        "cndUrl": cnd_url,
+        "cdnUrl": cnd_url,
+        "docUrl": doc_url,
     }
 
 # 获取当前时间
@@ -84,23 +88,21 @@ def gm_md_build(gob_config):
         # gm_doc = gm_read_doc(os.path.join(gob_config["gm_src_path"], gm_info["file"] + ".md"))
         #
         # 拼接 md 文件路径
-        gm_md_file = os.path.join(gob_config["gm_md_path"], gm_info["file"] + ".md")
+        gm_md_file = os.path.join(gob_config["gm_md_path"], gm_info["file_gm"] + ".md")
         # 获取发布/更新时间
         (pub_time, up_time) = gm_md_time(gm_md_file)
-        fnLog(pub_time)
-        fnLog(up_time)
+        # fnLog(pub_time)
+        # fnLog(up_time)
         # GM_脚本 链接拼接
-        gm_link_info = gm_build_link("main", "dist", gm_info["file_full"])
+        gm_link_info = gm_build_link("main", gm_info)
         # 拼接 md 文件内容
         gm_md = md_head_tpl.format(
             title=gm_info["name"],
             description=gm_info["desc"],
             pubDate=pub_time,
             updateDate=up_time,
-            gitUrl=gm_link_info["gitUrl"],
-            gitUrlRaw=gm_link_info["gitUrlRaw"],
-            cndUrl=gm_link_info["cndUrl"],
             heroImage="\"\"",
+            **gm_link_info
         )
         gm_md +="\n"
         gm_md += gm_info["body"]
