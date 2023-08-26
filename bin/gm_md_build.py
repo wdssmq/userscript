@@ -35,11 +35,13 @@ def gm_read_js(file_js, file_name):
     }
     return gm_info
 
+
 def gm_read_doc(file_doc):
     """读取脚本介绍文件"""
     with open(file_doc, "r", encoding="UTF-8") as f:
         con_md = f.read()
     return con_md
+
 
 def gm_build_link(branch, gm_info):
     """拼接脚本链接"""
@@ -55,8 +57,11 @@ def gm_build_link(branch, gm_info):
         "docUrl": doc_url,
     }
 
+
 # 获取当前时间
-now_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
 def gm_md_time(gm_md_file):
     """设置发布/更新时间"""
     pub_time = now_time
@@ -67,26 +72,31 @@ def gm_md_time(gm_md_file):
         pub_time = re.findall(r"pubDate: ([^\n]+)", con_md)[0]
     return (pub_time, up_time)
 
-def gm_read_dist(path):
+
+def gm_read_dist(path, changed=[]):
     """读取脚本文件夹"""
     gm_info_list = []
     for file_name in fnGetFilesInDir2(path, ".js"):
         file_path = os.path.join(path, file_name)
+        # 判断是否发生修改
+        if changed and file_path not in changed:
+            fnLog(f"跳过：{file_path}")
+            continue
         gm_info_list.append(gm_read_js(file_path, file_name))
-    fnLog(gm_info_list)
+    # fnLog(gm_info_list)
     return gm_info_list
 
 
 def gm_md_build(gob_config):
     """生成脚本介绍文件"""
-    gm_info_list = gm_read_dist(gob_config["gm_dist_path"])
+    gm_info_list = gm_read_dist(gob_config["gm_dist_path"], gob_config["changed"])
     for gm_info in gm_info_list:
         # gm_doc_path = os.path.join(gob_config["gm_src_path"], gm_info["file"], "README.md")
         # if os.path.exists(gm_doc_path):
         #     gm_doc_con = gm_read_doc(gm_doc_path)
         #     gm_info["body"] = gm_doc_con
         # gm_doc = gm_read_doc(os.path.join(gob_config["gm_src_path"], gm_info["file"] + ".md"))
-        #
+        # ---------------
         # 拼接 md 文件路径
         gm_md_file = os.path.join(gob_config["gm_md_path"], gm_info["file_gm"] + ".md")
         # 获取发布/更新时间
@@ -101,10 +111,10 @@ def gm_md_build(gob_config):
             description=gm_info["desc"],
             pubDate=pub_time,
             updateDate=up_time,
-            heroImage="\"\"",
-            **gm_link_info
+            heroImage='""',
+            **gm_link_info,
         )
-        gm_md +="\n"
+        gm_md += "\n"
         gm_md += gm_info["body"]
         with open(gm_md_file, "w", encoding="UTF-8") as f:
             f.write(gm_md)
