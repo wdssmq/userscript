@@ -8,7 +8,7 @@ import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 // // typeof monkey： function
 
 const gobConfig = {
-  gm_file: `../../dist/${gm_name}.user.js`,
+  gm_file: `${gm_name}.user.js`,
   gm_banner: gm_banner.trim() + "\n",
   gm_version: process.env.npm_package_version,
   gm_dev: monkeyPath.devJS,
@@ -24,6 +24,10 @@ gobConfig.url = `http://${gobConfig.listen.host}:${gobConfig.listen.port}`;
 gobConfig.gm_banner = gobConfig.gm_banner.replace("placeholder.pkg.version", gobConfig.gm_version);
 if (gm_require.length > 0) {
   gobConfig.gm_banner = gobConfig.gm_banner.replace("// ==/", gobConfig.gm_require + "\n// ==/");
+}
+
+if (process.env.NODE_ENV === "prod") {
+  gobConfig.gm_file = `../../dist/${gm_name}.user.js`;
 }
 
 const prodConfig = {
