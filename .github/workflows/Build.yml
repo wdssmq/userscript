@@ -51,6 +51,8 @@ jobs:
           cd site-astro
           npm install
           npm run build
+          # 写入 .nojekyll 到 docs 目录
+          cd .. && touch docs/.nojekyll
       # Commit Changes To Git
       - name: Commit files
         run: |
