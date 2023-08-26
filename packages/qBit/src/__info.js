@@ -1,10 +1,10 @@
 const gm_banner = `
 // ==UserScript==
-// @name         「水水」qBittorrent 管理脚本「QQ 群：189574683」
-// @namespace    http://沉冰浮水.tk/
+// @name         「水水」qBittorrent 管理脚本
+// @namespace    做最终做到的事，成为最终成为的人。
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
-// @description  通过 WebUI 的 API 批量替换 Tracker
+// @description  通过 WebUI 的 API 批量替换 Tracker；「QQ 群：189574683」
 // @license      MIT
 // @null     ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
