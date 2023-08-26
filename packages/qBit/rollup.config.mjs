@@ -26,6 +26,10 @@ if (gm_require.length > 0) {
   gobConfig.gm_banner = gobConfig.gm_banner.replace("// ==/", gobConfig.gm_require + "\n// ==/");
 }
 
+if (process.env.NODE_ENV === "prod") {
+  gobConfig.gm_file = `../../dist/${gm_name}.user.js`;
+}
+
 const prodConfig = {
   input: "src/main.js",
   output: {
