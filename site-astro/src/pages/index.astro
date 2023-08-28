@@ -8,7 +8,7 @@ const allPost = (await getCollection("gm_md")).sort(config.func.sortPosts);
 // const posts = allPost.slice(0, config.opt.postsSize);
 ---
 
-<Layout title="wdssmq/userscript">
+<Layout title={config.site.title} description={config.site.description}>
   <main>
     <h1>各种 <span class="text-gradient">GM_脚本</span></h1>
     <p class="instructions">
