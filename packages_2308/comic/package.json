@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.2",
-    "rollup": "^3.2.3",
-    "rollup-plugin-monkey": "~/Git/rollup-plugin-monkey"
+    "open": "^8.4.0",
+    "rollup": "^3.28.1",
+    "rollup-plugin-monkey": "^1.0.9"
   }
 }

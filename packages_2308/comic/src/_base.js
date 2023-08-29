@@ -2,6 +2,7 @@ import { gm_name } from "./__info";
 
 // 初始常量或函数
 const curUrl = window.location.href;
+const curHost = window.location.host;
 const curDate = new Date();
 
 // -------------------------------------
@@ -16,9 +17,9 @@ const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // -------------------------------------
 
-const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
-const _warn = (...args) => console.warn(`[${gm_name}] |`, ...args);
-const _error = (...args) => console.error(`[${gm_name}] |`, ...args);
+const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
+const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
+const _error = (...args) => console.error(`[${gm_name}]\n`, ...args);
 
 // -------------------------------------
 
@@ -66,6 +67,7 @@ const fnElChange = (el, fn = () => { }) => {
 
 export {
   curUrl,
+  curHost,
   curDate,
   _curUrl,
   _curDate,
