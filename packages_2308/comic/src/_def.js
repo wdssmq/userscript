@@ -2,15 +2,20 @@
 
 import { _log, _sleep, $n, $na } from "./_base";
 
+import { gob } from "./_gob";
+
 // -----------------------
 
 // 当前项目的各种函数
 function fnGenUrl() {
   // 用于下载图片
   const imgUrl = $n(".mangaFile").getAttribute("src");
-  _log("[log]fnGenUrl()\n", imgUrl);
+  if (gob.curImgUrl !== imgUrl) {
+    _log("[log]fnGenUrl()\n", imgUrl);
+    gob.curImgUrl = imgUrl;
+  }
   // return encodeURI(imgUrl);
-  return imgUrl;
+  return gob.curImgUrl;
 }
 
 function fnGenInfo() {
@@ -18,6 +23,28 @@ function fnGenInfo() {
   const chapter = $n(".title h2").innerHTML; // 章节
   const pages = $na("option").length; // 总页数
   return { name, chapter, pages };
+}
+
+// 自动下载下一章
+function fnAutoNextChap() {
+  const $nextBtn = $n("#pb .pb-ok");
+  if ($nextBtn) {
+    $n("#pb .pb-ft").style.display = "flex";
+    // 居中 + 垂直居中
+    $n("#pb .pb-ft").style.justifyContent = "center";
+    $n("#pb .pb-ft").style.alignItems = "center";
+    // alert(gob.autoNextChap);
+    // 追加一个按钮，用于设置 gob.autoNextChap
+    if (!$n("#gm-btn-autoNextChap")) {
+      const $btn = "<a id='gm-btn-autoNextChap' class='pb-btn' style='background:#0077D1;color: #fff;'>自动下载下一章</a>";
+      $nextBtn.insertAdjacentHTML('afterend', $btn);
+      $n("#gm-btn-autoNextChap").addEventListener("click", () => {
+        gob.autoNextChap = 1;
+        gob.save();
+        $nextBtn.click();
+      });
+    }
+  }
 }
 
 // 网络请求
@@ -62,7 +89,7 @@ const fnGet = (url, responseType = "json", retry = 2) =>
 const JSZip = (() => {
   const blob = new Blob(
     [
-      "importScripts(\"https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js\",\"https://cdn.jsdelivr.net/npm/jszip@3.5.0/dist/jszip.min.js\");class JSZipWorker{constructor(){this.zip=new JSZip}file(name,{data:data}){this.zip.file(name,data)}generateAsync(options,onUpdate){return this.zip.generateAsync(options,onUpdate).then(data=>Comlink.transfer({data:data},[data]))}}Comlink.expose(JSZipWorker);",
+      "importScripts(\"https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js\",\"https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js\");class JSZipWorker{constructor(){this.zip=new JSZip}file(name,{data:data}){this.zip.file(name,data)}generateAsync(options,onUpdate){return this.zip.generateAsync(options,onUpdate).then(data=>Comlink.transfer({data:data},[data]))}}Comlink.expose(JSZipWorker);",
     ],
     { type: "text/javascript" },
   );
@@ -126,6 +153,8 @@ const fnDownload = async ($btn = null) => {
       break;
     }
     $n("#next").click();
+    await _sleep(137);
+    fnAutoNextChap();
   }
   // await multiThread(urls, dlPromise);
   return async () => {
@@ -193,6 +222,11 @@ const setBtnDownload = () => {
       saveAs(data, name);
     }
   });
+  if (gob.autoNextChap) {
+    gob.autoNextChap = 0;
+    gob.save();
+    $btn.click();
+  }
 };
 setBtnDownload();
 

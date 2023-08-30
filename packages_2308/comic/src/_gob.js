@@ -74,6 +74,7 @@ const gobInfo = {
   curImgUrl: ["", 0],
   curInfo: [{}, 0],
   autoNextC: [0, 1],
+  autoNextChap: [0, 1],
   wgetImgs: [[], 1],
   maxWget: [7, 0],
 };
