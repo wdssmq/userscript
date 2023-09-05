@@ -195,6 +195,13 @@ declare module 'astro:content' {
   collection: "gm_md";
   data: InferEntrySchema<"gm_md">
 } & { render(): Render[".md"] };
+"comic.md": {
+	id: "comic.md";
+  slug: "comic";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 "copy.md": {
 	id: "copy.md";
   slug: "copy";
