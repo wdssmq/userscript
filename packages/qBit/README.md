@@ -17,6 +17,12 @@ QQ 群：[189574683](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心") [![QQ�
 
 为 qBittrorrent 的 WebUI 增加批量替换 Tracker 的功能；
 
+## 使用
+
+![001.png](doc/001.png "001.png")
+
+![002.png](doc/002.png "002.png")
+
 
 ### 开发时 CSP 限制解除
 
