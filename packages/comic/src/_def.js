@@ -37,7 +37,7 @@ function fnAutoNextChap() {
     // 追加一个按钮，用于设置 gob.autoNextChap
     if (!$n("#gm-btn-autoNextChap")) {
       const $btn = "<a id='gm-btn-autoNextChap' class='pb-btn' style='background:#0077D1;color: #fff;'>自动下载下一章</a>";
-      $nextBtn.insertAdjacentHTML('afterend', $btn);
+      $nextBtn.insertAdjacentHTML("afterend", $btn);
       $n("#gm-btn-autoNextChap").addEventListener("click", () => {
         gob.autoNextChap = 1;
         gob.save();
@@ -105,8 +105,20 @@ const getCompressionOptions = (level = 4) => {
   };
 };
 
+// 处理章节名，仅提取 `第xxx话` 的部分，并补全前导 0
+const fnGetChapName = (chapName, len = 3) => {
+  const reg = /第(\d+)(?:话|回)/;
+  const match = chapName.match(reg);
+  if (match) {
+    const num = match[1];
+    return `第${String(num).padStart(len, 0)}话`;
+  }
+  return chapName;
+};
+
 const fnDownload = async ($btn = null) => {
   const info = fnGenInfo();
+  info.chapter = fnGetChapName(info.chapter);
   const cfName = `${info.name}_${info.chapter}`;
   info.done = 0;
   info.error = 0;
