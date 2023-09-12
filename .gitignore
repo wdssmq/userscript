@@ -18,3 +18,4 @@ _debug_*
 .history
 node_modules
 /packages/**/*.user.js
+/packages-lib/**/dist

@@ -13,3 +13,7 @@ insert_final_newline = true
 
 [*.py]
 indent_size = 4
+
+# packages-lib 目录下的文件
+[packages-lib/**]
+indent_size = 4
