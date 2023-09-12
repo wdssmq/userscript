@@ -6,8 +6,8 @@
   "type": "module",
   "moduleName": "mzLibMenu",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "rollup -c --environment NODE_ENV:prod",
+    "dev": "rollup -c -w --environment NODE_ENV:dev",
     "demo": "live-server --watch=index.html,lib-menu.js",
     "lint": "eslint --ext .js,.mjs ."
   },
@@ -16,18 +16,20 @@
     "url": "https://github.com/wdssmq/userscript"
   },
   "keywords": [
-    "lib"
+    "lib",
+    "scripts",
+    "lib-scripts"
   ],
   "author": "wdssmq",
   "license": "MIT",
   "dependencies": {
-    "less": "^4.1.3",
+    "less": "^4.2.0",
     "live-server": "^1.2.2",
-    "postcss": "^8.4.21",
-    "rollup": "^3.15.0",
+    "postcss": "^8.4.29",
+    "rollup": "^3.29.1",
     "rollup-plugin-postcss": "^4.0.2"
   },
   "devDependencies": {
-    "eslint": "^8.34.0"
+    "eslint": "^8.49.0"
   }
 }
