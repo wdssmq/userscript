@@ -1,0 +1,36 @@
+{
+    "name": "lib-paid-or-ad",
+    "version": "1.0.0",
+    "description": "lib-paid-or-ad",
+    "main": "dist/lib-paid-or-ad.js",
+    "type": "module",
+    "moduleName": "mzLibMenu",
+    "scripts": {
+        "build": "rollup -c --environment NODE_ENV:prod",
+        "dev": "rollup -c -w --environment NODE_ENV:dev",
+        "demo": "live-server --watch=index.html,dist/*.js",
+        "lint": "eslint --ext .js,.mjs ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wdssmq/userscript"
+    },
+    "keywords": [
+        "lib",
+        "scripts",
+        "lib-scripts"
+    ],
+    "author": "wdssmq",
+    "license": "MIT",
+    "dependencies": {
+        "bulma": "^0.9.4"
+    },
+    "devDependencies": {
+        "eslint": "^8.49.0",
+        "rollup": "^3.29.1",
+        "rollup-plugin-livereload": "^2.0.5",
+        "rollup-plugin-postcss": "^4.0.2",
+        "rollup-plugin-serve": "^2.0.2",
+        "sass": "^1.66.1"
+    }
+}
