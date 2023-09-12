@@ -2,11 +2,15 @@
 import { readFileSync } from "fs";
 const pkg = JSON.parse(readFileSync("./package.json"));
 import postcss from "rollup-plugin-postcss";
+import serve from "rollup-plugin-serve";
+import livereload from "rollup-plugin-livereload";
 
 const defConfig = {
     input: `src/${pkg.name}.js`,
     plugins: [
         postcss(),
+        serve(),
+        livereload("dist"),
     ],
     output:
     {

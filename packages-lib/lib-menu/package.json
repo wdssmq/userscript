@@ -24,12 +24,13 @@
   "license": "MIT",
   "dependencies": {
     "less": "^4.2.0",
-    "live-server": "^1.2.2",
     "postcss": "^8.4.29",
     "rollup": "^3.29.1",
     "rollup-plugin-postcss": "^4.0.2"
   },
   "devDependencies": {
-    "eslint": "^8.49.0"
+    "eslint": "^8.49.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^2.0.2"
   }
 }
