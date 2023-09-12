@@ -4,7 +4,7 @@ const pkg = JSON.parse(readFileSync("./package.json"));
 import postcss from "rollup-plugin-postcss";
 
 const defConfig = {
-    input: "src/lib-menu.js",
+    input: `src/${pkg.name}.js`,
     plugins: [
         postcss(),
     ],
