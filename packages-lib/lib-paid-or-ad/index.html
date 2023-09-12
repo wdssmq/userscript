@@ -12,24 +12,37 @@
 
 <body>
 
-    <div class="columns">
-        <div class="column">
-            First column
-        </div>
-        <div class="column">
-            Second column
-        </div>
-        <div class="column">
-            Third column
-        </div>
-        <div class="column">
-            Fourth column
+    <div class="container">
+        <button class="js-test"
+                data-target="modal-js-example">
+            Open JS example modal
+        </button>
+        <!--  -->
+        <div class="modal"
+             id="modal-js-example">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Modal title</p>
+                    <button class="delete"
+                            aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <!-- Content ... -->
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button">Cancel</button>
+                </footer>
+            </div>
         </div>
     </div>
 
     <script src="dist/lib-paid-or-ad.js"></script>
     <script>
-
+        D('.js-test').on('click', function () {
+            D('#modal-js-example').addClass('is-active');
+        });
 
 
     </script>

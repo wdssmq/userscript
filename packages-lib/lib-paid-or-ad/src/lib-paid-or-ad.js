@@ -5,4 +5,9 @@
 // import "../src/style/bulma.sass";
 import "./style/bulma.sass";
 
-alert("lib-paid-or-ad");
+
+import $ from "./_domq.js";
+
+$(".js-test").addClass("is-test");
+
+// console.log($);

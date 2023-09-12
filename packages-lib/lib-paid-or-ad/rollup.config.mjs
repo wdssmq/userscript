@@ -4,6 +4,7 @@ const pkg = JSON.parse(readFileSync("./package.json"));
 
 import serve from "rollup-plugin-serve";
 import livereload from "rollup-plugin-livereload";
+import resolve from "@rollup/plugin-node-resolve";
 
 import postcss from "rollup-plugin-postcss";
 
@@ -11,6 +12,7 @@ const defConfig = {
     input: `src/${pkg.name}.js`,
     plugins: [
         postcss(),
+        resolve(),
     ],
     output: {
         file: pkg.main,

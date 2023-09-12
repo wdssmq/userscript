@@ -23,9 +23,11 @@
     "author": "wdssmq",
     "license": "MIT",
     "dependencies": {
-        "bulma": "^0.9.4"
+        "bulma": "^0.9.4",
+        "domq.js": "^0.6.8"
     },
     "devDependencies": {
+        "@rollup/plugin-node-resolve": "^15.2.1",
         "eslint": "^8.49.0",
         "rollup": "^3.29.1",
         "rollup-plugin-livereload": "^2.0.5",
