@@ -20,11 +20,11 @@ cd ~/tmp/bulma
 
 path=$(pwd)
 output_file="${path}/_all.sass"
-echo "@charset \"utf-8\"" > $output_file
+echo -e "@charset \"utf-8\"\n" > $output_file
 
 # 遍历 sass 下的子目录
-for dir in $(ls -d sass/*/)
-do
+for sub in utilities base elements form components grid helpers layout; do
+    dir="sass/${sub}/"
     echo $dir
     # 基于拷贝文件操作
     file="${dir}_all_bak.sass"
@@ -32,6 +32,8 @@ do
     cp "${dir}_all.sass" $file
     # 删除 @charset "utf-8" 行
     sed -i '/@charset "utf-8"/d' $file
+    # 删除空行
+    sed -i '/^$/d' $file
     # @import 路径替换，新路径为 "${dir}xxx"
     sed -i "s#@import \"#@import \"${dir}#g" $file
     # 追加到 output_file
@@ -39,5 +41,10 @@ do
     # 插入空行
     echo "" >> $output_file
 done
+
+code $output_file
+
+# for rollup-plugin-postcss
+sed -i "s#\"sass/#\"~bulma/sass/#g" $output_file
 
 ```
