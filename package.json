@@ -6,7 +6,7 @@
     "@rollup/plugin-replace": "^4.0.0",
     "cross-env": "^7.0.3",
     "rollup": "^2.79.0",
-    "rollup-plugin-monkey": "/home/wdssmq/Git/rollup-plugin-monkey"
+    "rollup-plugin-monkey": "/home/wdssmq/Git/2023-04-script/rollup-plugin-monkey"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

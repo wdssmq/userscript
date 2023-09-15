@@ -26,7 +26,10 @@ const defConfig = {
 if (process.env.NODE_ENV === "prod") {
     defConfig.output.file = `../../dist-lib/${pkg.name}.js`;
 } else {
-    defConfig.plugins.push(serve(), livereload("dist"));
+    defConfig.plugins.push(
+        serve(),
+        livereload("dist"),
+    );
 }
 
 export default defConfig;

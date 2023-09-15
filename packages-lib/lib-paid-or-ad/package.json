@@ -4,7 +4,7 @@
     "description": "lib-paid-or-ad",
     "main": "dist/lib-paid-or-ad.js",
     "type": "module",
-    "moduleName": "mzLibMenu",
+    "moduleName": "mzLibPaidOrAd",
     "scripts": {
         "build": "rollup -c --environment NODE_ENV:prod",
         "dev": "rollup -c -w --environment NODE_ENV:dev",
