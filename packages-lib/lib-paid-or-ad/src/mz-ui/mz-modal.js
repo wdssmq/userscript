@@ -10,10 +10,11 @@ class Modal {
         debugMode = false,
     }) {
         this.modal = document.getElementById(modalId);
+        if (!this.modal) throw new Error(`Modal with ID ${modalId} not found.`);
         this.config = { openClass, openTrigger, closeTrigger, debugMode };
         if (debugMode) {
-            console.log(this.config);
-            // console.log(triggers);
+            console.log(modalId);
+            console.log(this.modal);
         }
         if (triggers.length > 0) {
             this.registerTriggers(...triggers);
@@ -104,12 +105,14 @@ const mzModal = (() => {
     // init
     const init = (config) => {
         const options = Object.assign({}, { openTrigger: "data-mz-modal-trigger" }, config);
-
         const triggers = [...document.querySelectorAll(`[${options.openTrigger}]`)];
-        if (options.debugMode) console.log(triggers);
-
         const triggerMap = generateTriggerMap(triggers, options.openTrigger);
-        if (options.debugMode) console.log(triggerMap);
+
+        if (options.debugMode){
+            console.log("mzModal init");
+            console.log(options);
+            console.log(triggers);
+        }
 
         for (const modalId in triggerMap) {
             if (Object.hasOwnProperty.call(triggerMap, modalId)) {

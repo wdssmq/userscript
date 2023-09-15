@@ -14,17 +14,19 @@ import tplHtml from "./base/_tplHtml.js";
 class paidOrAd {
 
     domCreated = false;
-    // modalId = "paid-or-ad";
-    modalId = "modal-test";
+    modalId = "paid-or-ad";
+    // modalId = "modal-test";
+    config = null;
 
-    constructor() {
+    constructor(options) {
+        this.config = options || {};
         this.init();
     }
 
     init() {
         this.createDom();
         this.addClass();
-        mzModal.init();
+        mzModal.init(this.config);
     }
 
     createDom() {
