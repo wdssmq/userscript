@@ -1,5 +1,8 @@
 @charset "utf-8"
 
+%box-sizing
+    box-sizing: border-box
+
 %fixed-full
     position: fixed
     top: 0
@@ -8,10 +11,13 @@
     bottom: 0
 
 .mz-modal
-    display: none
     @extend %fixed-full
+    @extend %box-sizing
+    display: none
     &.is-open
         display: block
+    & *
+        box-sizing: inherit
 
 .mz-modal__overlay
     @extend %fixed-full

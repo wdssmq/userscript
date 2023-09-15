@@ -5,13 +5,16 @@ class Modal {
         modalId,
         triggers = [],
         openClass = "is-open",
+        disableCloseClass = "disable-close",
         openTrigger = "data-mz-modal-trigger",
         closeTrigger = "data-mz-modal-close",
+        onShow = () => { },
+        onClose = () => { },
         debugMode = false,
     }) {
         this.modal = document.getElementById(modalId);
         if (!this.modal) throw new Error(`Modal with ID ${modalId} not found.`);
-        this.config = { openClass, openTrigger, closeTrigger, debugMode };
+        this.config = { openClass, disableCloseClass, openTrigger, closeTrigger, onShow, onClose, debugMode };
         if (debugMode) {
             console.log(modalId);
             console.log(this.modal);
@@ -70,19 +73,19 @@ class Modal {
         // this.scrollBehaviour("disable");
         this.addEventListeners();
 
-        // this.config.onShow(this.modal, this.activeElement, event);
+        this.config.onShow({ modal: this.modal }, event);
     }
 
     closeModal(event = null) {
         const modal = this.modal;
-        this.modal.setAttribute("aria-hidden", "true");
-        this.removeEventListeners();
-        // this.scrollBehaviour("enable");
-        // if (this.activeElement && this.activeElement.focus) {
-        //   this.activeElement.focus();
-        // }
-        // this.config.onClose(this.modal, this.activeElement, event);
-        modal.classList.remove(this.config.openClass);
+        const isDisabled = modal.classList.contains(this.config.disableCloseClass);
+        if (!isDisabled) {
+            modal.setAttribute("aria-hidden", "true");
+            this.removeEventListeners();
+            // this.scrollBehaviour("enable");
+            modal.classList.remove(this.config.openClass);
+        }
+        this.config.onClose({ modal, isDisabled }, event);
     }
 }
 
@@ -108,7 +111,7 @@ const mzModal = (() => {
         const triggers = [...document.querySelectorAll(`[${options.openTrigger}]`)];
         const triggerMap = generateTriggerMap(triggers, options.openTrigger);
 
-        if (options.debugMode){
+        if (options.debugMode) {
             console.log("mzModal init");
             console.log(options);
             console.log(triggers);
