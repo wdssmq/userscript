@@ -20,11 +20,12 @@ const tplHtml = `
         <!-- [4] -->
         <button class="mz-modal__close"
                 aria-label="Close modal"
-                data-micromodal-close></button>
+                data-mz-modal-close></button>
       </header>
       <div id="{modal-id}-content"
            class="mz-modal__content">
         {content}
+        <p class="js-mz-tips mz-hidden">{tips}</p>
       </div>
     </div>
   </div>
