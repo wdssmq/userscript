@@ -1,16 +1,20 @@
 @charset "utf-8"
 
-.mz-modal
-    display: none
-    &.is-open
-        display: block
-
-.mz-modal__overlay
+%fixed-full
     position: fixed
     top: 0
     left: 0
     right: 0
     bottom: 0
+
+.mz-modal
+    display: none
+    @extend %fixed-full
+    &.is-open
+        display: block
+
+.mz-modal__overlay
+    @extend %fixed-full
     background: rgba(0,0,0,0.6)
     display: flex
     justify-content: center
