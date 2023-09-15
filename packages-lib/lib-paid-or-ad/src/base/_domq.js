@@ -4,6 +4,7 @@ import {
     // isArray,
     hasClass,
     addClass,
+    append,
 } from "domq.js/src/domq.modular";
 
 // Static methods
@@ -18,6 +19,7 @@ const fnMethods = {
     on,
     hasClass,
     addClass,
+    append,
 };
 
 D.extend(methods);
