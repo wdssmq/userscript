@@ -1,0 +1,35 @@
+const tplHtml = `
+<!-- [1] -->
+<div id="{modal-id}"
+     class="mz-modal"
+     aria-hidden="true">
+  <!-- [2] -->
+  <div tabindex="-1"
+       class="mz-modal__overlay"
+       data-mz-modal-close>
+    <!-- [3] -->
+    <div role="dialog"
+         class="mz-modal__container"
+         aria-modal="true"
+         aria-labelledby="{modal-id}-title">
+      <header class="mz-modal__header">
+        <h2 id="{modal-id}-title"
+            class="mz-modal__title">
+          {title}
+        </h2>
+        <!-- [4] -->
+        <button class="mz-modal__close"
+                aria-label="Close modal"
+                data-micromodal-close></button>
+      </header>
+      <div id="{modal-id}-content"
+           class="mz-modal__content">
+        {content}
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+export default tplHtml;
+
