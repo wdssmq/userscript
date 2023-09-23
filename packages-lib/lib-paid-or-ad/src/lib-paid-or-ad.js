@@ -29,6 +29,7 @@ class paidOrAd {
     cntDown = 5;
     cntDownRunning = false;
     config = {};
+    NODE_ENV = process.env.NODE_ENV;
 
     constructor(options) {
         this.config = Object.assign({}, {
@@ -57,7 +58,6 @@ class paidOrAd {
 
     init() {
         this.createDom();
-        this.addClass();
         mzModal.init(this.config);
     }
 
@@ -85,6 +85,7 @@ class paidOrAd {
     }
 
     addClass() {
+        if (this.NODE_ENV === "dev") return;
         this.$modal.addClass("ads");
     }
 
@@ -130,7 +131,9 @@ class paidOrAd {
 }
 
 const paidOrAdInstance = new paidOrAd();
-paidOrAdInstance.show();
+paidOrAdInstance
+    .show()
+    .addClass();
 
 export default paidOrAdInstance;
 
