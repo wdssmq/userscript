@@ -1,8 +1,8 @@
-import { _curUrl, _log, $n, fnElChange, _warn } from "./_base";
-import { gob } from "./_gob";
-import { fnCheckUrl, fnControl } from "./_laterControl/_funcs";
-import { fnViewStars } from "./_laterControl/_funcs";
-import { fnColorStars } from "./_laterControl/_colorStars";
+import { _curUrl, _log, $n, fnElChange, _warn } from "../_base";
+import { gob } from "../_gob";
+import { fnCheckUrl, fnControl } from "./_funcs";
+import { fnViewStars } from "./_funcs";
+import { fnColorStars } from "./_colorStars";
 
 // 滚动条滚动时触发
 function fnOnScroll() {

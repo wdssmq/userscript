@@ -5,8 +5,7 @@ const gm_banner = `
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
-// @link    https://github.com/wdssmq/userscript/tree/master/feedly
-// @link    https://greasyfork.org/zh-CN/scripts/381793
+// @license      MIT
 // @null     ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
 // @contributionAmount 5.93
@@ -29,4 +28,8 @@ const gm_banner = `
 
 const gm_name = "feedly";
 
-export { gm_banner, gm_name };
+const gm_require = [
+
+];
+
+export { gm_banner, gm_name, gm_require };
