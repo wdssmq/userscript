@@ -17,7 +17,7 @@ const msg = {
     理论上你可以直接关掉本弹窗，不影响后续功能的使用；
     根据你的选择，将决定之后出现的周期；
     或者使用 uBlock Origin 等广告过滤插件永久屏蔽；
-    <pre>##.mz-modal.ads</pre>
+    <code>${location.hostname}##.mz-modal.ads</code>
     `.trim(),
 };
 
@@ -68,7 +68,7 @@ class paidOrAd {
             });
             return `<p>${arrLines.join("</p><p>")}</p>`;
         })(msg.content);
-        console.log(msg.content);
+        // console.log(msg.content);
         return tplHtml
             .replace(/{modal-id}/g, this.modalId)
             .replace(/{content}/g, msg.content)
