@@ -23,7 +23,7 @@ const tplHtml = `
                 data-mz-modal-close></button>
       </header>
       <div id="{modal-id}-content"
-           class="mz-modal__content">
+           class="mz-modal__content mz-content">
         {content}
         <p class="js-mz-tips mz-hidden">{tips}</p>
       </div>
