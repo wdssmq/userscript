@@ -31,7 +31,7 @@ const fnCheckControl = (diff) => {
 function fnControl() {
   const $end = $n(".list-entries > h2");
   if (!$end) {
-    _log("fnControl", "页面加载中");
+    gob.LogOnce("fnControl_34", "页面加载中");
     return false;
   }
 

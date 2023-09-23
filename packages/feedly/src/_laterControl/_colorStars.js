@@ -1,5 +1,5 @@
 import { _log, $na, fnFindDom, fnFindDomUp } from "../_base";
-import { gob, cur4Minutes, logOnce } from "../_gob";
+import { gob, cur4Minutes } from "../_gob";
 import { fnCheckControl } from "./_funcs";
 
 gob.pickRule = {
@@ -22,6 +22,22 @@ GM_addStyle(`
   }
 `);
 
+// 随机交换两个节点的位置
+function fnRndNodeList(nodeList) {
+  let lstNode = nodeList[0];
+  const parent = nodeList[0].parentNode;
+  // console.log("fnRndNodeList", parent);
+  for (let i = 0; i < nodeList.length; i++) {
+    const node = nodeList[i];
+    if (Math.random() > 0.5) {
+      parent.insertBefore(node, lstNode);
+    } else {
+      parent.insertBefore(lstNode, node);
+    }
+    lstNode = node;
+  }
+}
+
 // 按规则给星标条目着色
 function fnColorStars(offset = 0) {
   // begin fnColorStars
@@ -33,9 +49,12 @@ function fnColorStars(offset = 0) {
   // ----------------------------
   let pickCount = $$pick.length;
   if (pickCount >= oConfig.minPick) {
-    _log("fnColorStars", "已经选够了");
+    gob.LogOnce("fnColorStars_37", "已经选够了");
     return;
   }
+  // ----------------------------
+  // 遍历 dom 节点，随机交换位置
+  fnRndNodeList($na(".EntryList__chunk > .titleOnly"));
   // ----------------------------
   const fnPick = ($item, i) => {
     if (i > 1 && i - oConfig.lstPick < oConfig.minPick / 2) {

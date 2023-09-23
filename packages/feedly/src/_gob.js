@@ -29,6 +29,8 @@ const gobInfo = {
   cntStars: [0, 0],
   diffStars: [{ decr: 0, incr: 0 }, 1],
   lstStars: [0, 1],
+  // 记录输出过的日志
+  logHistory: [[], 0],
 };
 // decrease 减少
 // increase 增加
@@ -100,6 +102,15 @@ gob.GetStarItems = () => {
     gob.cntStars = gob.$$Stars.length;
     // _log("gob.GetStarItems", gob.$$Stars, gob.cntStars);
   }
+};
+
+gob.LogOnce = (key, value) => {
+  if (gob.logHistory.includes(key)) {
+    return;
+  }
+  gob.logHistory.push(key);
+  _log(key, value);
+
 };
 
 

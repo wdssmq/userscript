@@ -40,10 +40,10 @@ function fnMain(record, observer) {
     return;
   }
   gob.GetStarItems();
-  _log("_laterCtrl fnMain", { cntStars: gob.cntStars });
   if (gob.cntStars === 0) {
     return;
   }
+  gob.LogOnce("_laterCtrl fnMain", { cntStars: gob.cntStars });
   // observer.disconnect();
   // 绑定事件
   if ($n("#feedlyFrame") && $n("#feedlyFrame").dataset.addEL !== "done") {
