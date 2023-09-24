@@ -1,7 +1,7 @@
 const tplHtml = `
 <!-- [1] -->
 <div id="{modal-id}"
-     class="mz-modal"
+     class="mz-modal mz-reset"
      aria-hidden="true">
   <!-- [2] -->
   <div tabindex="-1"
