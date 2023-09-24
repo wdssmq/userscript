@@ -77,6 +77,8 @@ class paidOrAd {
         this.$modal = $(`#${this.modalId}`);
         this.$modalOverlay = this.$modal.find(".mz-modal__overlay");
         // this.$modalOverlay.removeAttr("data-mz-modal-close");
+        // 链接添加 target="_blank"
+        this.$modal.find("a").attr("target", "_blank");
     }
 
     // 防止非预期关闭
