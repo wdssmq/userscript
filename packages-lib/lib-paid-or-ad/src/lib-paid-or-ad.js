@@ -84,18 +84,14 @@ class paidOrAd {
         const _this = this;
         // this.$modal 绑定鼠标按下事件
         this.$modal.on("mousedown", (e) => {
-            console.log(e);
-            // 触发元素为 mz-modal__container 内部元素，但不是关闭按钮
-            if (e.target.classList.contains("mz-modal__container") && !e.target.classList.contains("mz-modal__close")) {
-                _this.disableClose();
+            // 触发元素不为 .mz-modal__overlay 或 .mz-modal__close
+            if (!e.target.classList.contains("mz-modal__overlay") && !e.target.classList.contains("mz-modal__close")) {
+                _this.$modalOverlay.removeAttr("data-mz-modal-close");
+            } else {
+                _this.$modalOverlay.attr("data-mz-modal-close", "");
             }
-            // 延迟恢复关闭
-            setTimeout(() => {
-                _this.enableClose();
-            }, 300);
         });
     }
-
 
     addClass() {
         if (this.NODE_ENV === "dev") return;
