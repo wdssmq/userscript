@@ -2,6 +2,27 @@
 
 一个特殊的弹出层封装；
 
+## 调用
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist-lib/lib-paiad.js"></script>
+
+<script>
+// 其他脚本调用
+const gm_require = [
+  {
+    "url": "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js",
+    "func": "jQuery",
+  },
+  {
+    "url": "https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist-lib/lib-paiad.js",
+    "func": "mzPaiad",
+  },
+];
+</script>
+
+```
+
 ## 提取 bulma 文件
 
 ```bash
