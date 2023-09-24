@@ -158,16 +158,15 @@ class paidOrAd {
         this.cntDownRunning = false;
     }
 
-    show() {
+    show(force = false) {
         const lstShowTime = this.lsData.lstShowTime || 0;
         const interval = this.NODE_ENV === "dev" ? 10 : this.interval;
-        if (this.ts - lstShowTime > interval) {
+        if (this.ts - lstShowTime > interval || force) {
             mzModal.show(this.modalId, this.config);
             this.setLsData("lstShowTime", this.ts);
         }
         return this;
     }
-
 }
 
 const paidOrAdInstance = new paidOrAd();
