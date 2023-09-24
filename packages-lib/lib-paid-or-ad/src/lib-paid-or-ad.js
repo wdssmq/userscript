@@ -8,6 +8,7 @@
 
 import $ from "./base/_domq.js";
 import "./mz-ui/mz-ui.sass";
+import "./style/style.sass";
 import mzModal from "./mz-ui/mz-modal";
 
 import tplHtml from "./base/modal.html";
@@ -57,6 +58,7 @@ class paidOrAd {
     init() {
         this.createDom();
         mzModal.init(this.config);
+        this.preventAccidentalClose();
     }
 
     buildHtml() {
@@ -77,6 +79,24 @@ class paidOrAd {
         // this.$modalOverlay.removeAttr("data-mz-modal-close");
     }
 
+    // 防止非预期关闭
+    preventAccidentalClose() {
+        const _this = this;
+        // this.$modal 绑定鼠标按下事件
+        this.$modal.on("mousedown", (e) => {
+            console.log(e);
+            // 触发元素为 mz-modal__container 内部元素，但不是关闭按钮
+            if (e.target.classList.contains("mz-modal__container") && !e.target.classList.contains("mz-modal__close")) {
+                _this.disableClose();
+            }
+            // 延迟恢复关闭
+            setTimeout(() => {
+                _this.enableClose();
+            }, 300);
+        });
+    }
+
+
     addClass() {
         if (this.NODE_ENV === "dev") return;
         this.$modal.addClass("ads");
@@ -84,7 +104,7 @@ class paidOrAd {
 
     setTips() {
         const _tips = (cnt) => {
-            return cnt > 0 ? `${cnt} 秒后方可关闭` : "再次点击关闭";
+            return cnt > 0 ? `${cnt} 秒后方可关闭` : "再次点击关闭→";
         };
         const $tips = this.$modal.find(".js-mz-tips");
         $tips.text(_tips(this.cntDown));
