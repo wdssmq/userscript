@@ -11,11 +11,12 @@ import "./mz-ui/mz-ui.sass";
 import "./style/style.sass";
 import mzModal from "./mz-ui/mz-modal";
 
+import { lsObj } from "./base/_util.js";
 import tplHtml from "./base/modal.html";
 import msgContent from "./base/msg.md";
 
 const msg = {
-    title: "这里是标题",
+    title: "这里是标题（弹出间隔 {IntervalDay} 天）",
     content: msgContent.trim().replace("{location.hostname}", location.hostname),
 };
 
@@ -25,12 +26,15 @@ class paidOrAd {
     modalId = "paid-or-ad";
     $modal = null;
     $modalOverlay = null;
+    ts = Math.floor(Date.now() / 1000);
+    lsData = lsObj.getItem(this.modalId, {});
+    interval = 86400 * 4;
     cntDown = 5;
     cntDownRunning = false;
     config = {};
     NODE_ENV = process.env.NODE_ENV;
 
-    constructor(options) {
+    constructor(options = {}) {
         this.config = Object.assign({}, {
             onClose: this._onClose.bind(this),
             onShow: this._onShow.bind(this),
@@ -61,11 +65,26 @@ class paidOrAd {
         this.preventAccidentalClose();
     }
 
+    // 时间间隔转换为友好的显示
+    get intervalHour() {
+        const interval = this.interval;
+        const hour = Math.floor(interval / 3600);
+        return hour;
+    }
+
+    get intervalDay() {
+        const interval = this.interval;
+        const day = Math.floor(interval / 3600 / 24);
+        return day;
+    }
+
     buildHtml() {
         return tplHtml
-            .replace(/{modal-id}/g, this.modalId)
             .replace(/{content}/g, msg.content)
-            .replace(/{title}/g, msg.title);
+            .replace(/{title}/g, msg.title)
+            .replace(/{modal-id}/g, this.modalId)
+            .replace(/{IntervalHour}/g, this.intervalHour)
+            .replace(/{IntervalDay}/g, this.intervalDay);
     }
 
     createDom() {
@@ -108,6 +127,11 @@ class paidOrAd {
         $tips.text(_tips(this.cntDown));
     }
 
+    setLsData(key, value) {
+        this.lsData[key] = value;
+        lsObj.setItem(this.modalId, this.lsData);
+    }
+
     // 禁止关闭
     disableClose() {
         // console.log("disableClose");
@@ -135,7 +159,12 @@ class paidOrAd {
     }
 
     show() {
-        mzModal.show(this.modalId, this.config);
+        const lstShowTime = this.lsData.lstShowTime || 0;
+        const interval = this.NODE_ENV === "dev" ? 10 : this.interval;
+        if (this.ts - lstShowTime > interval) {
+            mzModal.show(this.modalId, this.config);
+            this.setLsData("lstShowTime", this.ts);
+        }
         return this;
     }
 
