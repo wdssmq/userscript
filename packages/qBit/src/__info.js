@@ -31,6 +31,10 @@ const gm_require = [
     "url": "https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js",
     "func": "jQuery",
   },
+  {
+    "url": "https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist-lib/lib-paiad.js",
+    "func": "mzPaiad",
+  },
 ];
 
 export { gm_banner, gm_name, gm_require };
