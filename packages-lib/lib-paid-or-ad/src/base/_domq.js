@@ -8,6 +8,7 @@ import {
     hasClass,
     text,
     removeClass,
+    removeAttr,
     attr,
 } from "domq.js/src/domq.modular";
 
@@ -27,6 +28,7 @@ const fnMethods = {
     hasClass,
     text,
     removeClass,
+    removeAttr,
     attr,
 };
 

@@ -23,6 +23,7 @@ class paidOrAd {
     domCreated = false;
     modalId = "paid-or-ad";
     $modal = null;
+    $modalOverlay = null;
     cntDown = 5;
     cntDownRunning = false;
     config = {};
@@ -72,6 +73,8 @@ class paidOrAd {
             $(document.body).append(strHtml);
         }
         this.$modal = $(`#${this.modalId}`);
+        this.$modalOverlay = this.$modal.find(".mz-modal__overlay");
+        // this.$modalOverlay.removeAttr("data-mz-modal-close");
     }
 
     addClass() {
