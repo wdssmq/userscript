@@ -9,7 +9,7 @@
 import $ from "./base/_domq.js";
 import "./mz-ui/mz-ui.sass";
 import "./style/style.sass";
-import mzModal from "./mz-ui/mz-modal";
+import mzModal from "./mz-ui/mz-modal.js";
 
 import { lsObj } from "./base/_util.js";
 import tplHtml from "./base/modal.html";
@@ -23,7 +23,7 @@ const msg = {
 class paidOrAd {
 
     domCreated = false;
-    modalId = "paid-or-ad";
+    modalId = "paiad";
     $modal = null;
     $modalOverlay = null;
     ts = Math.floor(Date.now() / 1000);

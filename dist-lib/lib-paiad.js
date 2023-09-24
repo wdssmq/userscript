@@ -3,7 +3,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mzPaidOrAd = factory());
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mzPaiad = factory());
 })(this, (function () { 'use strict';
 
   // Class D
@@ -978,7 +978,7 @@
   class paidOrAd {
 
       domCreated = false;
-      modalId = "paid-or-ad";
+      modalId = "paiad";
       $modal = null;
       $modalOverlay = null;
       ts = Math.floor(Date.now() / 1000);

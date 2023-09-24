@@ -1,4 +1,4 @@
-# lib-paid-or-ad
+# lib-paiad
 
 一个特殊的弹出层封装；
 

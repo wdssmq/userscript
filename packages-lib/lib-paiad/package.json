@@ -1,10 +1,10 @@
 {
-    "name": "lib-paid-or-ad",
+    "name": "lib-paiad",
     "version": "1.0.0",
     "description": "",
-    "main": "dist/lib-paid-or-ad.js",
+    "main": "dist/lib-paiad.js",
     "type": "module",
-    "moduleName": "mzPaidOrAd",
+    "moduleName": "mzPaiad",
     "scripts": {
         "build": "rollup -c --environment NODE_ENV:prod",
         "dev": "rollup -c -w --environment NODE_ENV:dev",
