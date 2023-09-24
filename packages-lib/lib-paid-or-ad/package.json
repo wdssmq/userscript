@@ -25,6 +25,7 @@
     "dependencies": {
         "bulma": "^0.9.4",
         "domq.js": "^0.6.8",
+        "rollup-plugin-html-string": "^1.0.1",
         "rollup-plugin-md": "^1.0.1",
         "sass": "^1.66.1"
     },

@@ -9,9 +9,9 @@
 import $ from "./base/_domq.js";
 import "./mz-ui/mz-ui.sass";
 import mzModal from "./mz-ui/mz-modal";
-import tplHtml from "./base/_tplHtml.js";
 
-import msgContent from "./msg.md";
+import tplHtml from "./base/modal.html";
+import msgContent from "./base/msg.md";
 
 const msg = {
     title: "这里是标题",

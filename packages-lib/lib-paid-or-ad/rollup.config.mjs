@@ -9,6 +9,7 @@ import postcss from "rollup-plugin-postcss";
 
 import replace from "@rollup/plugin-replace";
 import md from "rollup-plugin-md";
+import html from "rollup-plugin-html-string";
 
 const defConfig = {
     input: `src/${pkg.name}.js`,
@@ -20,6 +21,9 @@ const defConfig = {
             "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
         }),
         md(),
+        html({
+            include: "src/**/*.html",
+        }),
     ],
     output: {
         file: pkg.main,
