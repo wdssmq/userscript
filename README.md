@@ -2,7 +2,7 @@
 
 各种猴子脚本
 
-## 前置
+## 关于
 
 博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")
 
@@ -10,9 +10,9 @@
 
 更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
-<!-- GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork") -->
+GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork")
 
-QQ 群：[189574683](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心") [![QQ群](https://pub.idqqimg.com/wpa/images/group.png "QQ群")](//jq.qq.com/?_wv=1027&k=jijevXi0 "我的咸鱼心")
+交流反馈：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=aUWw0GnzE6lREYxdHVPAIfJBPKPvnPN6&jump_from=webapi&authKey=CPLHemFTAHa9YuDOOXHE1DDqTUhlsJehvEQ4HmBpx4ihtBc9i8OGJCsnR3fc+cJ1">189574683</a>
 
 > wdssmq/rollup-plugin-monkey: 使用 rollup 开发「GM\_脚本」：
 >
