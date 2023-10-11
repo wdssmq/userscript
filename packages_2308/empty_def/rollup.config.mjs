@@ -8,6 +8,10 @@ import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 // console.log("typeof monkey：", typeof monkey);
 // // typeof monkey： function
 
+// // process.env.PWD 中获取当前文件夹名
+// const gm_dirname = process.env.PWD.split("/").pop();
+// console.log("gm_dirname：", gm_dirname);
+
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
   gm_banner: gm_banner.trim() + "\n",
