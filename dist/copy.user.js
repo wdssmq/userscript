@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         「水水」复制标题网址
 // @namespace    https://www.wdssmq.com/
-// @version      2.1.3
+// @version      2.1.4
 // @author       沉冰浮水
-// @description  复制当前页面标题及网址，支持复制为 HTML 及 Markdown。「QQ 群：189574683」
+// @description  复制当前页面标题及网址，支持复制为 HTML 及 Markdown。
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
