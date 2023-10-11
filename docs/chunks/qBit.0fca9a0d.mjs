@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./qBit.c4899b11.mjs');
+						return import('./qBit.6cabb15b.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";
