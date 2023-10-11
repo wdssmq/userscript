@@ -10,9 +10,9 @@
     "up:ver": "npm version patch && npm run build"
   },
   "dependencies": {
-    "@rollup/plugin-replace": "^5.0.2",
-    "open": "^8.4.0",
-    "rollup": "^3.28.1",
+    "@rollup/plugin-replace": "^5.0.3",
+    "open": "^8.4.2",
+    "rollup": "^3.29.4",
     "rollup-plugin-monkey": "^1.0.9"
   }
 }
