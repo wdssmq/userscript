@@ -3,7 +3,7 @@
 // @namespace    做最终做到的事，成为最终成为的人。
 // @version      1.0.5
 // @author       沉冰浮水
-// @description  通过 WebUI 的 API 批量替换 Tracker；「QQ 群：189574683」
+// @description  通过 WebUI 的 API 批量替换 Tracker
 // @license      MIT
 // @null     ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
@@ -18,7 +18,6 @@
 // @include      http://*:8088/
 // @grant        GM_xmlhttpRequest
 // @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js
-// @require      https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist-lib/lib-paiad.js
 // ==/UserScript==
 
 /* eslint-disable */
