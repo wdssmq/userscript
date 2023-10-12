@@ -1,8 +1,13 @@
 ---
 interface Props {
-  links: string[];
+  links: {
+    docUrl: string;
+    gitUrl: string;
+    gitUrlRaw: string;
+    cdnUrl: string;
+  };
+  title: string;
   body: string;
-  href: string;
 }
 
 const { links, title, body } = Astro.props;

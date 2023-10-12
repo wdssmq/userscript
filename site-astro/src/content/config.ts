@@ -16,10 +16,10 @@ const gm_md = defineCollection({
       .optional()
       .transform((str) => (str ? new Date(str) : undefined)),
     heroImage: z.string().optional(),
-    gitUrl: z.string().optional(),
-    gitUrlRaw: z.string().optional(),
-    cdnUrl: z.string().optional(),
-    docUrl: z.string().optional(),
+    gitUrl: z.string(),
+    gitUrlRaw: z.string(),
+    cdnUrl: z.string(),
+    docUrl: z.string(),
     tags: z.array(z.string().or(z.number()).transform((val) => val.toString())),
   }),
 });
