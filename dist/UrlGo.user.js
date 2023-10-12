@@ -3,7 +3,7 @@
 // @namespace    https://www.wdssmq.com/
 // @version      1.0.0
 // @author       沉冰浮水
-// @description  跳转到正确的链接
+// @description  跳转到正确的链接；
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
@@ -25,6 +25,7 @@
 // @match        https://www.jianshu.com/go-wild*
 // @match        https://www.v2ex.com/t/*
 // @match        https://link.zhihu.com/*
+// @match        https://link.juejin.cn/?target=*
 // @grant        none
 // ==/UserScript==
 
@@ -81,27 +82,35 @@
       name: "百度贴吧",
       hostList: ["jump2.bdimg.com", "tieba.baidu.com"],
       url: fnGetUrlInDOM("p.link", "textContent"),
+      tipNode: [$n("p.content"), "after"],
     },
     {
       name: "QQ 客户端",
       hostList: ["c.pc.qq.com"],
       url: fnGetUrlInDOM("#url", "textContent"),
-      tipNode: [$n("p.ui-title"), "after"]
+      tipNode: [$n("p.ui-title"), "after"],
     },
     {
       name: "QQ 邮箱",
       hostList: ["mail.qq.com"],
       url: fnGetUrlInDOM(".safety-url", "textContent"),
-      tipNode: [$n(".safety-url"), "after"]
+      tipNode: [$n(".safety-url"), "after"],
     },
     {
       name: "简书",
       hostList: ["www.jianshu.com"],
       url: fnGetParamInUrl("url", curUrl),
-    }, {
+    },
+    {
       name: "知乎",
       hostList: ["link.zhihu.com"],
       url: fnGetUrlInDOM("p.link", "textContent"),
+    },
+    {
+      name: "掘金",
+      hostList: ["link.juejin.cn"],
+      url: fnGetParamInUrl("target", curUrl),
+      tipNode: [$n("p.title"), "after"],
     },
   ];
 
@@ -109,7 +118,7 @@
   function fnShowTip(tipNode, text, url) {
     console.log(text);
     const $node = tipNode[0];
-    const $insertTips = `<p class="go-tips" style="color: red;">
+    const $insertTips = `<p class="go-tips" style="color: red;text-align: center;">
   <span>${text}</span>
   <a href="${url}" title="点击跳转">点击跳转</a>
   </p>`;
@@ -146,7 +155,9 @@
           cntDown--;
         }, 1000);
       } else {
-        window.location.href = newUrl;
+        setTimeout(() => {
+          window.location.href = newUrl;
+        }, 10000);
       }
     }
   });
