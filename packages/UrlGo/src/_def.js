@@ -52,6 +52,12 @@ const siteList = [
     hostList: ["link.zhihu.com"],
     url: fnGetUrlInDOM("p.link", "textContent"),
   },
+  {
+    name: "掘金",
+    hostList: ["link.juejin.cn"],
+    url: fnGetParamInUrl("target", curUrl),
+    tipNode: [$n("p.title"), "after"],
+  },
 ];
 
 // 显示提示

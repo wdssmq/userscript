@@ -26,6 +26,7 @@ const gm_banner = `
 // @match        https://www.jianshu.com/go-wild*
 // @match        https://www.v2ex.com/t/*
 // @match        https://link.zhihu.com/*
+// @match        https://link.juejin.cn/?target=*
 // @grant        none
 // ==/UserScript==
 
