@@ -4,12 +4,12 @@ const gm_banner = `
 // @namespace    wdssmq.com
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
-// @description  B 币领取提醒、稍后再看列表导出为 *.url 等
-// @url          https://greasyfork.org/scripts/398415
+// @description  B 币领取提醒、稍后再看列表导出为 *.url ……
 // @null     ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
 // @contributionAmount 5.93
 // @null     ----------------------------
+// @link     https://greasyfork.org/scripts/398415
 // @link     https://github.com/wdssmq/userscript
 // @link     https://afdian.net/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
@@ -31,7 +31,7 @@ const gm_banner = `
 /* eslint-disable */
 `;
 
-const gm_name = "later";
+const gm_name = "bilibili";
 
 const gm_require = [
   // {
