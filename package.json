@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build:script": "pnpm -r --filter=./packages/* run build",
     "lint": "eslint --ignore-path .gitignore --ext .js,.mjs . --fix"
   },
   "dependencies": {
