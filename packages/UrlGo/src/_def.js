@@ -28,25 +28,26 @@ const siteList = [
     name: "百度贴吧",
     hostList: ["jump2.bdimg.com", "tieba.baidu.com"],
     url: fnGetUrlInDOM("p.link", "textContent"),
-    tipNode: [$n("p.content"), "after"]
+    tipNode: [$n("p.content"), "after"],
   },
   {
     name: "QQ 客户端",
     hostList: ["c.pc.qq.com"],
     url: fnGetUrlInDOM("#url", "textContent"),
-    tipNode: [$n("p.ui-title"), "after"]
+    tipNode: [$n("p.ui-title"), "after"],
   },
   {
     name: "QQ 邮箱",
     hostList: ["mail.qq.com"],
     url: fnGetUrlInDOM(".safety-url", "textContent"),
-    tipNode: [$n(".safety-url"), "after"]
+    tipNode: [$n(".safety-url"), "after"],
   },
   {
     name: "简书",
     hostList: ["www.jianshu.com"],
     url: fnGetParamInUrl("url", curUrl),
-  }, {
+  },
+  {
     name: "知乎",
     hostList: ["link.zhihu.com"],
     url: fnGetUrlInDOM("p.link", "textContent"),
