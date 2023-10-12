@@ -54,6 +54,7 @@ const allPost = (await getCollection("gm_md")).sort(config.func.sortPosts);
     color: white;
     font-size: 20px;
     line-height: 1.6;
+    word-wrap: break-word;
   }
   h1 {
     font-size: 4rem;
@@ -92,8 +93,13 @@ const allPost = (await getCollection("gm_md")).sort(config.func.sortPosts);
   }
   .link-card-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .link-card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 </style>
