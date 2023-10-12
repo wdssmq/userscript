@@ -36,8 +36,8 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
-      # Build README
-      - name: Build README
+      # Pipenv Build
+      - name: Pipenv Build
         env:
           GIT_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
