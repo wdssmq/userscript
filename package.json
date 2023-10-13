@@ -1,6 +1,8 @@
 {
   "scripts": {
     "build:script": "pnpm -r --filter=./packages/* run build",
+    "git:script": "git diff-index --quiet HEAD || (git commit -m \"build. dist/\" -a --no-verify)",
+    "build": "npm run build:script && npm run git:script",
     "lint": "eslint --ignore-path .gitignore --ext .js,.mjs . --fix"
   },
   "dependencies": {
