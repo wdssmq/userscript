@@ -26,7 +26,15 @@ module.exports = {
     // ------------------------------
     "comma-dangle": [1, "always-multiline"], // 对象或数组的拖尾逗号
     "arrow-parens": [1, "as-needed", { "requireForBlockBody": true }], // 箭头函数参数括号
-    "space-before-function-paren": [1, { "anonymous": "always", "named": "never" }], // 函数圆括号之前的空格
+    // 函数圆括号之前的空格要求
+    "space-before-function-paren": [
+      1,
+      {
+        "named": "never",
+        // ↓ 预想是设置为 never，但是 VSCode 总是给加上 (╯﹏╰）
+        "anonymous": "always",
+      },
+    ],
     // ------------------------------
     "semi": [2, "always", { "omitLastInOneLineBlock": true }], // 语句强制分号结尾
     "quotes": [2, "double"], // 引号类型
