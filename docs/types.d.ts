@@ -230,6 +230,13 @@ declare module 'astro:content' {
   collection: "gm_md";
   data: InferEntrySchema<"gm_md">
 } & { render(): Render[".md"] };
+"tieba.md": {
+	id: "tieba.md";
+  slug: "tieba";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 };
 
 	};
