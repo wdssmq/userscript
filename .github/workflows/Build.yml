@@ -37,11 +37,10 @@ jobs:
 
       # Install pnpm && Build Packages
       - name: Install pnpm && Build Packages
-      # 判断 packages/** 是否有变更
         run: |
           npm install -g pnpm
           pnpm install
-          pnpm run build
+          pnpm -r --filter=./packages/* run build
 
       # Setup Python
       - name: Setup Python
