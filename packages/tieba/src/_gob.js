@@ -1,12 +1,12 @@
-import { _log } from "./_base";
+import { _log, $n } from "./_base";
 import { gm_name } from "./__info";
 
 // localStorage 封装
 const lsObj = {
-  setItem: function (key, value) {
+  setItem: function(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem: function (key, def = "") {
+  getItem: function(key, def = "") {
     const item = localStorage.getItem(key);
     if (item) {
       return JSON.parse(item);
@@ -19,6 +19,9 @@ const lsObj = {
 const gobInfo = {
   // key: [默认值, 是否记录至 ls]
   linkLog: [[], false],
+  当前吧名: ["", false],
+  当前日期: ["", false],
+  签到列表: [{}, true],
 };
 const gob = {
   _lsKey: `${gm_name}_data`,
@@ -74,6 +77,14 @@ const gob = {
 
 // 初始化
 gob.init().load();
+
+// 获取当前吧名
+gob.getCurForumName = () => {
+  const $forumName = $n(".card_title a.card_title_fname");
+  if ($forumName) {
+    gob.当前吧名 = $forumName.innerText;
+  }
+}
 
 export {
   lsObj,

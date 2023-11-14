@@ -19,6 +19,7 @@ const gm_banner = `
 // @match        https://tieba.baidu.com
 // @match        https://tieba.baidu.com/index.html
 // @match        https://tieba.baidu.com/i/i/forum*
+// @match        https://tieba.baidu.com/f?kw=*
 // @grant        GM_addStyle
 // ==/UserScript==
 
