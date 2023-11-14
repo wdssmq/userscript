@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - 'packages/**'
-      - 'dist/**'
+      # - 'dist/**'
       - 'site-astro/**'
 jobs:
   def:
@@ -29,6 +29,20 @@ jobs:
             echo "$file was changed"
           done
 
+      # Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Install pnpm && Build Packages
+      - name: Install pnpm && Build Packages
+      # 判断 packages/** 是否有变更
+        run: |
+          npm install -g pnpm
+          pnpm install
+          pnpm run build
+
       # Setup Python
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -48,12 +62,6 @@ jobs:
           GIT_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           pipenv run build
-
-      # Setup Node
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
 
       # Install Deps && Build Astro
       - name: Install Deps && Build Astro
