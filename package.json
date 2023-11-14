@@ -10,7 +10,7 @@
     "@rollup/plugin-replace": "^4.0.0",
     "rollup": "^2.79.0",
     "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-monkey": "/home/wdssmq/Git/2023-04-script/rollup-plugin-monkey",
+    "rollup-plugin-monkey": "^1.0.9",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-serve": "^2.0.2"
   },
