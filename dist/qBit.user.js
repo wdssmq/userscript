@@ -116,6 +116,7 @@
   const http = new HttpRequest();
 
   /* global jQuery, __GM_api, MochaUI */
+
   const jq = jQuery;
 
   if (typeof __GM_api !== "undefined") {

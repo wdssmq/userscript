@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等；
 // @namespace    wdssmq.com
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  B 币领取提醒、稍后再看列表导出为 *.url ……
 // @null     ----------------------------
@@ -120,6 +120,7 @@
   };
 
   /* global GM_notification GM */
+
 
   // 日期转字符串
   const getDateStr = (date) => {

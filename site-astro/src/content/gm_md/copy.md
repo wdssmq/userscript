@@ -2,7 +2,7 @@
 title: 「水水」复制标题网址
 description: 复制当前页面标题及网址，支持复制为 HTML 及 Markdown。
 pubDate: 2023-08-26 18:11:04
-updateDate: 2023-10-11 11:09:40
+updateDate: 2023-11-15 13:23:17
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/copy.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/copy.user.js?raw=true

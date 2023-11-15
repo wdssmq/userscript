@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「漫画」打包下载
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.3
+// @version      1.0.4
 // @author       沉冰浮水
 // @description  按章节打包下载漫画柜的资源「QQ 群：189574683」
 // @license      MIT

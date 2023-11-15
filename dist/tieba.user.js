@@ -14,7 +14,7 @@
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 // @noframes
-// @run-at       document-start
+// @run-at       document-end
 // @match        https://tieba.baidu.com
 // @match        https://tieba.baidu.com/index.html
 // @match        https://tieba.baidu.com/i/i/forum*

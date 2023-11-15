@@ -2,7 +2,7 @@
 title: 「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等；
 description: B 币领取提醒、稍后再看列表导出为 *.url ……
 pubDate: 2023-10-12 13:01:41
-updateDate: 2023-10-12 13:01:41
+updateDate: 2023-11-15 13:23:17
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/bilibili.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/bilibili.user.js?raw=true
