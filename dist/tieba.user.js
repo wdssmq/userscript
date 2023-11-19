@@ -346,8 +346,8 @@ if (unsafeWindow.console) {
       return this;
     },
     // 读取
-    load() {
-      if (this._bolLoaded) {
+    load(force = false) {
+      if (this._bolLoaded && !force) {
         return;
       }
       const lsData = lsObj.getItem(this._lsKey, this.data);
@@ -461,6 +461,7 @@ if (unsafeWindow.console) {
 
     // 记录签到到 ls
     const logSigned = () => {
+      gob.load(true);
       const { 签到列表, 当前日期, 当前吧名 } = gob;
       签到列表[当前吧名] = _getDateStr();
       gob.签到列表 = 签到列表;

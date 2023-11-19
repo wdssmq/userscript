@@ -2,7 +2,7 @@
 title: 「水水」链接跳转
 description: 跳转到正确的链接；
 pubDate: 2023-08-26 20:59:39
-updateDate: 2023-11-15 13:23:17
+updateDate: 2023-11-19 20:55:07
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/UrlGo.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/UrlGo.user.js?raw=true
