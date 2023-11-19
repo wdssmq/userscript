@@ -45,8 +45,8 @@ const gob = {
     return this;
   },
   // 读取
-  load() {
-    if (this._bolLoaded) {
+  load(force = false) {
+    if (this._bolLoaded && !force) {
       return;
     }
     const lsData = lsObj.getItem(this._lsKey, this.data);
