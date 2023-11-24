@@ -44,6 +44,10 @@ Array.from($items).forEach(($item) => {
       note[key] = selector;
     }
   });
+  // 确保 Tags 为数组
+  if (typeof note.Tags === "string") {
+    note.Tags = [note.Tags];
+  }
   // 添加复制按钮
   const $btnWrap = fnFindDom($item, noteScheme.btnWrap);
   // _log("$btnWrap", $btnWrap);
