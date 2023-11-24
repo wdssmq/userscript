@@ -32,11 +32,12 @@ function formatData(obj) {
 
 // 对象转 yaml
 function formatYAML(obj) {
-  let strYaml = "";
+  let strYaml = "```yml\n";
   obj = formatData(obj);
   Object.keys(obj).forEach((key) => {
     strYaml += `${key}: ${obj[key]}\n`;
   });
+  strYaml += "\n```";
   return strYaml;
 }
 
