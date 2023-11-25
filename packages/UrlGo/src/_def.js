@@ -82,6 +82,8 @@ function fnShowTip(tipNode, text, url) {
   }
 }
 
+import _config from "./_config";
+
 // 各种中转页跳过
 siteList.forEach((site) => {
   const { name, hostList, url } = site;
@@ -91,7 +93,7 @@ siteList.forEach((site) => {
     }
     const newUrl = fnCheckUrl(url);
     if (site.tipNode) {
-      let cntDown = 5;
+      let cntDown = _config.data["倒计时"];
       setInterval(() => {
         if (cntDown <= 0) {
           window.location.href = newUrl;
