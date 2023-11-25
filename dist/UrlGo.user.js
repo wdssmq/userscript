@@ -26,7 +26,9 @@
 // @match        https://www.v2ex.com/t/*
 // @match        https://link.zhihu.com/*
 // @match        https://link.juejin.cn/?target=*
-// @grant        none
+// @grant        GM_registerMenuCommand
+// @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
 
 /* eslint-disable */
@@ -35,9 +37,15 @@
 (function () {
   'use strict';
 
+  const gm_name = "UrlGo";
+
   // 初始常量或函数
   const curUrl = window.location.href;
   const curHost = window.location.host;
+
+  // -------------------------------------
+
+  const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
 
   // -------------------------------------
 
@@ -53,6 +61,35 @@
   function fnFindDom(el, selector) {
     return el.querySelectorAll(selector);
   }
+
+  const _config = {
+    data: {},
+    dataDef: {
+      倒计时: 5,
+    },
+    menuCommand: () => {
+      const _this = _config;
+      for (const key in _this.data) {
+        if (Object.hasOwnProperty.call(_this.data, key)) {
+          GM_registerMenuCommand(`${key}：${_this.data[key]}`, () => {
+            const newValue = prompt(`请输入新的${key}值`, _this.data[key]);
+            if (newValue !== null) {
+              _this.data[key] = newValue;
+              GM_setValue("config", _this.data);
+              _log(`已将${key}值修改为：${newValue}`);
+            }
+          });
+        }
+      }
+    },
+    load: () => {
+      const _this = _config;
+      _config.data = GM_getValue("config", _this.dataDef);
+      _config.menuCommand();
+    },
+  };
+
+  _config.load();
 
   // 从页面中获取链接
   function fnGetUrlInDOM(selector, attrName) {
@@ -145,7 +182,7 @@
       }
       const newUrl = fnCheckUrl(url);
       if (site.tipNode) {
-        let cntDown = 5;
+        let cntDown = _config.data["倒计时"];
         setInterval(() => {
           if (cntDown <= 0) {
             window.location.href = newUrl;

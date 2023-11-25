@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./tieba.c6d3f160.mjs');
+						return import('./zbp-TimeLine.43da21c0.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";

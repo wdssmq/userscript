@@ -5,15 +5,14 @@
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
 // @license      MIT
-// @null     ----------------------------
+// @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
 // @contributionAmount 5.93
-// @null     ----------------------------
-// @link     https://github.com/wdssmq/userscript
-// @link     https://afdian.net/@wdssmq
-// @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
-// @null     ----------------------------
-// @match        https://feedly.com/*
+// @null         ----------------------------
+// @link         https://github.com/wdssmq/userscript
+// @link         https://afdian.net/@wdssmq
+// @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
+// @null         ----------------------------
 // @noframes
 // @run-at       document-end
 // @grant        GM_openInTab

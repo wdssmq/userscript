@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./copy.a0d10ff4.mjs');
+						return import('./UrlGo.901101e7.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";

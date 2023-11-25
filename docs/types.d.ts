@@ -237,6 +237,13 @@ declare module 'astro:content' {
   collection: "gm_md";
   data: InferEntrySchema<"gm_md">
 } & { render(): Render[".md"] };
+"zbp-TimeLine.md": {
+	id: "zbp-TimeLine.md";
+  slug: "zbp-timeline";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 };
 
 	};
