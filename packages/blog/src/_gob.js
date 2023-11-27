@@ -20,8 +20,10 @@ const gobInfo = {
   // key: [默认值, 是否记录至 ls]
   $title: [null, false],
   $content: [null, false],
+  $slug: [null, false],
   title: ["", false],
   content: ["", false],
+  slug: ["", false],
   doc: [{}, false],
   site: ["", false],
 };

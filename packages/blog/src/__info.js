@@ -18,7 +18,7 @@ const gm_banner = `
 // @run-at       document-end
 // @match        https://geeknote.net/*/dashboard/posts/new
 // @match        https://geeknote.net/*/dashboard/posts/*/edit
-// @match        http://localhost:3000/
+// @match        https://xlog.app/dashboard/*/editor?id=*&type=post
 // @grant        none
 // ==/UserScript==
 

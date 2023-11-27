@@ -26,9 +26,10 @@ gob.yml2json = () => {
 };
 
 import fnGeekNote from "./_geeknote";
+import fnXLog from "./_xlog";
 
 gob.site = (() => {
-  const list = ["jianshu", "csdn", "cnblogs", "geeknote"];
+  const list = ["jianshu", "csdn", "cnblogs", "geeknote", "xlog"];
   let rlt = "";
   list.forEach((name) => {
     if (curUrl.indexOf(name) > -1) {
@@ -42,6 +43,9 @@ gob.site = (() => {
 switch (gob.site) {
   case "geeknote":
     fnGeekNote();
+    break;
+  case "xlog":
+    fnXLog();
     break;
   default:
     break;
