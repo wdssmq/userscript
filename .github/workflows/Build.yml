@@ -29,7 +29,7 @@ jobs:
       # List all changed files
       - name: List all changed files
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files.outputs.packages_all_changed_files }}; do
             echo "$file was changed"
           done
 
@@ -64,7 +64,7 @@ jobs:
       # Pipenv Build
       - name: Pipenv Build
         env:
-          GIT_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          GIT_CHANGED_FILES: ${{ steps.changed-files.outputs.packages_all_changed_files }}
         run: |
           pipenv run build
 

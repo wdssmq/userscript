@@ -73,15 +73,33 @@ def gm_md_time(gm_md_file):
     return (pub_time, up_time)
 
 
+def gm_dist_changed_check(file_name, changed=[]):
+    """检查文件是否发生修改"""
+    bol_changed = False
+    for file_path in changed:
+        tmp_file_name = file_name.replace(".user.js", "/")
+        # fnLog(f"检查：{tmp_file_name} in {file_path}")
+        if tmp_file_name in file_path:
+            bol_changed = True
+            break
+    return bol_changed
+
+
+
 def gm_read_dist(path, changed=[]):
     """读取脚本文件夹"""
     gm_info_list = []
+    fnLog(f"发生修改的文件：{changed}")
+    if not changed:
+        return gm_info_list
     for file_name in fnGetFilesInDir2(path, ".js"):
         file_path = os.path.join(path, file_name)
         # 判断是否发生修改
-        if changed and file_path not in changed:
+        if not gm_dist_changed_check(file_name, changed):
             fnLog(f"跳过：{file_path}")
             continue
+        else:
+            fnLog(f"读取：{file_path} ←←←←")
         gm_info_list.append(gm_read_js(file_path, file_name))
     # fnLog(gm_info_list)
     return gm_info_list
