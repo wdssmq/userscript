@@ -1,8 +1,8 @@
 ---
 title: 「水水」链接跳转
-description: 跳转到正确的链接；
+description: 自动跳过各种链接跳转页面，支持知乎，贴吧，QQ 和 QQ 邮箱等；
 pubDate: 2023-08-26 20:59:39
-updateDate: 2023-11-25 15:09:57
+updateDate: 2023-11-28 11:54:33
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/UrlGo.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/UrlGo.user.js?raw=true
