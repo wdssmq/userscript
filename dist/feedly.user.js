@@ -15,6 +15,7 @@
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
+// @match        https://feedly.com/*
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
 // @grant        GM_addStyle
@@ -36,8 +37,8 @@
     return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
   };
   // ---------------------------------------------------
-  const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
-  const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
+  const _log = (...args) => console.log(`[${gm_name}]|`, ...args);
+  const _warn = (...args) => console.warn(`[${gm_name}]|`, ...args);
   // ---------------------------------------------------
   // const $ = window.$ || unsafeWindow.$;
   function $n(e) {
@@ -84,10 +85,10 @@
 
   // localStorage 封装
   const lsObj = {
-    setItem: function (key, value) {
+    setItem: (key, value) => {
       localStorage.setItem(key, JSON.stringify(value));
     },
-    getItem: function (key, def = "") {
+    getItem: (key, def = "") => {
       const item = localStorage.getItem(key);
       if (item) {
         return JSON.parse(item);
@@ -141,7 +142,7 @@
         return;
       }
       const lsData = lsObj.getItem(this._lsKey, this.data);
-      _log("[log]gob.load()", lsData);
+      _log("[log]gob.load()\n", lsData);
       for (const key in lsData) {
         if (Object.hasOwnProperty.call(lsData, key)) {
           const item = lsData[key];
@@ -171,22 +172,27 @@
 
   // 星标条目获取
   gob.GetStarItems = () => {
-    const $listWrap = $n("div.list-entries");
+    const $listWrap = $n("div.StreamPage");
     // _log("gob.GetStarItems", $listWrap);
     if ($listWrap) {
-      gob.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyLayout__title>a");
+      gob.$$Stars = $listWrap.querySelectorAll("div.EntryTitle>a");
       gob.cntStars = gob.$$Stars.length;
       // _log("gob.GetStarItems", gob.$$Stars, gob.cntStars);
     }
   };
 
+  // 获取星标条目 nodeList, 用于交换位置
+  gob.GetStarNodes = () => {
+    return $na(".StreamPage > .titleOnly");
+  };
+
+  // 输出日志，只输出一次
   gob.LogOnce = (key, value) => {
     if (gob.logHistory.includes(key)) {
       return;
     }
     gob.logHistory.push(key);
     _log(key, value);
-
   };
 
   // 判断当前地址是否是收藏页
@@ -336,7 +342,7 @@
     }
     // ----------------------------
     // 遍历 dom 节点，随机交换位置
-    fnRndNodeList($na(".EntryList__chunk > .titleOnly"));
+    fnRndNodeList(gob.GetStarNodes());
     // ----------------------------
     // 总数过少时，不着色
     if ($stars.length < gob.pickRule.maxPick) {
@@ -351,7 +357,7 @@
       pickCount += 1;
     };
     // ----------------------------
-    [].forEach.call($stars, function($e, i) {
+    [].forEach.call($stars, ($e, i) => {
       // begin forEach
       const $ago = fnFindDom(fnFindDomUp($e, "div.TitleOnlyLayout"), ".ago");
       const href = $e.href;
@@ -391,7 +397,7 @@
       } else {
         if (isLock || i >= 37) {
           $item.classList.add("lock");
-          [].forEach.call(fnFindDom($item, "a, span, div>svg, .summary"), function($ite) {
+          [].forEach.call(fnFindDom($item, "a, span, div>svg, .summary"), ($ite) => {
             $ite.classList.add("lock");
           });
         }
