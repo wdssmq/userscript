@@ -1,5 +1,10 @@
 import { gm_name } from "./__info";
-import { _log, curDate, $n } from "./_base";
+import {
+  _log,
+  $n,
+  $na,
+  curDate,
+} from "./_base";
 
 const curTime = Math.floor(curDate.getTime() / 1000);
 const curHours = Math.floor(curTime / 3600);
@@ -8,10 +13,10 @@ const cur4Minutes = Math.floor(curTime / 240);
 
 // localStorage 封装
 const lsObj = {
-  setItem: function (key, value) {
+  setItem: (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem: function (key, def = "") {
+  getItem: (key, def = "") => {
     const item = localStorage.getItem(key);
     if (item) {
       return JSON.parse(item);
@@ -95,22 +100,27 @@ gob.init().load();
 
 // 星标条目获取
 gob.GetStarItems = () => {
-  const $listWrap = $n("div.list-entries");
+  const $listWrap = $n("div.StreamPage");
   // _log("gob.GetStarItems", $listWrap);
   if ($listWrap) {
-    gob.$$Stars = $listWrap.querySelectorAll("div.TitleOnlyLayout__title>a");
+    gob.$$Stars = $listWrap.querySelectorAll("div.EntryTitle>a");
     gob.cntStars = gob.$$Stars.length;
     // _log("gob.GetStarItems", gob.$$Stars, gob.cntStars);
   }
 };
 
+// 获取星标条目 nodeList, 用于交换位置
+gob.GetStarNodes = () => {
+  return $na(".StreamPage > .titleOnly");
+};
+
+// 输出日志，只输出一次
 gob.LogOnce = (key, value) => {
   if (gob.logHistory.includes(key)) {
     return;
   }
   gob.logHistory.push(key);
   _log(key, value);
-
 };
 
 

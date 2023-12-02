@@ -54,7 +54,7 @@ function fnColorStars(offset = 0) {
   }
   // ----------------------------
   // 遍历 dom 节点，随机交换位置
-  fnRndNodeList($na(".EntryList__chunk > .titleOnly"));
+  fnRndNodeList(gob.GetStarNodes());
   // ----------------------------
   // 总数过少时，不着色
   if ($stars.length < gob.pickRule.maxPick) {
@@ -69,7 +69,7 @@ function fnColorStars(offset = 0) {
     pickCount += 1;
   };
   // ----------------------------
-  [].forEach.call($stars, function($e, i) {
+  [].forEach.call($stars, ($e, i) => {
     // begin forEach
     const $ago = fnFindDom(fnFindDomUp($e, "div.TitleOnlyLayout"), ".ago");
     const href = $e.href;
@@ -109,7 +109,7 @@ function fnColorStars(offset = 0) {
     } else {
       if (isLock || i >= 37) {
         $item.classList.add("lock");
-        [].forEach.call(fnFindDom($item, "a, span, div>svg, .summary"), function($ite) {
+        [].forEach.call(fnFindDom($item, "a, span, div>svg, .summary"), ($ite) => {
           $ite.classList.add("lock");
         });
       }
