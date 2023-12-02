@@ -65,7 +65,7 @@ const gob = {
       return;
     }
     const lsData = lsObj.getItem(this._lsKey, this.data);
-    _log("[log]gob.load()", lsData);
+    _log("[log]gob.load()\n", lsData);
     for (const key in lsData) {
       if (Object.hasOwnProperty.call(lsData, key)) {
         const item = lsData[key];

@@ -16,6 +16,7 @@ const gm_banner = `
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
+// @match        https://feedly.com/*
 // @grant        GM_openInTab
 // @grant        GM_setClipboard
 // @grant        GM_addStyle

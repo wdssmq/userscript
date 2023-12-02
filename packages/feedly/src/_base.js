@@ -12,9 +12,9 @@ const _getDateStr = (date = curDate) => {
 };
 const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 // ---------------------------------------------------
-const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
-const _warn = (...args) => console.warn(`[${gm_name}]\n`, ...args);
-const _error = (...args) => console.error(`[${gm_name}]\n`, ...args);
+const _log = (...args) => console.log(`[${gm_name}]|`, ...args);
+const _warn = (...args) => console.warn(`[${gm_name}]|`, ...args);
+const _error = (...args) => console.error(`[${gm_name}]|`, ...args);
 // ---------------------------------------------------
 // const $ = window.$ || unsafeWindow.$;
 function $n(e) {
