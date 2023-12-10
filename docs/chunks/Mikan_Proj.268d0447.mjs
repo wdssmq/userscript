@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./Mikan_Proj.d5cd2fb5.mjs');
+						return import('./Mikan_Proj.57c8d071.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";

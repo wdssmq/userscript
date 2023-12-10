@@ -33,9 +33,7 @@
   const gm_name = "Mikan_Proj";
 
   // ---------------------------------------------------
-  const _curUrl = () => { return window.location.href };
-  // ---------------------------------------------------
-  const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
+  const _log = (...args) => console.log(`[${gm_name}]|`, ...args);
   function $na(e) {
     return document.querySelectorAll(e);
   }
@@ -61,7 +59,7 @@
       for (const key in _this.data) {
         if (Object.hasOwnProperty.call(_this.data, key)) {
           const newValue = _this.optToggle(key, true);
-          _log(`${key} ${newValue}`);
+          _log("_config.menuCommand()\n",`${key} ${newValue}`);
           GM_registerMenuCommand(`切换至 ${newValue}`,
             () => {
               _this.optToggle(key);
@@ -82,46 +80,6 @@
   };
 
   _config.load();
-
-  const _feedly = {
-    data: {
-      curUrl: null,
-      // $itemList: [],
-      fnAction: () => { },
-    },
-    init: () => {
-      const curUrl = _curUrl();
-      _feedly.data.curUrl = curUrl;
-      _feedly.menuCommand(curUrl);
-    },
-    menuCommand: (curUrl = "") => {
-      if (curUrl.includes("feedly.com")) {
-        GM_registerMenuCommand("在 feedly 应用过滤",
-          () => {
-            _feedly.data.fnAction();
-          },
-        );
-      }
-    },
-    regAction: (fnEachNodeList, fnFilter, _filter) => {
-      _feedly.data.fnAction = () => {
-        const $list = _feedly.getList();
-        fnEachNodeList($list, ($item) => {
-          const curText = $item.querySelector("a.entry__title").innerText.toLowerCase();
-          if (fnFilter(curText, _filter)) {
-            $item.remove();
-          }
-        });
-      };
-    },
-    getList: () => {
-      const $list = $na(".list-entries article");
-      // _feedly.data.$itemList = $list;
-      return $list;
-    },
-  };
-
-  _feedly.init();
 
   // 选项为 sc 时，则排除匹配 tc 字段的节点文本
   const _filter_map = {
@@ -146,11 +104,13 @@
     if (string.includes("sc")) {
       filter["subtitle"] = _filter_map["tc"];
     }
+    // 其他过滤条件
+    filter["other"] = ["cr 1920", "b-global"];
     return filter;
   };
 
   const _filter = fnGenFilter(_config.data);
-  _log(_filter);
+  _log("_filter\n", _filter);
 
   // 过滤含有指定字符的节点
   function fnFilter(text, filter) {
@@ -210,7 +170,7 @@
       if ($tr.innerText.includes("番组名")) {
         $curTh = $tr.querySelector("th");
         // $lstTh = $curTh;
-        _log($curTh);
+        _log("fnMain() $curTh\n",$curTh);
         fnAddBatchCopy($curTh, magnetList);
         magnetList = [];
         // return;
@@ -225,7 +185,7 @@
       let magnet = $curB.getAttribute("data-clipboard-text");
       magnet = fnRemoveTracker(magnet);
       if (fnFilter(curText, _filter)) {
-        _log(`${curText} ${magnet}`);
+        // _log(`${curText} ${magnet}`);
         $tr.remove();
       } else {
         magnetList.push(magnet);
@@ -246,6 +206,14 @@
   }
   fnAutoExpand();
 
-  _feedly.regAction(fnEachNodeList, fnFilter, _filter);
+  // fnElChange($n(".central-container"),
+  //   () => {
+  //     fnMain();
+  //   }
+  // )
+
+  // import _feedly from "./_feedly";
+
+  // _feedly.regAction(fnEachNodeList, fnFilter, _filter);
 
 })();
