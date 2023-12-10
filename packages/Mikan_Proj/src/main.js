@@ -24,11 +24,13 @@ const fnGenFilter = (opt) => {
   if (string.includes("sc")) {
     filter["subtitle"] = _filter_map["tc"];
   }
+  // 其他过滤条件
+  filter["other"] = ["cr 1920", "b-global"];
   return filter;
 };
 
 const _filter = fnGenFilter(_config.data);
-_log(_filter);
+_log("_filter\n", _filter);
 
 // 过滤含有指定字符的节点
 function fnFilter(text, filter) {
@@ -88,7 +90,7 @@ function fnMain() {
     if ($tr.innerText.includes("番组名")) {
       $curTh = $tr.querySelector("th");
       // $lstTh = $curTh;
-      _log($curTh);
+      _log("fnMain() $curTh\n",$curTh);
       fnAddBatchCopy($curTh, magnetList);
       magnetList = [];
       // return;
@@ -103,7 +105,7 @@ function fnMain() {
     let magnet = $curB.getAttribute("data-clipboard-text");
     magnet = fnRemoveTracker(magnet);
     if (fnFilter(curText, _filter)) {
-      _log(`${curText} ${magnet}`);
+      // _log(`${curText} ${magnet}`);
       $tr.remove();
     } else {
       magnetList.push(magnet);
@@ -130,6 +132,6 @@ fnAutoExpand();
 //   }
 // )
 
-import _feedly from "./_feedly";
+// import _feedly from "./_feedly";
 
-_feedly.regAction(fnEachNodeList, fnFilter, _filter);
+// _feedly.regAction(fnEachNodeList, fnFilter, _filter);

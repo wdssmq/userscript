@@ -21,7 +21,7 @@ const _config = {
     for (const key in _this.data) {
       if (Object.hasOwnProperty.call(_this.data, key)) {
         const newValue = _this.optToggle(key, true);
-        _log(`${key} ${newValue}`);
+        _log("_config.menuCommand()\n",`${key} ${newValue}`);
         GM_registerMenuCommand(`切换至 ${newValue}`,
           () => {
             _this.optToggle(key);
