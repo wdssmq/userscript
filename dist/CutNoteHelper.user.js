@@ -59,6 +59,7 @@
   const gobInfo = {
     // key: [默认值, 是否记录至 ls]
     $note: [null, 0],
+    textContent: [null, 0],
     getTextBy: ["textContent", 0],
     insertTo: [["#noteContent", "before"], 0],
   };
@@ -140,7 +141,7 @@ a.mz-link:hover {
       gob.insertTo = [".note-wrapper", "before"];
       gob.getTextBy = "textContent";
     }
-    gob.text = gob.$note[gob.getTextBy];
+    gob.textContent = gob.$note[gob.getTextBy];
     // _log("gob.data = ", gob.data);
   };
 
@@ -166,8 +167,16 @@ a.mz-link:hover {
   };
 
   // 通用函数
-  gob.main = () => {
+  gob.main = (retry = 3) => {
     gob.initInfoBySite();
+    if (!gob.textContent && retry > 0) {
+      setTimeout(() => {
+        gob.main(retry - 1);
+        _log("retry = ", retry);
+      }, 1000);
+      return;
+    }
+    gob.text = gob.textContent;
     const newText = gob.parseText(gob.text);
     // _log("text = ", gob.text);
     // _log("newText = ", newText);
