@@ -29,7 +29,7 @@ gob.initInfoBySite = () => {
     gob.insertTo = [".note-wrapper", "before"];
     gob.getTextBy = "textContent";
   }
-  gob.text = gob.$note[gob.getTextBy];
+  gob.textContent = gob.$note[gob.getTextBy];
   // _log("gob.data = ", gob.data);
 };
 
@@ -55,8 +55,16 @@ gob.addContent = (content) => {
 };
 
 // 通用函数
-gob.main = () => {
+gob.main = (retry = 3) => {
   gob.initInfoBySite();
+  if (!gob.textContent && retry > 0) {
+    setTimeout(() => {
+      gob.main(retry - 1);
+      _log("retry = ", retry);
+    }, 1000);
+    return;
+  }
+  gob.text = gob.textContent;
   const newText = gob.parseText(gob.text);
   // _log("text = ", gob.text);
   // _log("newText = ", newText);

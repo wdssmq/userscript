@@ -19,6 +19,7 @@ const lsObj = {
 const gobInfo = {
   // key: [默认值, 是否记录至 ls]
   $note: [null, 0],
+  textContent: [null, 0],
   getTextBy: ["textContent", 0],
   insertTo: [["#noteContent", "before"], 0],
 };
