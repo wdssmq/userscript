@@ -188,6 +188,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"gm_md": {
+"CutNoteHelper.md": {
+	id: "CutNoteHelper.md";
+  slug: "cutnotehelper";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 "Mikan_Proj.md": {
 	id: "Mikan_Proj.md";
   slug: "mikan_proj";
