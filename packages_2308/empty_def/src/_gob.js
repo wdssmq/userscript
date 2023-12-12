@@ -3,10 +3,10 @@ import { gm_name } from "./__info";
 
 // localStorage 封装
 const lsObj = {
-  setItem: function (key, value) {
+  setItem: (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem: function (key, def = "") {
+  getItem: (key, def = "") => {
     const item = localStorage.getItem(key);
     if (item) {
       return JSON.parse(item);
