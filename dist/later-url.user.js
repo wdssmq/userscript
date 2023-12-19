@@ -17,6 +17,8 @@
 // @run-at       document-end
 // @match        https://space.bilibili.com/*
 // @grant        GM_xmlhttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
 // ==/UserScript==
 
 /* eslint-disable */
@@ -97,8 +99,6 @@
   // 数据读写封装
   const gobInfo = {
     // key: [默认值, 是否记录至 ls]
-    strTest: ["TEST", 0],
-    intTest: [0, 1],
   };
   const gob = {
     _lsKey: `${gm_name}_data`,
@@ -157,6 +157,43 @@
   // 初始化
   gob.init().load();
 
+  const config = {
+    data: {},
+    defData: {
+      baseUrl: "http://127.0.0.1:41849/",
+      authToken: "token_value_here",
+      isInit: false,
+    },
+    load() {
+      config.data = GM_getValue("config", this.defData);
+      if (!config.data.isInit) {
+        config.data.isInit = true;
+        config.save();
+      }
+    },
+    save() {
+      GM_setValue("config", config.data);
+    },
+  };
+
+  config.load();
+
+  // 发送链接信息到远程
+
+  gob.post = async (info) => {
+    const { baseUrl, authToken } = config.data;
+    const headers = {
+      "Authorization": "Bearer " + authToken
+    };
+    const url = `${baseUrl}?url=${info.url}&title=${info.title}&category=${info.category}`;
+    _log("gob.post()\n", url);
+
+    const res = await gob.http.get(url, headers);
+    // _log("gob.post()\n", res);
+    _log("gob.post()\n", res.responseText);
+    return gob.http.get(url);
+  };
+
   const bilibili = {
 
     // 获取当前用户的 uid
@@ -197,7 +234,7 @@
     },
 
     // 视频信息中提取需要的信息
-    pickInfo(video) {
+    pickInfo(video, uid) {
       const pickMap = {
         bvid: "aid",
         title: "title",
@@ -213,12 +250,15 @@
         }
       }
       info.url = `https://www.bilibili.com/video/${info.bvid}`;
+      info.uid = uid;
+      info.category = `bilibili_${uid}`;
       return info;
     },
   };
 
-  bilibili.getVideos().then((res) => {
-    console.log(res);
+  bilibili.getVideos().then((vlist) => {
+    _log("bilibili.getVideos()\n", vlist);
+    gob.post(bilibili.pickInfo(vlist[0], bilibili.getUid()));
   });
 
 })();
