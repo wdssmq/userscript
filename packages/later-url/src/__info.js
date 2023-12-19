@@ -18,6 +18,8 @@ const gm_banner = `
 // @run-at       document-end
 // @match        https://space.bilibili.com/*
 // @grant        GM_xmlhttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
 // ==/UserScript==
 
 /* eslint-disable */

@@ -5,6 +5,23 @@ import {
 } from "./_base";
 
 import { gob } from "./_gob";
+import config from "./_config";
+
+// 发送链接信息到远程
+
+gob.post = async (info) => {
+  const { baseUrl, authToken } = config.data;
+  const headers = {
+    "Authorization": "Bearer " + authToken
+  };
+  const url = `${baseUrl}?url=${info.url}&title=${info.title}&category=${info.category}`;
+  _log("gob.post()\n", url);
+
+  const res = await gob.http.get(url, headers);
+  // _log("gob.post()\n", res);
+  _log("gob.post()\n", res.responseText);
+  return gob.http.get(url);
+};
 
 const bilibili = {
 
@@ -46,7 +63,7 @@ const bilibili = {
   },
 
   // 视频信息中提取需要的信息
-  pickInfo(video) {
+  pickInfo(video, uid) {
     const pickMap = {
       bvid: "aid",
       title: "title",
@@ -62,10 +79,13 @@ const bilibili = {
       }
     }
     info.url = `https://www.bilibili.com/video/${info.bvid}`;
+    info.uid = uid;
+    info.category = `bilibili_${uid}`;
     return info;
   },
 };
 
-bilibili.getVideos().then((res) => {
-  console.log(res);
+bilibili.getVideos().then((vlist) => {
+  _log("bilibili.getVideos()\n", vlist);
+  gob.post(bilibili.pickInfo(vlist[0], bilibili.getUid()));
 });
