@@ -68,6 +68,10 @@ const devConfig = {
         open(`${gobConfig.url}/dev/${gobConfig.gm_file}`);
       },
     }),
+    replace({
+      // preventAssignment: true,
+      "NODE_ENV": process.env.NODE_ENV,
+    }),
   ],
 };
 
