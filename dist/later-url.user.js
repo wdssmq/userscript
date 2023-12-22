@@ -36,10 +36,14 @@
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
   };
+  const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   // -------------------------------------
 
   const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
+  function $na(e) {
+    return document.querySelectorAll(e);
+  }
 
   class HttpRequest {
     constructor() {
@@ -104,6 +108,8 @@
   // 数据读写封装
   const gobInfo = {
     // key: [默认值, 是否记录至 ls]
+    errCount: [0, false],
+    postCount: [0, false],
   };
   const gob = {
     _lsKey: `${gm_name}_data`,
@@ -159,6 +165,14 @@
 
   gob.http = http;
 
+  gob.stopByErrCount = () => {
+    if (gob.errCount >= 4) {
+      _log("gob.stopByErrCount()\n", gob.errCount);
+      return true;
+    }
+    return false;
+  };
+
   // 初始化
   gob.init().load();
 
@@ -183,20 +197,72 @@
 
   config.load();
 
-  // 发送链接信息到远程
+  // 执行队列，第二个参数控制是否循环执行
+  async function runQueue(listPromises, loop = 0) {
+    // console.log(listPromises);
+    for (let itemPromise of listPromises) {
+      await itemPromise();
+    }
+    if (loop) {
+      await runQueue(listPromises, loop);
+    }
+  }
 
+  // 返回项为一个函数，该函数调用时会建立一个 Promise 对象并立即执行
+  // 当内部调用 solve() 时表示该异步项执行结束
+  const createPromise = (cb, ...args) => {
+    return () => new Promise((resolve, reject) => {
+      cb(...args).then((res) => {
+        resolve(res);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  };
+
+  // 构造任务队列
+  const createQueue = (arr, cb, ...args) => {
+    return arr.map((item) => {
+      return createPromise(cb, item, ...args);
+    });
+  };
+
+  // 过滤字符信息
+  gob.filter = (str) => {
+    let rlt = str;
+    rlt = rlt.replace(/\s/g, "");
+    rlt = rlt.replace(/#/g, "");
+    return rlt;
+  };
+
+  // 发送链接信息到远程
   gob.post = async (info, data) => {
     const { baseUrl, authToken } = config.data;
     const headers = {
       "Authorization": "Bearer " + authToken,
     };
+    info.title = gob.filter(info.title);
     const url = `${baseUrl}add?url=${info.url}&title=${info.title}&category=${data.category}&date=${data.date}`;
-    _log("gob.post()\n", url);
+    gob.postCount +=1;
+    _log(`gob.post() - ${gob.postCount} \n`, url);
+    if (gob.stopByErrCount()) {
+      return false;
+    }
 
-    const res = await gob.http.get(url, headers);
-    // _log("gob.post()\n", res);
-    _log("gob.post()\n", res.responseText);
-    return gob.http.get(url);
+    try {
+      const res = await gob.http.get(url, headers);
+      // _log("gob.post()\n", res);
+      _log("gob.post()\n", res.responseText);
+      if (res.status !== 200) {
+        gob.errCount += 1;
+        return false;
+      }
+      return true;
+    } catch (error) {
+      gob.errCount += 1;
+      _log("gob.post() - error\n", error);
+      return false;
+    }
   };
 
   const bilibili = {
@@ -214,6 +280,20 @@
       this.data.category = `bilibili_${uid}`;
       _log("bilibili.getUid()\n", this.data);
       return uid;
+    },
+
+    _$videos() {
+      return $na("#submit-video-list ul.cube-list li");
+    },
+
+    // 网页加载检查
+    async check() {
+      const $videos = this._$videos();
+      if ($videos.length > 0) {
+        return $videos;
+      }
+      await _sleep(1000);
+      return this.check();
     },
 
     // API JSON 查询
@@ -240,9 +320,16 @@
       const uid = this.getUid();
       const url = `https://api.bilibili.com/x/space/wbi/arc/search?mid=${uid}&ps=50&pn=${pn}`;
       _log("bilibili.getVideos()\n", url);
-      const resData = await this.apiGet(url);
-      if (resData.code === 0) {
-        return resData.data.list.vlist;
+      try {
+        const resData = await this.apiGet(url);
+        if (resData.code === 0) {
+          return resData.data.list.vlist;
+        } else {
+          _log("bilibili.getVideos() - resData\n", resData);
+        }
+      } catch (error) {
+        _log("bilibili.getVideos() - error\n", error);
+        return;
       }
     },
 
@@ -266,15 +353,38 @@
       info.category = this.data.category;
       return info;
     },
+
+    // 从网页元素中获取投稿视频
+    async getVideosFromPage() {
+      this.getUid();
+      const videos = [];
+      const videoList = await this.check();
+      videoList.forEach((video) => {
+        const v = {};
+        const $title = video.querySelector("a.title");
+        const $time = video.querySelector("span.time");
+        v.bvid = video.dataset.aid;
+        v.title = $title.textContent;
+        // v.description = video.dataset.description;
+        // v.pic = video.dataset.pic;
+        // v.length = video.dataset.length;
+        v.date = $time.textContent;
+        v.url = `https://www.bilibili.com/video/${v.bvid}`;
+        videos.push(v);
+      });
+      return videos;
+    },
   };
 
-  bilibili.getVideos().then((vlist) => {
-    _log("bilibili.getVideos()\n", vlist);
-    vlist.forEach((video, i) => {
-      setTimeout(() => {
-        gob.post(bilibili.pickInfo(video), bilibili.data);
-      }, 3000 * i);
-    });
+
+
+  bilibili.getVideosFromPage().then((vlist) => {
+    gob.postCount = 0;
+    // 对于 vlist 中的每个视频，发送到远程，使用异步队列
+    const queue = createQueue(vlist,gob.post, bilibili.data);
+    runQueue(queue);
+
+
   });
 
 })();
