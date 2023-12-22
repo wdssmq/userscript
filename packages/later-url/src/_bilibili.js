@@ -2,27 +2,56 @@ import {
   _getDateStr,
   _log,
   _sleep,
-  $n,
+  // $n,
+  $na,
   curUrl,
+  // fnElChange,
 } from "./_base";
 
 import { gob } from "./_gob";
 import config from "./_config";
+import {
+  // createPromise,
+  createQueue,
+  runQueue,
+} from "./_queue";
+
+// 过滤字符信息
+gob.filter = (str) => {
+  let rlt = str;
+  rlt = rlt.replace(/\s/g, "");
+  rlt = rlt.replace(/#/g, "");
+  return rlt;
+};
 
 // 发送链接信息到远程
-
 gob.post = async (info, data) => {
   const { baseUrl, authToken } = config.data;
   const headers = {
     "Authorization": "Bearer " + authToken,
   };
+  info.title = gob.filter(info.title);
   const url = `${baseUrl}add?url=${info.url}&title=${info.title}&category=${data.category}&date=${data.date}`;
-  _log("gob.post()\n", url);
+  gob.postCount +=1;
+  _log(`gob.post() - ${gob.postCount} \n`, url);
+  if (gob.stopByErrCount()) {
+    return false;
+  }
 
-  const res = await gob.http.get(url, headers);
-  // _log("gob.post()\n", res);
-  _log("gob.post()\n", res.responseText);
-  return gob.http.get(url);
+  try {
+    const res = await gob.http.get(url, headers);
+    // _log("gob.post()\n", res);
+    _log("gob.post()\n", res.responseText);
+    if (res.status !== 200) {
+      gob.errCount += 1;
+      return false;
+    }
+    return true;
+  } catch (error) {
+    gob.errCount += 1;
+    _log("gob.post() - error\n", error);
+    return false;
+  }
 };
 
 const bilibili = {
@@ -40,6 +69,20 @@ const bilibili = {
     this.data.category = `bilibili_${uid}`;
     _log("bilibili.getUid()\n", this.data);
     return uid;
+  },
+
+  _$videos() {
+    return $na("#submit-video-list ul.cube-list li");
+  },
+
+  // 网页加载检查
+  async check() {
+    const $videos = this._$videos();
+    if ($videos.length > 0) {
+      return $videos;
+    }
+    await _sleep(1000);
+    return this.check();
   },
 
   // API JSON 查询
@@ -66,9 +109,16 @@ const bilibili = {
     const uid = this.getUid();
     const url = `https://api.bilibili.com/x/space/wbi/arc/search?mid=${uid}&ps=50&pn=${pn}`;
     _log("bilibili.getVideos()\n", url);
-    const resData = await this.apiGet(url);
-    if (resData.code === 0) {
-      return resData.data.list.vlist;
+    try {
+      const resData = await this.apiGet(url);
+      if (resData.code === 0) {
+        return resData.data.list.vlist;
+      } else {
+        _log("bilibili.getVideos() - resData\n", resData);
+      }
+    } catch (error) {
+      _log("bilibili.getVideos() - error\n", error);
+      return;
     }
   },
 
@@ -92,16 +142,36 @@ const bilibili = {
     info.category = this.data.category;
     return info;
   },
+
+  // 从网页元素中获取投稿视频
+  async getVideosFromPage() {
+    const uid = this.getUid();
+    const videos = [];
+    const videoList = await this.check();
+    videoList.forEach((video) => {
+      const v = {};
+      const $title = video.querySelector("a.title");
+      const $time = video.querySelector("span.time");
+      v.bvid = video.dataset.aid;
+      v.title = $title.textContent;
+      // v.description = video.dataset.description;
+      // v.pic = video.dataset.pic;
+      // v.length = video.dataset.length;
+      v.date = $time.textContent;
+      v.url = `https://www.bilibili.com/video/${v.bvid}`;
+      videos.push(v);
+    });
+    return videos;
+  },
 };
 
-bilibili.getVideos().then((vlist) => {
-  _log("bilibili.getVideos()\n", vlist);
-  vlist.forEach((video, i) => {
-    if ("NODE_ENV" === "dev" && i > 10) {
-      return;
-    }
-    setTimeout(() => {
-      gob.post(bilibili.pickInfo(video), bilibili.data);
-    }, 3000 * i);
-  });
+
+
+bilibili.getVideosFromPage().then((vlist) => {
+  gob.postCount = 0;
+  // 对于 vlist 中的每个视频，发送到远程，使用异步队列
+  const queue = createQueue(vlist,gob.post, bilibili.data);
+  runQueue(queue);
+
+
 });

@@ -19,6 +19,8 @@ const lsObj = {
 // 数据读写封装
 const gobInfo = {
   // key: [默认值, 是否记录至 ls]
+  errCount: [0, false],
+  postCount: [0, false],
 };
 const gob = {
   _lsKey: `${gm_name}_data`,
@@ -73,6 +75,14 @@ const gob = {
 };
 
 gob.http = http;
+
+gob.stopByErrCount = () => {
+  if (gob.errCount >= 4) {
+    _log("gob.stopByErrCount()\n", gob.errCount);
+    return true;
+  }
+  return false;
+};
 
 // 初始化
 gob.init().load();
