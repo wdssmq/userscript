@@ -3,7 +3,7 @@ import { _log } from "./_base";
 const config = {
   data: {},
   defData: {
-    baseUrl: "http://127.0.0.1:41849/",
+    baseUrl: "http://127.0.0.1:41897/",
     authToken: "token_value_here",
     isInit: false,
   },
