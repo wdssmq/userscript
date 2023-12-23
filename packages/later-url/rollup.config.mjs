@@ -69,7 +69,7 @@ const devConfig = {
       },
     }),
     replace({
-      // preventAssignment: true,
+      preventAssignment: true,
       "NODE_ENV": process.env.NODE_ENV,
     }),
   ],

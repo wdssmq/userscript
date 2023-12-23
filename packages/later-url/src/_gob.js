@@ -21,6 +21,8 @@ const gobInfo = {
   // key: [默认值, 是否记录至 ls]
   errCount: [0, false],
   postCount: [0, false],
+  curUrl: [location.href, false],
+  lstUrl: ["", false],
 };
 const gob = {
   _lsKey: `${gm_name}_data`,

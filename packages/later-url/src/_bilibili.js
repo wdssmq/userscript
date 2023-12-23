@@ -4,8 +4,8 @@ import {
   _sleep,
   $n,
   $na,
-  curUrl,
-  // fnElChange,
+  _curUrl,
+  fnElChange,
 } from "./_base";
 
 import { gob } from "./_gob";
@@ -65,7 +65,7 @@ const bilibili = {
 
   // 获取当前用户的 uid
   getUid() {
-    const uid = curUrl.match(/space\.bilibili\.com\/(\d+)/)[1];
+    const uid = gob.curUrl.match(/space\.bilibili\.com\/(\d+)/)[1];
     this.data.uid = uid;
     this.data.category = `bilibili_${uid}`;
     _log("bilibili.getUid()\n", this.data);
@@ -158,10 +158,6 @@ const bilibili = {
   // 从网页元素中获取投稿视频
   async getVideosFromPage() {
     const videoList = await this.check();
-    // 获取用户 uid 和 username
-    const uid = this.getUid();
-    const username = this.getUsername();
-    // return;
     const videos = [];
     videoList.forEach((video) => {
       const v = {};
@@ -178,13 +174,37 @@ const bilibili = {
     });
     return videos;
   },
+
+  // 主函数
+  main() {
+    // 仅在网址改变时重复执行
+    gob.curUrl = _curUrl();
+    if (gob.curUrl === gob.lstUrl) {
+      return;
+    }
+    // 判断网址是否匹配 https://space.bilibili.com/7078836/video
+    if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
+      return;
+    }
+    gob.lstUrl = gob.curUrl;
+    // 获取用户 uid 和 username
+    const uid = this.getUid();
+    const username = this.getUsername();
+    // 获取用户投稿视频并发送到远程
+    this.getVideosFromPage().then((vlist) => {
+      gob.postCount = 0;
+      // 对于 vlist 中的每个视频，发送到远程，使用异步队列
+      const queue = createQueue(vlist, gob.post, bilibili.data);
+      runQueue(queue);
+    });
+  },
+
+  // 监听网页元素变化
+  watch() {
+    const $body = $n("body");
+    const _this = this;
+    fnElChange($body, _this.main.bind(_this));
+  },
 };
 
-
-
-bilibili.getVideosFromPage().then((vlist) => {
-  gob.postCount = 0;
-  // 对于 vlist 中的每个视频，发送到远程，使用异步队列
-  const queue = createQueue(vlist, gob.post, bilibili.data);
-  runQueue(queue);
-});
+bilibili.watch();
