@@ -15,7 +15,7 @@
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
-// @match        https://space.bilibili.com/*/video
+// @match        https://space.bilibili.com/*/video*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -29,9 +29,11 @@
 
   const gm_name = "later-url";
 
-  // 初始常量或函数
-  const curUrl = window.location.href;
   const curDate = new Date();
+
+  // -------------------------------------
+
+  const _curUrl = () => { return window.location.href };
   const _getDateStr = (date = curDate) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
@@ -51,6 +53,25 @@
   function $na(e) {
     return document.querySelectorAll(e);
   }
+
+  // -------------------------------------
+
+  // 元素变化监听
+  const fnElChange = (el, fn = () => { }) => {
+    const observer = new MutationObserver((mutationRecord, mutationObserver) => {
+      // _log('mutationRecord = ', mutationRecord);
+      // _log('mutationObserver === observer', mutationObserver === observer);
+      fn(mutationRecord, mutationObserver);
+      // mutationObserver.disconnect();
+    });
+    observer.observe(el, {
+      // attributes: false,
+      // attributeFilter: ["class"],
+      childList: true,
+      // characterData: false,
+      subtree: true,
+    });
+  };
 
   class HttpRequest {
     constructor() {
@@ -117,6 +138,8 @@
     // key: [默认值, 是否记录至 ls]
     errCount: [0, false],
     postCount: [0, false],
+    curUrl: [location.href, false],
+    lstUrl: ["", false],
   };
   const gob = {
     _lsKey: `${gm_name}_data`,
@@ -186,7 +209,7 @@
   const config = {
     data: {},
     defData: {
-      baseUrl: "http://127.0.0.1:41849/",
+      baseUrl: "http://127.0.0.1:41897/",
       authToken: "token_value_here",
       isInit: false,
     },
@@ -283,7 +306,7 @@
 
     // 获取当前用户的 uid
     getUid() {
-      const uid = curUrl.match(/space\.bilibili\.com\/(\d+)/)[1];
+      const uid = gob.curUrl.match(/space\.bilibili\.com\/(\d+)/)[1];
       this.data.uid = uid;
       this.data.category = `bilibili_${uid}`;
       _log("bilibili.getUid()\n", this.data);
@@ -376,10 +399,6 @@
     // 从网页元素中获取投稿视频
     async getVideosFromPage() {
       const videoList = await this.check();
-      // 获取用户 uid 和 username
-      this.getUid();
-      this.getUsername();
-      // return;
       const videos = [];
       videoList.forEach((video) => {
         const v = {};
@@ -396,15 +415,39 @@
       });
       return videos;
     },
+
+    // 主函数
+    main() {
+      // 仅在网址改变时重复执行
+      gob.curUrl = _curUrl();
+      if (gob.curUrl === gob.lstUrl) {
+        return;
+      }
+      // 判断网址是否匹配 https://space.bilibili.com/7078836/video
+      if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
+        return;
+      }
+      gob.lstUrl = gob.curUrl;
+      // 获取用户 uid 和 username
+      this.getUid();
+      this.getUsername();
+      // 获取用户投稿视频并发送到远程
+      this.getVideosFromPage().then((vlist) => {
+        gob.postCount = 0;
+        // 对于 vlist 中的每个视频，发送到远程，使用异步队列
+        const queue = createQueue(vlist, gob.post, bilibili.data);
+        runQueue(queue);
+      });
+    },
+
+    // 监听网页元素变化
+    watch() {
+      const $body = $n("body");
+      const _this = this;
+      fnElChange($body, _this.main.bind(_this));
+    },
   };
 
-
-
-  bilibili.getVideosFromPage().then((vlist) => {
-    gob.postCount = 0;
-    // 对于 vlist 中的每个视频，发送到远程，使用异步队列
-    const queue = createQueue(vlist, gob.post, bilibili.data);
-    runQueue(queue);
-  });
+  bilibili.watch();
 
 })();
