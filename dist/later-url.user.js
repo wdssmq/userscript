@@ -41,6 +41,13 @@
   // -------------------------------------
 
   const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
+
+  // -------------------------------------
+
+  // const $ = window.$ || unsafeWindow.$;
+  function $n(e) {
+    return document.querySelector(e);
+  }
   function $na(e) {
     return document.querySelectorAll(e);
   }
@@ -242,8 +249,8 @@
       "Authorization": "Bearer " + authToken,
     };
     info.title = gob.filter(info.title);
-    const url = `${baseUrl}add?url=${info.url}&title=${info.title}&category=${data.category}&date=${data.date}`;
-    gob.postCount +=1;
+    const url = `${baseUrl}add?url=${info.url}&title=${info.title}&author=${data.username}&category=${data.category}&date=${data.date}`;
+    gob.postCount += 1;
     _log(`gob.post() - ${gob.postCount} \n`, url);
     if (gob.stopByErrCount()) {
       return false;
@@ -269,6 +276,7 @@
     // 变量复用
     data: {
       uid: "",
+      username: "",
       category: "default",
       date: _getDateStr(),
     },
@@ -280,6 +288,17 @@
       this.data.category = `bilibili_${uid}`;
       _log("bilibili.getUid()\n", this.data);
       return uid;
+    },
+
+    // 获取用户名
+    getUsername() {
+      const $username = $n("span#h-name");
+      // console.log($username);
+      if ($username) {
+        this.data.username = $username.textContent;
+      }
+      _log("bilibili.getUsername()\n", this.data);
+      return this.data.username;
     },
 
     _$videos() {
@@ -356,9 +375,12 @@
 
     // 从网页元素中获取投稿视频
     async getVideosFromPage() {
-      this.getUid();
-      const videos = [];
       const videoList = await this.check();
+      // 获取用户 uid 和 username
+      this.getUid();
+      this.getUsername();
+      // return;
+      const videos = [];
       videoList.forEach((video) => {
         const v = {};
         const $title = video.querySelector("a.title");
@@ -381,10 +403,8 @@
   bilibili.getVideosFromPage().then((vlist) => {
     gob.postCount = 0;
     // 对于 vlist 中的每个视频，发送到远程，使用异步队列
-    const queue = createQueue(vlist,gob.post, bilibili.data);
+    const queue = createQueue(vlist, gob.post, bilibili.data);
     runQueue(queue);
-
-
   });
 
 })();
