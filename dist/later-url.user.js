@@ -15,7 +15,7 @@
 // @null         ----------------------------
 // @noframes
 // @run-at       document-end
-// @match        https://space.bilibili.com/*/video*
+// @match        https://space.bilibili.com/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getValue
 // @grant        GM_setValue
