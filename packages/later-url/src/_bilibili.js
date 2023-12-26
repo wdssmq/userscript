@@ -46,6 +46,10 @@ gob.post = async (info, data) => {
       gob.errCount += 1;
       return false;
     }
+    // 如果有 data.showProgress() 函数，则调用
+    if (typeof data.showProgress === "function") {
+      data.showProgress(gob.postCount);
+    }
     return true;
   } catch (error) {
     gob.errCount += 1;
@@ -111,12 +115,23 @@ const bilibili = {
     if (!$progress) {
       const $div = document.createElement("div");
       $div.id = "gm-progress";
-      $div.style = "margin: 10px 0;";
+      $div.style = "margin: 4px 0 4px 37px;";
+      $div.style.color = "red";
+      $div.style.fontSize = "14px";
+      $div.style.fontWeight = "bold";
       $warp.appendChild($div);
       $progress = $div;
     }
     // 更新进度
-    $progress.textContent = `${num}/${total}`;
+    $progress.textContent = `later-url: ${num}/${total}`;
+  },
+
+  // 重置进度条
+  resetProgress() {
+    const $progress = $n("#gm-progress");
+    if ($progress) {
+      $progress.textContent = "";
+    }
   },
 
   // API JSON 查询
@@ -199,18 +214,24 @@ const bilibili = {
 
   // 主函数
   main() {
+    // 判断网址是否匹配 https://space.bilibili.com/7078836/video
+    if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
+      return;
+    }
     // 仅在网址改变时重复执行
     gob.curUrl = _curUrl();
     if (gob.curUrl === gob.lstUrl) {
       return;
     }
-    // 判断网址是否匹配 https://space.bilibili.com/7078836/video
-    if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
-      return;
-    }
     gob.lstUrl = gob.curUrl;
+    // 重置进度条
+    bilibili.resetProgress();
     // 获取用户投稿视频并发送到远程
     this.getVideosFromPage().then((vlist) => {
+      // 更新进度通过 bilibili.data 传递给 gob.post
+      bilibili.data.showProgress = (num) => {
+        bilibili.showProgress(num, vlist.length);
+      };
       // 获取用户 uid 和 username
       const uid = this.getUid();
       const username = this.getUsername();
