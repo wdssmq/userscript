@@ -330,10 +330,16 @@
 
     // 网页加载检查
     async check() {
+      // 视频列表父元素
+      const $submitVideo = $n("#submit-video");
+      // 视频列表
       const $videos = this._$videos();
-      if ($videos.length > 0) {
+      // 视频列表不为空，并且不在加载状态
+      if ($videos.length > 0 && !$submitVideo.className.match("loading")) {
         return $videos;
       }
+      // _log("bilibili.check()", $submitVideo?.className);
+      // 否则，等待 1 秒后再次检查
       await _sleep(1000);
       return this.check();
     },
@@ -428,11 +434,12 @@
         return;
       }
       gob.lstUrl = gob.curUrl;
-      // 获取用户 uid 和 username
-      this.getUid();
-      this.getUsername();
       // 获取用户投稿视频并发送到远程
       this.getVideosFromPage().then((vlist) => {
+        // 获取用户 uid 和 username
+        this.getUid();
+        this.getUsername();
+        // 计数器清零
         gob.postCount = 0;
         // 对于 vlist 中的每个视频，发送到远程，使用异步队列
         const queue = createQueue(vlist, gob.post, bilibili.data);
