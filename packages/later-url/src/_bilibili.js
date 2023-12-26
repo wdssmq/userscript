@@ -26,6 +26,9 @@ gob.filter = (str) => {
 
 // 发送链接信息到远程
 gob.post = async (info, data) => {
+  if (gob.stopByErrCount()) {
+    return false;
+  }
   const { baseUrl, authToken } = config.data;
   const headers = {
     "Authorization": "Bearer " + authToken,
@@ -34,9 +37,6 @@ gob.post = async (info, data) => {
   const url = `${baseUrl}add?url=${info.url}&title=${info.title}&author=${data.username}&category=${data.category}&date=${data.date}`;
   gob.postCount += 1;
   _log(`gob.post() - ${gob.postCount} \n`, url);
-  if (gob.stopByErrCount()) {
-    return false;
-  }
 
   try {
     const res = await gob.http.get(url, headers);
@@ -101,6 +101,22 @@ const bilibili = {
     // 否则，等待 1 秒后再次检查
     await _sleep(1000);
     return this.check();
+  },
+
+  // 在页面元素中显示进度
+  showProgress(num, total) {
+    const $warp = $n("#submit-video-type-filter");
+    // 向 $warp 中添加进度元素
+    let $progress = $n("#gm-progress");
+    if (!$progress) {
+      const $div = document.createElement("div");
+      $div.id = "gm-progress";
+      $div.style = "margin: 10px 0;";
+      $warp.appendChild($div);
+      $progress = $div;
+    }
+    // 更新进度
+    $progress.textContent = `${num}/${total}`;
   },
 
   // API JSON 查询

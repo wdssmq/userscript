@@ -80,7 +80,7 @@ gob.http = http;
 
 gob.stopByErrCount = () => {
   if (gob.errCount >= 4) {
-    _log("gob.stopByErrCount()\n", gob.errCount);
+    _log("gob.stopByErrCount()\n", "累计错误达到限制");
     return true;
   }
   return false;
