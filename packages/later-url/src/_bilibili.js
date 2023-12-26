@@ -187,11 +187,12 @@ const bilibili = {
       return;
     }
     gob.lstUrl = gob.curUrl;
-    // 获取用户 uid 和 username
-    const uid = this.getUid();
-    const username = this.getUsername();
     // 获取用户投稿视频并发送到远程
     this.getVideosFromPage().then((vlist) => {
+      // 获取用户 uid 和 username
+      const uid = this.getUid();
+      const username = this.getUsername();
+      // 计数器清零
       gob.postCount = 0;
       // 对于 vlist 中的每个视频，发送到远程，使用异步队列
       const queue = createQueue(vlist, gob.post, bilibili.data);
