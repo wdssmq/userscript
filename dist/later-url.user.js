@@ -197,7 +197,7 @@
 
   gob.stopByErrCount = () => {
     if (gob.errCount >= 4) {
-      _log("gob.stopByErrCount()\n", gob.errCount);
+      _log("gob.stopByErrCount()\n", "累计错误达到限制");
       return true;
     }
     return false;
@@ -267,6 +267,9 @@
 
   // 发送链接信息到远程
   gob.post = async (info, data) => {
+    if (gob.stopByErrCount()) {
+      return false;
+    }
     const { baseUrl, authToken } = config.data;
     const headers = {
       "Authorization": "Bearer " + authToken,
@@ -275,9 +278,6 @@
     const url = `${baseUrl}add?url=${info.url}&title=${info.title}&author=${data.username}&category=${data.category}&date=${data.date}`;
     gob.postCount += 1;
     _log(`gob.post() - ${gob.postCount} \n`, url);
-    if (gob.stopByErrCount()) {
-      return false;
-    }
 
     try {
       const res = await gob.http.get(url, headers);
@@ -286,6 +286,10 @@
       if (res.status !== 200) {
         gob.errCount += 1;
         return false;
+      }
+      // 如果有 data.showProgress() 函数，则调用
+      if (typeof data.showProgress === "function") {
+        data.showProgress(gob.postCount);
       }
       return true;
     } catch (error) {
@@ -342,6 +346,33 @@
       // 否则，等待 1 秒后再次检查
       await _sleep(1000);
       return this.check();
+    },
+
+    // 在页面元素中显示进度
+    showProgress(num, total) {
+      const $warp = $n("#submit-video-type-filter");
+      // 向 $warp 中添加进度元素
+      let $progress = $n("#gm-progress");
+      if (!$progress) {
+        const $div = document.createElement("div");
+        $div.id = "gm-progress";
+        $div.style = "margin: 4px 0 4px 37px;";
+        $div.style.color = "red";
+        $div.style.fontSize = "14px";
+        $div.style.fontWeight = "bold";
+        $warp.appendChild($div);
+        $progress = $div;
+      }
+      // 更新进度
+      $progress.textContent = `later-url: ${num}/${total}`;
+    },
+
+    // 重置进度条
+    resetProgress() {
+      const $progress = $n("#gm-progress");
+      if ($progress) {
+        $progress.textContent = "";
+      }
     },
 
     // API JSON 查询
@@ -424,18 +455,24 @@
 
     // 主函数
     main() {
+      // 判断网址是否匹配 https://space.bilibili.com/7078836/video
+      if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
+        return;
+      }
       // 仅在网址改变时重复执行
       gob.curUrl = _curUrl();
       if (gob.curUrl === gob.lstUrl) {
         return;
       }
-      // 判断网址是否匹配 https://space.bilibili.com/7078836/video
-      if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
-        return;
-      }
       gob.lstUrl = gob.curUrl;
+      // 重置进度条
+      bilibili.resetProgress();
       // 获取用户投稿视频并发送到远程
       this.getVideosFromPage().then((vlist) => {
+        // 更新进度通过 bilibili.data 传递给 gob.post
+        bilibili.data.showProgress = (num) => {
+          bilibili.showProgress(num, vlist.length);
+        };
         // 获取用户 uid 和 username
         this.getUid();
         this.getUsername();
