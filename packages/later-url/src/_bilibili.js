@@ -214,12 +214,13 @@ const bilibili = {
 
   // 主函数
   main() {
+    // 获取当前网址
+    gob.curUrl = _curUrl();
     // 判断网址是否匹配 https://space.bilibili.com/7078836/video
     if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
       return;
     }
     // 仅在网址改变时重复执行
-    gob.curUrl = _curUrl();
     if (gob.curUrl === gob.lstUrl) {
       return;
     }
