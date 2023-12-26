@@ -89,10 +89,16 @@ const bilibili = {
 
   // 网页加载检查
   async check() {
+    // 视频列表父元素
+    const $submitVideo = $n("#submit-video");
+    // 视频列表
     const $videos = this._$videos();
-    if ($videos.length > 0) {
+    // 视频列表不为空，并且不在加载状态
+    if ($videos.length > 0 && !$submitVideo.className.match("loading")) {
       return $videos;
     }
+    // _log("bilibili.check()", $submitVideo?.className);
+    // 否则，等待 1 秒后再次检查
     await _sleep(1000);
     return this.check();
   },
