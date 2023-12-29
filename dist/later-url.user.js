@@ -30,6 +30,7 @@
   const gm_name = "later-url";
 
   const curDate = new Date();
+  const curTimestamp = Math.floor(curDate.getTime() / 1000);
 
   // -------------------------------------
 
@@ -203,6 +204,29 @@
     return false;
   };
 
+  // 使用 lsObj 记录发送历史，同一个链接在指定天数内 dayLimit 内最多发送 sendLimit 次
+  gob.stopBySendLimit = (url, dayLimit = 37, sendLimit = 4) => {
+    const curDay = Math.floor(curTimestamp / 86400);
+    const key = `sendLimit_${url}`;
+    const item = lsObj.getItem(key, { lstDay: curDay, count: 0 });
+    if (curDay - item.lstDay > dayLimit) {
+      item.lstDay = curDay;
+      item.count = 0;
+    }
+    if (item.count >= sendLimit) {
+      _log("gob.stopBySendLimit()\n", `当前链接 ${url} 已达到重复发送限制:\n`, {
+        item,
+        curDay,
+        dayLimit,
+        sendLimit,
+      });
+      return true;
+    }
+    item.count += 1;
+    lsObj.setItem(key, item);
+    return false;
+  };
+
   // 初始化
   gob.init().load();
 
@@ -268,6 +292,9 @@
   // 发送链接信息到远程
   gob.post = async (info, data) => {
     if (gob.stopByErrCount()) {
+      return false;
+    }
+    if (gob.stopBySendLimit(info.url)) {
       return false;
     }
     const { baseUrl, authToken } = config.data;
