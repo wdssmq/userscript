@@ -29,6 +29,9 @@ gob.post = async (info, data) => {
   if (gob.stopByErrCount()) {
     return false;
   }
+  if (gob.stopBySendLimit(info.url)) {
+    return false;
+  }
   const { baseUrl, authToken } = config.data;
   const headers = {
     "Authorization": "Bearer " + authToken,

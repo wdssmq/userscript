@@ -1,4 +1,4 @@
-import { _log } from "./_base";
+import { _log, curTimestamp } from "./_base";
 import { gm_name } from "./__info";
 import http from "./_http";
 
@@ -83,6 +83,29 @@ gob.stopByErrCount = () => {
     _log("gob.stopByErrCount()\n", "累计错误达到限制");
     return true;
   }
+  return false;
+};
+
+// 使用 lsObj 记录发送历史，同一个链接在指定天数内 dayLimit 内最多发送 sendLimit 次
+gob.stopBySendLimit = (url, dayLimit = 37, sendLimit = 4) => {
+  const curDay = Math.floor(curTimestamp / 86400);
+  const key = `sendLimit_${url}`;
+  const item = lsObj.getItem(key, { lstDay: curDay, count: 0 });
+  if (curDay - item.lstDay > dayLimit) {
+    item.lstDay = curDay;
+    item.count = 0;
+  }
+  if (item.count >= sendLimit) {
+    _log("gob.stopBySendLimit()\n", `当前链接 ${url} 已达到重复发送限制:\n`, {
+      item,
+      curDay,
+      dayLimit,
+      sendLimit,
+    });
+    return true;
+  }
+  item.count += 1;
+  lsObj.setItem(key, item);
   return false;
 };
 

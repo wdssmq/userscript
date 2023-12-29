@@ -3,11 +3,13 @@ import { gm_name } from "./__info";
 // 初始常量或函数
 const curUrl = window.location.href;
 const curDate = new Date();
+const curTimestamp = Math.floor(curDate.getTime() / 1000);
 
 // -------------------------------------
 
 const _curUrl = () => { return window.location.href };
 const _curDate = () => { return new Date() };
+const _curTimestamp = () => { return Math.floor(_curDate().getTime() / 1000) };
 const _getDateStr = (date = curDate) => {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
@@ -52,17 +54,19 @@ const fnElChange = (el, fn = () => { }) => {
 // -------------------------------------
 
 export {
-  curUrl,
-  curDate,
-  _curUrl,
   _curDate,
-  _sleep,
+  _curTimestamp,
+  _curUrl,
+  _error,
   _getDateStr,
   _log,
+  _sleep,
   _warn,
-  _error,
   // $,
   $n,
   $na,
+  curDate,
+  curTimestamp,
+  curUrl,
   fnElChange,
 };
