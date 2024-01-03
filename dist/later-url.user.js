@@ -139,6 +139,8 @@
     // key: [默认值, 是否记录至 ls]
     errCount: [0, false],
     postCount: [0, false],
+    postIndex: [0, false],
+    remoteTotal: [0, false],
     curUrl: [location.href, false],
     lstUrl: ["", false],
   };
@@ -291,6 +293,9 @@
 
   // 发送链接信息到远程
   gob.post = async (info, data) => {
+    // 如果有 data.showProgress() 函数
+    const fnShowProgress = typeof data.showProgress === "function" ? data.showProgress : () => { };
+    gob.postIndex += 1;
     if (gob.stopByErrCount()) {
       return false;
     }
@@ -314,10 +319,9 @@
         gob.errCount += 1;
         return false;
       }
-      // 如果有 data.showProgress() 函数，则调用
-      if (typeof data.showProgress === "function") {
-        data.showProgress(gob.postCount);
-      }
+      const resJSON = JSON.parse(res.responseText);
+      gob.remoteTotal = resJSON.data.count || 0;
+      fnShowProgress(gob.postIndex, gob.remoteTotal);
       return true;
     } catch (error) {
       gob.errCount += 1;
@@ -376,7 +380,7 @@
     },
 
     // 在页面元素中显示进度
-    showProgress(num, total) {
+    showProgress(itemIndex, pageTotal, remoteTotal) {
       const $warp = $n("#submit-video-type-filter");
       // 向 $warp 中添加进度元素
       let $progress = $n("#gm-progress");
@@ -391,7 +395,7 @@
         $progress = $div;
       }
       // 更新进度
-      $progress.textContent = `later-url: ${num}/${total}`;
+      $progress.textContent = `later-url: ${itemIndex}/${pageTotal} remote: ${remoteTotal}`;
     },
 
     // 重置进度条
@@ -498,14 +502,16 @@
       // 获取用户投稿视频并发送到远程
       this.getVideosFromPage().then((vlist) => {
         // 更新进度通过 bilibili.data 传递给 gob.post
-        bilibili.data.showProgress = (num) => {
-          bilibili.showProgress(num, vlist.length);
+        bilibili.data.showProgress = (itemIndex, remoteTotal) => {
+          bilibili.showProgress(itemIndex, vlist.length, remoteTotal);
         };
         // 获取用户 uid 和 username
         this.getUid();
         this.getUsername();
         // 计数器清零
+        gob.postIndex = 0;
         gob.postCount = 0;
+        gob.errCount = 0;
         // 对于 vlist 中的每个视频，发送到远程，使用异步队列
         const queue = createQueue(vlist, gob.post, bilibili.data);
         runQueue(queue);
