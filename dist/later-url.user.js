@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」收集各种待看链接到远程服务器
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  收集 B 站视频等链接到远程服务器，以用于 RSS 订阅
 // @license      MIT
