@@ -53,13 +53,12 @@ function fnColorStars(offset = 0) {
     return;
   }
   // ----------------------------
-  // 遍历 dom 节点，随机交换位置
-  fnRndNodeList(gob.GetStarNodes());
-  // ----------------------------
-  // 总数过少时，不着色
-  if ($stars.length < gob.pickRule.maxPick) {
+  if ($stars.length <= 19) {
+    // 遍历 dom 节点，随机交换位置
+    fnRndNodeList(gob.GetStarNodes());
     return;
   }
+  // ----------------------------
   const fnPick = ($item, i) => {
     if (i > 1 && i - oConfig.lstPick < oConfig.minPick / 2) {
       return;
