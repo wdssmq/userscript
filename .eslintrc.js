@@ -32,7 +32,7 @@ module.exports = {
       {
         "named": "never",
         // ↓ 预想是设置为 never，但是 VSCode 总是给加上 (╯﹏╰）
-        "anonymous": "always",
+        "anonymous": "never",
       },
     ],
     // ------------------------------

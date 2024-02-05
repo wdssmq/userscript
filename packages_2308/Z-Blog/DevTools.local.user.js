@@ -19,9 +19,9 @@
 // @grant        GM_setValue
 // ==/UserScript==
 /* jshint esversion:6 */
-(function () {
+(() => {
   "use strict";
-  const $ = window.jQuery || unsafeWindow.jQuery || function () {};
+  const $ = window.jQuery || unsafeWindow.jQuery;
 
   // console.log($);
 
@@ -94,7 +94,7 @@
     }
 
     // location.pathname
-    $("tr").each(function () {
+    $("tr").each(function($i) {
       const curHtml = $(this).html();
       if ($(this).find("th").length > 0) {
         return;
@@ -103,7 +103,8 @@
       const strAuthor = $(this).find(".td20 a").text().trim();
       if (DateMinus(strDate) && strAuthor == config.authName) {
         console.log(strDate, strAuthor);
-        $(this).css({ color: "red" }).insertAfter("table tbody tr:first-child");
+        $(this).css({ color: "red" });
+        // .insertAfter("table tbody tr:first-child");
       }
       if (/Todo|mzGrunt|FileIgnore|xnxf_SubMenu/.test(curHtml)) {
         $(this).css({
