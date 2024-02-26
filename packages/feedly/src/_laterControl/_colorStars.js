@@ -8,6 +8,7 @@ gob.pickRule = {
   maxPick: 7,
   lstPick: 0,
   pickList: [],
+  随机次数: 0,
 };
 
 GM_addStyle(`
@@ -53,9 +54,10 @@ function fnColorStars(offset = 0) {
     return;
   }
   // ----------------------------
-  if ($stars.length <= 19) {
+  if ($stars.length <= 19 && oConfig.随机次数 <= 3) {
     // 遍历 dom 节点，随机交换位置
     fnRndNodeList(gob.GetStarNodes());
+    gob.pickRule.随机次数 += 1;
     return;
   }
   // ----------------------------
