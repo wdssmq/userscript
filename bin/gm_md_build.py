@@ -18,9 +18,28 @@ docUrl: {docUrl}
 tags: []
 ---\n"""
 
-pkg_doc_tpl = """## {name}
+pkg_doc_tpl = """## {title}
 
-{desc}
+{description}
+
+### 当前脚本工程源码
+
+userscript/packages/{name} at main · wdssmq/userscript：
+
+[https://github.com/wdssmq/userscript/tree/main/packages/{name}](https://github.com/wdssmq/userscript/tree/main/packages/{name} "userscript/packages/{name} at main · wdssmq/userscript")
+
+### 关于
+
+博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")
+
+爱发电： [https://afdian.net/@wdssmq](https://afdian.net/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
+
+更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
+
+GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/zh-CN/users/6865 "wdssmq - GreasyFork")
+
+交流反馈：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=aUWw0GnzE6lREYxdHVPAIfJBPKPvnPN6&jump_from=webapi&authKey=CPLHemFTAHa9YuDOOXHE1DDqTUhlsJehvEQ4HmBpx4ihtBc9i8OGJCsnR3fc+cJ1">189574683</a>
+
 
 """
 
@@ -118,10 +137,11 @@ def gm_md_build(gob_config):
     """生成脚本介绍文件"""
     gm_info_list = gm_read_dist(gob_config["gm_dist_path"], gob_config["changed"])
     for gm_info in gm_info_list:
-        gm_doc_path = os.path.join(gob_config["gm_src_path"], gm_info["file"], "README.md")
+        gm_doc_path = os.path.join(gob_config["gm_src_path"], gm_info["file_gm"], "README.md")
         gm_doc_con = pkg_doc_tpl.format(
-            name=gm_info["name"],
-            desc=gm_info["desc"],
+            title=gm_info["name"],
+            description=gm_info["desc"],
+            name=gm_info["file_gm"],
         )
         # fnLog(gm_doc_con)
         gm_write_doc(gm_doc_path, gm_doc_con)
