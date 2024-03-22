@@ -4,7 +4,7 @@ const gm_banner = `
 // @namespace    https://www.wdssmq.com/
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
-// @description  按章节打包下载漫画柜的资源「QQ 群：189574683」
+// @description  按章节打包下载漫画柜的资源，自用为主
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81

@@ -18,6 +18,11 @@ docUrl: {docUrl}
 tags: []
 ---\n"""
 
+pkg_doc_tpl = """## {name}
+
+{desc}
+
+"""
 
 def gm_read_js(file_js, file_name):
     """读取脚本文件"""
@@ -42,6 +47,10 @@ def gm_read_doc(file_doc):
         con_md = f.read()
     return con_md
 
+def gm_write_doc(file_doc, con_md):
+    """写入脚本介绍文件"""
+    with open(file_doc, "w", encoding="UTF-8") as f:
+        f.write(con_md)
 
 def gm_build_link(branch, gm_info):
     """拼接脚本链接"""
@@ -109,11 +118,13 @@ def gm_md_build(gob_config):
     """生成脚本介绍文件"""
     gm_info_list = gm_read_dist(gob_config["gm_dist_path"], gob_config["changed"])
     for gm_info in gm_info_list:
-        # gm_doc_path = os.path.join(gob_config["gm_src_path"], gm_info["file"], "README.md")
-        # if os.path.exists(gm_doc_path):
-        #     gm_doc_con = gm_read_doc(gm_doc_path)
-        #     gm_info["body"] = gm_doc_con
-        # gm_doc = gm_read_doc(os.path.join(gob_config["gm_src_path"], gm_info["file"] + ".md"))
+        gm_doc_path = os.path.join(gob_config["gm_src_path"], gm_info["file"], "README.md")
+        gm_doc_con = pkg_doc_tpl.format(
+            name=gm_info["name"],
+            desc=gm_info["desc"],
+        )
+        # fnLog(gm_doc_con)
+        gm_write_doc(gm_doc_path, gm_doc_con)
         # ---------------
         # 拼接 md 文件路径
         gm_md_file = os.path.join(gob_config["gm_md_path"], gm_info["file_gm"] + ".md")
