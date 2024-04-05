@@ -1,10 +1,10 @@
 const gm_banner = `
 // ==UserScript==
-// @name         「xiuno」管理工具（QQ 群：189574683）
+// @name         「Z-Blog」论坛辅助
 // @namespace    https://www.wdssmq.com/
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
-// @description  对不合规的内容加密处理
+// @description  针对 Z-Blog 官方论坛的辅助脚本
 // @license      MIT
 // @link         https://greasyfork.org/zh-CN/scripts/419517
 // @null         ----------------------------
@@ -29,7 +29,7 @@ const gm_banner = `
 /* jshint esversion: 6 */
 `;
 
-const gm_name = "xiuno";
+const gm_name = "zbp-xiuno";
 
 const gm_require = [
   {
