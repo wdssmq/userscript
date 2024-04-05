@@ -258,6 +258,13 @@ declare module 'astro:content' {
   collection: "gm_md";
   data: InferEntrySchema<"gm_md">
 } & { render(): Render[".md"] };
+"xiuno.md": {
+	id: "xiuno.md";
+  slug: "xiuno";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 "zbp-TimeLine.md": {
 	id: "zbp-TimeLine.md";
   slug: "zbp-timeline";
