@@ -1,16 +1,17 @@
 import { gm_name } from "./__info";
 
 // 初始变量
+const $n = (selector, context = document) => context.querySelector(selector);
 const $ = window.jQuery || unsafeWindow.jQuery;
 const UM = window.UM || unsafeWindow.UM;
 const UE = window.UE || unsafeWindow.UE;
 const curHref = location.href.replace(location.hash, "");
 // localStorage 封装
 const lsObj = {
-  setItem: function (key, value) {
+  setItem: function(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem: function (key, def = "") {
+  getItem: function(key, def = "") {
     const item = localStorage.getItem(key);
     if (item) {
       return JSON.parse(item);
@@ -31,7 +32,7 @@ function fnGetRequest(strURL, strData, fnCallback) {
     method: "GET",
     data: strData,
     url: strURL,
-    onload: function (responseDetail) {
+    onload: function(responseDetail) {
       if (responseDetail.status === 200) {
         fnCallback(responseDetail.responseText, strURL);
       } else {
@@ -58,4 +59,4 @@ function fnFormatTime() {
   ).trim();
 }
 
-export { $, UM, UE, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime };
+export { $n, $, UM, UE, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime };

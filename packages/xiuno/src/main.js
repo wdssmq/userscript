@@ -1,3 +1,5 @@
+// 空白页自动跳转登录
+import _blank2login from "./_blank2login.js";
 
 // 加密
 import _lz from "./_lz.js";
@@ -13,3 +15,4 @@ import _blockquote from "./_blockquote.js";
 
 // 编辑器
 import _editor from "./_editor.js";
+
