@@ -272,6 +272,13 @@ declare module 'astro:content' {
   collection: "gm_md";
   data: InferEntrySchema<"gm_md">
 } & { render(): Render[".md"] };
+"zbp-xiuno.md": {
+	id: "zbp-xiuno.md";
+  slug: "zbp-xiuno";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 };
 
 	};

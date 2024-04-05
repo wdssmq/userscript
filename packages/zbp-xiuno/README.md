@@ -1,12 +1,12 @@
-## 「xiuno」管理工具（QQ 群：189574683）
+## 「Z-Blog」论坛辅助
 
-对不合规的内容加密处理
+针对 Z-Blog 官方论坛的辅助脚本
 
 ### 当前脚本工程源码
 
-userscript/packages/xiuno at main · wdssmq/userscript：
+userscript/packages/zbp-xiuno at main · wdssmq/userscript：
 
-[https://github.com/wdssmq/userscript/tree/main/packages/xiuno](https://github.com/wdssmq/userscript/tree/main/packages/xiuno "userscript/packages/xiuno at main · wdssmq/userscript")
+[https://github.com/wdssmq/userscript/tree/main/packages/zbp-xiuno](https://github.com/wdssmq/userscript/tree/main/packages/zbp-xiuno "userscript/packages/zbp-xiuno at main · wdssmq/userscript")
 
 ### 关于
 
