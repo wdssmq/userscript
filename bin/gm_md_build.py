@@ -35,7 +35,7 @@ userscript/packages/{name} at main · wdssmq/userscript：
 
 GitHub: [点击安装]({gitUrlRaw}, "点击安装 {title} - GitHub") 「[在线查看]({gitUrl}, "在线查看 dist 源码")」
 
-CDN: [点击安装]({cdnUrl}, "点击安装 {title} - CDN") 「[更新缓存]({purge}, "点击更新 CDN 缓存")」
+CDN: [点击安装]({cdnUrl}, "点击安装 {title} - CDN") 「[更新缓存]({purgeUrl}, "点击更新 CDN 缓存")」
 
 ### 关于
 
