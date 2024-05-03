@@ -1,54 +1,11 @@
-import { _log, $n, $na, fnElChange } from "./_base";
-import _config from "./_config";
+import {
+  _log,
+  $n,
+  $na,
+  fnElChange,
+} from "./_base";
 
-// 选项为 sc 时，则排除匹配 tc 字段的节点文本
-const _filter_map = {
-  "tc": ["big5", "cht", "繁日双语", "繁体内嵌", "繁体"],
-  "sc": ["gb", "chs", "简日双语", "简体内嵌", "简体"],
-  "720": ["720"],
-  "1080": ["1080"],
-};
-
-const fnGenFilter = (opt) => {
-  const filter = {};
-  const string = JSON.stringify(opt);
-  if (string.includes("720")) {
-    filter["size"] = _filter_map["1080"];
-  }
-  if (string.includes("1080")) {
-    filter["size"] = _filter_map["720"];
-  }
-  if (string.includes("tc")) {
-    filter["subtitle"] = _filter_map["sc"];
-  }
-  if (string.includes("sc")) {
-    filter["subtitle"] = _filter_map["tc"];
-  }
-  // 其他过滤条件
-  filter["other"] = ["cr 1920", "b-global"];
-  return filter;
-};
-
-const _filter = fnGenFilter(_config.data);
-_log("_filter\n", _filter);
-
-// 过滤含有指定字符的节点
-function fnFilter(text, filter) {
-  let bolBlock = false;
-  for (const key in filter) {
-    if (Object.hasOwnProperty.call(filter, key)) {
-      const element = filter[key];
-      for (let i = 0; i < element.length; i++) {
-        // _log(element[i], text, text.includes(element[i]));
-        if (text.includes(element[i])) {
-          bolBlock = true;
-          break;
-        }
-      }
-    }
-  }
-  return bolBlock;
-}
+import _pick from "./_pick";
 
 // 遍历 nodeList
 function fnEachNodeList(nodeList, fn) {
@@ -58,59 +15,30 @@ function fnEachNodeList(nodeList, fn) {
   }
 }
 
-// 添加批量复制磁力链接功能
-function fnAddBatchCopy($th, magnetList) {
-  const $btn = document.createElement("button");
-  $btn.innerText = "批量复制";
-  $btn.addEventListener("click", () => {
-    const magnetStr = magnetList.join("\n");
-    GM_setClipboard(magnetStr);
-    $btn.innerText = "复制成功";
-    _log(`已复制 ${magnetStr}`);
-  }, false);
-  // appendChild 2 elements
-  $th.appendChild($btn);
+// 按发布组获取信息
+function fnGetGroupInfo() {
+  const arrGroup = [];
+  // 获取全部 div.subgroup-text
+  const $listGroup = $na(".subgroup-text");
+  fnEachNodeList($listGroup, ($group, i) => {
+    const $groupTitle = $group.querySelector("div.dropdown-toggle span") || $group.querySelector("a");
+    const groupName = $groupTitle.innerText;
+    const $groupTable = $group.nextElementSibling;
+    arrGroup.push({
+      name: groupName,
+      $table: $groupTable,
+    });
+  });
+  return arrGroup;
 }
-
-// 过滤磁力链接中的 tr
-function fnRemoveTracker(magnet) {
-  const regex = /&tr=.+?(?=&|$)/g;
-  return magnet.replace(regex, "");
-}
-
 
 // main
 function fnMain() {
-  const $listTr = $na("table tr");
-  _log($listTr.length);
-  let $curTh = null;
-  // let $lstTh = null;
-  let magnetList = [];
-  fnEachNodeList($listTr, ($tr, i) => {
-    if ($tr.innerText.includes("番组名")) {
-      $curTh = $tr.querySelector("th");
-      // $lstTh = $curTh;
-      _log("fnMain() $curTh\n",$curTh);
-      fnAddBatchCopy($curTh, magnetList);
-      magnetList = [];
-      // return;
-    }
-    const $curA = $tr.querySelector(".magnet-link-wrap");
-    const $curB = $tr.querySelector(".js-magnet");
-    if (!$curA) {
-      return;
-    }
-    const curText = $curA.innerText.toLowerCase();
-    // data-clipboard-text
-    let magnet = $curB.getAttribute("data-clipboard-text");
-    magnet = fnRemoveTracker(magnet);
-    if (fnFilter(curText, _filter)) {
-      // _log(`${curText} ${magnet}`);
-      $tr.remove();
-    } else {
-      magnetList.push(magnet);
-    }
-    // _log(`${i} ${curText}`);
+  const arrGroup = fnGetGroupInfo();
+  // _log("arrGroup", arrGroup);
+  arrGroup.forEach((group) => {
+    _pick(group.name, group.$table);
+    // _log("group", group);
   });
 }
 
@@ -124,7 +52,9 @@ function fnAutoExpand() {
     fnMain();
   }, 3000);
 }
+
 fnAutoExpand();
+
 
 // fnElChange($n(".central-container"),
 //   () => {
