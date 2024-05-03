@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「蜜柑计划」列表过滤（简繁/画质）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.1
+// @version      1.0.2
 // @author       沉冰浮水
 // @description  过滤蜜柑计划列表，按照简繁/画质过滤
 // @license      MIT
@@ -16,6 +16,7 @@
 // @noframes
 // @run-at       document-end
 // @match        https://mikanani.me/Home/Bangumi/*
+// @match        https://mikanime.tv/Home/Bangumi/*
 // @match        https://feedly.com/i/subscription/feed*
 // @grant        GM_getValue
 // @grant        GM_setValue
