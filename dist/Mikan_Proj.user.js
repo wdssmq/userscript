@@ -74,6 +74,7 @@
 
   // 添加批量复制磁力链接功能
   function fnAddBatchCopy($th, magnetList) {
+    // _log("fnAddBatchCopy", magnetList);
     const $btn = document.createElement("button");
     $btn.innerText = "批量复制";
     $btn.addEventListener("click", () => {
@@ -115,16 +116,17 @@
     // _log("_pick() -----\n","-----");
     const $listTr = $table.querySelectorAll("tr");
     // _log($listTr.length);
-    let $curTh = null;
-    // let $lstTh = null;
-    let magnetList = [];
+
+    const magnetList = [];
+    // 记录第一个 th
+    let $firstTh = null;
+
     $listTr.forEach(($tr, i) => {
+      // _log("_pick()", i, $listTr.length);
       if ($tr.innerText.includes("番组名")) {
-        $curTh = $tr.querySelector("th");
+        $firstTh = $tr.querySelector("th");
         // $lstTh = $curTh;
         // _log("fnMain() $curTh\n", $curTh);
-        fnAddBatchCopy($curTh, magnetList);
-        magnetList = [];
         // return;
       }
       const $curA = $tr.querySelector(".magnet-link-wrap");
@@ -136,12 +138,16 @@
       // data-clipboard-text
       let magnet = $curB.getAttribute("data-clipboard-text");
       magnet = fnRemoveTracker(magnet);
+      // _log("_pick():", magnet);
       if (fnPickByRegex(curText, curRule?.regex)) {
         magnetList.push(magnet);
       } else {
         $tr.remove();
       }
     });
+
+    // 添加批量复制按钮
+    fnAddBatchCopy($firstTh, magnetList);
   }
 
   // 遍历 nodeList
