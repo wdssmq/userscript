@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「蜜柑计划」列表过滤（简繁/画质）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.0
+// @version      1.0.1
 // @author       沉冰浮水
 // @description  过滤蜜柑计划列表，按照简繁/画质过滤
 // @license      MIT
@@ -40,103 +40,36 @@
 
   const _config = {
     data: {},
-    dataOpt: {
-      size: ["720", "1080"],
-      subtitle: ["tc", "sc"],
+    dataDef: {
+      pickRules: [
+        {
+          name: "Kirara Fantasia",
+          regex: "Baha\\s",
+        },
+        {
+          name: "漫猫字幕组&爱恋字幕组",
+          regex: "1080p.+简中",
+        },
+        {
+          name: "华盟字幕社&千夏字幕组",
+          regex: "简体",
+        },
+        {
+          name: "北宇治字幕组",
+          regex: "简日内嵌",
+        }
+      ]
     },
     optToggle: (opt, ret = false) => {
-      const dataOpt = _config.dataOpt;
-      const oldVal = _config.data[opt];
-      const newVal = oldVal === dataOpt[opt][0] ? dataOpt[opt][1] : dataOpt[opt][0];
-      if (ret) {
-        return newVal;
-      }
-      _config.data[opt] = newVal;
-      GM_setValue("config", _config.data);
     },
     menuCommand: () => {
-      const _this = _config;
-      for (const key in _this.data) {
-        if (Object.hasOwnProperty.call(_this.data, key)) {
-          const newValue = _this.optToggle(key, true);
-          _log("_config.menuCommand()\n",`${key} ${newValue}`);
-          GM_registerMenuCommand(`切换至 ${newValue}`,
-            () => {
-              _this.optToggle(key);
-              // 刷新页面
-              window.location.reload();
-            },
-          );
-        }
-      }
     },
     load: () => {
-      _config.data = GM_getValue("config", {
-        size: "1080",
-        subtitle: "sc",
-      });
-      _config.menuCommand();
+      _config.data = GM_getValue("config", _config.dataDef);
     },
   };
 
   _config.load();
-
-  // 选项为 sc 时，则排除匹配 tc 字段的节点文本
-  const _filter_map = {
-    "tc": ["big5", "cht", "繁日双语", "繁体内嵌", "繁体"],
-    "sc": ["gb", "chs", "简日双语", "简体内嵌", "简体"],
-    "720": ["720"],
-    "1080": ["1080"],
-  };
-
-  const fnGenFilter = (opt) => {
-    const filter = {};
-    const string = JSON.stringify(opt);
-    if (string.includes("720")) {
-      filter["size"] = _filter_map["1080"];
-    }
-    if (string.includes("1080")) {
-      filter["size"] = _filter_map["720"];
-    }
-    if (string.includes("tc")) {
-      filter["subtitle"] = _filter_map["sc"];
-    }
-    if (string.includes("sc")) {
-      filter["subtitle"] = _filter_map["tc"];
-    }
-    // 其他过滤条件
-    filter["other"] = ["cr 1920", "b-global"];
-    return filter;
-  };
-
-  const _filter = fnGenFilter(_config.data);
-  _log("_filter\n", _filter);
-
-  // 过滤含有指定字符的节点
-  function fnFilter(text, filter) {
-    let bolBlock = false;
-    for (const key in filter) {
-      if (Object.hasOwnProperty.call(filter, key)) {
-        const element = filter[key];
-        for (let i = 0; i < element.length; i++) {
-          // _log(element[i], text, text.includes(element[i]));
-          if (text.includes(element[i])) {
-            bolBlock = true;
-            break;
-          }
-        }
-      }
-    }
-    return bolBlock;
-  }
-
-  // 遍历 nodeList
-  function fnEachNodeList(nodeList, fn) {
-    // 倒序遍历
-    for (let i = nodeList.length - 1; i >= 0; i--) {
-      fn(nodeList[i], i);
-    }
-  }
 
   // 添加批量复制磁力链接功能
   function fnAddBatchCopy($th, magnetList) {
@@ -158,19 +91,37 @@
     return magnet.replace(regex, "");
   }
 
+  // 通过正则表达式筛选文本
+  function fnPickByRegex(text, regex = null) {
+    // 如果没有正则表达式，直接返回 true
+    if (!regex) {
+      return true;
+    }
+    const oRegex = new RegExp(regex, "i");
+    // _log("fnPickByRegex() oRegex\n", oRegex);
+    return oRegex.test(text);
+  }
 
-  // main
-  function fnMain() {
-    const $listTr = $na("table tr");
-    _log($listTr.length);
+
+  function _pick(name, $table) {
+    const pickRules = _config.data.pickRules;
+    // 数组中查找 name 对应的规则
+    const curRule = pickRules.find((rule) => {
+      return name == rule.name;
+    });
+    // _log("_pick() curRule: ", curRule);
+    // _log("_pick() name: ", name);
+    // _log("_pick() -----\n","-----");
+    const $listTr = $table.querySelectorAll("tr");
+    // _log($listTr.length);
     let $curTh = null;
     // let $lstTh = null;
     let magnetList = [];
-    fnEachNodeList($listTr, ($tr, i) => {
+    $listTr.forEach(($tr, i) => {
       if ($tr.innerText.includes("番组名")) {
         $curTh = $tr.querySelector("th");
         // $lstTh = $curTh;
-        _log("fnMain() $curTh\n",$curTh);
+        // _log("fnMain() $curTh\n", $curTh);
         fnAddBatchCopy($curTh, magnetList);
         magnetList = [];
         // return;
@@ -184,13 +135,46 @@
       // data-clipboard-text
       let magnet = $curB.getAttribute("data-clipboard-text");
       magnet = fnRemoveTracker(magnet);
-      if (fnFilter(curText, _filter)) {
-        // _log(`${curText} ${magnet}`);
-        $tr.remove();
-      } else {
+      if (fnPickByRegex(curText, curRule?.regex)) {
         magnetList.push(magnet);
+      } else {
+        $tr.remove();
       }
-      // _log(`${i} ${curText}`);
+    });
+  }
+
+  // 遍历 nodeList
+  function fnEachNodeList(nodeList, fn) {
+    // 倒序遍历
+    for (let i = nodeList.length - 1; i >= 0; i--) {
+      fn(nodeList[i], i);
+    }
+  }
+
+  // 按发布组获取信息
+  function fnGetGroupInfo() {
+    const arrGroup = [];
+    // 获取全部 div.subgroup-text
+    const $listGroup = $na(".subgroup-text");
+    fnEachNodeList($listGroup, ($group, i) => {
+      const $groupTitle = $group.querySelector("div.dropdown-toggle span") || $group.querySelector("a");
+      const groupName = $groupTitle.innerText;
+      const $groupTable = $group.nextElementSibling;
+      arrGroup.push({
+        name: groupName,
+        $table: $groupTable,
+      });
+    });
+    return arrGroup;
+  }
+
+  // main
+  function fnMain() {
+    const arrGroup = fnGetGroupInfo();
+    // _log("arrGroup", arrGroup);
+    arrGroup.forEach((group) => {
+      _pick(group.name, group.$table);
+      // _log("group", group);
     });
   }
 
@@ -204,7 +188,9 @@
       fnMain();
     }, 3000);
   }
+
   fnAutoExpand();
+
 
   // fnElChange($n(".central-container"),
   //   () => {
