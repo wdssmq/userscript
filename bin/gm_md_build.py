@@ -1,10 +1,12 @@
 """ 读取和处理脚本文件 """
+
 import os
 import re
 import datetime
 
 from bin.base import fnGetFilesInDir2, fnLog
 
+# 用于构建 assets/gm_md 文件夹下的 md 文件
 md_head_tpl = """---
 title: {title}
 description: {description}
@@ -18,6 +20,7 @@ docUrl: {docUrl}
 tags: []
 ---\n"""
 
+# 用于构建 packages/xxx 文件夹下的 README.md 文件
 pkg_doc_tpl = """## {title}
 
 {description}
@@ -27,6 +30,12 @@ pkg_doc_tpl = """## {title}
 userscript/packages/{name} at main · wdssmq/userscript：
 
 [https://github.com/wdssmq/userscript/tree/main/packages/{name}](https://github.com/wdssmq/userscript/tree/main/packages/{name} "userscript/packages/{name} at main · wdssmq/userscript")
+
+### 安装
+
+GitHub: [点击安装]({gitUrlRaw}, "点击安装 {title} - GitHub") 「[在线查看]({gitUrl}, "在线查看 dist 源码")」
+
+CDN: [点击安装]({cdnUrl}, "点击安装 {title} - CDN") 「[更新缓存]({purge}, "点击更新 CDN 缓存")」
 
 ### 关于
 
@@ -42,6 +51,7 @@ GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/z
 
 
 """
+
 
 def gm_read_js(file_js, file_name):
     """读取脚本文件"""
@@ -66,10 +76,12 @@ def gm_read_doc(file_doc):
         con_md = f.read()
     return con_md
 
+
 def gm_write_doc(file_doc, con_md):
     """写入脚本介绍文件"""
     with open(file_doc, "w", encoding="UTF-8") as f:
         f.write(con_md)
+
 
 def gm_build_link(branch, gm_info):
     """拼接脚本链接"""
@@ -77,11 +89,13 @@ def gm_build_link(branch, gm_info):
     git_url = f"https://github.com/wdssmq/userscript/blob/{branch}/dist/{file_full}"
     git_url_raw = f"{git_url}?raw=true"
     cnd_url = f"https://cdn.jsdelivr.net/gh/wdssmq/userscript@{branch}/dist/{file_full}"
+    purge_url = f"https://purge.jsdelivr.net/gh/wdssmq/userscript@{branch}/dist/{file_full}"
     doc_url = f"https://github.com/wdssmq/userscript/tree/main/packages/{gm_info['file_gm']}#readme"
     return {
         "gitUrl": git_url,
         "gitUrlRaw": git_url_raw,
         "cdnUrl": cnd_url,
+        "purgeUrl": purge_url,
         "docUrl": doc_url,
     }
 
@@ -113,7 +127,6 @@ def gm_dist_changed_check(file_name, changed=[]):
     return bol_changed
 
 
-
 def gm_read_dist(path, changed=[]):
     """读取脚本文件夹"""
     gm_info_list = []
@@ -137,11 +150,17 @@ def gm_md_build(gob_config):
     """生成脚本介绍文件"""
     gm_info_list = gm_read_dist(gob_config["gm_dist_path"], gob_config["changed"])
     for gm_info in gm_info_list:
-        gm_doc_path = os.path.join(gob_config["gm_src_path"], gm_info["file_gm"], "README.md")
+        # GM_脚本 链接拼接
+        gm_link_info = gm_build_link("main", gm_info)
+        # 拼接 README.md 文件路径
+        gm_doc_path = os.path.join(
+            gob_config["gm_src_path"], gm_info["file_gm"], "README.md"
+        )
         gm_doc_con = pkg_doc_tpl.format(
             title=gm_info["name"],
             description=gm_info["desc"],
             name=gm_info["file_gm"],
+            **gm_link_info,
         )
         # fnLog(gm_doc_con)
         gm_write_doc(gm_doc_path, gm_doc_con)
@@ -152,8 +171,7 @@ def gm_md_build(gob_config):
         (pub_time, up_time) = gm_md_time(gm_md_file)
         # fnLog(pub_time)
         # fnLog(up_time)
-        # GM_脚本 链接拼接
-        gm_link_info = gm_build_link("main", gm_info)
+
         # 拼接 md 文件内容
         gm_md = md_head_tpl.format(
             title=gm_info["name"],
