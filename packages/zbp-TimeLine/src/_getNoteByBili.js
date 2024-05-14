@@ -14,12 +14,12 @@ const mapNode = {
 
 // update noteScheme
 function bili_noteScheme() {
-  noteScheme.item.Tags = ["哔哩哔哩"];
-  noteScheme.item.Type = "视频";
-  noteScheme.item.Url = "https://www.bilibili.com/video/" + window.__INITIAL_STATE__.bvid;
-  noteScheme.item.Title = $n(mapNode.$title).innerText.trim();
   noteScheme.item.Desc = $n(mapNode.$desc).innerText.trim().replace(/\n/g, " ");
   noteScheme.item.Source = "[url=https://space.bilibili.com/44744006]沉冰浮水@bilibili[/url]";
+  noteScheme.item.Tags = ["哔哩哔哩"];
+  noteScheme.item.Title = $n(mapNode.$title).innerText.trim();
+  noteScheme.item.Type = "视频";
+  noteScheme.item.Url = "https://www.bilibili.com/video/" + window.__INITIAL_STATE__.bvid;
   // _log("noteScheme", noteScheme);
 }
 
