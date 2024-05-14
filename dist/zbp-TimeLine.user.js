@@ -271,7 +271,7 @@
     $title: "h1.video-title",
     $desc: ".desc-info-text",
     $btnSpan: ".js-note-btn",
-    $btnWrap: ".video-info-detail .video-info-detail-list",
+    $btnWrap: ".video-info-meta",
   };
 
   // update noteScheme
