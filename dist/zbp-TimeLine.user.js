@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」时间轴助手
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.0
+// @version      1.0.1
 // @author       沉冰浮水
 // @description  Z-BlogPHP mz_TimeLine 插件辅助脚本
 // @license      MIT
@@ -276,12 +276,12 @@
 
   // update noteScheme
   function bili_noteScheme() {
-    noteScheme$1.item.Tags = ["哔哩哔哩"];
-    noteScheme$1.item.Type = "视频";
-    noteScheme$1.item.Url = "https://www.bilibili.com/video/" + window.__INITIAL_STATE__.bvid;
-    noteScheme$1.item.Title = $n(mapNode.$title).innerText.trim();
     noteScheme$1.item.Desc = $n(mapNode.$desc).innerText.trim().replace(/\n/g, " ");
     noteScheme$1.item.Source = "[url=https://space.bilibili.com/44744006]沉冰浮水@bilibili[/url]";
+    noteScheme$1.item.Tags = ["哔哩哔哩"];
+    noteScheme$1.item.Title = $n(mapNode.$title).innerText.trim();
+    noteScheme$1.item.Type = "视频";
+    noteScheme$1.item.Url = "https://www.bilibili.com/video/" + window.__INITIAL_STATE__.bvid;
     // _log("noteScheme", noteScheme);
   }
 
