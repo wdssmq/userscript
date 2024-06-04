@@ -4,6 +4,7 @@
     "description": "",
     "main": "dist/lib-empty.js",
     "type": "module",
+    "extractCSS": true,
     "scripts": {
         "build": "rollup -c --environment NODE_ENV:prod",
         "dev": "rollup -c -w --environment NODE_ENV:dev",
@@ -28,6 +29,7 @@
         "eslint": "^8.57.0",
         "postcss": "^8.4.38",
         "rollup": "^3.29.4",
+        "rollup-plugin-copy": "^3.5.0",
         "rollup-plugin-livereload": "^2.0.5",
         "rollup-plugin-postcss": "^4.0.2",
         "rollup-plugin-serve": "^2.0.3"
