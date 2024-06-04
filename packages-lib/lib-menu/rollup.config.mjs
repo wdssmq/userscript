@@ -1,9 +1,10 @@
 // import pkg from "./package.json" assert {type: 'json'};
 import { readFileSync } from "fs";
 const pkg = JSON.parse(readFileSync("./package.json"));
+
+import livereload from "rollup-plugin-livereload";
 import postcss from "rollup-plugin-postcss";
 import serve from "rollup-plugin-serve";
-import livereload from "rollup-plugin-livereload";
 
 const defConfig = {
     input: `src/${pkg.name}.js`,
