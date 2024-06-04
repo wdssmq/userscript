@@ -19,3 +19,5 @@ _debug_*
 node_modules
 /packages/**/*.user.js
 /packages-lib/**/dist
+dist-lib/lib-empty
+dist-lib/lib-empty.*
