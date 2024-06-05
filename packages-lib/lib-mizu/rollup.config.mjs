@@ -56,6 +56,7 @@ if (process.env.NODE_ENV === "prod") {
                     src: `dist/${pkg.name}.css`,
                     dest: distProd,
                 },
+
             ],
         }),
     );
@@ -63,6 +64,15 @@ if (process.env.NODE_ENV === "prod") {
     defConfig.plugins.push(
         serve(),
         livereload(),
+        copy({
+            targets: [
+                {
+                    src: `dist/${pkg.name}.css`,
+                    dest: "/home/wdssmq/Git/2024-05-zbp/plugin/mz_SingleList/mizu-ui",
+                    rename: "mizu.css",
+                },
+            ],
+        }),
     );
 }
 
