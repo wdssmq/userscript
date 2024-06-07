@@ -1,0 +1,37 @@
+.mz-tabs
+    --tabs-item-active-border-bottom-color: #1d4c7d
+    // --tabs-item-active-color: #1d4c7d
+    --tabs-item-border-bottom-color: transparent
+    --tabs-item-color: #1d4c7d
+    --tabs-item-hover-border-bottom-color: #d60000
+    --tabs-item-hover-color: #d60000
+    align-items: center
+    border-bottom-color: #fff
+    border-bottom-style: solid
+    border-bottom-width: 2px
+    display: flex
+    flex-grow: 1
+    flex-shrink: 0
+    justify-content: flex-start
+
+    &>*
+        align-items: center
+        border-bottom-color: var(--tabs-item-border-bottom-color)
+        border-bottom-style: solid
+        border-bottom-width: 1px
+        color: var(--tabs-item-color)
+        display: flex
+        justify-content: center
+        margin-bottom: -2px
+        padding: 0.3em .8em
+        vertical-align: top
+        cursor: pointer
+        transition-duration: 294ms
+        transition-property: background-color, border-color, color
+        &.active
+            border-bottom-color: var(--tabs-item-active-border-bottom-color)
+            // color: var(--tabs-item-active-color)
+            font-weight: bolder
+        &:hover:not(.active)
+            border-bottom-color: var(--tabs-item-hover-border-bottom-color)
+            color: var(--tabs-item-hover-color)
