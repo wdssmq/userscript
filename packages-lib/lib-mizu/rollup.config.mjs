@@ -14,12 +14,14 @@ import copy from "rollup-plugin-copy";
 import replace from "@rollup/plugin-replace";
 
 // 是否将 CSS 提取到单独文件
-const extractCSS = pkg.extractCSS ? `${pkg.name}.css` : false;
+// const extractCSS = pkg.extractCSS ? `${pkg.name}.css` : false;
+const extractCSS = "mizu.css";
 
 const defConfig = {
     input: `src/${pkg.name}.js`,
     output: {
-        file: pkg.main,
+        // file: pkg.main,
+        file: "/home/wdssmq/Git/2024-05-zbp/plugin/mz_SingleList/mizu-ui/mizu.js",
         format: "umd",
         name: pkg.moduleName,
         banner: "/* eslint-disable */\n",
@@ -62,17 +64,17 @@ if (process.env.NODE_ENV === "prod") {
     );
 } else {
     defConfig.plugins.push(
-        serve(),
-        livereload(),
-        copy({
-            targets: [
-                {
-                    src: `dist/${pkg.name}.css`,
-                    dest: "/home/wdssmq/Git/2024-05-zbp/plugin/mz_SingleList/mizu-ui",
-                    rename: "mizu.css",
-                },
-            ],
-        }),
+        // serve(),
+        // livereload(),
+        // copy({
+        //     targets: [
+        //         {
+        //             src: `dist/${pkg.name}.css`,
+        //             dest: "/home/wdssmq/Git/2024-05-zbp/plugin/mz_SingleList/mizu-ui",
+        //             rename: "mizu.css",
+        //         },
+        //     ],
+        // }),
     );
 }
 
