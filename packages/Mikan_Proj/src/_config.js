@@ -22,9 +22,12 @@ const _config = {
       },
       {
         name: "喵萌奶茶屋",
-        regex: "简体",
-      }
-    ]
+        regex: [
+          "简体",
+          "简日",
+        ],
+      },
+    ],
   },
   optToggle: (opt, ret = false) => {
   },

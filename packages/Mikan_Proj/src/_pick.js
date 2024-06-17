@@ -31,6 +31,7 @@ function fnPickByRegex(text, regex = null) {
   if (!regex) {
     return true;
   }
+  regex = Array.isArray(regex) ? regex.join("|") : regex;
   const oRegex = new RegExp(regex, "i");
   // _log("fnPickByRegex() oRegex\n", oRegex);
   return oRegex.test(text);
