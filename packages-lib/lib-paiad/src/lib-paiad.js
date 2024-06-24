@@ -1,10 +1,3 @@
-// 引入 bulma
-// import "../node_modules/bulma/bulma.sass";
-
-// 自定义 bulma
-// import "../src/style/bulma.sass";
-// import "./style/bulma.sass";
-
 
 import $ from "./base/_domq.js";
 import "./mz-ui/mz-ui.sass";
