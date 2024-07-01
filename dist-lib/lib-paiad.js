@@ -669,6 +669,21 @@
     });
   }
 
+  function empty() {
+    return this.each(function () {
+      this.innerHTML = '';
+    });
+  }
+
+  function html(html) {
+    return 0 in arguments
+      ? this.each(function (idx) {
+        var originHtml = this.innerHTML;
+        D(this).empty().append(funcArg(this, html, idx, originHtml));
+      })
+      : (0 in this ? this[0].innerHTML : null);
+  }
+
   function text(text) {
     return 0 in arguments
       ? this.each(function (idx) {
@@ -756,15 +771,17 @@
   // Instance methods
   // https://github.com/nzbin/domq#instance-methods
   const fnMethods = {
-      on,
       addClass,
       append,
+      attr,
+      empty,
       find,
       hasClass,
-      text,
-      removeClass,
+      html,
+      on,
       removeAttr,
-      attr,
+      removeClass,
+      text,
   };
 
   D.extend(methods);
@@ -799,7 +816,7 @@
     }
   }
 
-  var css_248z$1 = "@charset \"UTF-8\";\n.mz-hidden {\n  display: none;\n}\n\n.mz-reset * {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\n.mz-content code {\n  background-color: hsl(0, 0%, 96%);\n  color: hsl(348, 100%, 61%);\n  font-weight: 400;\n  padding: 0.25em 0.5em;\n}\n\n.mz-modal {\n  box-sizing: border-box;\n}\n\n.mz-modal__overlay, .mz-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n\n.mz-modal {\n  display: none;\n}\n.mz-modal.is-open {\n  display: block;\n}\n.mz-modal * {\n  box-sizing: inherit;\n}\n\n.mz-modal__overlay {\n  background: rgba(0, 0, 0, 0.6);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.mz-modal__container {\n  background-color: #fff;\n  padding: 30px;\n  max-width: 500px;\n  min-width: 300px;\n  max-height: 100vh;\n  min-height: 30vh;\n  border-radius: 4px;\n  overflow-y: auto;\n  box-sizing: border-box;\n}\n\n.mz-modal__header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-bottom: 1px solid #e5e5e5;\n  padding-bottom: 0.3em;\n  margin-bottom: 0.7em;\n}\n\n.mz-modal__title {\n  font-weight: 600;\n  font-size: 1.25rem;\n  line-height: 1.25;\n  color: #333;\n  box-sizing: border-box;\n}\n\n.mz-modal__close {\n  background: transparent;\n  border: 0;\n  cursor: pointer;\n}\n.mz-modal__close:before {\n  content: \"✕\";\n}\n.mz-modal__close:focus {\n  outline: 0;\n}\n\n.mz-modal__content {\n  line-height: 1.5;\n  color: rgba(0, 0, 0, 0.8);\n}\n.mz-modal__content p:not(:last-child) {\n  margin-bottom: 0.7em;\n}";
+  var css_248z$1 = "@charset \"UTF-8\";\n.mz-hidden {\n  display: none;\n}\n\n.mz-reset * {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\n.mz-content code {\n  background-color: hsl(0, 0%, 96%);\n  color: hsl(348, 100%, 61%);\n  font-weight: 400;\n  padding: 0.25em 0.5em;\n}\n\n.mz-modal {\n  box-sizing: border-box;\n}\n\n.mz-modal__overlay, .mz-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n\n.mz-modal {\n  display: none;\n}\n.mz-modal.is-open {\n  display: block;\n}\n.mz-modal * {\n  box-sizing: inherit;\n}\n\n.mz-modal__overlay {\n  background: rgba(0, 0, 0, 0.6);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.mz-modal__container {\n  background-color: #fff;\n  padding: 30px;\n  max-width: 540px;\n  min-width: 300px;\n  max-height: 100vh;\n  min-height: 30vh;\n  border-radius: 4px;\n  overflow-y: auto;\n  box-sizing: border-box;\n}\n\n.mz-modal__header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-bottom: 1px solid #e5e5e5;\n  padding-bottom: 0.3em;\n  margin-bottom: 0.7em;\n}\n\n.mz-modal__title {\n  display: flex;\n  align-items: center;\n  font-weight: 600;\n  font-size: 1.25rem;\n  line-height: 1.25;\n  color: #333;\n  box-sizing: border-box;\n}\n.mz-modal__title > span {\n  padding-right: 1em;\n}\n\n.mz-modal__close {\n  background: transparent;\n  border: 0;\n  cursor: pointer;\n  font-size: 1.25rem;\n  line-height: 1.25;\n}\n.mz-modal__close:before {\n  content: \"✕\";\n}\n.mz-modal__close:focus {\n  outline: 0;\n}\n\n.mz-modal__content {\n  line-height: 1.5;\n  color: rgba(0, 0, 0, 0.8);\n}\n.mz-modal__content p:not(:last-child) {\n  margin-bottom: 0.7em;\n}\n\n.mz-modal__container {\n  min-width: 523px;\n}";
   styleInject(css_248z$1);
 
   var css_248z = ".js-mz-tips {\n  font-size: 12px;\n  padding-left: 4em;\n}\n\n.mz-content {\n  font-size: 16px;\n}\n.mz-content a:link, .mz-content a:visited {\n  color: #e60;\n  text-decoration: none;\n}\n.mz-content a:hover {\n  text-decoration: underline;\n  text-underline-offset: 3px;\n}";
@@ -962,38 +979,43 @@
       },
   };
 
-  var tplHtml = "<!-- [1] -->\n<div id=\"{modal-id}\" class=\"mz-modal mz-reset\" aria-hidden=\"true\">\n    <!-- [2] -->\n    <div tabindex=\"-1\" class=\"mz-modal__overlay\" data-mz-modal-close>\n        <!-- [3] -->\n        <div role=\"dialog\" class=\"mz-modal__container\" aria-modal=\"true\" aria-labelledby=\"{modal-id}-title\">\n            <header class=\"mz-modal__header\">\n                <h2 id=\"{modal-id}-title\" class=\"mz-modal__title\">\n                    {title}\n                    <span class=\"js-mz-tips mz-hidden\">{tips}</span>\n                </h2>\n                <!-- [4] -->\n                <button class=\"mz-modal__close\" aria-label=\"Close modal\" data-mz-modal-close></button>\n            </header>\n            <div id=\"{modal-id}-content\" class=\"mz-modal__content mz-content\">\n                {content}\n            </div>\n        </div>\n    </div>\n</div>\n";
+  var tplHtml = "<!-- [1] -->\n<div id=\"{modal-id}\" class=\"mz-modal mz-reset\" aria-hidden=\"true\">\n    <!-- [2] -->\n    <div tabindex=\"-1\" class=\"mz-modal__overlay\" data-mz-modal-close>\n        <!-- [3] -->\n        <div role=\"dialog\" class=\"mz-modal__container\" aria-modal=\"true\" aria-labelledby=\"{modal-id}-title\">\n            <header class=\"mz-modal__header\">\n                <h2 id=\"{modal-id}-title\" class=\"mz-modal__title\">\n                    {title}\n                </h2>\n                <!-- [4] -->\n                <button class=\"mz-modal__close\" aria-label=\"Close modal\" data-mz-modal-close></button>\n            </header>\n            <div id=\"{modal-id}-content\" class=\"mz-modal__content mz-content\">\n                {content}\n            </div>\n        </div>\n    </div>\n</div>\n";
 
   var msgContent = "<p>理论上你可以直接关掉本弹窗，不影响后续功能的使用；</p>\n<p>或者使用 <a href=\"https://cn.bing.com/search?q=uBlock+Origin\" title=\"uBlock Origin - 必应搜索\">uBlock Origin</a> 等广告过滤插件永久屏蔽；</p>\n<p><code>{location.hostname}##.mz-modal.ads</code></p>\n<p>「<a href=\"https://afdian.net/a/wdssmq\" title=\"沉冰浮水正在创作和 Z-BlogPHP 相关或无关的各种有用或没用的代码 | 爱发电\">爱发电</a>」\n「<a href=\"https://jq.qq.com/?_wv=1027&amp;k=SRYaRV6T\" title=\"QQ 群 - 我的咸鱼心\">QQ 群 - 我的咸鱼心</a>」</p>\n";
 
-  // 引入 bulma
-  // import "../node_modules/bulma/bulma.sass";
-
-
-  const msg = {
-      title: "这里是标题（弹出间隔 {IntervalDay} 天）",
-      content: msgContent.trim().replace("{location.hostname}", location.hostname),
+  const defConfig = {
+      // 关闭倒计时
+      cntDownMax: 5,
+      // 弹出间隔
+      interval: 86400 * 4,
+      // 弹出内容
+      msg: {
+          title: "这里是标题（弹出间隔 {IntervalText}）",
+          content: msgContent.trim().replace("{location.hostname}", location.hostname),
+      },
+      adsFlag: false,
   };
 
   class paidOrAd {
-
-      domCreated = false;
-      modalId = "paiad";
       $modal = null;
       $modalOverlay = null;
-      ts = Math.floor(Date.now() / 1000);
-      lsData = lsObj.getItem(this.modalId, {});
-      interval = 86400 * 4;
-      cntDown = 5;
+      cntDownCur = defConfig.cntDownMax;
       cntDownRunning = false;
-      config = {};
+      config = defConfig;
+      domCreated = false;
+      lsData = null;
+      modalId = "paiad";
+      modalOpts = {}; // 用于传给 mzModal 的配置
       NODE_ENV = "prod";
+      ts = Math.floor(Date.now() / 1000);
 
       constructor(options = {}) {
-          this.config = Object.assign({}, {
+          // 合并配置
+          this.modalOpts = Object.assign({}, {
               onClose: this._onClose.bind(this),
               onShow: this._onShow.bind(this),
           }, options);
+          // 初始化
           this.init();
       }
 
@@ -1001,7 +1023,7 @@
           // console.log(args);
           const $tips = this.$modal.find(".js-mz-tips");
           if (args.isDisabled) {
-              D(args.modal);
+              // const $modal = $(args.modal);
               $tips.removeClass("mz-hidden");
           } else {
               $tips.addClass("mz-hidden");
@@ -1010,36 +1032,47 @@
 
       _onShow(args) {
           // console.log(args);
-          this.cntDown = 5;
+          this.cntDownCur = this.config.cntDownMax;
           this.disableClose();
       }
 
       init() {
+          this.lsData = lsObj.getItem(this.modalId, {});
           this.createDom();
-          mzModal.init(this.config);
+          mzModal.init(this.modalOpts);
           this.preventAccidentalClose();
       }
 
       // 时间间隔转换为友好的显示
+      get intervalText() {
+          const interval = this.config.interval;
+          if (interval < 3600) {
+              const minute = Math.floor(interval / 60);
+              return `${minute} 分钟`;
+          }
+          if (interval < 86400) {
+              const hour = Math.floor(interval / 3600);
+              return `${hour} 小时`;
+          }
+          const day = Math.floor(interval / 3600 / 24);
+          return `${day} 天`;
+      }
+
       get intervalHour() {
-          const interval = this.interval;
+          const interval = this.config.interval;
           const hour = Math.floor(interval / 3600);
           return hour;
       }
 
       get intervalDay() {
-          const interval = this.interval;
+          const interval = this.config.interval;
           const day = Math.floor(interval / 3600 / 24);
           return day;
       }
 
       buildHtml() {
           return tplHtml
-              .replace(/{content}/g, msg.content)
-              .replace(/{title}/g, msg.title)
-              .replace(/{modal-id}/g, this.modalId)
-              .replace(/{IntervalHour}/g, this.intervalHour)
-              .replace(/{IntervalDay}/g, this.intervalDay);
+              .replace(/{modal-id}/g, this.modalId);
       }
 
       createDom() {
@@ -1053,6 +1086,25 @@
           // this.$modalOverlay.removeAttr("data-mz-modal-close");
           // 链接添加 target="_blank"
           this.$modal.find("a").attr("target", "_blank");
+      }
+
+      // 更新 Dom 内容
+      updateDom() {
+          const $modalCon = this.$modal.find("#paiad-content");
+          const modalCon = this.config.msg.content;
+          $modalCon.html(modalCon);
+
+          const $modalTitle = this.$modal.find("#paiad-title");
+          const modalTitle = this.config.msg.title
+              .replace("{IntervalHour}", this.intervalHour)
+              .replace("{IntervalDay}", this.intervalDay)
+              .replace("{IntervalText}", this.intervalText);
+          $modalTitle.html(modalTitle);
+
+          // 追加元素
+          $modalTitle.append("<span class=\"js-mz-tips mz-hidden\">{tips}</span>");
+          // 添加额外的 class
+          this.addClass();
       }
 
       // 防止非预期关闭
@@ -1070,7 +1122,7 @@
       }
 
       addClass() {
-          if (this.NODE_ENV === "dev") return;
+          if (this.config.adsFlag === false) return;
           this.$modal.addClass("ads");
       }
 
@@ -1079,7 +1131,7 @@
               return cnt > 0 ? `${cnt} 秒后方可关闭` : "再次点击关闭→";
           };
           const $tips = this.$modal.find(".js-mz-tips");
-          $tips.text(_tips(this.cntDown));
+          $tips.text(_tips(this.cntDownCur));
       }
 
       setLsData(key, value) {
@@ -1098,9 +1150,9 @@
           this.setTips();
           const _this = this;
           const cnt = setInterval(() => {
-              _this.cntDown -= 1;
+              _this.cntDownCur -= 1;
               this.setTips();
-              if (_this.cntDown <= 0) {
+              if (_this.cntDownCur <= 0) {
                   clearTimeout(cnt);
                   _this.enableClose();
               }
@@ -1113,26 +1165,24 @@
           this.cntDownRunning = false;
       }
 
-      show() {
+      show(force = false) {
+          this.updateDom();
           const lstShowTime = this.lsData.lstShowTime || 0;
-          const interval = this.NODE_ENV === "dev" ? 10 : this.interval;
-          if (this.ts - lstShowTime > interval) {
-              mzModal.show(this.modalId, this.config);
+          const interval = this.NODE_ENV === "dev" ? 10 : this.config.interval;
+
+          // console.log("lstShowTime", lstShowTime);
+          // console.log("interval", interval);
+          // console.log("ts", this.ts);
+
+          if (this.ts - lstShowTime > interval || force) {
+              mzModal.show(this.modalId, this.modalOpts);
               this.setLsData("lstShowTime", this.ts);
           }
           return this;
       }
-
   }
 
   const paidOrAdInstance = new paidOrAd();
-  paidOrAdInstance
-      .show()
-      .addClass();
-
-  // if (typeof window !== "undefined") {
-  //     window.mzLibPaidOrAd = paidOrAdInstance;
-  // }
 
   return paidOrAdInstance;
 
