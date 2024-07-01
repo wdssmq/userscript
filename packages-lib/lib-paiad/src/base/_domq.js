@@ -10,6 +10,8 @@ import {
     removeClass,
     removeAttr,
     attr,
+    html,
+    empty,
 } from "domq.js/src/domq.modular";
 
 // Static methods
@@ -21,15 +23,17 @@ const methods = {
 // Instance methods
 // https://github.com/nzbin/domq#instance-methods
 const fnMethods = {
-    on,
     addClass,
     append,
+    attr,
+    empty,
     find,
     hasClass,
-    text,
-    removeClass,
+    html,
+    on,
     removeAttr,
-    attr,
+    removeClass,
+    text,
 };
 
 D.extend(methods);
