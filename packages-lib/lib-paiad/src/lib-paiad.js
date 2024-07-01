@@ -18,6 +18,7 @@ const defConfig = {
         title: "这里是标题（弹出间隔 {IntervalText}）",
         content: msgContent.trim().replace("{location.hostname}", location.hostname),
     },
+    adsFlag: false,
 };
 
 class paidOrAd {
@@ -128,6 +129,8 @@ class paidOrAd {
 
         // 追加元素
         $modalTitle.append("<span class=\"js-mz-tips mz-hidden\">{tips}</span>");
+        // 添加额外的 class
+        this.addClass();
     }
 
     // 防止非预期关闭
@@ -145,7 +148,7 @@ class paidOrAd {
     }
 
     addClass() {
-        // if (this.NODE_ENV === "dev") return;
+        if (this.config.adsFlag === false) return;
         this.$modal.addClass("ads");
     }
 
