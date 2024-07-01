@@ -162,7 +162,12 @@ class paidOrAd {
 
     show(force = false) {
         const lstShowTime = this.lsData.lstShowTime || 0;
-        const interval = this.config.interval;
+        const interval = this.NODE_ENV === "dev" ? 10 : this.config.interval;
+
+        // console.log("lstShowTime", lstShowTime);
+        // console.log("interval", interval);
+        // console.log("ts", this.ts);
+
         if (this.ts - lstShowTime > interval || force) {
             mzModal.show(this.modalId, this.modalOpts);
             this.setLsData("lstShowTime", this.ts);
