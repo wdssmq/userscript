@@ -8,21 +8,27 @@ import { lsObj } from "./base/_util.js";
 import tplHtml from "./base/modal.html";
 import msgContent from "./base/msg.md";
 
-const defMsg = {
-    title: "这里是标题（弹出间隔 {IntervalDay} 天）",
-    content: msgContent.trim().replace("{location.hostname}", location.hostname),
+const defConfig = {
+    // 关闭倒计时
+    cntDownMax: 5,
+    // 弹出间隔
+    interval: 86400 * 4,
+    // 弹出内容
+    msg: {
+        title: "这里是标题（弹出间隔 {IntervalDay} 天）",
+        content: msgContent.trim().replace("{location.hostname}", location.hostname),
+    },
 };
 
 class paidOrAd {
     $modal = null;
     $modalOverlay = null;
-    cntDown = 5;
+    cntDownCur = defConfig.cntDownMax;
     cntDownRunning = false;
+    config = defConfig;
     domCreated = false;
-    interval = 86400 * 4;
     lsData = lsObj.getItem(this.modalId, {});
     modalId = "paiad";
-    msg = defMsg;
     modalOpts = {}; // 用于传给 mzModal 的配置
     NODE_ENV = process.env.NODE_ENV;
     ts = Math.floor(Date.now() / 1000);
@@ -50,7 +56,7 @@ class paidOrAd {
 
     _onShow(args) {
         // console.log(args);
-        this.cntDown = 5;
+        this.cntDownCur = this.config.cntDownMax;
         this.disableClose();
     }
 
@@ -62,21 +68,21 @@ class paidOrAd {
 
     // 时间间隔转换为友好的显示
     get intervalHour() {
-        const interval = this.interval;
+        const interval = this.config.interval;
         const hour = Math.floor(interval / 3600);
         return hour;
     }
 
     get intervalDay() {
-        const interval = this.interval;
+        const interval = this.config.interval;
         const day = Math.floor(interval / 3600 / 24);
         return day;
     }
 
     buildHtml() {
         return tplHtml
-            .replace(/{content}/g, this.msg.content)
-            .replace(/{title}/g, this.msg.title)
+            .replace(/{content}/g, this.config.msg.content)
+            .replace(/{title}/g, this.config.msg.title)
             .replace(/{modal-id}/g, this.modalId)
             .replace(/{IntervalHour}/g, this.intervalHour)
             .replace(/{IntervalDay}/g, this.intervalDay);
@@ -119,7 +125,7 @@ class paidOrAd {
             return cnt > 0 ? `${cnt} 秒后方可关闭` : "再次点击关闭→";
         };
         const $tips = this.$modal.find(".js-mz-tips");
-        $tips.text(_tips(this.cntDown));
+        $tips.text(_tips(this.cntDownCur));
     }
 
     setLsData(key, value) {
@@ -138,9 +144,9 @@ class paidOrAd {
         this.setTips();
         const _this = this;
         const cnt = setInterval(() => {
-            _this.cntDown -= 1;
+            _this.cntDownCur -= 1;
             this.setTips();
-            if (_this.cntDown <= 0) {
+            if (_this.cntDownCur <= 0) {
                 clearTimeout(cnt);
                 _this.enableClose();
             }
@@ -155,7 +161,7 @@ class paidOrAd {
 
     show(force = false) {
         const lstShowTime = this.lsData.lstShowTime || 0;
-        const interval = this.NODE_ENV === "dev" ? 10 : this.interval;
+        const interval = this.config.interval;
         if (this.ts - lstShowTime > interval || force) {
             mzModal.show(this.modalId, this.modalOpts);
             this.setLsData("lstShowTime", this.ts);
