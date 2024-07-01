@@ -10,6 +10,11 @@
     right: 0
     bottom: 0
 
+// flex 垂直居中
+=flex-ai-center
+    display: flex
+    align-items: center
+
 .mz-modal
     @extend %fixed-full
     @extend %box-sizing
@@ -38,25 +43,29 @@
     box-sizing: border-box
 
 .mz-modal__header
-    display: flex
+    +flex-ai-center
     justify-content: space-between
-    align-items: center
     border-bottom: 1px solid #e5e5e5
     padding-bottom: .3em
     margin-bottom: .7em
 
 .mz-modal__title
+    +flex-ai-center
     font-weight: 600
     font-size: 1.25rem
     line-height: 1.25
     color: #333
     box-sizing: border-box
 
+    &>span
+        padding-right: 1em
+
 .mz-modal__close
     background: transparent
     border: 0
     cursor: pointer
-    // line-height: 1
+    font-size: 1.25rem
+    line-height: 1.25
     &:before
         content: "\2715"
     &:focus
