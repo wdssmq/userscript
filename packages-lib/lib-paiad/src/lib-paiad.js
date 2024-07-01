@@ -214,8 +214,4 @@ const paidOrAdInstance = new paidOrAd();
 //     .show()
 //     .addClass();
 
-// export default paidOrAdInstance;
-
-if (typeof window !== "undefined") {
-    window.paiad = paidOrAdInstance;
-}
+export default paidOrAdInstance;
