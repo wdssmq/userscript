@@ -8,7 +8,7 @@ import { lsObj } from "./base/_util.js";
 import tplHtml from "./base/modal.html";
 import msgContent from "./base/msg.md";
 
-const msg = {
+const defMsg = {
     title: "这里是标题（弹出间隔 {IntervalDay} 天）",
     content: msgContent.trim().replace("{location.hostname}", location.hostname),
 };
@@ -27,6 +27,7 @@ class paidOrAd {
     // 用于 mzModal 的配置
     mzModalOpts = {};
     NODE_ENV = process.env.NODE_ENV;
+    msg = defMsg;
 
     constructor(options = {}) {
         // 合并配置
@@ -76,8 +77,8 @@ class paidOrAd {
 
     buildHtml() {
         return tplHtml
-            .replace(/{content}/g, msg.content)
-            .replace(/{title}/g, msg.title)
+            .replace(/{content}/g, this.msg.content)
+            .replace(/{title}/g, this.msg.title)
             .replace(/{modal-id}/g, this.modalId)
             .replace(/{IntervalHour}/g, this.intervalHour)
             .replace(/{IntervalDay}/g, this.intervalDay);
