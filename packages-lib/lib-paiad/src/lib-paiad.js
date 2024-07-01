@@ -41,7 +41,7 @@ class paidOrAd {
         // console.log(args);
         const $tips = this.$modal.find(".js-mz-tips");
         if (args.isDisabled) {
-            const $modal = $(args.modal);
+            // const $modal = $(args.modal);
             $tips.removeClass("mz-hidden");
         } else {
             $tips.addClass("mz-hidden");
@@ -110,7 +110,7 @@ class paidOrAd {
     }
 
     addClass() {
-        if (this.NODE_ENV === "dev") return;
+        // if (this.NODE_ENV === "dev") return;
         this.$modal.addClass("ads");
     }
 
