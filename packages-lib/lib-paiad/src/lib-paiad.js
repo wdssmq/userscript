@@ -71,7 +71,6 @@ class paidOrAd {
     // 时间间隔转换为友好的显示
     get intervalText() {
         const interval = this.config.interval;
-        console.log("interval", interval);
         if (interval < 3600) {
             const minute = Math.floor(interval / 60);
             return `${minute} 分钟`;
