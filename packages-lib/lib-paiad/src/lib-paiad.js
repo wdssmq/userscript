@@ -157,7 +157,7 @@ class paidOrAd {
         const lstShowTime = this.lsData.lstShowTime || 0;
         const interval = this.NODE_ENV === "dev" ? 10 : this.interval;
         if (this.ts - lstShowTime > interval || force) {
-            mzModal.show(this.modalId, this.config);
+            mzModal.show(this.modalId, this.mzModalOpts);
             this.setLsData("lstShowTime", this.ts);
         }
         return this;
