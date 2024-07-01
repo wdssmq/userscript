@@ -24,14 +24,17 @@ class paidOrAd {
     interval = 86400 * 4;
     cntDown = 5;
     cntDownRunning = false;
-    config = {};
+    // 用于 mzModal 的配置
+    mzModalOpts = {};
     NODE_ENV = process.env.NODE_ENV;
 
     constructor(options = {}) {
-        this.config = Object.assign({}, {
+        // 合并配置
+        this.mzModalOpts = Object.assign({}, {
             onClose: this._onClose.bind(this),
             onShow: this._onShow.bind(this),
         }, options);
+        // 初始化
         this.init();
     }
 
@@ -54,7 +57,7 @@ class paidOrAd {
 
     init() {
         this.createDom();
-        mzModal.init(this.config);
+        mzModal.init(this.mzModalOpts);
         this.preventAccidentalClose();
     }
 
