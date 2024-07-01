@@ -27,7 +27,7 @@ class paidOrAd {
     cntDownRunning = false;
     config = defConfig;
     domCreated = false;
-    lsData = lsObj.getItem(this.modalId, {});
+    lsData = null;
     modalId = "paiad";
     modalOpts = {}; // 用于传给 mzModal 的配置
     NODE_ENV = process.env.NODE_ENV;
@@ -61,6 +61,7 @@ class paidOrAd {
     }
 
     init() {
+        this.lsData = lsObj.getItem(this.modalId, {});
         this.createDom();
         mzModal.init(this.modalOpts);
         this.preventAccidentalClose();
