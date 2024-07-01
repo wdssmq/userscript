@@ -15,7 +15,7 @@ const defConfig = {
     interval: 86400 * 4,
     // 弹出内容
     msg: {
-        title: "这里是标题（弹出间隔 {IntervalDay} 天）",
+        title: "这里是标题（弹出间隔 {IntervalText}）",
         content: msgContent.trim().replace("{location.hostname}", location.hostname),
     },
 };
@@ -68,6 +68,21 @@ class paidOrAd {
     }
 
     // 时间间隔转换为友好的显示
+    get intervalText() {
+        const interval = this.config.interval;
+        console.log("interval", interval);
+        if (interval < 3600) {
+            const minute = Math.floor(interval / 60);
+            return `${minute} 分钟`;
+        }
+        if (interval < 86400) {
+            const hour = Math.floor(interval / 3600);
+            return `${hour} 小时`;
+        }
+        const day = Math.floor(interval / 3600 / 24);
+        return `${day} 天`;
+    }
+
     get intervalHour() {
         const interval = this.config.interval;
         const hour = Math.floor(interval / 3600);
@@ -107,7 +122,8 @@ class paidOrAd {
         const $modalTitle = this.$modal.find("#paiad-title");
         const modalTitle = this.config.msg.title
             .replace("{IntervalHour}", this.intervalHour)
-            .replace("{IntervalDay}", this.intervalDay);
+            .replace("{IntervalDay}", this.intervalDay)
+            .replace("{IntervalText}", this.intervalText);
         $modalTitle.html(modalTitle);
 
         // 追加元素
@@ -173,6 +189,7 @@ class paidOrAd {
     }
 
     show(force = false) {
+        this.updateDom();
         const lstShowTime = this.lsData.lstShowTime || 0;
         const interval = this.NODE_ENV === "dev" ? 10 : this.config.interval;
 
