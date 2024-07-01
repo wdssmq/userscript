@@ -167,12 +167,13 @@ class paidOrAd {
 }
 
 const paidOrAdInstance = new paidOrAd();
-paidOrAdInstance
-    .show()
-    .addClass();
 
-export default paidOrAdInstance;
+// paidOrAdInstance
+//     .show()
+//     .addClass();
 
-// if (typeof window !== "undefined") {
-//     window.mzLibPaidOrAd = paidOrAdInstance;
-// }
+// export default paidOrAdInstance;
+
+if (typeof window !== "undefined") {
+    window.paiad = paidOrAdInstance;
+}
