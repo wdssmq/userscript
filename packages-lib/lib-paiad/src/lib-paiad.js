@@ -82,11 +82,7 @@ class paidOrAd {
 
     buildHtml() {
         return tplHtml
-            .replace(/{content}/g, this.config.msg.content)
-            .replace(/{title}/g, this.config.msg.title)
-            .replace(/{modal-id}/g, this.modalId)
-            .replace(/{IntervalHour}/g, this.intervalHour)
-            .replace(/{IntervalDay}/g, this.intervalDay);
+            .replace(/{modal-id}/g, this.modalId);
     }
 
     createDom() {
@@ -100,6 +96,22 @@ class paidOrAd {
         // this.$modalOverlay.removeAttr("data-mz-modal-close");
         // 链接添加 target="_blank"
         this.$modal.find("a").attr("target", "_blank");
+    }
+
+    // 更新 Dom 内容
+    updateDom() {
+        const $modalCon = this.$modal.find("#paiad-content");
+        const modalCon = this.config.msg.content;
+        $modalCon.html(modalCon);
+
+        const $modalTitle = this.$modal.find("#paiad-title");
+        const modalTitle = this.config.msg.title
+            .replace("{IntervalHour}", this.intervalHour)
+            .replace("{IntervalDay}", this.intervalDay);
+        $modalTitle.html(modalTitle);
+
+        // 追加元素
+        $modalTitle.append("<span class=\"js-mz-tips mz-hidden\">{tips}</span>");
     }
 
     // 防止非预期关闭
