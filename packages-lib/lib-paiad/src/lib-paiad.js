@@ -23,13 +23,13 @@ class paidOrAd {
     lsData = lsObj.getItem(this.modalId, {});
     modalId = "paiad";
     msg = defMsg;
-    mzModalOpts = {}; // 用于传给 mzModal 的配置
+    modalOpts = {}; // 用于传给 mzModal 的配置
     NODE_ENV = process.env.NODE_ENV;
     ts = Math.floor(Date.now() / 1000);
 
     constructor(options = {}) {
         // 合并配置
-        this.mzModalOpts = Object.assign({}, {
+        this.modalOpts = Object.assign({}, {
             onClose: this._onClose.bind(this),
             onShow: this._onShow.bind(this),
         }, options);
@@ -56,7 +56,7 @@ class paidOrAd {
 
     init() {
         this.createDom();
-        mzModal.init(this.mzModalOpts);
+        mzModal.init(this.modalOpts);
         this.preventAccidentalClose();
     }
 
@@ -157,7 +157,7 @@ class paidOrAd {
         const lstShowTime = this.lsData.lstShowTime || 0;
         const interval = this.NODE_ENV === "dev" ? 10 : this.interval;
         if (this.ts - lstShowTime > interval || force) {
-            mzModal.show(this.modalId, this.mzModalOpts);
+            mzModal.show(this.modalId, this.modalOpts);
             this.setLsData("lstShowTime", this.ts);
         }
         return this;
