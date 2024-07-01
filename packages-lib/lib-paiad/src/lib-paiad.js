@@ -14,20 +14,18 @@ const defMsg = {
 };
 
 class paidOrAd {
-
-    domCreated = false;
-    modalId = "paiad";
     $modal = null;
     $modalOverlay = null;
-    ts = Math.floor(Date.now() / 1000);
-    lsData = lsObj.getItem(this.modalId, {});
-    interval = 86400 * 4;
     cntDown = 5;
     cntDownRunning = false;
-    // 用于 mzModal 的配置
-    mzModalOpts = {};
-    NODE_ENV = process.env.NODE_ENV;
+    domCreated = false;
+    interval = 86400 * 4;
+    lsData = lsObj.getItem(this.modalId, {});
+    modalId = "paiad";
     msg = defMsg;
+    mzModalOpts = {}; // 用于传给 mzModal 的配置
+    NODE_ENV = process.env.NODE_ENV;
+    ts = Math.floor(Date.now() / 1000);
 
     constructor(options = {}) {
         // 合并配置
