@@ -981,7 +981,7 @@
 
   var tplHtml = "<!-- [1] -->\n<div id=\"{modal-id}\" class=\"mz-modal mz-reset\" aria-hidden=\"true\">\n    <!-- [2] -->\n    <div tabindex=\"-1\" class=\"mz-modal__overlay\" data-mz-modal-close>\n        <!-- [3] -->\n        <div role=\"dialog\" class=\"mz-modal__container\" aria-modal=\"true\" aria-labelledby=\"{modal-id}-title\">\n            <header class=\"mz-modal__header\">\n                <h2 id=\"{modal-id}-title\" class=\"mz-modal__title\">\n                    {title}\n                </h2>\n                <!-- [4] -->\n                <button class=\"mz-modal__close\" aria-label=\"Close modal\" data-mz-modal-close></button>\n            </header>\n            <div id=\"{modal-id}-content\" class=\"mz-modal__content mz-content\">\n                {content}\n            </div>\n        </div>\n    </div>\n</div>\n";
 
-  var msgContent = "<p>理论上你可以直接关掉本弹窗，不影响后续功能的使用；</p>\n<p>或者使用 <a href=\"https://cn.bing.com/search?q=uBlock+Origin\" title=\"uBlock Origin - 必应搜索\">uBlock Origin</a> 等广告过滤插件永久屏蔽；</p>\n<p><code>{location.hostname}##.mz-modal.ads</code></p>\n<p>「<a href=\"https://afdian.net/a/wdssmq\" title=\"沉冰浮水正在创作和 Z-BlogPHP 相关或无关的各种有用或没用的代码 | 爱发电\">爱发电</a>」\n「<a href=\"https://jq.qq.com/?_wv=1027&amp;k=SRYaRV6T\" title=\"QQ 群 - 我的咸鱼心\">QQ 群 - 我的咸鱼心</a>」</p>\n";
+  var msgContent = "<p>这是一条弹出公告，你可能需要多看一会儿才能关闭；</p>\n<p>或者使用 <a href=\"https://cn.bing.com/search?q=uBlock+Origin\" title=\"uBlock Origin - 必应搜索\">uBlock Origin</a> 等广告过滤插件永久屏蔽；</p>\n<p><code>{location.hostname}##.mz-modal.ads</code></p>\n<p>「<a href=\"https://afdian.net/a/wdssmq\" title=\"沉冰浮水正在创作和 Z-BlogPHP 相关或无关的各种有用或没用的代码 | 爱发电\">爱发电</a>」\n「<a href=\"https://jq.qq.com/?_wv=1027&amp;k=SRYaRV6T\" title=\"QQ 群 - 我的咸鱼心\">QQ 群 - 我的咸鱼心</a>」\n「群号：189574683」</p>\n";
 
   const defConfig = {
       // 关闭倒计时
@@ -1086,8 +1086,6 @@
           this.$modal = D(`#${this.modalId}`);
           this.$modalOverlay = this.$modal.find(".mz-modal__overlay");
           // this.$modalOverlay.removeAttr("data-mz-modal-close");
-          // 链接添加 target="_blank"
-          this.$modal.find("a").attr("target", "_blank");
       }
 
       // 更新 Dom 内容
@@ -1102,6 +1100,9 @@
               .replace("{IntervalDay}", this.intervalDay)
               .replace("{IntervalText}", this.intervalText);
           $modalTitle.html(modalTitle);
+
+          // 链接添加 target="_blank"
+          this.$modal.find("a").attr("target", "_blank");
 
           // 追加元素
           $modalTitle.append("<span class=\"js-mz-tips mz-hidden\">{tips}</span>");
