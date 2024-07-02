@@ -53,6 +53,8 @@ class paidOrAd {
         } else {
             $tips.addClass("mz-hidden");
         }
+        // 倒计时结束后才允许关闭
+        this.cntDown();
     }
 
     _onShow(args) {
@@ -164,10 +166,8 @@ class paidOrAd {
         lsObj.setItem(this.modalId, this.lsData);
     }
 
-    // 禁止关闭
-    disableClose() {
-        // console.log("disableClose");
-        this.$modal.addClass("disable-close");
+    // 倒计时封装
+    cntDown() {
         if (this.cntDownRunning) {
             return;
         }
@@ -184,12 +184,19 @@ class paidOrAd {
         }, 1000);
     }
 
+    // 禁止关闭
+    disableClose() {
+        // console.log("disableClose");
+        this.$modal.addClass("disable-close");
+    }
+
     // 允许关闭
     enableClose() {
         this.$modal.removeClass("disable-close");
         this.cntDownRunning = false;
     }
 
+    // 显示弹窗
     show(force = false) {
         this.updateDom();
         const lstShowTime = this.lsData.lstShowTime || 0;
