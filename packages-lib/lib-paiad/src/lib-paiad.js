@@ -111,8 +111,6 @@ class paidOrAd {
         this.$modal = $(`#${this.modalId}`);
         this.$modalOverlay = this.$modal.find(".mz-modal__overlay");
         // this.$modalOverlay.removeAttr("data-mz-modal-close");
-        // 链接添加 target="_blank"
-        this.$modal.find("a").attr("target", "_blank");
     }
 
     // 更新 Dom 内容
@@ -127,6 +125,9 @@ class paidOrAd {
             .replace("{IntervalDay}", this.intervalDay)
             .replace("{IntervalText}", this.intervalText);
         $modalTitle.html(modalTitle);
+
+        // 链接添加 target="_blank"
+        this.$modal.find("a").attr("target", "_blank");
 
         // 追加元素
         $modalTitle.append("<span class=\"js-mz-tips mz-hidden\">{tips}</span>");
