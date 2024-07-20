@@ -20,7 +20,7 @@ const gobConfig = {
   ...monkeyRequire(gm_require),
   listen: {
     host: "localhost",
-    port: "3000",
+    port: "3010",
   },
   url: null,
 };
