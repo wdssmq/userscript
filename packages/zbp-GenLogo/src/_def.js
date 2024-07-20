@@ -110,6 +110,12 @@ import config from "./_config";
     });
   }
 
+  fnCheckAppLogo(appList, (appId) => {
+    // 删除失败的 logo
+    $(`.app-${appId}`).remove();
+  });
+
+
   GM_addStyle(`
 body { display: flex; flex-wrap: wrap; }
 .logo-box { position: relative; min-width: 180px; min-height: 180px; }
