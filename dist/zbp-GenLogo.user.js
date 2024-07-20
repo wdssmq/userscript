@@ -82,6 +82,7 @@
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
+
     return `rgb(${r}, ${g}, ${b})`;
   }
 
@@ -89,14 +90,13 @@
   function fnGetDefColor(i) {
     const defColors = [
       "rgb(18, 37, 70)",
+      "rgb(22, 59, 95)",
       "rgb(27, 58, 123)",
-      "rgb(31, 56, 148)",
-      "rgb(7, 58, 143)",
-      // "rgb(16, 135, 192)",
-      // "rgb(54, 134, 181)",
-      // "rgb(57, 112, 198)",
-      // "rgb(64, 144, 194)",
-      // "rgb(68, 121, 224)",
+      "rgb(54, 114, 177)",
+      "rgb(9, 33, 62)",
+      // "rgb(41, 61, 79)",
+      // --------------------
+      "rgb(0, 0, 0)",
     ];
     if (defColors[i]) {
       return defColors[i];
@@ -138,7 +138,7 @@
 
 
       // 生成 logo 列表
-      for (let i = 0; i < 59; i++) {
+      for (let i = 0; i < 73; i++) {
         const curColor = fnGetDefColor(i);
         // console.log(curColor);
         $$1(`<div class="logo-box i-${i}"></div>`).appendTo("body").css({
