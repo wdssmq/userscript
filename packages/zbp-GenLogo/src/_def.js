@@ -75,12 +75,16 @@ import config from "./_config";
     return fnRndColor();
   }
 
-  // 点击指定元素时输出颜色
-  const fnBindClick = (i) => {
+  // 绑定元素事件
+  const fnBindEvent = (i) => {
     const $curBox = $(`div.i-${i}`);
+    const color = $curBox.attr("data-color");
     $curBox.on("click", function() {
-      const color = $curBox.attr("data-color");
       console.log(color);
+    });
+    // 鼠标移入时修改页面 title
+    $curBox.on("mouseover", function() {
+      document.title = `${i} - ${color}`;
     });
   };
 
@@ -100,7 +104,7 @@ import config from "./_config";
         <div class="line-2">${config.appText[1]}</div>
       </div>`,
     ).appendTo($curBox);
-    fnBindClick(i);
+    fnBindEvent(i);
     appList.forEach(({ appId, imgUrl }) => {
       const rndIndex = Math.round(Math.random() * 100);
       $(`<img class="i-${i} zIndex-${rndIndex} app-${appId}" src="${imgUrl}">`)
