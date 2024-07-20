@@ -27,7 +27,7 @@ import {
 
 
     // 生成 logo 列表
-    for (let i = 0; i < 59; i++) {
+    for (let i = 0; i < 73; i++) {
       const curColor = fnGetDefColor(i);
       // console.log(curColor);
       $(`<div class="logo-box i-${i}"></div>`).appendTo("body").css({
