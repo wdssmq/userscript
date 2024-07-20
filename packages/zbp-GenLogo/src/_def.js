@@ -54,6 +54,15 @@ import config from "./_config";
     return fnRndColor();
   }
 
+  // 点击指定元素时输出颜色
+  const fnBindClick = (i) => {
+    const $curBox = $(`div.i-${i}`);
+    $curBox.on("click", function() {
+      const color = $curBox.attr("data-color");
+      console.log(color);
+    });
+  };
+
   // 生成 logo 列表
   for (let i = 0; i < 59; i++) {
     const curColor = fnGetDefColor(i);
@@ -62,12 +71,15 @@ import config from "./_config";
       backgroundColor: curColor,
     });
     const $curBox = $(`div.i-${i}`);
+    // data-color
+    $curBox.attr("data-color", curColor);
     $(
       `<div class="logo-text">
         <div class="line-1">${config.appText[0]}</div>
         <div class="line-2">${config.appText[1]}</div>
       </div>`,
     ).appendTo($curBox);
+    fnBindClick(i);
     imgList.forEach((href) => {
       const rndIndex = Math.round(Math.random() * 100);
       $(`<img class="i-${i} zIndex-${rndIndex}" src="${href}">`)
