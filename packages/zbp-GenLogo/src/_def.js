@@ -34,22 +34,14 @@ import config from "./_config";
 
   function fnGetDefColor(i) {
     const defColors = [
-      "6,71,100",
-      "0,80,100",
-      "10,90,109",
-      "25,91,131",
-      "74,105,150",
-      "34,80,115",
-      "41,61,71",
-      "56,84,108",
-      "57,90,131",
-      "59,91,162",
-      "60,93,119",
-      "65,53,84",
-      "70,9,39", // 紫红
+      "rgb(18, 37, 70)",
+      "rgb(27, 58, 123)",
+      "rgb(31, 56, 148)",
+      "rgb(57, 112, 198)",
+      "rgb(64, 144, 194)",
     ];
     if (defColors[i]) {
-      return `rgb(${defColors[i]})`;
+      return defColors[i];
     }
     return fnRndColor();
   }
