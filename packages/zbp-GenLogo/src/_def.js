@@ -1,125 +1,77 @@
 import { _log, $ } from "./_base";
 import config from "./_config";
+import {
+  fnBindEvent,
+  fnCheckAppLogo,
+  fnGetAppInfo,
+  fnGetDefColor,
+} from "./_function";
 
 (() => {
-  if (location.hash == "") {
-    return;
-  }
-  // 图标文本
-  let appName = location.hash.replace("#", "").trim();
-  appName = decodeURI(appName);
-  config.appText[1] = config.appText[1].replace("-hash-", appName);
-
-  // 表格内提取指定应用信息
-  const fnGetAppInfo = () => {
-    // 一个提取应用 id 的函数
-    const fnGetAppId = (src) => {
-      // http://127.0.0.1:8081/zb_users/plugin/mz_admin2/logo.png，应用 id 为 mz_admin2
-      const appId = src.replace(/.*\/plugin\//, "").replace(/\/logo.png/, "");
-      return appId;
-    };
-    const appList = [];
-    $(".td25 + .td20").each(function() {
-      if ($(this).text() == "沉冰浮水") {
-        const $img = $(this).parent().find(".td5 img");
-        const imgUrl = $img.attr("src");
-        const appId = fnGetAppId(imgUrl);
-        appList.push({
-          appId,
-          imgUrl,
-        });
-      }
-    });
-    return appList;
-  };
-
-  // 封装一个函数，用于检查图片能正常加载
-  const fnCheckAppLogo = (appList, cb = () => { }) => {
-    appList.forEach(({ imgUrl, appId }) => {
-      $.ajax({
-        url: imgUrl,
-        success() { },
-        error(err) {
-          cb(appId, imgUrl);
-          console.log("图片加载失败", err);
-        },
-      });
-    });
-  };
-
   // 获取图片列表
   const appList = fnGetAppInfo();
 
-  $("body>*").remove();
-
-  // 随机颜色
-  function fnRndColor() {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-
-  function fnGetDefColor(i) {
-    const defColors = [
-      "rgb(18, 37, 70)",
-      "rgb(27, 58, 123)",
-      "rgb(31, 56, 148)",
-      "rgb(54, 134, 181)",
-      "rgb(57, 112, 198)",
-      "rgb(64, 144, 194)",
-    ];
-    if (defColors[i]) {
-      return defColors[i];
+  const fnMain = (hash = "") => {
+    if (location.hash == "" && hash == "") {
+      return;
     }
-    return fnRndColor();
-  }
+    $("body>*").remove();
 
-  // 绑定元素事件
-  const fnBindEvent = (i) => {
-    const $curBox = $(`div.i-${i}`);
-    const color = $curBox.attr("data-color");
-    $curBox.on("click", function() {
-      console.log(color);
-    });
-    // 鼠标移入时修改页面 title
-    $curBox.on("mouseover", function() {
-      document.title = `${i} - ${color}`;
+    // 图标文本
+    let appName = hash || location.hash.replace("#", "").trim();
+    appName = decodeURI(appName);
+    // 定义 appText 为 config.appText 的副本
+    const appText = config.appText.map(item => item);
+    appText[1] = appText[1].replace(/-hash-/, appName);
+    // console.log(appText, appName, config.appText);
+
+
+    // 生成 logo 列表
+    for (let i = 0; i < 59; i++) {
+      const curColor = fnGetDefColor(i);
+      // console.log(curColor);
+      $(`<div class="logo-box i-${i}"></div>`).appendTo("body").css({
+        backgroundColor: curColor,
+      });
+      const $curBox = $(`div.i-${i}`);
+      // data-color
+      $curBox.attr("data-color", curColor);
+      $(
+        `<div class="logo-text">
+        <div class="line-1">${appText[0]}</div>
+        <div class="line-2">${appText[1]}</div>
+      </div>`,
+      ).appendTo($curBox);
+      fnBindEvent(i);
+      appList.forEach(({ appId, imgUrl }) => {
+        const rndIndex = Math.round(Math.random() * 100);
+        $(`<img class="i-${i} zIndex-${rndIndex} app-${appId}" src="${imgUrl}">`)
+          .appendTo($curBox)
+          .css({
+            zIndex: rndIndex,
+          });
+      });
+    }
+
+    if (config.longName) {
+      $(".logo-text").addClass("long-name");
+    }
+
+    fnCheckAppLogo(appList, (appId) => {
+      // 删除失败的 logo
+      $(`.app-${appId}`).remove();
     });
   };
 
-  // 生成 logo 列表
-  for (let i = 0; i < 59; i++) {
-    const curColor = fnGetDefColor(i);
-    // console.log(curColor);
-    $(`<div class="logo-box i-${i}"></div>`).appendTo("body").css({
-      backgroundColor: curColor,
-    });
-    const $curBox = $(`div.i-${i}`);
-    // data-color
-    $curBox.attr("data-color", curColor);
-    $(
-      `<div class="logo-text">
-        <div class="line-1">${config.appText[0]}</div>
-        <div class="line-2">${config.appText[1]}</div>
-      </div>`,
-    ).appendTo($curBox);
-    fnBindEvent(i);
-    appList.forEach(({ appId, imgUrl }) => {
-      const rndIndex = Math.round(Math.random() * 100);
-      $(`<img class="i-${i} zIndex-${rndIndex} app-${appId}" src="${imgUrl}">`)
-        .appendTo($curBox)
-        .css({
-          zIndex: rndIndex,
-        });
-    });
-  }
+  fnMain();
 
-  fnCheckAppLogo(appList, (appId) => {
-    // 删除失败的 logo
-    $(`.app-${appId}`).remove();
+  GM_registerMenuCommand("生成 logo", () => {
+    // 输入 logo 文本
+    const logoText = prompt("请输入 logo 文本 1", "");
+    if (logoText) {
+      fnMain(logoText);
+    }
   });
-
 
   GM_addStyle(`
 body { display: flex; flex-wrap: wrap; }
@@ -143,7 +95,7 @@ body { display: flex; flex-wrap: wrap; }
   text-align: center;
   font-size: 47px;
   font-weight: bold;
-  margin-left: -1em;
+  margin-left: -0.73em;
   margin-top: -0.3em;
 }
 .logo-text .line-2 {
@@ -158,7 +110,4 @@ body { display: flex; flex-wrap: wrap; }
   line-height: 1.3em;
 }
 `);
-  if (config.longName) {
-    $(".logo-text").addClass("long-name");
-  }
 })();
