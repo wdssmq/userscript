@@ -10,17 +10,45 @@ import config from "./_config";
   appName = decodeURI(appName);
   config.appText[1] = config.appText[1].replace("-hash-", appName);
 
+  // 表格内提取指定应用信息
+  const fnGetAppInfo = () => {
+    // 一个提取应用 id 的函数
+    const fnGetAppId = (src) => {
+      // http://127.0.0.1:8081/zb_users/plugin/mz_admin2/logo.png，应用 id 为 mz_admin2
+      const appId = src.replace(/.*\/plugin\//, "").replace(/\/logo.png/, "");
+      return appId;
+    };
+    const appList = [];
+    $(".td25 + .td20").each(function() {
+      if ($(this).text() == "沉冰浮水") {
+        const $img = $(this).parent().find(".td5 img");
+        const imgUrl = $img.attr("src");
+        const appId = fnGetAppId(imgUrl);
+        appList.push({
+          appId,
+          imgUrl,
+        });
+      }
+    });
+    return appList;
+  };
+
+  // 封装一个函数，用于检查图片能正常加载
+  const fnCheckAppLogo = (appList, cb = () => { }) => {
+    appList.forEach(({ imgUrl, appId }) => {
+      $.ajax({
+        url: imgUrl,
+        success() { },
+        error(err) {
+          cb(appId, imgUrl);
+          console.log("图片加载失败", err);
+        },
+      });
+    });
+  };
+
   // 获取图片列表
-  const imgList = [];
-  let i = 0;
-  $(".td25 + .td20").each(function () {
-    if ($(this).text() == "沉冰浮水") {
-      i++;
-      let $img = $(this).parent().find(".td5 img");
-      imgList.push($img.attr("src"));
-    }
-  });
-  // console.log(imgList);
+  const appList = fnGetAppInfo();
 
   $("body>*").remove();
 
@@ -72,9 +100,9 @@ import config from "./_config";
       </div>`,
     ).appendTo($curBox);
     fnBindClick(i);
-    imgList.forEach((href) => {
+    appList.forEach(({ appId, imgUrl }) => {
       const rndIndex = Math.round(Math.random() * 100);
-      $(`<img class="i-${i} zIndex-${rndIndex}" src="${href}">`)
+      $(`<img class="i-${i} zIndex-${rndIndex} app-${appId}" src="${imgUrl}">`)
         .appendTo($curBox)
         .css({
           zIndex: rndIndex,
