@@ -26,7 +26,10 @@ import config from "./_config";
 
   // 随机颜色
   function fnRndColor() {
-    return "#" + ("00000" + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r},${g},${b})`;
   }
 
   function fnGetDefColor(i) {
