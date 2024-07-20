@@ -57,7 +57,7 @@ import config from "./_config";
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
-    return `rgb(${r},${g},${b})`;
+    return `rgb(${r}, ${g}, ${b})`;
   }
 
   function fnGetDefColor(i) {
@@ -65,6 +65,7 @@ import config from "./_config";
       "rgb(18, 37, 70)",
       "rgb(27, 58, 123)",
       "rgb(31, 56, 148)",
+      "rgb(54, 134, 181)",
       "rgb(57, 112, 198)",
       "rgb(64, 144, 194)",
     ];
