@@ -2,7 +2,7 @@ const gm_banner = `
 // ==UserScript==
 // @name         「Z-Blog」Logo 生成
 // @namespace    https://www.wdssmq.com/
-// @version      0.1
+// @version      placeholder.pkg.version
 // @author       沉冰浮水
 // @description  自动叠加历史图标制作新的图片
 // @license      MIT
@@ -15,14 +15,20 @@ const gm_banner = `
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 // @noframes
+// @run-at       document-end
 // @match        http://*/zb_system/admin/index.php?act=PluginMng
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_addStyle
 // ==/UserScript==
+/* eslint-disable */
 /* jshint esversion: 6 */
 `;
 
-const gm_name = "zbp_GenLogo";
+const gm_name = "zbp-GenLogo";
 
-export { gm_banner, gm_name };
+const gm_require = [
+
+];
+
+export { gm_banner, gm_name, gm_require };
