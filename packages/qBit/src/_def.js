@@ -69,6 +69,11 @@ const gob = {
     const url = gob.apiUrl("torrents/addTrackers");
     gob.http.post(url, { hash, urls });
   },
+  // 删除 Tracker: torrents/removeTrackers
+  apiDelTracker(hash, urls) {
+    const url = gob.apiUrl("torrents/removeTrackers");
+    gob.http.post(url, { hash, urls });
+  },
   // 获取 API 版本信息
   apiInfo(fn = () => { }) {
     const url = gob.apiUrl();
@@ -211,7 +216,7 @@ document.addEventListener("click", function(event) {
       return item[1];
     });
     if (!isOk) {
-      return;
+      // return;
     }
 
     gob.apiTorrents(formData.category, () => {
@@ -224,6 +229,9 @@ document.addEventListener("click", function(event) {
             break;
           case "add":
             gob.apiAddTracker(item.hash, formData.trackerUrl);
+            break;
+          case "remove":
+            gob.apiDelTracker(item.hash, formData.trackerUrl);
             break;
           default:
             break;

@@ -25,7 +25,18 @@ class defForm {
       "text": "添加",
       "inputs": [
         {
-          "text": "添加",
+          "text": "添加 Tracker",
+          "name": "trackerUrl",
+        },
+      ],
+    },
+    // 删除
+    {
+      "name": "remove",
+      "text": "删除",
+      "inputs": [
+        {
+          "text": "删除 Tracker",
           "name": "trackerUrl",
         },
       ],
