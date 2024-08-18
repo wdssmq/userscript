@@ -8,6 +8,12 @@ userscript/packages/qBit at main · wdssmq/userscript：
 
 [https://github.com/wdssmq/userscript/tree/main/packages/qBit](https://github.com/wdssmq/userscript/tree/main/packages/qBit "userscript/packages/qBit at main · wdssmq/userscript")
 
+### 安装
+
+GitHub: [点击安装](https://github.com/wdssmq/userscript/blob/main/dist/qBit.user.js?raw=true "点击安装 「水水」qBittorrent 管理脚本 - GitHub") 「[在线查看](https://github.com/wdssmq/userscript/blob/main/dist/qBit.user.js "在线查看 dist 源码")」
+
+CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/qBit.user.js "点击安装 「水水」qBittorrent 管理脚本 - CDN") 「[更新缓存](https://purge.jsdelivr.net/gh/wdssmq/userscript@main/dist/qBit.user.js "点击更新 CDN 缓存")」
+
 ### 关于
 
 博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")

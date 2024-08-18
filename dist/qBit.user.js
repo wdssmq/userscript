@@ -17,7 +17,6 @@
 // @run-at       document-end
 // @include      http://*:8088/
 // @grant        GM_xmlhttpRequest
-// @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js
 // ==/UserScript==
 
 /* eslint-disable */
@@ -37,32 +36,9 @@
 
   // -------------------------------------
 
-  function fnCheckObj(obj, schema) {
-    for (const key in schema) {
-      const value = obj[key];
-      // 模式中定义的键必须存在
-      if (typeof value === "undefined") {
-        throw new Error(`${key} is missing from object`);
-      }
-      // 针对每个键值的模式
-      const valueSchema = schema[key];
-      valueSchema.forEach((itemSchema) => {
-        const msg = itemSchema.msg;
-        for (const check in itemSchema) {
-          if (Object.hasOwnProperty.call(itemSchema, check)) {
-            const checkVal = itemSchema[check];
-            switch (check) {
-              case "not":
-                if (value === checkVal) {
-                  throw new Error(`${key} ${msg}`);
-                }
-                break;
-            }
-          }
-        }
-      });
-    }
-    return true;
+  // const $ = window.$ || unsafeWindow.$;
+  function $n(e) {
+    return document.querySelector(e);
   }
 
   class HttpRequest {
@@ -115,9 +91,134 @@
   // 导出实例对象
   const http = new HttpRequest();
 
+  class defForm {
+    schemaForm = [
+      // 替换
+      {
+        "name": "replace",
+        "text": "替换",
+        "inputs": [
+          {
+            "text": "旧 Tracker",
+            "name": "origUrl",
+          },
+          {
+            "text": "新 Tracker",
+            "name": "newUrl",
+          },
+        ],
+      },
+      // 添加
+      {
+        "name": "add",
+        "text": "添加",
+        "inputs": [
+          {
+            "text": "添加 Tracker",
+            "name": "trackerUrl",
+          },
+        ],
+      },
+      // 删除
+      {
+        "name": "remove",
+        "text": "删除",
+        "inputs": [
+          {
+            "text": "删除 Tracker",
+            "name": "trackerUrl",
+          },
+        ],
+      },
+    ];
+
+    $tab = null;
+    $body = null;
+    curSelect = null;
+    curOption = null;
+
+    // 初始
+    constructor() {
+      this.$tab = $n(".act-tab");
+      this.$body = $n(".act-body");
+
+      this.schemaForm.forEach((option) => {
+        const { radioInput, label } = this.createRadioInput(option);
+        this.$tab.appendChild(radioInput);
+        this.$tab.appendChild(label);
+        this.$tab.appendChild(document.createElement("br"));
+      });
+      this.updateFormBody("replace"); // Default load
+    }
+
+    createRadioInput(option) {
+      const radioInput = document.createElement("input");
+      radioInput.type = "radio";
+      radioInput.id = option.name;
+      radioInput.name = "action";
+      radioInput.value = option.name;
+      radioInput.dataset.text = option.text;
+      // Default select "replace"
+      if (option.name === "replace") radioInput.checked = true;
+
+      const label = document.createElement("label");
+      label.htmlFor = option.name;
+      label.textContent = option.text;
+
+      const _this = this;
+      radioInput.addEventListener("change", function() {
+        if (this.checked) {
+          _this.updateFormBody(this.value);
+        }
+      });
+
+      return { radioInput, label };
+    }
+
+    updateFormBody(selectedName) {
+      const selectedOption = this.schemaForm.find(option => option.name === selectedName);
+      this.$body.innerHTML = ""; // Clear current form
+
+      selectedOption.inputs.forEach((input) => {
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.name = input.name;
+        inputField.placeholder = input.text;
+        inputField.classList.add("js-input");
+
+        const label = document.createElement("label");
+        // label.textContent = input.text;
+        label.appendChild(inputField);
+        this.$body.appendChild(label);
+        this.$body.appendChild(document.createElement("br"));
+      });
+
+      const $submit = document.createElement("input");
+      $submit.value = selectedOption.text;
+      $submit.type = "button";
+      // 设置 class
+      $submit.className = "btn btn-act";
+      this.$body.appendChild($submit);
+
+      this.curSelect = selectedName;
+      this.curOption = selectedOption;
+    }
+
+    getFormData() {
+      const data = {};
+      this.curOption.inputs.forEach((input) => {
+        const $input = $n(`.js-input[name="${input.name}"]`);
+        if ($input) {
+          data[input.name] = $input.value.trim();
+        }
+      });
+      data.category = $n(".js-input[name=category]").value.trim();
+      return data;
+    }
+  }
+
   /* global jQuery, __GM_api, MochaUI */
 
-  const jq = jQuery;
 
   if (typeof __GM_api !== "undefined") {
     _log(__GM_api);
@@ -179,6 +280,11 @@
       const url = gob.apiUrl("torrents/addTrackers");
       gob.http.post(url, { hash, urls });
     },
+    // 删除 Tracker: torrents/removeTrackers
+    apiDelTracker(hash, urls) {
+      const url = gob.apiUrl("torrents/removeTrackers");
+      gob.http.post(url, { hash, urls });
+    },
     // 获取 API 版本信息
     apiInfo(fn = () => { }) {
       const url = gob.apiUrl();
@@ -194,9 +300,9 @@
       for (const key in gob.data.tips) {
         if (Object.hasOwnProperty.call(gob.data.tips, key)) {
           const tip = gob.data.tips[key];
-          const $el = jq(`.js-tip-${key}`);
+          const $el = $n(`.js-tip-${key}`);
           const text = JSON.stringify(tip).replace(/(,|:)"/g, "$1 ").replace(/["{}]/g, "");
-          $el.text(`(${text})`);
+          $el.innerText = `(${text})`;
         }
       }
     },
@@ -216,28 +322,27 @@
   gob.init();
 
   // 构建编辑入口
-  jq("#desktopNavbar>ul").append(
+  $n("#desktopNavbar ul").insertAdjacentHTML(
+    "beforeend",
     "<li><a class=\"js-modal\"><b>→批量替换 Tracker←</b></a></li>",
   );
 
   // 构建编辑框
   const strHtml = `
 <div style="padding:13px 23px;">\
-    <h2>分类：（不能是「全部」或「未分类」，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;" placeholder="包含要修改项目的分类或新建一个"><br>\
-    <h2>旧 Trakcer：<h2><input class="js-input" type="text" name="origUrl" style="width: 97%;"><br>\
-    <h2>新 Tracker：<h2><input class="js-input" type="text" name="newUrl" style="width: 97%;"><br>\
-    <h2>子串模式：<input class="js-input" type="checkbox" name="matchSubstr" value="matchSubstr">仅替换链接中的部分文本<h2>\
-    <hr>\
-    <button class="js-replace">替换</button>\
-    <span class="js-tip-btn"></span>\
-    <hr>\
+    <div class="act-tab" style="display: flex;">操作模式：</div>\
+    <hr>
+    <h2>分类: （不能是「全部」或「未分类」，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;" placeholder="包含要修改项目的分类或新建一个">\
+    <h2>Tracker: <span class="js-tip-btn"></span></h2>\
+    <div class="act-body"></div>\
+    <hr>
     「<a target="_blank" title="投喂支持" href="https://www.wdssmq.com/guestbook.html#h3-u6295u5582u652Fu6301" rel="nofollow">投喂支持</a>」\
     「<a target="_blank" title="QQ 群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ 群 - 我的咸鱼心</a>」\
 </div>
 `;
 
   // js-modal 绑定点击事件
-  jq(".js-modal").click(function () {
+  $n(".js-modal").addEventListener("click", function() {
     new MochaUI.Window({
       id: "js-modal",
       title: "批量替换 Tracker <span class=\"js-tip-tit\"></span>",
@@ -252,128 +357,99 @@
       width: 500,
       height: 250,
     });
-    jq("#js-modal_content").append(strHtml);
-    jq("#js-modal_contentWrapper").css({
-      height: "auto",
-    });
+    const modalContent = $n("#js-modal_content");
+    modalContent.innerHTML = strHtml;
+    const modalContentWrapper = $n("#js-modal_contentWrapper");
+    modalContentWrapper.style.height = "auto";
     gob.data.modalShow = true;
     gob.upTips("tit", {
       qbt: gob.data.qbtVer,
       api: gob.data.apiVer,
     });
+
+    // 初始化表单
+    gob.formObj = new defForm();
+
     // debug
-    // jq(".js-input[name=category]").val("test");
-    // jq(".js-input[name=origUrl]").val("123");
-    // jq(".js-input[name=newUrl]").val("456");
-    // jq(".js-input[name=matchSubstr]").click();
+    // $n(".js-input[name=category]").value = "test";
+    // $n(".js-input[name=origUrl]").value = "123";
+    // $n(".js-input[name=newUrl]").value = "456";
+    // $n(".js-input[name=matchSubstr]").click();
   });
 
-  const schemeObj = {
-    category: [
-      {
-        not: "",
-        msg: "不能为空",
-      },
-    ],
-    newUrl: [
-      {
-        not: "",
-        msg: "不能为空",
-      },
-    ],
-  };
+  // // 自动点击
+  // $n(".js-modal").click();
 
-  const fnCheckUrl = (url) => {
+  const fnCheckUrl = (name, url) => {
     // 判断是否以 udp:// 或 http(s):// 开头
     const regex = /^(udp|http(s)?):\/\//;
-    return regex.test(url);
+    return [
+      name,
+      regex.test(url),
+    ];
   };
 
-  jq(document).on("click", ".js-replace", function () {
-    // alert(jq(".js-input[name=category]").val());
-    const obj = {
-      category: jq(".js-input[name=category]").val().trim(),
-      origUrl: jq(".js-input[name=origUrl]").val().trim(),
-      newUrl: jq(".js-input[name=newUrl]").val().trim(),
-      matchSubstr: jq(".js-input[name=matchSubstr]").is(":checked"),
-    };
-
-    try {
-      fnCheckObj(obj, schemeObj);
-    } catch (error) {
-      alert(error);
-      return;
-    }
-
-    if (obj.origUrl === "") {
-      if (!confirm("未填写「旧 Tracker」，将执行添加操作，是否继续？")) {
-        return;
-      }
-      if (!fnCheckUrl(obj.newUrl)) {
-        alert("「新 Tracker」必须以 udp:// 或 http(s):// 开头");
-        return;
-      }
-    } else {
-      // 新旧 Tracker 执行 fnCheckUrl 判断的结果应该相同
-      if (fnCheckUrl(obj.origUrl) !== fnCheckUrl(obj.newUrl)) {
-        alert("「旧 Tracker」和「新 Tracker」必须同为链接或同为子串");
-        return;
-      }
-      if (!fnCheckUrl(obj.origUrl) && !obj.matchSubstr) {
-        alert("必须以 udp:// 或 http(s):// 开头\n或者勾选「子串模式」");
-        return;
-      }
-    }
-
-    // 根据子串获取完整的 Url
-    const replaceBySubstr = async (hash, oldSubstr, newSubstr) => {
-
-      gob.apiGetTrackers(hash, () => {
-        const seedTrackers = gob.data.curTorrentTrackers;
-        const rlt = {
-          oldUrl: "",
-          newUrl: "",
-          bolMatch: false,
-        };
-        seedTrackers.forEach((item) => {
-          let oldUrl = item.url, newUrl = "";
-          // _log("oldUrl", oldUrl, oldSubstr);
-          if (oldUrl.indexOf(oldSubstr) > -1 && !rlt.bolMatch) {
-            newUrl = oldUrl.replace(oldSubstr, newSubstr);
-            rlt.bolMatch = true;
-            rlt.oldUrl = oldUrl;
-            rlt.newUrl = newUrl;
-          }
+  document.addEventListener("click", function(event) {
+    if (event.target.classList.contains("btn-act")) {
+      gob.act = gob.formObj.curSelect;
+      gob.urlCheck = [];
+      const formData = gob.formObj.getFormData();
+      // 判断分类
+      if (!formData.category || formData.category === "全部" || formData.category === "未分类") {
+        gob.upTips("btn", {
+          num: 0,
+          msg: "「分类」字段错误",
         });
-        if (rlt.bolMatch) {
-          gob.apiEdtTracker(hash, rlt.oldUrl, rlt.newUrl);
+        return;
+      }
+      // 遍历数据，如果 key 含有 Url，则判断 value 是否符合要求
+      for (const key in formData) {
+        if (Object.prototype.hasOwnProperty.call(formData, key)) {
+          const value = formData[key];
+          if (key.indexOf("Url") > -1) {
+            // 判断是否符合要求
+            gob.urlCheck.push(fnCheckUrl(key, value));
+          }
         }
-      });
+      }
 
-    };
-
-    gob.apiTorrents(obj.category, () => {
-      const list = gob.data.listTorrent;
-      _log("apiTorrents()\n", list);
-      list.map(function (item) {
-        if (obj.matchSubstr) {
-          replaceBySubstr(item.hash, obj.origUrl, obj.newUrl);
+      gob.urlCheck.map(function(item) {
+        if (!item[1]) {
+          gob.upTips("btn", {
+            num: 0,
+            msg: `「${item[0]}」不符合要求`,
+          });
           return;
         }
-        // 替换或添加 Tracker（完整匹配）
-        if (obj.origUrl !== "") {
-          gob.apiEdtTracker(item.hash, obj.origUrl, obj.newUrl);
-        } else {
-          gob.apiAddTracker(item.hash, obj.newUrl);
-        }
       });
-      gob.upTips("btn", {
-        num: list.length,
-        msg: "操作成功",
-      });
-    });
 
-    return;
+      gob.urlCheck.every(function(item) {
+        return item[1];
+      });
+
+      gob.apiTorrents(formData.category, () => {
+        const list = gob.data.listTorrent;
+        _log("apiTorrents()\n", list);
+        list.map(function(item) {
+          switch (gob.act) {
+            case "replace":
+              gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl);
+              break;
+            case "add":
+              gob.apiAddTracker(item.hash, formData.trackerUrl);
+              break;
+            case "remove":
+              gob.apiDelTracker(item.hash, formData.trackerUrl);
+              break;
+          }
+        });
+        gob.upTips("btn", {
+          num: list.length,
+          msg: "操作成功",
+        });
+      });
+      return;
+    }
   });
 
 })();
