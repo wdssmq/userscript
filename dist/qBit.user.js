@@ -185,6 +185,7 @@
         inputField.name = input.name;
         inputField.placeholder = input.text;
         inputField.classList.add("js-input");
+        inputField.style = "width: 95%;";
 
         const label = document.createElement("label");
         // label.textContent = input.text;
