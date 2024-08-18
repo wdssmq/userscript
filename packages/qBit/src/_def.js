@@ -7,6 +7,7 @@ import {
   fnCheckObj,
 } from "./_base";
 import { http } from "./_http";
+import defForm from "./_defForm";
 
 if (typeof __GM_api !== "undefined") {
   _log(__GM_api);
@@ -113,14 +114,12 @@ $n("#desktopNavbar ul").insertAdjacentHTML(
 // 构建编辑框
 const strHtml = `
 <div style="padding:13px 23px;">\
-    <h2>分类：（不能是「全部」或「未分类」，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;" placeholder="包含要修改项目的分类或新建一个"><br>\
-    <h2>旧 Trakcer：<h2><input class="js-input" type="text" name="origUrl" style="width: 97%;"><br>\
-    <h2>新 Tracker：<h2><input class="js-input" type="text" name="newUrl" style="width: 97%;"><br>\
-    <h2>子串模式：<input class="js-input" type="checkbox" name="matchSubstr" value="matchSubstr">仅替换链接中的部分文本<h2>\
-    <hr>\
-    <button class="js-replace">替换</button>\
-    <span class="js-tip-btn"></span>\
-    <hr>\
+    <div class="act-tab" style="display: flex;">操作模式：</div>\
+    <hr>
+    <h2>分类: （不能是「全部」或「未分类」，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;" placeholder="包含要修改项目的分类或新建一个">\
+    <h2>Tracker: <span class="js-tip-btn"></span></h2>\
+    <div class="act-body"></div>\
+    <hr>
     「<a target="_blank" title="投喂支持" href="https://www.wdssmq.com/guestbook.html#h3-u6295u5582u652Fu6301" rel="nofollow">投喂支持</a>」\
     「<a target="_blank" title="QQ 群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ 群 - 我的咸鱼心</a>」\
 </div>
@@ -151,6 +150,10 @@ $n(".js-modal").addEventListener("click", function() {
     qbt: gob.data.qbtVer,
     api: gob.data.apiVer,
   });
+
+  // 初始化表单
+  gob.formObj = new defForm();
+
   // debug
   // $n(".js-input[name=category]").value = "test";
   // $n(".js-input[name=origUrl]").value = "123";
@@ -173,88 +176,45 @@ const schemeObj = {
   ],
 };
 
-const fnCheckUrl = (url) => {
+
+const fnCheckUrl = (name, url) => {
   // 判断是否以 udp:// 或 http(s):// 开头
   const regex = /^(udp|http(s)?):\/\//;
-  return regex.test(url);
+  return [
+    name,
+    regex.test(url),
+  ];
 };
 
 document.addEventListener("click", function(event) {
-  if (event.target.classList.contains("js-replace")) {
-    const obj = {
-      category: $n(".js-input[name=category]").value.trim(),
-      origUrl: $n(".js-input[name=origUrl]").value.trim(),
-      newUrl: $n(".js-input[name=newUrl]").value.trim(),
-      matchSubstr: $n(".js-input[name=matchSubstr]").checked,
-    };
-
-    try {
-      fnCheckObj(obj, schemeObj);
-    } catch (error) {
-      alert(error);
-      return;
-    }
-
-    if (obj.origUrl === "") {
-      if (!confirm("未填写「旧 Tracker」，将执行添加操作，是否继续？")) {
-        return;
-      }
-      if (!fnCheckUrl(obj.newUrl)) {
-        alert("「新 Tracker」必须以 udp:// 或 http(s):// 开头");
-        return;
-      }
-    } else {
-      // 新旧 Tracker 执行 fnCheckUrl 判断的结果应该相同
-      if (fnCheckUrl(obj.origUrl) !== fnCheckUrl(obj.newUrl)) {
-        alert("「旧 Tracker」和「新 Tracker」必须同为链接或同为子串");
-        return;
-      }
-      if (!fnCheckUrl(obj.origUrl) && !obj.matchSubstr) {
-        alert("必须以 udp:// 或 http(s):// 开头\n或者勾选「子串模式」");
-        return;
-      }
-    }
-
-    // 根据子串获取完整的 Url
-    const replaceBySubstr = async (hash, oldSubstr, newSubstr) => {
-
-      gob.apiGetTrackers(hash, () => {
-        const seedTrackers = gob.data.curTorrentTrackers;
-        const rlt = {
-          oldUrl: "",
-          newUrl: "",
-          bolMatch: false,
-        };
-        seedTrackers.forEach((item) => {
-          let oldUrl = item.url, newUrl = "";
-          // _log("oldUrl", oldUrl, oldSubstr);
-          if (oldUrl.indexOf(oldSubstr) > -1 && !rlt.bolMatch) {
-            newUrl = oldUrl.replace(oldSubstr, newSubstr);
-            rlt.bolMatch = true;
-            rlt.oldUrl = oldUrl;
-            rlt.newUrl = newUrl;
-          }
-        });
-        if (rlt.bolMatch) {
-          gob.apiEdtTracker(hash, rlt.oldUrl, rlt.newUrl);
+  if (event.target.classList.contains("btn-act")) {
+    gob.act = gob.formObj.curSelect;
+    gob.urlCheck = [];
+    const formData = gob.formObj.getFormData();
+    // 遍历数据，如果 key 含有 Url，则判断 value 是否符合要求
+    for (const key in formData) {
+      if (Object.prototype.hasOwnProperty.call(formData, key)) {
+        const value = formData[key];
+        if (key.indexOf("Url") > -1) {
+          // 判断是否符合要求
+          gob.urlCheck.push(fnCheckUrl(key, value));
         }
-      });
+      }
+    }
 
-    };
-
-    gob.apiTorrents(obj.category, () => {
+    gob.apiTorrents(formData.category, () => {
       const list = gob.data.listTorrent;
       _log("apiTorrents()\n", list);
       list.map(function(item) {
-        if (obj.matchSubstr) {
-          replaceBySubstr(item.hash, obj.origUrl, obj.newUrl);
-          return;
-        }
-        // 替换或添加 Tracker（完整匹配）
-        if (obj.origUrl !== "") {
-          gob.apiEdtTracker(item.hash, obj.origUrl, obj.newUrl);
-        } else {
-          gob.apiAddTracker(item.hash, obj.newUrl);
+        switch (gob.act) {
+          case "replace":
+            gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl);
+            break;
+          case "add":
+            gob.apiAddTracker(item.hash, formData.trackerUrl);
+            break;
+          default:
+            break;
         }
       });
       gob.upTips("btn", {
@@ -262,7 +222,6 @@ document.addEventListener("click", function(event) {
         msg: "操作成功",
       });
     });
-
     return;
   }
 });
