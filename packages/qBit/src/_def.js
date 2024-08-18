@@ -1,8 +1,12 @@
 /* global jQuery, __GM_api, MochaUI */
 
-import { _log, curUrl, fnCheckObj } from "./_base";
+import {
+  _log,
+  $n,
+  curUrl,
+  fnCheckObj,
+} from "./_base";
 import { http } from "./_http";
-const jq = jQuery;
 
 if (typeof __GM_api !== "undefined") {
   _log(__GM_api);
@@ -79,9 +83,9 @@ const gob = {
     for (const key in gob.data.tips) {
       if (Object.hasOwnProperty.call(gob.data.tips, key)) {
         const tip = gob.data.tips[key];
-        const $el = jq(`.js-tip-${key}`);
+        const $el = $n(`.js-tip-${key}`);
         const text = JSON.stringify(tip).replace(/(,|:)"/g, "$1 ").replace(/["{}]/g, "");
-        $el.text(`(${text})`);
+        $el.innerText = `(${text})`;
       }
     }
   },
@@ -101,7 +105,8 @@ const gob = {
 gob.init();
 
 // 构建编辑入口
-jq("#desktopNavbar>ul").append(
+$n("#desktopNavbar ul").insertAdjacentHTML(
+  "beforeend",
   "<li><a class=\"js-modal\"><b>→批量替换 Tracker←</b></a></li>",
 );
 
@@ -122,8 +127,8 @@ const strHtml = `
 `;
 
 // js-modal 绑定点击事件
-jq(".js-modal").click(function () {
-  new MochaUI.Window({
+$n(".js-modal").addEventListener("click", function() {
+  const modal = new MochaUI.Window({
     id: "js-modal",
     title: "批量替换 Tracker <span class=\"js-tip-tit\"></span>",
     loadMethod: "iframe",
@@ -137,20 +142,20 @@ jq(".js-modal").click(function () {
     width: 500,
     height: 250,
   });
-  jq("#js-modal_content").append(strHtml);
-  jq("#js-modal_contentWrapper").css({
-    height: "auto",
-  });
+  const modalContent = $n("#js-modal_content");
+  modalContent.innerHTML = strHtml;
+  const modalContentWrapper = $n("#js-modal_contentWrapper");
+  modalContentWrapper.style.height = "auto";
   gob.data.modalShow = true;
   gob.upTips("tit", {
     qbt: gob.data.qbtVer,
     api: gob.data.apiVer,
   });
   // debug
-  // jq(".js-input[name=category]").val("test");
-  // jq(".js-input[name=origUrl]").val("123");
-  // jq(".js-input[name=newUrl]").val("456");
-  // jq(".js-input[name=matchSubstr]").click();
+  // $n(".js-input[name=category]").value = "test";
+  // $n(".js-input[name=origUrl]").value = "123";
+  // $n(".js-input[name=newUrl]").value = "456";
+  // $n(".js-input[name=matchSubstr]").click();
 });
 
 const schemeObj = {
@@ -174,89 +179,90 @@ const fnCheckUrl = (url) => {
   return regex.test(url);
 };
 
-jq(document).on("click", ".js-replace", function () {
-  // alert(jq(".js-input[name=category]").val());
-  const obj = {
-    category: jq(".js-input[name=category]").val().trim(),
-    origUrl: jq(".js-input[name=origUrl]").val().trim(),
-    newUrl: jq(".js-input[name=newUrl]").val().trim(),
-    matchSubstr: jq(".js-input[name=matchSubstr]").is(":checked"),
-  };
+document.addEventListener("click", function(event) {
+  if (event.target.classList.contains("js-replace")) {
+    const obj = {
+      category: $n(".js-input[name=category]").value.trim(),
+      origUrl: $n(".js-input[name=origUrl]").value.trim(),
+      newUrl: $n(".js-input[name=newUrl]").value.trim(),
+      matchSubstr: $n(".js-input[name=matchSubstr]").checked,
+    };
 
-  try {
-    fnCheckObj(obj, schemeObj);
-  } catch (error) {
-    alert(error);
-    return;
-  }
-
-  if (obj.origUrl === "") {
-    if (!confirm("未填写「旧 Tracker」，将执行添加操作，是否继续？")) {
+    try {
+      fnCheckObj(obj, schemeObj);
+    } catch (error) {
+      alert(error);
       return;
     }
-    if (!fnCheckUrl(obj.newUrl)) {
-      alert("「新 Tracker」必须以 udp:// 或 http(s):// 开头");
-      return;
-    }
-  } else {
-    // 新旧 Tracker 执行 fnCheckUrl 判断的结果应该相同
-    if (fnCheckUrl(obj.origUrl) !== fnCheckUrl(obj.newUrl)) {
-      alert("「旧 Tracker」和「新 Tracker」必须同为链接或同为子串");
-      return;
-    }
-    if (!fnCheckUrl(obj.origUrl) && !obj.matchSubstr) {
-      alert("必须以 udp:// 或 http(s):// 开头\n或者勾选「子串模式」");
-      return;
-    }
-  }
 
-  // 根据子串获取完整的 Url
-  const replaceBySubstr = async (hash, oldSubstr, newSubstr) => {
-
-    gob.apiGetTrackers(hash, () => {
-      const seedTrackers = gob.data.curTorrentTrackers;
-      const rlt = {
-        oldUrl: "",
-        newUrl: "",
-        bolMatch: false,
-      };
-      seedTrackers.forEach((item) => {
-        let oldUrl = item.url, newUrl = "";
-        // _log("oldUrl", oldUrl, oldSubstr);
-        if (oldUrl.indexOf(oldSubstr) > -1 && !rlt.bolMatch) {
-          newUrl = oldUrl.replace(oldSubstr, newSubstr);
-          rlt.bolMatch = true;
-          rlt.oldUrl = oldUrl;
-          rlt.newUrl = newUrl;
-        }
-      });
-      if (rlt.bolMatch) {
-        gob.apiEdtTracker(hash, rlt.oldUrl, rlt.newUrl);
-      }
-    });
-
-  };
-
-  gob.apiTorrents(obj.category, () => {
-    const list = gob.data.listTorrent;
-    _log("apiTorrents()\n", list);
-    list.map(function (item) {
-      if (obj.matchSubstr) {
-        replaceBySubstr(item.hash, obj.origUrl, obj.newUrl);
+    if (obj.origUrl === "") {
+      if (!confirm("未填写「旧 Tracker」，将执行添加操作，是否继续？")) {
         return;
       }
-      // 替换或添加 Tracker（完整匹配）
-      if (obj.origUrl !== "") {
-        gob.apiEdtTracker(item.hash, obj.origUrl, obj.newUrl);
-      } else {
-        gob.apiAddTracker(item.hash, obj.newUrl);
+      if (!fnCheckUrl(obj.newUrl)) {
+        alert("「新 Tracker」必须以 udp:// 或 http(s):// 开头");
+        return;
       }
-    });
-    gob.upTips("btn", {
-      num: list.length,
-      msg: "操作成功",
-    });
-  });
+    } else {
+      // 新旧 Tracker 执行 fnCheckUrl 判断的结果应该相同
+      if (fnCheckUrl(obj.origUrl) !== fnCheckUrl(obj.newUrl)) {
+        alert("「旧 Tracker」和「新 Tracker」必须同为链接或同为子串");
+        return;
+      }
+      if (!fnCheckUrl(obj.origUrl) && !obj.matchSubstr) {
+        alert("必须以 udp:// 或 http(s):// 开头\n或者勾选「子串模式」");
+        return;
+      }
+    }
 
-  return;
+    // 根据子串获取完整的 Url
+    const replaceBySubstr = async (hash, oldSubstr, newSubstr) => {
+
+      gob.apiGetTrackers(hash, () => {
+        const seedTrackers = gob.data.curTorrentTrackers;
+        const rlt = {
+          oldUrl: "",
+          newUrl: "",
+          bolMatch: false,
+        };
+        seedTrackers.forEach((item) => {
+          let oldUrl = item.url, newUrl = "";
+          // _log("oldUrl", oldUrl, oldSubstr);
+          if (oldUrl.indexOf(oldSubstr) > -1 && !rlt.bolMatch) {
+            newUrl = oldUrl.replace(oldSubstr, newSubstr);
+            rlt.bolMatch = true;
+            rlt.oldUrl = oldUrl;
+            rlt.newUrl = newUrl;
+          }
+        });
+        if (rlt.bolMatch) {
+          gob.apiEdtTracker(hash, rlt.oldUrl, rlt.newUrl);
+        }
+      });
+
+    };
+
+    gob.apiTorrents(obj.category, () => {
+      const list = gob.data.listTorrent;
+      _log("apiTorrents()\n", list);
+      list.map(function(item) {
+        if (obj.matchSubstr) {
+          replaceBySubstr(item.hash, obj.origUrl, obj.newUrl);
+          return;
+        }
+        // 替换或添加 Tracker（完整匹配）
+        if (obj.origUrl !== "") {
+          gob.apiEdtTracker(item.hash, obj.origUrl, obj.newUrl);
+        } else {
+          gob.apiAddTracker(item.hash, obj.newUrl);
+        }
+      });
+      gob.upTips("btn", {
+        num: list.length,
+        msg: "操作成功",
+      });
+    });
+
+    return;
+  }
 });
