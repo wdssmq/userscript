@@ -36,7 +36,7 @@ class defForm {
       "text": "删除",
       "inputs": [
         {
-          "text": "删除 Tracker",
+          "text": "删除 Tracker，输入 **** 可清空所有 Tracker",
           "name": "trackerUrl",
         },
       ],
