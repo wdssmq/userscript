@@ -161,21 +161,8 @@ $n(".js-modal").addEventListener("click", function() {
   // $n(".js-input[name=matchSubstr]").click();
 });
 
-const schemeObj = {
-  category: [
-    {
-      not: "",
-      msg: "不能为空",
-    },
-  ],
-  newUrl: [
-    {
-      not: "",
-      msg: "不能为空",
-    },
-  ],
-};
-
+// // 自动点击
+// $n(".js-modal").click();
 
 const fnCheckUrl = (name, url) => {
   // 判断是否以 udp:// 或 http(s):// 开头
@@ -191,6 +178,14 @@ document.addEventListener("click", function(event) {
     gob.act = gob.formObj.curSelect;
     gob.urlCheck = [];
     const formData = gob.formObj.getFormData();
+    // 判断分类
+    if (!formData.category || formData.category === "全部" || formData.category === "未分类") {
+      gob.upTips("btn", {
+        num: 0,
+        msg: "「分类」字段错误",
+      });
+      return;
+    }
     // 遍历数据，如果 key 含有 Url，则判断 value 是否符合要求
     for (const key in formData) {
       if (Object.prototype.hasOwnProperty.call(formData, key)) {
@@ -200,6 +195,23 @@ document.addEventListener("click", function(event) {
           gob.urlCheck.push(fnCheckUrl(key, value));
         }
       }
+    }
+
+    gob.urlCheck.map(function(item) {
+      if (!item[1]) {
+        gob.upTips("btn", {
+          num: 0,
+          msg: `「${item[0]}」不符合要求`,
+        });
+        return;
+      }
+    });
+
+    const isOk = gob.urlCheck.every(function(item) {
+      return item[1];
+    });
+    if (!isOk) {
+      return;
     }
 
     gob.apiTorrents(formData.category, () => {
