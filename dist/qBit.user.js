@@ -125,7 +125,7 @@
         "text": "删除",
         "inputs": [
           {
-            "text": "删除 Tracker",
+            "text": "删除 Tracker，输入 **** 可清空所有 Tracker",
             "name": "trackerUrl",
           },
         ],
@@ -423,9 +423,28 @@
         }
       });
 
-      gob.urlCheck.every(function(item) {
+      let isOk = gob.urlCheck.every(function(item) {
         return item[1];
       });
+
+      if (gob.act === "remove" && formData.trackerUrl === "****") {
+        isOk = confirm("继续将清空匹配任务的全部 Tracker");
+        gob.act = "removeAll";
+      }
+
+      if (!isOk) {
+        return;
+      }
+
+      const fnRemoveAll = (hash) => {
+        gob.apiGetTrackers(hash, () => {
+          const seedTrackers = gob.data.curTorrentTrackers;
+          const seedTrackersUrl = seedTrackers.map(function(item) {
+            return item.url;
+          });
+          gob.apiDelTracker(hash, seedTrackersUrl.join("|"));
+        });
+      };
 
       gob.apiTorrents(formData.category, () => {
         const list = gob.data.listTorrent;
@@ -440,6 +459,9 @@
               break;
             case "remove":
               gob.apiDelTracker(item.hash, formData.trackerUrl);
+              break;
+            case "removeAll":
+              fnRemoveAll(item.hash);
               break;
           }
         });
