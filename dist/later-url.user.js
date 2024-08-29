@@ -16,6 +16,7 @@
 // @noframes
 // @run-at       document-end
 // @match        https://space.bilibili.com/*
+// @match        https://feedly.com/i/saved
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -29,6 +30,8 @@
 
   const gm_name = "later-url";
 
+  // 初始常量或函数
+  const curUrl = window.location.href;
   const curDate = new Date();
   const curTimestamp = Math.floor(curDate.getTime() / 1000);
 
@@ -120,6 +123,27 @@
 
   const http = new HttpRequest();
 
+  const config = {
+    data: {},
+    defData: {
+      baseUrl: "http://127.0.0.1:41897/",
+      authToken: "token_value_here",
+      isInit: false,
+    },
+    load() {
+      config.data = GM_getValue("config", this.defData);
+      if (!config.data.isInit) {
+        config.data.isInit = true;
+        config.save();
+      }
+    },
+    save() {
+      GM_setValue("config", config.data);
+    },
+  };
+
+  config.load();
+
   // localStorage 封装
   const lsObj = {
     setItem: (key, value) => {
@@ -148,6 +172,7 @@
     _lsKey: `${gm_name}_data`,
     _bolLoaded: false,
     data: {},
+    config,
     // 初始
     init() {
       // 根据 gobInfo 设置 gob 属性
@@ -198,6 +223,28 @@
 
   gob.http = http;
 
+  // 删除 url
+  gob.delUrl = async (url, category) => {
+    const { baseUrl, authToken } = config.data;
+    const headers = {
+      "Authorization": "Bearer " + authToken,
+    };
+
+    const apiUrl = `${baseUrl}admin/${category}/del-url/?url=${url}`;
+    try {
+      const res = await gob.http.get(apiUrl, headers);
+      // _log("gob.delUrl()\n", res);
+      // _log("gob.delUrl()\n", res.responseText);
+      const resJSON = JSON.parse(res.responseText);
+      _log("gob.delUrl()\n",resJSON);
+      return true;
+    } catch (error) {
+      gob.errCount += 1;
+      _log("gob.delUrl() - error\n", error);
+      return false;
+    }
+  };
+
   gob.stopByErrCount = () => {
     if (gob.errCount >= 4) {
       _log("gob.stopByErrCount()\n", "累计错误达到限制");
@@ -231,27 +278,6 @@
 
   // 初始化
   gob.init().load();
-
-  const config = {
-    data: {},
-    defData: {
-      baseUrl: "http://127.0.0.1:41897/",
-      authToken: "token_value_here",
-      isInit: false,
-    },
-    load() {
-      config.data = GM_getValue("config", this.defData);
-      if (!config.data.isInit) {
-        config.data.isInit = true;
-        config.save();
-      }
-    },
-    save() {
-      GM_setValue("config", config.data);
-    },
-  };
-
-  config.load();
 
   // 执行队列，第二个参数控制是否循环执行
   async function runQueue(listPromises, loop = 0) {
@@ -527,5 +553,80 @@
   };
 
   bilibili.watch();
+
+  (() => {
+    if (curUrl.indexOf("feedly") === -1) {
+      return;
+    }
+    // _log($n("body").innerHTML);
+    const $root = $n("#root");
+
+    // 获取链接信息
+    const getUrlInfo = ($con, $title) => {
+      const info = {
+        url: "",
+        title: "",
+        category: "",
+      };
+      info.url = $title.href;
+      info.title = $title.textContent;
+      // 获取分类
+      const textCon = $con.textContent;
+      // 判断是否含有 https://space.bilibili.com/\d+/video
+      const oMatch = textCon.match(/https:\/\/space.bilibili.com\/(\d+)\/video/);
+      if (oMatch) {
+        info.category = `bilibili_${oMatch[1]}`;
+      }
+      return info;
+    };
+
+    // 添加按钮并绑定事件
+    const addBtn = ($con, $title) => {
+      const info = getUrlInfo($con, $title);
+      if (!info.category) {
+        return;
+      }
+      // $正文元素内添加一个按钮并绑定点击事件
+      const $btn = document.createElement("button");
+      $btn.textContent = "从 cf-later 删除";
+      $btn.style.margin = "10px";
+      $btn.onclick = async () => {
+        _log(info);
+        await gob.delUrl(info.url, info.category);
+      };
+      $con.appendChild($btn);
+    };
+
+    const onElChange = () => {
+      const $$展开的文章 = $na("div > .SelectedEntryScroller");
+      let $展开的文章;
+      if ($$展开的文章.length > 0) {
+        $展开的文章 = $$展开的文章[0];
+      } else {
+        return;
+      }
+      // 如果已经设置 data-url-btn="true"，则不再设置
+      if ($展开的文章.getAttribute("data-url-btn") === "true") {
+        return;
+      }
+      // 获取正文元素
+      const $正文 = $展开的文章.querySelector(".entryBody .content");
+      const $标题 = $展开的文章.querySelector(".entryHeader a");
+      if (!$正文 || !$标题) {
+        return;
+      }
+      _log("$展开的文章 = ", $展开的文章);
+      _log(
+        $正文,
+        $标题,
+      );
+      addBtn($正文, $标题);
+      // 设置 data-url-btn="true"
+      $展开的文章.setAttribute("data-url-btn", "true");
+    };
+
+    fnElChange($root, onElChange);
+
+  })();
 
 })();

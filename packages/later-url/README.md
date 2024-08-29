@@ -8,6 +8,12 @@ userscript/packages/later-url at main · wdssmq/userscript：
 
 [https://github.com/wdssmq/userscript/tree/main/packages/later-url](https://github.com/wdssmq/userscript/tree/main/packages/later-url "userscript/packages/later-url at main · wdssmq/userscript")
 
+### 安装
+
+GitHub: [点击安装](https://github.com/wdssmq/userscript/blob/main/dist/later-url.user.js?raw=true "点击安装 「水水」收集各种待看链接到远程服务器 - GitHub") 「[在线查看](https://github.com/wdssmq/userscript/blob/main/dist/later-url.user.js "在线查看 dist 源码")」
+
+CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/later-url.user.js "点击安装 「水水」收集各种待看链接到远程服务器 - CDN") 「[更新缓存](https://purge.jsdelivr.net/gh/wdssmq/userscript@main/dist/later-url.user.js "点击更新 CDN 缓存")」
+
 ### 关于
 
 博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")
