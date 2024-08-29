@@ -1,6 +1,7 @@
 import { _log, curTimestamp } from "./_base";
 import { gm_name } from "./__info";
 import http from "./_http";
+import config from "./_config";
 
 // localStorage 封装
 const lsObj = {
@@ -30,6 +31,7 @@ const gob = {
   _lsKey: `${gm_name}_data`,
   _bolLoaded: false,
   data: {},
+  config,
   // 初始
   init() {
     // 根据 gobInfo 设置 gob 属性
@@ -79,6 +81,28 @@ const gob = {
 };
 
 gob.http = http;
+
+// 删除 url
+gob.delUrl = async (url, category) => {
+  const { baseUrl, authToken } = config.data;
+  const headers = {
+    "Authorization": "Bearer " + authToken,
+  };
+
+  const apiUrl = `${baseUrl}admin/${category}/del-url/?url=${url}`;
+  try {
+    const res = await gob.http.get(apiUrl, headers);
+    // _log("gob.delUrl()\n", res);
+    // _log("gob.delUrl()\n", res.responseText);
+    const resJSON = JSON.parse(res.responseText);
+    _log("gob.delUrl()\n",resJSON);
+    return true;
+  } catch (error) {
+    gob.errCount += 1;
+    _log("gob.delUrl() - error\n", error);
+    return false;
+  }
+};
 
 gob.stopByErrCount = () => {
   if (gob.errCount >= 4) {

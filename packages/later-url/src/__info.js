@@ -17,6 +17,7 @@ const gm_banner = `
 // @noframes
 // @run-at       document-end
 // @match        https://space.bilibili.com/*
+// @match        https://feedly.com/i/saved
 // @grant        GM_xmlhttpRequest
 // @grant        GM_getValue
 // @grant        GM_setValue
