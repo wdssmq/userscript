@@ -103,7 +103,7 @@ gob.GetStarItems = () => {
   const $listWrap = $n("div.StreamPage");
   // _log("gob.GetStarItems", $listWrap);
   if ($listWrap) {
-    gob.$$Stars = $listWrap.querySelectorAll("div.EntryTitle>a");
+    gob.$$Stars = $listWrap.querySelectorAll("article a.EntryTitleLink");
     gob.cntStars = gob.$$Stars.length;
     // _log("gob.GetStarItems", gob.$$Stars, gob.cntStars);
   }
@@ -111,7 +111,7 @@ gob.GetStarItems = () => {
 
 // 获取星标条目 nodeList, 用于交换位置
 gob.GetStarNodes = () => {
-  return $na(".StreamPage > .titleOnly");
+  return $na(".StreamPage .entry.titleOnly");
 };
 
 // 输出日志，只输出一次

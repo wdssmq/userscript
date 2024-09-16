@@ -54,7 +54,7 @@ function fnColorStars(offset = 0) {
     return;
   }
   // ----------------------------
-  if ($stars.length <= 19 && oConfig.随机次数 <= 3) {
+  if ($stars.length <= 39 && oConfig.随机次数 <= 3) {
     // 遍历 dom 节点，随机交换位置
     fnRndNodeList(gob.GetStarNodes());
     gob.pickRule.随机次数 += 1;
@@ -72,7 +72,7 @@ function fnColorStars(offset = 0) {
   // ----------------------------
   [].forEach.call($stars, ($e, i) => {
     // begin forEach
-    const $ago = fnFindDom(fnFindDomUp($e, "div.TitleOnlyLayout"), ".ago");
+    const $ago = fnFindDom(fnFindDomUp($e, "div.SelectedEntryScroller"), ".ago");
     const href = $e.href;
     const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
     // _log("fnColorStars", $ago, href, hash);
