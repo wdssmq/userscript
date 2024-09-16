@@ -175,7 +175,7 @@
     const $listWrap = $n("div.StreamPage");
     // _log("gob.GetStarItems", $listWrap);
     if ($listWrap) {
-      gob.$$Stars = $listWrap.querySelectorAll("div.EntryTitle>a");
+      gob.$$Stars = $listWrap.querySelectorAll("article a.EntryTitleLink");
       gob.cntStars = gob.$$Stars.length;
       // _log("gob.GetStarItems", gob.$$Stars, gob.cntStars);
     }
@@ -183,7 +183,7 @@
 
   // 获取星标条目 nodeList, 用于交换位置
   gob.GetStarNodes = () => {
-    return $na(".StreamPage > .titleOnly");
+    return $na(".StreamPage .entry.titleOnly");
   };
 
   // 输出日志，只输出一次
@@ -342,7 +342,7 @@
       return;
     }
     // ----------------------------
-    if ($stars.length <= 19 && oConfig.随机次数 <= 3) {
+    if ($stars.length <= 39 && oConfig.随机次数 <= 3) {
       // 遍历 dom 节点，随机交换位置
       fnRndNodeList(gob.GetStarNodes());
       gob.pickRule.随机次数 += 1;
@@ -360,7 +360,7 @@
     // ----------------------------
     [].forEach.call($stars, ($e, i) => {
       // begin forEach
-      const $ago = fnFindDom(fnFindDomUp($e, "div.TitleOnlyLayout"), ".ago");
+      const $ago = fnFindDom(fnFindDomUp($e, "div.SelectedEntryScroller"), ".ago");
       const href = $e.href;
       const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
       // _log("fnColorStars", $ago, href, hash);
