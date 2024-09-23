@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Feedly」中键标记已读 + 收藏导出为*.url
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.6
+// @version      1.0.7
 // @author       沉冰浮水
 // @description  新标签页打开条目时自动标记为已读，收藏计数
 // @license      MIT
