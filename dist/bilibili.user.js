@@ -160,7 +160,7 @@
 
     // 判断是否已经领取过
     const fnCheckByDOM = () => {
-      const $bcoin = $n(".bcoin-wrapper");
+      const $bcoin = $n(".security-right .coupon-wrapper");
       // _log("fnCheckByDOM", $bcoin);
       // $bcoin && _log("fnCheckByDOM", $bcoin.innerHTML);
       if ($bcoin && $bcoin.innerText.includes("本次已领")) {

@@ -10,9 +10,9 @@ userscript/packages/bilibili at main · wdssmq/userscript：
 
 ### 安装
 
-GitHub: [点击安装](https://github.com/wdssmq/userscript/blob/main/dist/bilibili.user.js?raw=true, "点击安装 「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等； - GitHub") 「[在线查看](https://github.com/wdssmq/userscript/blob/main/dist/bilibili.user.js, "在线查看 dist 源码")」
+GitHub: [点击安装](https://github.com/wdssmq/userscript/blob/main/dist/bilibili.user.js?raw=true "点击安装 「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等； - GitHub") 「[在线查看](https://github.com/wdssmq/userscript/blob/main/dist/bilibili.user.js "在线查看 dist 源码")」
 
-CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili.user.js, "点击安装 「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等； - CDN") 「[更新缓存](https://purge.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili.user.js, "点击更新 CDN 缓存")」
+CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili.user.js "点击安装 「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等； - CDN") 「[更新缓存](https://purge.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili.user.js "点击更新 CDN 缓存")」
 
 ### 关于
 
