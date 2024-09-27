@@ -6,7 +6,7 @@
 
 博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")
 
-爱发电： [https://afdian.net/@wdssmq](https://afdian.net/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
+爱发电： [https://afdian.com/@wdssmq](https://afdian.com/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
 
 更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
@@ -27,7 +27,7 @@ GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/z
 // @contributionAmount 5.93
 // @null         ----------------------------
 // @link         https://github.com/wdssmq/userscript
-// @link         https://afdian.net/@wdssmq
+// @link         https://afdian.com/@wdssmq
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 ```

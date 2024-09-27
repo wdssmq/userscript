@@ -10,7 +10,7 @@
 // @null     ----------------------------
 // @link     https://greasyfork.org/scripts/398415
 // @link     https://github.com/wdssmq/userscript
-// @link     https://afdian.net/@wdssmq
+// @link     https://afdian.com/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
 // @include      https://www.bilibili.com/*

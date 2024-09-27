@@ -10,7 +10,7 @@
 // @contributionAmount 5.93
 // @null         ----------------------------
 // @link         https://github.com/wdssmq/userscript
-// @link         https://afdian.net/@wdssmq
+// @link         https://afdian.com/@wdssmq
 // @link         https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null         ----------------------------
 // @noframes

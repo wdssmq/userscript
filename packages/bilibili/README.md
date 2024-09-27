@@ -18,7 +18,7 @@ CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/bili
 
 博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")
 
-爱发电： [https://afdian.net/@wdssmq](https://afdian.net/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
+爱发电： [https://afdian.com/@wdssmq](https://afdian.com/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
 
 更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 

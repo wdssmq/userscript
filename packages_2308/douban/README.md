@@ -2,7 +2,7 @@
 
 博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")
 
-爱发电： [https://afdian.net/@wdssmq](https://afdian.net/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
+爱发电： [https://afdian.com/@wdssmq](https://afdian.com/@wdssmq "沉冰浮水正在创作和 z-blog 相关或无关的各种有用或没用的代码 | 爱发电")
 
 更多脚本： [https://github.com/wdssmq/userscript](https://github.com/wdssmq/userscript "wdssmq/userscript: 各种猴子脚本")
 
@@ -43,7 +43,7 @@ GitHub：[https://github.com/wdssmq/userscript/tree/master/douban](https://githu
 
 「GM\_脚本」豆瓣日记辅助删除演示丨沉冰浮水丨爱发电：
 
-[https://afdian.net/p/f0b55c04d38111edbb835254001e7c00](https://afdian.net/p/f0b55c04d38111edbb835254001e7c00 "「GM\_脚本」豆瓣日记辅助删除演示丨沉冰浮水丨爱发电")
+[https://afdian.com/p/f0b55c04d38111edbb835254001e7c00](https://afdian.com/p/f0b55c04d38111edbb835254001e7c00 "「GM\_脚本」豆瓣日记辅助删除演示丨沉冰浮水丨爱发电")
 
 ## 其他
 

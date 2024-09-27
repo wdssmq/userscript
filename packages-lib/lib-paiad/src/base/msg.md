@@ -4,6 +4,6 @@
 
 `{location.hostname}##.mz-modal.ads`
 
-「[爱发电](https://afdian.net/a/wdssmq "沉冰浮水正在创作和 Z-BlogPHP 相关或无关的各种有用或没用的代码 | 爱发电")」
+「[爱发电](https://afdian.com/a/wdssmq "沉冰浮水正在创作和 Z-BlogPHP 相关或无关的各种有用或没用的代码 | 爱发电")」
 「[QQ 群 - 我的咸鱼心](https://jq.qq.com/?_wv=1027&k=SRYaRV6T "QQ 群 - 我的咸鱼心")」
 「群号：189574683」
