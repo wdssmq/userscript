@@ -2,7 +2,7 @@
 title: 「Feedly」中键标记已读 + 收藏导出为*.url
 description: 新标签页打开条目时自动标记为已读，收藏计数
 pubDate: 2023-09-23 18:48:07
-updateDate: 2024-09-23 19:43:12
+updateDate: 2024-09-27 17:35:19
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/feedly.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/feedly.user.js?raw=true

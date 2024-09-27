@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./tieba.9c9855dc.mjs');
+						return import('./CutNoteHelper.787d6af9.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";

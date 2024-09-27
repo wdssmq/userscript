@@ -8,6 +8,12 @@ userscript/packages/comic at main · wdssmq/userscript：
 
 [https://github.com/wdssmq/userscript/tree/main/packages/comic](https://github.com/wdssmq/userscript/tree/main/packages/comic "userscript/packages/comic at main · wdssmq/userscript")
 
+### 安装
+
+GitHub: [点击安装](https://github.com/wdssmq/userscript/blob/main/dist/comic.user.js?raw=true "点击安装 「漫画」打包下载 - GitHub") 「[在线查看](https://github.com/wdssmq/userscript/blob/main/dist/comic.user.js "在线查看 dist 源码")」
+
+CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/comic.user.js "点击安装 「漫画」打包下载 - CDN") 「[更新缓存](https://purge.jsdelivr.net/gh/wdssmq/userscript@main/dist/comic.user.js "点击更新 CDN 缓存")」
+
 ### 关于
 
 博客：[https://www.wdssmq.com](https://www.wdssmq.com "沉冰浮水")

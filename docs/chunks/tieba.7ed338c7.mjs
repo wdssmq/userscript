@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./zbp-GenLogo.64bd10d1.mjs');
+						return import('./tieba.ab29a025.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";

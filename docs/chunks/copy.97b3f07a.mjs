@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./zbp-xiuno.8c5fc4cb.mjs');
+						return import('./copy.ee20092c.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";
