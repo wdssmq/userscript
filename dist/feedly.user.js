@@ -706,13 +706,38 @@
     if ($e.dataset.ptDone) {
       return;
     }
-    const strTitle = $e.innerText;
-    const arrMatch = strTitle.match(/(?<cate>\[[^\]]+\])[^[]+-(?<group>[^[]+)(?<title>\[.+\])$/);
+    const origTitle = $e.innerText;
+    // _log("origTitle", origTitle);
+    // 定义一个函数用于获取年度及分辨率
+    const fnGetVideoLabel = (videoTitle) => {
+      videoTitle = videoTitle.replace("4K.", "2160p.");
+      // 定义一个正则数组，用于匹配年度及分辨率
+      const arrRegexp = [
+        /(?<year>\d{4})\.(?<res>\d+p)\./,
+        /(?<year>\d{4})\.S\d+.*?(?<res>\d+p)\./,
+        /(?<year>\d{4})\.Complete\.(?<res>\d+p)\./,
+        /(?<year>\d{4})\..+?(?<res>\d+p)\./i,
+      ];
+      // 遍历正则数组，匹配年度及分辨率
+      let objLabel = null;
+      for (let i = 0; i < arrRegexp.length; i++) {
+        const regexp = arrRegexp[i];
+        const match = videoTitle.match(regexp);
+        if (match) {
+          objLabel = match.groups;
+          break;
+        }
+      }
+      return objLabel;
+    };
+    const arrMatch = origTitle.match(/(?<cate>\[[^\]]+\])[^[]+-(?<group>[^[]+)(?<title>\[.+\])$/);
     if (arrMatch) {
       const strCate = arrMatch.groups.cate.replace(/^\[[^)]+\(([^)]+)\)\]/, "[$1]");
       const strGroup = arrMatch.groups.group;
       const strTitle = arrMatch.groups.title;
-      const strNewTitle = `${strTitle} - ${strCate}[${strGroup}]`;
+      // 提取年度及分辨率
+      const objLabel = fnGetVideoLabel(origTitle);
+      const strNewTitle = `${strTitle} - ${strCate}[${objLabel?.year}][${objLabel?.res}][${strGroup}]`;
       $e.innerText = strNewTitle;
       $e.dataset.ptDone = "1";
     }
