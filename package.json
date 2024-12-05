@@ -6,16 +6,16 @@
     "lint": "eslint --ignore-path .gitignore --ext .js,.mjs . --fix"
   },
   "dependencies": {
-    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-replace": "^4.0.0",
-    "rollup": "^2.79.0",
+    "rollup": "^2.79.2",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-monkey": "^1.0.9",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-serve": "^2.0.2"
+    "rollup-plugin-serve": "^2.0.3"
   },
   "devDependencies": {
-    "eslint": "^8.34.0",
+    "eslint": "^8.57.1",
     "open": "^9.1.0"
   }
 }
