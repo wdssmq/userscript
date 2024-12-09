@@ -1,0 +1,17 @@
+{
+  "name": "lib-zip-worker-draft",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "rsbuild dev --open",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "^1.1.4"
+  },
+  "dependencies": {
+    "comlink": "^4.4.2",
+    "file-saver": "^2.0.5"
+  }
+}
