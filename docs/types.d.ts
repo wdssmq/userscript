@@ -265,6 +265,13 @@ declare module 'astro:content' {
   collection: "gm_md";
   data: InferEntrySchema<"gm_md">
 } & { render(): Render[".md"] };
+"xlog-helper.md": {
+	id: "xlog-helper.md";
+  slug: "xlog-helper";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 "zbp-GenLogo.md": {
 	id: "zbp-GenLogo.md";
   slug: "zbp-genlogo";
