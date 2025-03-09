@@ -69,36 +69,6 @@ const fnElChange = (el, fn = () => { }) => {
 
 // -------------------------------------
 
-function fnCheckObj(obj, schema) {
-  for (const key in schema) {
-    const value = obj[key];
-    // 模式中定义的键必须存在
-    if (typeof value === "undefined") {
-      throw new Error(`${key} is missing from object`);
-    }
-    // 针对每个键值的模式
-    const valueSchema = schema[key];
-    valueSchema.forEach((itemSchema) => {
-      const msg = itemSchema.msg;
-      for (const check in itemSchema) {
-        if (Object.hasOwnProperty.call(itemSchema, check)) {
-          const checkVal = itemSchema[check];
-          switch (check) {
-            case "not":
-              if (value === checkVal) {
-                throw new Error(`${key} ${msg}`);
-              }
-              break;
-            default:
-              break;
-          }
-        }
-      }
-    });
-  }
-  return true;
-}
-
 export {
   curUrl,
   curDate,

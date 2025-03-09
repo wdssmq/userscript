@@ -4,7 +4,6 @@ import {
   _log,
   $n,
   curUrl,
-  fnCheckObj,
 } from "./_base";
 import { http } from "./_http";
 import defForm from "./_defForm";
