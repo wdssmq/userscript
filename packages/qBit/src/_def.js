@@ -64,7 +64,7 @@ const gob = {
     if (isPartial) {
       gob.apiGetTrackers(hash, () => {
         const seedTrackers = gob.data.curTorrentTrackers;
-        seedTrackers.forEach(tracker => {
+        seedTrackers.forEach((tracker) => {
           if (tracker.url.includes(origUrl)) {
             const updatedUrl = tracker.url.replace(origUrl, newUrl);
             gob.http.post(url, { hash, origUrl: tracker.url, newUrl: updatedUrl });
