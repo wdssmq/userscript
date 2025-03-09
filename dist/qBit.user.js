@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」qBittorrent 管理脚本
 // @namespace    做最终做到的事，成为最终成为的人。
-// @version      1.0.5
+// @version      1.0.6
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
 // @license      MIT
@@ -75,11 +75,11 @@
       return new Promise((resolve, reject) => {
         const requestOptions = Object.assign({}, options);
 
-        requestOptions.onload = function (res) {
+        requestOptions.onload = function(res) {
           resolve(res);
         };
 
-        requestOptions.onerror = function (error) {
+        requestOptions.onerror = function(error) {
           reject(error);
         };
 
@@ -277,7 +277,7 @@
       if (isPartial) {
         gob.apiGetTrackers(hash, () => {
           const seedTrackers = gob.data.curTorrentTrackers;
-          seedTrackers.forEach(tracker => {
+          seedTrackers.forEach((tracker) => {
             if (tracker.url.includes(origUrl)) {
               const updatedUrl = tracker.url.replace(origUrl, newUrl);
               gob.http.post(url, { hash, origUrl: tracker.url, newUrl: updatedUrl });
