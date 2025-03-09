@@ -85,5 +85,4 @@ export {
   fnAfter,
   fnFindDom,
   fnElChange,
-  fnCheckObj,
 };
