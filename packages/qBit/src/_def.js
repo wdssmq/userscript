@@ -58,10 +58,22 @@ const gob = {
     }).finally(fn);
   },
   // 替换 Tracker: torrents/editTracker
-  apiEdtTracker(hash, origUrl, newUrl) {
+  apiEdtTracker(hash, origUrl, newUrl, isPartial = false) {
     _log("apiEdtTracker()\n", hash, origUrl, newUrl);
     const url = gob.apiUrl("torrents/editTracker");
-    gob.http.post(url, { hash, origUrl, newUrl });
+    if (isPartial) {
+      gob.apiGetTrackers(hash, () => {
+        const seedTrackers = gob.data.curTorrentTrackers;
+        seedTrackers.forEach(tracker => {
+          if (tracker.url.includes(origUrl)) {
+            const updatedUrl = tracker.url.replace(origUrl, newUrl);
+            gob.http.post(url, { hash, origUrl: tracker.url, newUrl: updatedUrl });
+          }
+        });
+      });
+    } else {
+      gob.http.post(url, { hash, origUrl, newUrl });
+    }
   },
   // 添加 Tracker: torrents/addTrackers
   apiAddTracker(hash, urls) {
@@ -201,19 +213,14 @@ document.addEventListener("click", function(event) {
       }
     }
 
-    gob.urlCheck.map(function(item) {
-      if (!item[1]) {
-        gob.upTips("btn", {
-          num: 0,
-          msg: `「${item[0]}」不符合要求`,
-        });
-        return;
-      }
-    });
-
     let isOk = gob.urlCheck.every(function(item) {
       return item[1];
     });
+
+    if (!isOk && gob.act === "replace") {
+      isOk = confirm("输入的 Tracker 未通过预检，是否尝试子串替换？");
+      formData.isPartial = isOk;
+    }
 
     if (gob.act === "remove" && formData.trackerUrl === "****") {
       isOk = confirm("继续将清空匹配任务的全部 Tracker");
@@ -221,6 +228,15 @@ document.addEventListener("click", function(event) {
     }
 
     if (!isOk) {
+      gob.urlCheck.map(function(item) {
+        if (!item[1]) {
+          gob.upTips("btn", {
+            num: 0,
+            msg: `「${item[0]}」不符合要求`,
+          });
+          return;
+        }
+      });
       return;
     }
 
@@ -240,7 +256,7 @@ document.addEventListener("click", function(event) {
       list.map(function(item) {
         switch (gob.act) {
           case "replace":
-            gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl);
+            gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl, formData.isPartial);
             break;
           case "add":
             gob.apiAddTracker(item.hash, formData.trackerUrl);
