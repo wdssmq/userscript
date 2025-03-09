@@ -273,7 +273,7 @@ document.addEventListener("click", function(event) {
       });
       gob.upTips("btn", {
         num: list.length,
-        msg: "操作成功",
+        msg: "操作完成",
       });
     });
     return;
