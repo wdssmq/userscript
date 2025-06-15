@@ -71,8 +71,9 @@ $n("#root").addEventListener("mouseup", function (event) {
   if ($target.tagName !== "H2") {
     return;
   }
-  // console.log($target,$target.innerText);
-  if ($target.innerText.indexOf("END OF FEED") > -1) {
+  // console.log($target, $target.innerText);
+  const curText = $target.innerText.trim().toUpperCase();
+  if (curText.indexOf("END OF FEED") > -1) {
     const listItems = fnNodeListToArray(gob.$$Stars);
     GM_setClipboard(fnMKShell(listItems, "feedly"));
     $target.innerText = "已复制到剪贴板";
