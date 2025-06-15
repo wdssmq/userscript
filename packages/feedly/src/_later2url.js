@@ -29,7 +29,7 @@ function fnMKShell(arrList, prefix = "") {
   /**
    * e {title:"", href:""}
    */
-  arrList.forEach(function (e, i) {
+  arrList.forEach(function(e, i) {
     const serial = i + 1;
     // _log(e);
 
@@ -64,7 +64,7 @@ function fnMKShell(arrList, prefix = "") {
 }
 
 // 星标文章导出为 *.url 文件
-$n("#root").addEventListener("mouseup", function (event) {
+$n("#root").addEventListener("mouseup", function(event) {
   gob.GetStarItems();
   const $target = event.target;
   // 判断是 h2 标签

@@ -1,7 +1,7 @@
 import { _log, _curUrl, $n, $na } from "./_base";
 // 拿回订阅源地址
 // 绑定监听事件到 div#box 上
-$n("#root").addEventListener("mouseup", function (event) {
+$n("#root").addEventListener("mouseup", function(event) {
   // 输出触发事件的元素
   // 根据内容判断是否执行相应操作
   const elText = event.target.innerHTML;
