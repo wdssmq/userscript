@@ -169,7 +169,7 @@
         url,
       };
       // 判断是否已经存在
-      const pickPost = gob.postList.find((item) => item.url === postInfo.url);
+      const pickPost = gob.postList.find(item => item.url === postInfo.url);
       if (pickPost.slug && pickPost.slug !== "") {
         const $meta = el.querySelector(".xlog-post-meta");
         // 添加 slug 到页面，并使用 data 属性标记
@@ -203,7 +203,7 @@
     if (!$slug) return;
     const slug = $slug.value;
 
-    const pickPost = gob.postList.find((item) => item.url === curUrl);
+    const pickPost = gob.postList.find(item => item.url === curUrl);
     if (!pickPost) return;
 
     if (pickPost.slug && pickPost.slug === slug) return;

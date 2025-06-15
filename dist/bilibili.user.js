@@ -94,7 +94,7 @@
   function fnCopy(eTrig, content, fnCB = () => { }) {
     // 判断 eTrig 是否为字符串
     const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
-    $eTrig.addEventListener("click", function (e) {
+    $eTrig.addEventListener("click", function(e) {
       GM_setClipboard(content);
       fnCB(e);
       this.style.color = "gray";
@@ -103,13 +103,13 @@
 
   // cookie 封装
   const ckeObj = {
-    setItem: function (key, value) {
+    setItem: function(key, value) {
       const Days = 137;
       const exp = new Date();
       exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
       document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
     },
-    getItem: function (key, def = "") {
+    getItem: function(key, def = "") {
       const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
       const arr = document.cookie.match(reg);
       if (arr) {
@@ -245,7 +245,7 @@
     /**
      * e {title:"", href:""}
      */
-    arrList.forEach(function (e, i) {
+    arrList.forEach(function(e, i) {
       const serial = i + 1;
       // _log(e);
 
@@ -279,18 +279,18 @@
   }
 
   // Ajax 封装
-  function fnGetAjax(callback = function () { }) {
+  function fnGetAjax(callback = function() { }) {
     $.ajax({
       url: "https://api.bilibili.com/x/v2/history/toview/web",
       type: "GET",
       xhrFields: {
         withCredentials: true, // 这里设置了withCredentials
       },
-      success: function (data) {
+      success: function(data) {
         // _log();
         callback(data.data.list);
       },
-      error: function (err) {
+      error: function(err) {
         console.error(err);
       },
     });
@@ -376,7 +376,7 @@
   })();
 
   // 导出稍后再看为 .lnk 文件
-  (function () {
+  (function() {
     // 跳转到标准播放页
     const urlMatch = /list\/watchlater\?bvid=(\w+)/.exec(location.href);
     if (urlMatch) {
@@ -386,7 +386,7 @@
     }
     if (/watchlater/.test(location.href)) {
       let tmpHTML = $("span.t").html();
-      fnGetAjax(function (list) {
+      fnGetAjax(function(list) {
         const arrRlt = [];
         list.forEach((item, index) => {
           arrRlt.push({
@@ -620,7 +620,7 @@
 
   document.addEventListener(
     "mouseover",
-    function (e) {
+    function(e) {
       // const $target = e.target;
       fnDelay(1000, () => {
         // bpx-player-container bpx-state-no-cursor

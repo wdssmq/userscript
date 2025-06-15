@@ -8,7 +8,7 @@ import { $, UM } from "./_base.js";
   const strTip = "<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>";
 
   // 绑定点击事件
-  $btnBad.css({ color: "#fff" }).click(function () {
+  $btnBad.css({ color: "#fff" }).click(function() {
     let um = UM.getEditor("message");
     let str = um.getContent();
     if (str.indexOf("#~~") > -1) {
@@ -27,7 +27,7 @@ import { $, UM } from "./_base.js";
   }
 
   // 解码
-  $("div.message").each(function () {
+  $("div.message").each(function() {
     let $secP = $(this).find("p:nth-child(2)");
     if ($secP.length == 0) {
       console.log("skip");
@@ -38,7 +38,7 @@ import { $, UM } from "./_base.js";
       return;
     }
     console.log(str);
-    str = str.replace(/#~~(.+)~~#/, function (a, b) {
+    str = str.replace(/#~~(.+)~~#/, function(a, b) {
       console.log(arguments);
       let strDeCode = LZString.decompressFromBase64(b);
       console.log(strDeCode);

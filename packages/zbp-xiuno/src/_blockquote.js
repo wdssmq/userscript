@@ -21,7 +21,7 @@ import { $, UM, _log } from "./_base.js";
   (() => {
     const $btn = $.eduibutton({
       icon: "blockquote",
-      click: function () {
+      click: function() {
         fnBlockQuote();
       },
       title: UM.getEditor("message").getLang("labelMap")["blockquote"] || "",
@@ -46,7 +46,7 @@ import { $, UM, _log } from "./_base.js";
   (() => {
     const $btn = $.eduibutton({
       icon: "auto-format",
-      click: function () {
+      click: function() {
         fnAutoFormat();
       },
       title: "自动排版",

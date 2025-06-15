@@ -147,7 +147,7 @@
     const strTip = "<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>";
 
     // 绑定点击事件
-    $btnBad.css({ color: "#fff" }).click(function () {
+    $btnBad.css({ color: "#fff" }).click(function() {
       let um = UM.getEditor("message");
       let str = um.getContent();
       if (str.indexOf("#~~") > -1) {
@@ -166,7 +166,7 @@
     }
 
     // 解码
-    $("div.message").each(function () {
+    $("div.message").each(function() {
       let $secP = $(this).find("p:nth-child(2)");
       if ($secP.length == 0) {
         console.log("skip");
@@ -177,7 +177,7 @@
         return;
       }
       console.log(str);
-      str = str.replace(/#~~(.+)~~#/, function (a, b) {
+      str = str.replace(/#~~(.+)~~#/, function(a, b) {
         console.log(arguments);
         let strDeCode = LZString.decompressFromBase64(b);
         console.log(strDeCode);
@@ -189,7 +189,7 @@
 
   // _pid.js | 楼层地址
   (() => {
-    $("li.media.post").each(function () {
+    $("li.media.post").each(function() {
       const $me = $(this);
       const pid = $me.data("pid");
       const $date = $me.find("span.date");
@@ -289,12 +289,12 @@
         lstLogs: [],
         lstCheck: null,
       },
-      init: function () {
+      init: function() {
         this.data = lsObj.getItem("gobDev", this.data);
         _log("gobDev init", this.data);
         this.ymlList = fnInitYML();
       },
-      checkUrl: function (url) {
+      checkUrl: function(url) {
         let rlt = null;
         this.data.lstLogs.forEach((log) => {
           if (log.url.indexOf(url) > -1) {
@@ -304,14 +304,14 @@
         });
         return rlt;
       },
-      clear: function () {
+      clear: function() {
         this.data.lstLogs = [];
         lsObj.setItem("gobDev", this.data);
       },
-      save: function () {
+      save: function() {
         lsObj.setItem("gobDev", this.data);
       },
-      update: function () {
+      update: function() {
         const curHour = fnTime2Hour();
         if (this.data.lstCheck === curHour && this.data.lstLogs.length > 0) {
           return;
@@ -320,7 +320,7 @@
         this.data.lstCheck = curHour;
         this.ajax();
       },
-      ajax: function () {
+      ajax: function() {
         const self = this;
         this.ymlList.forEach((yml) => {
           fnGetRequest(yml, (responseText, url) => {
@@ -356,7 +356,7 @@
 
     // 缓存清理按钮
     const $btnClear = $("<span class=\"small\"><a href=\"javascript:;\" title=\"清理缓存\" class=\"badge badge-warning\">清理缓存</a></span>");
-    $btnClear.on("click", function () {
+    $btnClear.on("click", function() {
       if (confirm("清理缓存？")) {
         _clearAct(1);
       }
@@ -395,7 +395,7 @@
 
     // 标题列表
     const $titleList = $("li.media .subject a");
-    $titleList.each(function () {
+    $titleList.each(function() {
       const $this = $(this);
       const href = $this.attr("href");
       const title = $this.text();
@@ -418,7 +418,7 @@
     _log("curLog", log);
 
     // 初始化
-    $("div.message").each(function () {
+    $("div.message").each(function() {
       if ($(this).attr("isfirst") == 1) {
         $(this).prepend(
           "<blockquote class=\"blockquote\"><pre class=\"pre-yml\"></pre></blockquote>",
@@ -501,7 +501,7 @@
     (() => {
       const $btn = $.eduibutton({
         icon: "blockquote",
-        click: function () {
+        click: function() {
           fnBlockQuote();
         },
         title: UM.getEditor("message").getLang("labelMap")["blockquote"] || "",
@@ -526,7 +526,7 @@
     (() => {
       const $btn = $.eduibutton({
         icon: "auto-format",
-        click: function () {
+        click: function() {
           fnAutoFormat();
         },
         title: "自动排版",

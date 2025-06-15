@@ -21,7 +21,7 @@ const _getPostList = () => {
     slug: "",
     title: "",
     url: "",
-  }
+  };
 
   gob.saveFlag = false;
   $$postList.forEach((el) => {
@@ -37,7 +37,7 @@ const _getPostList = () => {
       url,
     };
     // 判断是否已经存在
-    const pickPost = gob.postList.find((item) => item.url === postInfo.url);
+    const pickPost = gob.postList.find(item => item.url === postInfo.url);
     if (pickPost.slug && pickPost.slug !== "") {
       const $meta = el.querySelector(".xlog-post-meta");
       // 添加 slug 到页面，并使用 data 属性标记
@@ -59,7 +59,7 @@ const _getPostList = () => {
   if (gob.saveFlag) {
     gob.save();
   }
-}
+};
 
 // 更新具体文章信息
 const _updatePostInfo = () => {
@@ -71,7 +71,7 @@ const _updatePostInfo = () => {
   if (!$slug) return;
   const slug = $slug.value;
 
-  const pickPost = gob.postList.find((item) => item.url === curUrl);
+  const pickPost = gob.postList.find(item => item.url === curUrl);
   if (!pickPost) return;
 
   if (pickPost.slug && pickPost.slug === slug) return;
@@ -80,7 +80,7 @@ const _updatePostInfo = () => {
   gob.save();
   _log("pickPost", pickPost);
 
-}
+};
 
 // 初始化
 
@@ -90,6 +90,6 @@ const _init = () => {
     _getPostList();
     _updatePostInfo();
   });
-}
+};
 
 _init();

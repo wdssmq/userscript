@@ -90,12 +90,12 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
       lstLogs: [],
       lstCheck: null,
     },
-    init: function () {
+    init: function() {
       this.data = lsObj.getItem("gobDev", this.data);
       _log("gobDev init", this.data);
       this.ymlList = fnInitYML();
     },
-    checkUrl: function (url) {
+    checkUrl: function(url) {
       let rlt = null;
       this.data.lstLogs.forEach((log) => {
         if (log.url.indexOf(url) > -1) {
@@ -105,14 +105,14 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
       });
       return rlt;
     },
-    clear: function () {
+    clear: function() {
       this.data.lstLogs = [];
       lsObj.setItem("gobDev", this.data);
     },
-    save: function () {
+    save: function() {
       lsObj.setItem("gobDev", this.data);
     },
-    update: function () {
+    update: function() {
       const curHour = fnTime2Hour();
       if (this.data.lstCheck === curHour && this.data.lstLogs.length > 0) {
         return;
@@ -121,7 +121,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
       this.data.lstCheck = curHour;
       this.ajax();
     },
-    ajax: function () {
+    ajax: function() {
       const self = this;
       this.ymlList.forEach((yml) => {
         fnGetRequest(yml, (responseText, url) => {
@@ -157,7 +157,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
 
   // 缓存清理按钮
   const $btnClear = $("<span class=\"small\"><a href=\"javascript:;\" title=\"清理缓存\" class=\"badge badge-warning\">清理缓存</a></span>");
-  $btnClear.on("click", function () {
+  $btnClear.on("click", function() {
     if (confirm("清理缓存？")) {
       _clearAct(1);
     }
@@ -196,7 +196,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
 
   // 标题列表
   const $titleList = $("li.media .subject a");
-  $titleList.each(function () {
+  $titleList.each(function() {
     const $this = $(this);
     const href = $this.attr("href");
     const title = $this.text();
@@ -219,7 +219,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
   _log("curLog", log);
 
   // 初始化
-  $("div.message").each(function () {
+  $("div.message").each(function() {
     if ($(this).attr("isfirst") == 1) {
       $(this).prepend(
         "<blockquote class=\"blockquote\"><pre class=\"pre-yml\"></pre></blockquote>",

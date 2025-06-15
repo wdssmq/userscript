@@ -67,7 +67,7 @@ const fnLogSigned = () => {
         });
       }
     });
-  }
+  };
 
   // 判断是否与签到
   const isSigned = () => {
@@ -78,7 +78,7 @@ const fnLogSigned = () => {
       return true;
     }
     return false;
-  }
+  };
 
   // 记录签到到 ls
   const logSigned = () => {

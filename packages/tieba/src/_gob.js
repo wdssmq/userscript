@@ -84,7 +84,7 @@ gob.getCurForumName = () => {
   if ($forumName) {
     gob.当前吧名 = $forumName.innerText;
   }
-}
+};
 
 export {
   lsObj,

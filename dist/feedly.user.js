@@ -500,7 +500,7 @@
     /**
      * e {title:"", href:""}
      */
-    arrList.forEach(function (e, i) {
+    arrList.forEach(function(e, i) {
       const serial = i + 1;
       // _log(e);
 
@@ -535,15 +535,16 @@
   }
 
   // 星标文章导出为 *.url 文件
-  $n("#root").addEventListener("mouseup", function (event) {
+  $n("#root").addEventListener("mouseup", function(event) {
     gob.GetStarItems();
     const $target = event.target;
     // 判断是 h2 标签
     if ($target.tagName !== "H2") {
       return;
     }
-    // console.log($target,$target.innerText);
-    if ($target.innerText.indexOf("END OF FEED") > -1) {
+    // console.log($target, $target.innerText);
+    const curText = $target.innerText.trim().toUpperCase();
+    if (curText.indexOf("END OF FEED") > -1) {
       const listItems = fnNodeListToArray(gob.$$Stars);
       GM_setClipboard(fnMKShell(listItems, "feedly"));
       $target.innerText = "已复制到剪贴板";
@@ -552,7 +553,7 @@
 
   // 拿回订阅源地址
   // 绑定监听事件到 div#box 上
-  $n("#root").addEventListener("mouseup", function (event) {
+  $n("#root").addEventListener("mouseup", function(event) {
     // 输出触发事件的元素
     // 根据内容判断是否执行相应操作
     const elText = event.target.innerHTML;
