@@ -100,7 +100,7 @@ const fnDelay = (time, fnc = () => { }) => {
 
 document.addEventListener(
   "mouseover",
-  function (e) {
+  function(e) {
     // const $target = e.target;
     fnDelay(1000, () => {
       // bpx-player-container bpx-state-no-cursor

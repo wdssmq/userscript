@@ -25,7 +25,7 @@ function fnMKShell(arrList, prefix = "") {
   /**
    * e {title:"", href:""}
    */
-  arrList.forEach(function (e, i) {
+  arrList.forEach(function(e, i) {
     const serial = i + 1;
     // _log(e);
 
@@ -59,18 +59,18 @@ function fnMKShell(arrList, prefix = "") {
 }
 
 // Ajax 封装
-function fnGetAjax(callback = function () { }) {
+function fnGetAjax(callback = function() { }) {
   $.ajax({
     url: "https://api.bilibili.com/x/v2/history/toview/web",
     type: "GET",
     xhrFields: {
       withCredentials: true, // 这里设置了withCredentials
     },
-    success: function (data) {
+    success: function(data) {
       // _log();
       callback(data.data.list);
     },
-    error: function (err) {
+    error: function(err) {
       console.error(err);
     },
   });
@@ -156,7 +156,7 @@ function fnGetAjax(callback = function () { }) {
 })();
 
 // 导出稍后再看为 .lnk 文件
-(function () {
+(function() {
   // 跳转到标准播放页
   const urlMatch = /list\/watchlater\?bvid=(\w+)/.exec(location.href);
   if (urlMatch) {
@@ -166,7 +166,7 @@ function fnGetAjax(callback = function () { }) {
   }
   if (/watchlater/.test(location.href)) {
     let tmpHTML = $("span.t").html();
-    fnGetAjax(function (list) {
+    fnGetAjax(function(list) {
       const arrRlt = [];
       list.forEach((item, index) => {
         arrRlt.push({

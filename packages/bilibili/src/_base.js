@@ -73,7 +73,7 @@ const fnElChange = (el, fn = () => { }, onetime = true) => {
 function fnCopy(eTrig, content, fnCB = () => { }) {
   // 判断 eTrig 是否为字符串
   const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
-  $eTrig.addEventListener("click", function (e) {
+  $eTrig.addEventListener("click", function(e) {
     GM_setClipboard(content);
     fnCB(e);
     this.style.color = "gray";
@@ -82,13 +82,13 @@ function fnCopy(eTrig, content, fnCB = () => { }) {
 
 // cookie 封装
 const ckeObj = {
-  setItem: function (key, value) {
+  setItem: function(key, value) {
     const Days = 137;
     const exp = new Date();
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
     document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
   },
-  getItem: function (key, def = "") {
+  getItem: function(key, def = "") {
     const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
     const arr = document.cookie.match(reg);
     if (arr) {
