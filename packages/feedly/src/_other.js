@@ -5,6 +5,8 @@ import {
   fnElChange,
 } from "./_base.js";
 
+import { gob } from "./_gob";
+
 // 防止误点
 const fnStopSource = (e) => {
   const $target = e.target;
@@ -68,8 +70,9 @@ const fnItemTitle = ($e) => {
 };
 
 const fnItemTitleWrap = (e) => {
-  const $$list = $na("#feedlyPageFX .entry");
+  const $$list = gob.GetEntriesList();
   if (!$$list.length) {
+    _log("fnItemTitleWrap: No entries found");
     return;
   }
   // 遍历并查找 .EntryTitleLink
