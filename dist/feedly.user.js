@@ -186,6 +186,13 @@
     return $na(".StreamPage .entry.titleOnly");
   };
 
+  // 获取条目列表
+  gob.GetEntriesList = () => {
+    const $$entry = $na("article.entry.magazine, article.entry.titleOnly");
+    // _log("gob.GetEntriesList", $$entry);
+    return $$entry;
+  };
+
   // 输出日志，只输出一次
   gob.LogOnce = (key, value) => {
     if (gob.logHistory.includes(key)) {
@@ -745,8 +752,9 @@
   };
 
   const fnItemTitleWrap = (e) => {
-    const $$list = $na("#feedlyPageFX .entry");
+    const $$list = gob.GetEntriesList();
     if (!$$list.length) {
+      _log("fnItemTitleWrap: No entries found");
       return;
     }
     // 遍历并查找 .EntryTitleLink
