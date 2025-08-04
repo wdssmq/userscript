@@ -144,8 +144,8 @@ const strHtml = `
     「<a target="_blank" title="投喂支持" href="https://www.wdssmq.com/guestbook.html#h3-u6295u5582u652Fu6301" rel="nofollow">投喂支持</a>」\
     「<a target="_blank" title="QQ 群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ 群 - 我的咸鱼心</a>」\
     <p>注：
-      <span>替换时请使用完整地址；</span>\
-      <span>或者「删除」→填入「****」清空旧的后「添加」新的；</span>\
+      <span>「替换」时请使用完整地址，或者使用「子串替换」；</span>\
+      <span>特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</span>\
     </p>\
 </div>\
 `;
@@ -225,44 +225,15 @@ document.addEventListener("click", function(event) {
       return item[1];
     });
 
-    // 针对替换操作的细化逻辑
-    if (gob.act === "replace") {
-      if (isOk) {
-        // 所有 URL 都通过检查，正常替换
-        formData.isPartial = false;
-      } else {
-        // 检查是否有 origUrl 和 newUrl 的检查结果
-        const origUrlCheck = gob.urlCheck.find(item => item[0] === "origUrl");
-        const newUrlCheck = gob.urlCheck.find(item => item[0] === "newUrl");
-
-        if (origUrlCheck && newUrlCheck) {
-          const origUrlValid = origUrlCheck[1];
-          const newUrlValid = newUrlCheck[1];
-
-          if (!origUrlValid && !newUrlValid) {
-            // 两个 URL 都不通过检查，询问是否使用子串替换
-            isOk = confirm("原始 Tracker 和新 Tracker 都未通过预检，是否尝试子串替换？");
-            if (isOk) {
-              formData.isPartial = true;
-            } else {
-              gob.upTips("btn", {
-                msg: "取消操作",
-              });
-              return;
-            }
-          } else {
-            // 其中一个 URL 不通过检查
-            const invalidUrl = !origUrlValid ? "原始 Tracker" : "新 Tracker";
-            gob.upTips("btn", {
-              msg: `「${invalidUrl}」不符合标准格式要求`,
-            });
-            return;
-          }
-        } else {
-          gob.upTips("btn", {
-            msg: "理论上不会进入这个分支。。。",
-          });
-        }
+    if (gob.act === "partialReplace") {
+      const isOk2 = gob.urlCheck.every(function(item) {
+        return !item[1];
+      });
+      if (!isOk && !isOk2) {
+        gob.upTips("btn", {
+          msg: "子串替换模式下，请对应输入要替换的新旧文本",
+        });
+        return;
       }
     }
 
@@ -305,7 +276,10 @@ document.addEventListener("click", function(event) {
       list.map(function(item) {
         switch (gob.act) {
           case "replace":
-            gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl, formData.isPartial);
+            gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl, false);
+            break;
+          case "partialReplace":
+            gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl, true);
             break;
           case "add":
             gob.apiAddTracker(item.hash, formData.trackerUrl);

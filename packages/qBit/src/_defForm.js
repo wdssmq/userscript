@@ -19,6 +19,21 @@ class defForm {
         },
       ],
     },
+    // 子串替换
+    {
+      "name": "partialReplace",
+      "text": "子串替换",
+      "inputs": [
+        {
+          "text": "旧字符串",
+          "name": "origUrl",
+        },
+        {
+          "text": "新字符串",
+          "name": "newUrl",
+        },
+      ],
+    },
     // 添加
     {
       "name": "add",
@@ -52,6 +67,7 @@ class defForm {
   constructor() {
     this.$tab = $n(".act-tab");
     this.$body = $n(".act-body");
+    this.$tip = $n(".js-tip-btn");
 
     this.schemaForm.forEach((option) => {
       const { radioInput, label } = this.createRadioInput(option);
@@ -79,6 +95,19 @@ class defForm {
     const _this = this;
     radioInput.addEventListener("change", function() {
       if (this.checked) {
+        // 如果选择子串替换，弹出确认
+        if (this.value === "partialReplace") {
+          const confirmed = confirm("子串替换模式用于将 Tracker 中的某个子串替换为另一个子串，是否继续？");
+          if (!confirmed) {
+            // 用户取消，切换回替换模式
+            const replaceRadio = document.getElementById("replace");
+            if (replaceRadio) {
+              replaceRadio.checked = true;
+              _this.updateFormBody("replace");
+            }
+            return;
+          }
+        }
         _this.updateFormBody(this.value);
       }
     });
@@ -89,6 +118,8 @@ class defForm {
   updateFormBody(selectedName) {
     const selectedOption = this.schemaForm.find(option => option.name === selectedName);
     this.$body.innerHTML = ""; // Clear current form
+    this.$tip.innerHTML = `当前操作：${selectedOption.text}`;
+
 
     selectedOption.inputs.forEach((input) => {
       const inputField = document.createElement("input");
