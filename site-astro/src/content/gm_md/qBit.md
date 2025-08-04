@@ -2,7 +2,7 @@
 title: 「水水」qBittorrent 管理脚本
 description: 通过 WebUI 的 API 批量替换 Tracker
 pubDate: 2023-08-26 19:31:11
-updateDate: 2025-08-04 21:18:27
+updateDate: 2025-08-04 22:05:01
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/qBit.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/qBit.user.js?raw=true
