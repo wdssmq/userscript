@@ -102,7 +102,12 @@ const gob = {
         const tip = gob.data.tips[key];
         const $el = $n(`.js-tip-${key}`);
         const text = JSON.stringify(tip).replace(/(,|:)"/g, "$1 ").replace(/["{}]/g, "");
-        $el.innerText = `(${text})`;
+        if (text) {
+          $el.innerText = `(${text})`;
+        }
+        if (key === "btn") {
+          $el.style.color = "var(--color-text-red)";
+        }
       }
     }
   },
