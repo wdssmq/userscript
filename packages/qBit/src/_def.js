@@ -221,9 +221,45 @@ document.addEventListener("click", function(event) {
       return item[1];
     });
 
-    if (!isOk && gob.act === "replace") {
-      isOk = confirm("输入的 Tracker 未通过预检，是否尝试子串替换？");
-      formData.isPartial = isOk;
+    // 针对替换操作的细化逻辑
+    if (gob.act === "replace") {
+      if (isOk) {
+        // 所有 URL 都通过检查，正常替换
+        formData.isPartial = false;
+      } else {
+        // 检查是否有 origUrl 和 newUrl 的检查结果
+        const origUrlCheck = gob.urlCheck.find(item => item[0] === "origUrl");
+        const newUrlCheck = gob.urlCheck.find(item => item[0] === "newUrl");
+
+        if (origUrlCheck && newUrlCheck) {
+          const origUrlValid = origUrlCheck[1];
+          const newUrlValid = newUrlCheck[1];
+
+          if (!origUrlValid && !newUrlValid) {
+            // 两个 URL 都不通过检查，询问是否使用子串替换
+            isOk = confirm("原始 Tracker 和新 Tracker 都未通过预检，是否尝试子串替换？");
+            if (isOk) {
+              formData.isPartial = true;
+            } else {
+              gob.upTips("btn", {
+                msg: "取消操作",
+              });
+              return;
+            }
+          } else {
+            // 其中一个 URL 不通过检查
+            const invalidUrl = !origUrlValid ? "原始 Tracker" : "新 Tracker";
+            gob.upTips("btn", {
+              msg: `「${invalidUrl}」不符合标准格式要求`,
+            });
+            return;
+          }
+        } else {
+          gob.upTips("btn", {
+            msg: "理论上不会进入这个分支。。。",
+          });
+        }
+      }
     }
 
     if (gob.act === "remove" && formData.trackerUrl === "****") {
