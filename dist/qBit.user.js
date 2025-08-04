@@ -410,7 +410,6 @@
       // 判断分类
       if (!formData.category || formData.category === "全部" || formData.category === "未分类") {
         gob.upTips("btn", {
-          num: 0,
           msg: "「分类」字段错误",
         });
         return;
@@ -444,7 +443,6 @@
         gob.urlCheck.map(function(item) {
           if (!item[1]) {
             gob.upTips("btn", {
-              num: 0,
               msg: `「${item[0]}」不符合要求`,
             });
             return;
@@ -466,6 +464,12 @@
       gob.apiTorrents(formData.category, () => {
         const list = gob.data.listTorrent;
         _log("apiTorrents()\n", list);
+        if (list.length === 0) {
+          gob.upTips("btn", {
+            msg: "没有符合条件的种子，请确认分类存在且添加要修改的任务项；",
+          });
+          return;
+        }
         list.map(function(item) {
           switch (gob.act) {
             case "replace":
