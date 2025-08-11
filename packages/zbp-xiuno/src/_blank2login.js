@@ -8,14 +8,15 @@ import {
 (() => {
   const $body = $n("body");
   const defData = {
-    status: 0, // 用于记录状态
-    href: curHref,
+    status: null, // 用于记录状态
+    href: "",
   };
 
   // 更新 lsData 中的 status 状态
   const updateStatus = (status) => {
     const lsData = lsObj.getItem("xiuno_login", defData);
     lsData.status = status;
+    lsData.href = status === "未登录" ? curHref : "";
     lsObj.setItem("xiuno_login", lsData);
   };
 
@@ -24,11 +25,13 @@ import {
     // 读取 localStorage
     const lsData = lsObj.getItem("xiuno_login", defData);
     // 根据记录的状态判断是否跳转
-    if (lsData.status === 1) {
+    if (lsData.status === "未登录" && lsData.href) {
+      // 读取要跳转的地址
+      const href = lsData.href;
       // 更新状态
-      updateStatus(2);
+      updateStatus("已登录");
       // 跳转前的页面地址
-      location.href = lsData.href;
+      location.href = href;
     }
   };
 
@@ -41,11 +44,12 @@ import {
       return;
     }
     // 更新状态及 href 到 localStorage
-    updateStatus(1);
+    updateStatus("未登录");
     // 跳转登录页
     location.href = "/user-login.html";
   };
 
+  _log("检查登录状态");
   // 延时 3 秒检查
   setTimeout(checkLogin, 3000);
 })();
