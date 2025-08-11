@@ -2,7 +2,7 @@
 title: 「Z-Blog」论坛辅助
 description: 针对 Z-Blog 官方论坛的辅助脚本
 pubDate: 2024-04-05 12:16:40
-updateDate: 2025-08-11 11:01:58
+updateDate: 2025-08-11 11:07:20
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/zbp-xiuno.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/zbp-xiuno.user.js?raw=true
