@@ -33,11 +33,11 @@ const gm_name = "zbp-xiuno";
 
 const gm_require = [
   {
-    "url": "https://cdn.bootcdn.net/ajax/libs/lz-string/1.4.4/lz-string.min.js",
+    "url": "https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js",
     "func": "LZString",
   },
   {
-    "url": "https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
+    "url": "https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
     "func": "jsyaml",
   },
   {
