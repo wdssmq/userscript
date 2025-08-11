@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Z-Blog」论坛辅助
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.5
+// @version      1.0.6
 // @author       沉冰浮水
 // @description  针对 Z-Blog 官方论坛的辅助脚本
 // @license      MIT
