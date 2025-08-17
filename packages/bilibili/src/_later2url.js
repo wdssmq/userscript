@@ -158,7 +158,7 @@ function fnGetAjax(callback = function() { }) {
 // 导出稍后再看为 .lnk 文件
 (function() {
   // 跳转到标准播放页
-  const urlMatch = /list\/watchlater\?bvid=(\w+)/.exec(location.href);
+  const urlMatch = /list\/watchlater\/?\?bvid=(\w+)/.exec(location.href);
   if (urlMatch) {
     const bvid = urlMatch[1];
     location.href = `https://www.bilibili.com/video/${bvid}`;
