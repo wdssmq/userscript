@@ -10,7 +10,9 @@ import { http } from "./_http";
 
 _log("_later2url.js", "开始");
 
-const bolDebug = false;
+const gob = {
+  bolDebug: false,
+};
 
 // 构造 Bash Shell 脚本
 function fnMKShell(arrList, prefix = "") {
@@ -52,7 +54,7 @@ function fnMKShell(arrList, prefix = "") {
     strRlt += "\n";
   });
 
-  if (!bolDebug) {
+  if (!gob.bolDebug) {
     strRlt += "exit\n\n";
   }
 
