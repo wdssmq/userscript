@@ -25,6 +25,7 @@ const gm_banner = `
 // @grant        GM_setClipboard
 // @grant        GM_notification
 // @grant        GM.openInTab
+// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 /* jshint esversion: 6 */
