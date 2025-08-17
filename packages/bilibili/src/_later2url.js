@@ -12,6 +12,8 @@ _log("_later2url.js", "开始");
 
 const gob = {
   bolDebug: false,
+  // 选择器
+  laterTitle: ".watchlater-list-title-left",
 };
 
 // 构造 Bash Shell 脚本
@@ -162,7 +164,7 @@ function fnGetAjax(callback = function() { }) {
 })();
 
 // 导出稍后再看为 .lnk 文件
-(function() {
+(() => {
   // 跳转到标准播放页
   const urlMatch = /list\/watchlater\/?\?bvid=(\w+)/.exec(location.href);
   if (urlMatch) {
@@ -170,8 +172,10 @@ function fnGetAjax(callback = function() { }) {
     location.href = `https://www.bilibili.com/video/${bvid}`;
     return;
   }
-  if (/watchlater/.test(location.href)) {
-    let tmpHTML = $("span.t").html();
+  // 如果匹配为 /watchlater/list
+  if (location.href.includes("/watchlater/list")) {
+
+    let tmpHTML = $n(gob.laterTitle).innerHTML;
     fnGetAjax(function(list) {
       const arrRlt = [];
       list.forEach((item, index) => {
@@ -183,15 +187,15 @@ function fnGetAjax(callback = function() { }) {
         // _log(item, index);
       });
       // _log("稍后再看", arrRlt.length);
-      tmpHTML = tmpHTML.replace(/0\//g, arrRlt.length + "/");
-      $("span.t").html(tmpHTML + "「点击这里复制 bash shell 命令」");
+      tmpHTML = tmpHTML.replace(/· 0/, "· " + arrRlt.length);
+      // $n(gob.laterTitle).innerHTML = tmpHTML + "「点击这里复制 bash shell 命令」";
       let appCon = "「已复制」";
       if (arrRlt.length > 37) {
         appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
       }
       // 注册点击复制
-      fnCopy("span.t", fnMKShell(arrRlt, "bilibili"), () => {
-        $("span.t").html(tmpHTML + appCon);
+      fnCopy(gob.laterTitle, fnMKShell(arrRlt, "bilibili"), () => {
+        $n(gob.laterTitle).innerHTML = tmpHTML + appCon;
       });
     });
     return false;
