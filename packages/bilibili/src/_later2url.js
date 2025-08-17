@@ -6,6 +6,7 @@ import {
   $n,
   $na,
 } from "./_base";
+import { http } from "./_http";
 
 _log("_later2url.js", "开始");
 
@@ -60,20 +61,23 @@ function fnMKShell(arrList, prefix = "") {
 
 // Ajax 封装
 function fnGetAjax(callback = function() { }) {
-  $.ajax({
-    url: "https://api.bilibili.com/x/v2/history/toview/web",
-    type: "GET",
-    xhrFields: {
-      withCredentials: true, // 这里设置了withCredentials
-    },
-    success: function(data) {
-      // _log();
+  http.get("https://api.bilibili.com/x/v2/history/toview/web", {
+    // 可根据需要添加 headers
+    // "Content-Type": "application/json"
+  })
+    .then(res => {
+      let data;
+      try {
+        data = typeof res.response === "string" ? JSON.parse(res.response) : res.response;
+      } catch (e) {
+        console.error("解析响应失败", e);
+        return;
+      }
       callback(data.data.list);
-    },
-    error: function(err) {
+    })
+    .catch(err => {
       console.error(err);
-    },
-  });
+    });
 }
 
 // 分 p 链接获取
