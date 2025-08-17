@@ -24,6 +24,7 @@
 // @grant        GM_setClipboard
 // @grant        GM_notification
 // @grant        GM.openInTab
+// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 /* jshint esversion: 6 */
@@ -229,7 +230,63 @@
     fnCheckByDOM();
   })();
 
+  class HttpRequest {
+    constructor() {
+      if (typeof GM_xmlhttpRequest === "undefined") {
+        throw new Error("GM_xmlhttpRequest is not defined");
+      }
+    }
+
+    get(url, headers = {}) {
+      return this.request({
+        method: "GET",
+        url,
+        headers,
+      });
+    }
+
+    post(url, data = {}, headers = {}) {
+      const formData = new FormData();
+
+      for (const key in data) {
+        formData.append(key, data[key]);
+      }
+
+      return this.request({
+        method: "POST",
+        url,
+        data: formData,
+        headers,
+      });
+    }
+
+    request(options) {
+      return new Promise((resolve, reject) => {
+        const requestOptions = Object.assign({}, options);
+
+        requestOptions.onload = function(res) {
+          resolve(res);
+        };
+
+        requestOptions.onerror = function(error) {
+          reject(error);
+        };
+
+        GM_xmlhttpRequest(requestOptions);
+      });
+    }
+  }
+
+  // 导出实例对象
+  const http = new HttpRequest();
+
   _log("_later2url.js", "开始");
+
+  const gob$1 = {
+    bolDebug: false,
+    // 选择器
+    laterTitle: ".watchlater-list-title-left",
+  };
 
   // 构造 Bash Shell 脚本
   function fnMKShell(arrList, prefix = "") {
@@ -280,20 +337,23 @@
 
   // Ajax 封装
   function fnGetAjax(callback = function() { }) {
-    $.ajax({
-      url: "https://api.bilibili.com/x/v2/history/toview/web",
-      type: "GET",
-      xhrFields: {
-        withCredentials: true, // 这里设置了withCredentials
-      },
-      success: function(data) {
-        // _log();
+    http.get("https://api.bilibili.com/x/v2/history/toview/web", {
+      // 可根据需要添加 headers
+      // "Content-Type": "application/json"
+    })
+      .then((res) => {
+        let data;
+        try {
+          data = typeof res.response === "string" ? JSON.parse(res.response) : res.response;
+        } catch (e) {
+          console.error("解析响应失败", e);
+          return;
+        }
         callback(data.data.list);
-      },
-      error: function(err) {
+      })
+      .catch((err) => {
         console.error(err);
-      },
-    });
+      });
   }
 
   // 分 p 链接获取
@@ -376,16 +436,18 @@
   })();
 
   // 导出稍后再看为 .lnk 文件
-  (function() {
+  (() => {
     // 跳转到标准播放页
-    const urlMatch = /list\/watchlater\?bvid=(\w+)/.exec(location.href);
+    const urlMatch = /list\/watchlater\/?\?bvid=(\w+)/.exec(location.href);
     if (urlMatch) {
       const bvid = urlMatch[1];
       location.href = `https://www.bilibili.com/video/${bvid}`;
       return;
     }
-    if (/watchlater/.test(location.href)) {
-      let tmpHTML = $("span.t").html();
+    // 如果匹配为 /watchlater/list
+    if (location.href.includes("/watchlater/list")) {
+
+      let tmpHTML = $n(gob$1.laterTitle).innerHTML;
       fnGetAjax(function(list) {
         const arrRlt = [];
         list.forEach((item, index) => {
@@ -397,15 +459,15 @@
           // _log(item, index);
         });
         // _log("稍后再看", arrRlt.length);
-        tmpHTML = tmpHTML.replace(/0\//g, arrRlt.length + "/");
-        $("span.t").html(tmpHTML + "「点击这里复制 bash shell 命令」");
+        tmpHTML = tmpHTML.replace(/· 0/, "· " + arrRlt.length);
+        // $n(gob.laterTitle).innerHTML = tmpHTML + "「点击这里复制 bash shell 命令」";
         let appCon = "「已复制」";
         if (arrRlt.length > 37) {
           appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
         }
         // 注册点击复制
-        fnCopy("span.t", fnMKShell(arrRlt, "bilibili"), () => {
-          $("span.t").html(tmpHTML + appCon);
+        fnCopy(gob$1.laterTitle, fnMKShell(arrRlt, "bilibili"), () => {
+          $n(gob$1.laterTitle).innerHTML = tmpHTML + appCon;
         });
       });
       return false;

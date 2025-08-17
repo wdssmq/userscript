@@ -69,7 +69,7 @@ function fnGetAjax(callback = function() { }) {
     // 可根据需要添加 headers
     // "Content-Type": "application/json"
   })
-    .then(res => {
+    .then((res) => {
       let data;
       try {
         data = typeof res.response === "string" ? JSON.parse(res.response) : res.response;
@@ -79,7 +79,7 @@ function fnGetAjax(callback = function() { }) {
       }
       callback(data.data.list);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
     });
 }
