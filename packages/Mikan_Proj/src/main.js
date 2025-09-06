@@ -54,14 +54,3 @@ function fnAutoExpand() {
 }
 
 fnAutoExpand();
-
-
-// fnElChange($n(".central-container"),
-//   () => {
-//     fnMain();
-//   }
-// )
-
-// import _feedly from "./_feedly";
-
-// _feedly.regAction(fnEachNodeList, fnFilter, _filter);
