@@ -27,14 +27,32 @@ const _config = {
           "简日",
         ],
       },
+      {
+        name: "动漫国字幕组",
+        regex: [
+          "简体",
+          "简日",
+        ],
+      },
     ],
+    // 记录是否为第一次运行
+    firstRun: true,
   },
   optToggle: (opt, ret = false) => {
   },
   menuCommand: () => {
   },
+  save: () => {
+    GM_setValue("config", _config.data);
+  },
   load: () => {
     _config.data = GM_getValue("config", _config.dataDef);
+    // 初始化配置
+    if (_config.data.firstRun) {
+      _log("首次运行，初始化配置");
+      _config.data.firstRun = false;
+      _config.save();
+    }
     _config.menuCommand();
   },
 };
