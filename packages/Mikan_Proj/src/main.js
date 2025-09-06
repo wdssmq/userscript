@@ -51,7 +51,7 @@ function fnAutoExpand() {
   let clickCount = 0;
 
   // 判断每个按钮是否为 display: none
-  const isVisible = (el) => el.offsetParent !== null;
+  const isVisible = el => el.offsetParent !== null;
   fnEachNodeList($more, ($btn, i) => {
     if (isVisible($btn)) {
       $btn.click();
