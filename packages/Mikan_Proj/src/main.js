@@ -44,13 +44,28 @@ function fnMain() {
 
 // 自动展开更多
 function fnAutoExpand() {
-  const $listBtn = $na(".js-expand-episode");
-  fnEachNodeList($listBtn, ($btn, i) => {
-    $btn.click();
+  const $more = $na(".js-expand-episode");
+  const moreLen = $more.length;
+
+  // 定义一个计数，用于记录点击的按钮数量
+  let clickCount = 0;
+
+  // 判断每个按钮是否为 display: none
+  const isVisible = (el) => el.offsetParent !== null;
+  fnEachNodeList($more, ($btn, i) => {
+    if (isVisible($btn)) {
+      $btn.click();
+    } else {
+      clickCount++;
+    }
   });
-  setTimeout(() => {
+  if (clickCount === moreLen) {
     fnMain();
-  }, 3000);
+    return;
+  }
+  setTimeout(() => {
+    fnAutoExpand();
+  }, 2000);
 }
 
 fnAutoExpand();
