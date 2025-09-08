@@ -237,6 +237,13 @@ declare module 'astro:content' {
   collection: "gm_md";
   data: InferEntrySchema<"gm_md">
 } & { render(): Render[".md"] };
+"gesf-note.md": {
+	id: "gesf-note.md";
+  slug: "gesf-note";
+  body: string;
+  collection: "gm_md";
+  data: InferEntrySchema<"gm_md">
+} & { render(): Render[".md"] };
 "later-url.md": {
 	id: "later-url.md";
   slug: "later-url";
