@@ -1,8 +1,8 @@
 ---
-title: gesf-note
+title: 「水水」GesF-Note
 description: 收集各种作品信息发送至 GitHub Issues
 pubDate: 2025-09-08 17:00:58
-updateDate: 2025-09-08 17:00:58
+updateDate: 2025-09-08 17:31:43
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/gesf-note.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/gesf-note.user.js?raw=true

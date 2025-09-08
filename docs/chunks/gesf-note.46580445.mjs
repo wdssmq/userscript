@@ -1,5 +1,5 @@
 async function getMod() {
-						return import('./gesf-note.3ec09c16.mjs');
+						return import('./gesf-note.5ea1c610.mjs');
 					}
 					const collectedLinks = "@@ASTRO-LINKS@@";
 					const collectedStyles = "@@ASTRO-STYLES@@";
