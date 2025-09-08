@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         gesf-note
+// @name         「水水」GesF-Note
 // @namespace    com.wdssmq.gesf-note
 // @version      1.0.0
 // @author       沉冰浮水
@@ -51,8 +51,9 @@ subtree: true
       "firstRun": true,
       "lastIssue": {
         number: -1,
-        up: -1
-      }
+        updated_at: ""
+      },
+      up: -1
     },
     data: {},
     save: function() {

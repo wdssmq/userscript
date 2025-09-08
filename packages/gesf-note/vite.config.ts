@@ -8,6 +8,7 @@ export default defineConfig({
       entry: 'src/main.ts',
       userscript: {
         // icon: 'https://vitejs.dev/logo.svg',
+        name: '「水水」GesF-Note',
         author: '沉冰浮水',
         description: '收集各种作品信息发送至 GitHub Issues',
         match: ['https://www.bilibili.com/video/*'],

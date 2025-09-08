@@ -13,8 +13,9 @@ const _config = {
     "firstRun": true,
     "lastIssue": {
       number: -1,
-      up: -1,
-    }
+      updated_at: "",
+    },
+    up: -1,
   },
   data: {} as Record<string, any>,
   save: function() {
