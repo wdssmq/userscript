@@ -4,9 +4,9 @@ on:
     branches:
       - main
     paths:
-      - 'packages/**'
+      - "packages/**"
       # - 'dist/**'
-      - 'site-astro/**'
+      - "site-astro/**"
 jobs:
   def:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       # Install pnpm && Build Packages
       - name: Install pnpm && Build Packages
@@ -53,8 +53,8 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
-          cache: 'pipenv'
+          python-version: "3.10"
+          cache: pipenv
 
       # Install pipenv and dependencies
       - name: Install pipenv and dependencies
