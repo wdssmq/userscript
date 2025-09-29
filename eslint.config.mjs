@@ -9,9 +9,11 @@ export default antfu(
     },
 
     ignores: [
-      "site-astro/src/content/gm_md/*.md",
-      "packages_2308/**/*.{js,mjs,json}",
       ".eslintrc.js",
+      "packages_2308/**/*.{js,mjs,json}",
+      "docs/chunks/*.mjs",
+      "site-astro/src/content/gm_md/*.md",
+      "packages/**/README.md",
     ],
 
     rules: {
