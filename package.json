@@ -3,7 +3,8 @@
     "build:script": "pnpm -r --filter=./packages/* run build",
     "git:script": "git diff-index --quiet HEAD || (git commit -m \"build. dist/\" -a --no-verify)",
     "build": "npm run build:script && npm run git:script",
-    "lint": "eslint --ignore-path .gitignore --ext .js,.mjs . --fix"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "dependencies": {
     "@rollup/plugin-node-resolve": "^15.3.0",
@@ -15,7 +16,8 @@
     "rollup-plugin-serve": "^2.0.3"
   },
   "devDependencies": {
-    "eslint": "^8.57.1",
+    "@antfu/eslint-config": "^5.4.1",
+    "eslint": "^9.36.0",
     "open": "^9.1.0"
   }
 }
