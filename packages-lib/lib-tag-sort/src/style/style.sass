@@ -1,0 +1,51 @@
+#tags-sortable-container, #tags-sortable-container *
+    box-sizing: border-box
+
+#tags-sortable-container
+    $mz-li-base: 23px
+    $mz-li-padding: 12px
+    $mz-li-height: $mz-li-base + 2 * $mz-li-padding
+    margin: 12px
+    max-width: 600px
+
+    & textarea
+        width: 100%
+        height: 60px
+        box-sizing: border-box
+        padding: 6px
+
+    & ul
+        list-style: none
+        padding: 0
+        margin: 8px 0
+        border: 1px solid #ddd
+        min-height: 40px
+
+    & li
+        height: $mz-li-height
+        padding: $mz-li-padding 10px
+        border-bottom: 1px solid #eee
+        display: flex
+        align-items: center
+        gap: 8px
+        background: #fff
+        cursor: grab
+
+    & li.dragging
+        opacity: 0.5
+
+    & li .handle
+        width: 16px
+        height: 16px
+        background: #ccc
+        display: inline-block
+        border-radius: 2px
+        cursor: grab
+
+    & li:last-child
+        border-bottom: none
+
+    & .placeholder
+        height: $mz-li-height * 1.5
+        border: 2px dashed #bbb
+        margin: 4px 0
