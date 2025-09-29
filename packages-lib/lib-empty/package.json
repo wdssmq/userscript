@@ -2,7 +2,7 @@
     "name": "lib-empty",
     "version": "1.0.0",
     "description": "",
-    "main": "dist/lib-empty.js",
+    "main": "dist/lib-{{name}}.js",
     "type": "module",
     "extractCSS": true,
     "scripts": {

@@ -1,0 +1,13 @@
+{
+    "name": "packages-lib",
+    "type": "module",
+    "scripts": {
+        "plop": "cross-env NODE_OPTIONS='--import tsx' plop --plopfile=plopfile.ts"
+    },
+    "packageManager": "pnpm@10.12.1",
+    "devDependencies": {
+        "cross-env": "^10.0.0",
+        "plop": "^4.0.4",
+        "tsx": "^4.20.6"
+    }
+}
