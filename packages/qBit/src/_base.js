@@ -6,8 +6,12 @@ const curDate = new Date();
 
 // -------------------------------------
 
-function _curUrl() { return window.location.href }
-function _curDate() { return new Date() }
+function _curUrl() {
+  return window.location.href;
+}
+function _curDate() {
+  return new Date();
+}
 function _getDateStr(date = curDate) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");

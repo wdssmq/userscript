@@ -1,5 +1,7 @@
+import process from "node:process";
 import replace from "@rollup/plugin-replace";
 import open from "open";
+
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 

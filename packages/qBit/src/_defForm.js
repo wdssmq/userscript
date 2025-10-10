@@ -2,7 +2,7 @@ import {
   $n,
 } from "./_base";
 
-class defForm {
+class DefForm {
   schemaForm = [
     // 替换
     {
@@ -160,4 +160,4 @@ class defForm {
   }
 }
 
-export default defForm;
+export default DefForm;

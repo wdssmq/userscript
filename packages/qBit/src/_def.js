@@ -1,11 +1,11 @@
-/* global jQuery, __GM_api, MochaUI */
+/* global __GM_api, MochaUI */
 
 import {
   $n,
   _log,
   curUrl,
 } from "./_base";
-import defForm from "./_defForm";
+import DefForm from "./_defForm";
 import { http } from "./_http";
 
 if (typeof __GM_api !== "undefined") {
@@ -105,7 +105,7 @@ const gob = {
         const $el = $n(`.js-tip-${key}`);
         const text = JSON.stringify(tip).replace(/(,|:)"/g, "$1 ").replace(/["{}]/g, "");
         if (text) {
-          $el.innerText = `(${text})`;
+          $el.textContentd = `(${text})`;
         }
         if (key === "btn") {
           $el.style.color = "var(--color-text-red)";
@@ -154,7 +154,7 @@ const strHtml = `
 
 // js-modal 绑定点击事件
 $n(".js-modal").addEventListener("click", () => {
-  const modal = new MochaUI.Window({
+  const _modal = new MochaUI.Window({
     id: "js-modal",
     title: "批量替换 Tracker <span class=\"js-tip-tit\"></span>",
     loadMethod: "iframe",
@@ -168,6 +168,8 @@ $n(".js-modal").addEventListener("click", () => {
     width: 500,
     height: 250,
   });
+  // console.log(modal);
+
   const modalContent = $n("#js-modal_content");
   modalContent.innerHTML = strHtml;
   const modalContentWrapper = $n("#js-modal_contentWrapper");
@@ -179,7 +181,7 @@ $n(".js-modal").addEventListener("click", () => {
   });
 
   // 初始化表单
-  gob.formObj = new defForm();
+  gob.formObj = new DefForm();
 
   // debug
   // $n(".js-input[name=category]").value = "test";
@@ -193,7 +195,7 @@ $n(".js-modal").addEventListener("click", () => {
 
 function fnCheckUrl(name, url) {
   // 判断是否以 udp:// 或 http(s):// 开头
-  const regex = /^(udp|http(s)?):\/\//;
+  const regex = /^(?:udp|https?):\/\//;
   return [
     name,
     regex.test(url),
@@ -245,7 +247,7 @@ document.addEventListener("click", (event) => {
     }
 
     if (!isOk) {
-      gob.urlCheck.map((item) => {
+      gob.urlCheck.forEach((item) => {
         if (!item[1]) {
           gob.upTips("btn", {
             msg: `「${item[0]}」不符合要求`,
@@ -274,7 +276,7 @@ document.addEventListener("click", (event) => {
         });
         return;
       }
-      list.map((item) => {
+      list.forEach((item) => {
         switch (gob.act) {
           case "replace":
             gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl, false);
