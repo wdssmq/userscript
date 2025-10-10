@@ -6,53 +6,53 @@ class defForm {
   schemaForm = [
     // 替换
     {
-      "name": "replace",
-      "text": "替换",
-      "inputs": [
+      name: "replace",
+      text: "替换",
+      inputs: [
         {
-          "text": "旧 Tracker",
-          "name": "origUrl",
+          text: "旧 Tracker",
+          name: "origUrl",
         },
         {
-          "text": "新 Tracker",
-          "name": "newUrl",
+          text: "新 Tracker",
+          name: "newUrl",
         },
       ],
     },
     // 子串替换
     {
-      "name": "partialReplace",
-      "text": "子串替换",
-      "inputs": [
+      name: "partialReplace",
+      text: "子串替换",
+      inputs: [
         {
-          "text": "旧字符串",
-          "name": "origUrl",
+          text: "旧字符串",
+          name: "origUrl",
         },
         {
-          "text": "新字符串",
-          "name": "newUrl",
+          text: "新字符串",
+          name: "newUrl",
         },
       ],
     },
     // 添加
     {
-      "name": "add",
-      "text": "添加",
-      "inputs": [
+      name: "add",
+      text: "添加",
+      inputs: [
         {
-          "text": "添加 Tracker",
-          "name": "trackerUrl",
+          text: "添加 Tracker",
+          name: "trackerUrl",
         },
       ],
     },
     // 删除
     {
-      "name": "remove",
-      "text": "删除",
-      "inputs": [
+      name: "remove",
+      text: "删除",
+      inputs: [
         {
-          "text": "删除 Tracker，输入 **** 可清空所有 Tracker",
-          "name": "trackerUrl",
+          text: "删除 Tracker，输入 **** 可清空所有 Tracker",
+          name: "trackerUrl",
         },
       ],
     },
@@ -86,14 +86,15 @@ class defForm {
     radioInput.value = option.name;
     radioInput.dataset.text = option.text;
     // Default select "replace"
-    if (option.name === "replace") radioInput.checked = true;
+    if (option.name === "replace")
+      radioInput.checked = true;
 
     const label = document.createElement("label");
     label.htmlFor = option.name;
     label.textContent = option.text;
 
     const _this = this;
-    radioInput.addEventListener("change", function() {
+    radioInput.addEventListener("change", function () {
       if (this.checked) {
         // 如果选择子串替换，弹出确认
         if (this.value === "partialReplace") {
@@ -119,7 +120,6 @@ class defForm {
     const selectedOption = this.schemaForm.find(option => option.name === selectedName);
     this.$body.innerHTML = ""; // Clear current form
     this.$tip.innerHTML = `当前操作：${selectedOption.text}`;
-
 
     selectedOption.inputs.forEach((input) => {
       const inputField = document.createElement("input");

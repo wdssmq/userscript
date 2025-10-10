@@ -1,12 +1,12 @@
 /* global jQuery, __GM_api, MochaUI */
 
 import {
-  _log,
   $n,
+  _log,
   curUrl,
 } from "./_base";
-import { http } from "./_http";
 import defForm from "./_defForm";
+import { http } from "./_http";
 
 if (typeof __GM_api !== "undefined") {
   _log(__GM_api);
@@ -16,7 +16,7 @@ const gob = {
   data: {
     qbtVer: sessionStorage.qbtVersion,
     apiVer: "2.x",
-    apiBase: curUrl + "api/v2/",
+    apiBase: `${curUrl}api/v2/`,
     listTorrent: [],
     curTorrentTrackers: [],
     tips: {
@@ -34,7 +34,8 @@ const gob = {
     }
     if (type === "json") {
       return JSON.parse(res.response);
-    } else {
+    }
+    else {
       return res.response;
     }
   },
@@ -71,7 +72,8 @@ const gob = {
           }
         });
       });
-    } else {
+    }
+    else {
       gob.http.post(url, { hash, origUrl, newUrl });
     }
   },
@@ -151,7 +153,7 @@ const strHtml = `
 `;
 
 // js-modal 绑定点击事件
-$n(".js-modal").addEventListener("click", function() {
+$n(".js-modal").addEventListener("click", () => {
   const modal = new MochaUI.Window({
     id: "js-modal",
     title: "批量替换 Tracker <span class=\"js-tip-tit\"></span>",
@@ -189,16 +191,16 @@ $n(".js-modal").addEventListener("click", function() {
 // // 自动点击
 // $n(".js-modal").click();
 
-const fnCheckUrl = (name, url) => {
+function fnCheckUrl(name, url) {
   // 判断是否以 udp:// 或 http(s):// 开头
   const regex = /^(udp|http(s)?):\/\//;
   return [
     name,
     regex.test(url),
   ];
-};
+}
 
-document.addEventListener("click", function(event) {
+document.addEventListener("click", (event) => {
   if (event.target.classList.contains("btn-act")) {
     gob.act = gob.formObj.curSelect;
     gob.urlCheck = [];
@@ -214,19 +216,19 @@ document.addEventListener("click", function(event) {
     for (const key in formData) {
       if (Object.prototype.hasOwnProperty.call(formData, key)) {
         const value = formData[key];
-        if (key.indexOf("Url") > -1) {
+        if (key.includes("Url")) {
           // 判断是否符合要求
           gob.urlCheck.push(fnCheckUrl(key, value));
         }
       }
     }
 
-    let isOk = gob.urlCheck.every(function(item) {
+    let isOk = gob.urlCheck.every((item) => {
       return item[1];
     });
 
     if (gob.act === "partialReplace") {
-      const isOk2 = gob.urlCheck.every(function(item) {
+      const isOk2 = gob.urlCheck.every((item) => {
         return !item[1];
       });
       if (!isOk && !isOk2) {
@@ -243,12 +245,11 @@ document.addEventListener("click", function(event) {
     }
 
     if (!isOk) {
-      gob.urlCheck.map(function(item) {
+      gob.urlCheck.map((item) => {
         if (!item[1]) {
           gob.upTips("btn", {
             msg: `「${item[0]}」不符合要求`,
           });
-          return;
         }
       });
       return;
@@ -257,7 +258,7 @@ document.addEventListener("click", function(event) {
     const fnRemoveAll = (hash) => {
       gob.apiGetTrackers(hash, () => {
         const seedTrackers = gob.data.curTorrentTrackers;
-        const seedTrackersUrl = seedTrackers.map(function(item) {
+        const seedTrackersUrl = seedTrackers.map((item) => {
           return item.url;
         });
         gob.apiDelTracker(hash, seedTrackersUrl.join("|"));
@@ -273,7 +274,7 @@ document.addEventListener("click", function(event) {
         });
         return;
       }
-      list.map(function(item) {
+      list.map((item) => {
         switch (gob.act) {
           case "replace":
             gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl, false);
@@ -299,6 +300,5 @@ document.addEventListener("click", function(event) {
         msg: "操作完成",
       });
     });
-    return;
   }
 });
