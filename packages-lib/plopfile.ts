@@ -12,7 +12,7 @@ export default function(plop: NodePlopAPI) {
             {
                 type: 'addMany',
                 destination: 'lib-{{name}}',
-                templateFiles: 'lib-empty/**/*',
+                templateFiles: ['lib-empty/**/*', '!lib-empty/node_modules/**'],
                 base: 'lib-empty'
             },
             {
