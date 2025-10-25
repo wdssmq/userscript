@@ -45,7 +45,7 @@ const gob = {
   },
   // 获取种子列表: torrents/info?&category=test
   apiTorrents(category = "", fn = () => { }) {
-    const url = gob.apiUrl(`torrents/info?category=${category}`);
+    const url = gob.apiUrl("torrents/info" + (category ? `?category=${category}` : ""));
     gob.http.get(url).then((res) => {
       gob.data.listTorrent = gob.parseReq(res, "json");
     }).finally(fn);
@@ -208,7 +208,7 @@ document.addEventListener("click", (event) => {
     gob.urlCheck = [];
     const formData = gob.formObj.getFormData();
     // 判断分类
-    if (!formData.category || formData.category === "全部" || formData.category === "未分类") {
+    if (formData.category === "全部" || formData.category === "未分类") {
       gob.upTips("btn", {
         msg: "「分类」字段错误",
       });
