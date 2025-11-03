@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」qBittorrent 管理脚本
 // @namespace    做最终做到的事，成为最终成为的人。
-// @version      1.0.7
+// @version      1.0.8
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
 // @license      MIT
@@ -41,107 +41,57 @@
     return document.querySelector(e);
   }
 
-  class HttpRequest {
-    constructor() {
-      if (typeof GM_xmlhttpRequest === "undefined") {
-        throw new Error("GM_xmlhttpRequest is not defined");
-      }
-    }
-
-    get(url, headers = {}) {
-      return this.request({
-        method: "GET",
-        url,
-        headers,
-      });
-    }
-
-    post(url, data = {}, headers = {}) {
-      const formData = new FormData();
-
-      for (const key in data) {
-        formData.append(key, data[key]);
-      }
-
-      return this.request({
-        method: "POST",
-        url,
-        data: formData,
-        headers,
-      });
-    }
-
-    request(options) {
-      return new Promise((resolve, reject) => {
-        const requestOptions = Object.assign({}, options);
-
-        requestOptions.onload = function(res) {
-          resolve(res);
-        };
-
-        requestOptions.onerror = function(error) {
-          reject(error);
-        };
-
-        GM_xmlhttpRequest(requestOptions);
-      });
-    }
-  }
-
-  // 导出实例对象
-  const http = new HttpRequest();
-
-  class defForm {
+  class DefForm {
     schemaForm = [
       // 替换
       {
-        "name": "replace",
-        "text": "替换",
-        "inputs": [
+        name: "replace",
+        text: "替换",
+        inputs: [
           {
-            "text": "旧 Tracker",
-            "name": "origUrl",
+            text: "旧 Tracker",
+            name: "origUrl",
           },
           {
-            "text": "新 Tracker",
-            "name": "newUrl",
+            text: "新 Tracker",
+            name: "newUrl",
           },
         ],
       },
       // 子串替换
       {
-        "name": "partialReplace",
-        "text": "子串替换",
-        "inputs": [
+        name: "partialReplace",
+        text: "子串替换",
+        inputs: [
           {
-            "text": "旧字符串",
-            "name": "origUrl",
+            text: "旧字符串",
+            name: "origUrl",
           },
           {
-            "text": "新字符串",
-            "name": "newUrl",
+            text: "新字符串",
+            name: "newUrl",
           },
         ],
       },
       // 添加
       {
-        "name": "add",
-        "text": "添加",
-        "inputs": [
+        name: "add",
+        text: "添加",
+        inputs: [
           {
-            "text": "添加 Tracker",
-            "name": "trackerUrl",
+            text: "添加 Tracker",
+            name: "trackerUrl",
           },
         ],
       },
       // 删除
       {
-        "name": "remove",
-        "text": "删除",
-        "inputs": [
+        name: "remove",
+        text: "删除",
+        inputs: [
           {
-            "text": "删除 Tracker，输入 **** 可清空所有 Tracker",
-            "name": "trackerUrl",
+            text: "删除 Tracker，输入 **** 可清空所有 Tracker",
+            name: "trackerUrl",
           },
         ],
       },
@@ -175,14 +125,15 @@
       radioInput.value = option.name;
       radioInput.dataset.text = option.text;
       // Default select "replace"
-      if (option.name === "replace") radioInput.checked = true;
+      if (option.name === "replace")
+        radioInput.checked = true;
 
       const label = document.createElement("label");
       label.htmlFor = option.name;
       label.textContent = option.text;
 
       const _this = this;
-      radioInput.addEventListener("change", function() {
+      radioInput.addEventListener("change", function () {
         if (this.checked) {
           // 如果选择子串替换，弹出确认
           if (this.value === "partialReplace") {
@@ -209,7 +160,6 @@
       this.$body.innerHTML = ""; // Clear current form
       this.$tip.innerHTML = `当前操作：${selectedOption.text}`;
 
-
       selectedOption.inputs.forEach((input) => {
         const inputField = document.createElement("input");
         inputField.type = "text";
@@ -218,11 +168,9 @@
         inputField.classList.add("js-input");
         inputField.style = "width: 95%;";
 
-        const label = document.createElement("label");
-        // label.textContent = input.text;
-        label.appendChild(inputField);
-        this.$body.appendChild(label);
-        this.$body.appendChild(document.createElement("br"));
+        const p = document.createElement("p");
+        p.appendChild(inputField);
+        this.$body.appendChild(p);
       });
 
       const $submit = document.createElement("input");
@@ -244,13 +192,94 @@
           data[input.name] = $input.value.trim();
         }
       });
-      data.category = $n(".js-input[name=category]").value.trim();
+      data.filter = $n(".js-input[name=filter]").value.trim();
       return data;
     }
   }
 
-  /* global jQuery, __GM_api, MochaUI */
+  class HttpRequest {
+    constructor() {
+      if (typeof GM_xmlhttpRequest === "undefined") {
+        throw new TypeError("GM_xmlhttpRequest is not defined");
+      }
+    }
 
+    get(url, headers = {}) {
+      return this.request({
+        method: "GET",
+        url,
+        headers,
+      });
+    }
+
+    post(url, data = {}, headers = {}) {
+      const formData = new FormData();
+
+      for (const key in data) {
+        formData.append(key, data[key]);
+      }
+
+      return this.request({
+        method: "POST",
+        url,
+        data: formData,
+        headers,
+      });
+    }
+
+    request(options) {
+      return new Promise((resolve, reject) => {
+        const requestOptions = Object.assign({}, options);
+
+        requestOptions.onload = function (res) {
+          resolve(res);
+        };
+
+        requestOptions.onerror = function (error) {
+          reject(error);
+        };
+
+        GM_xmlhttpRequest(requestOptions);
+      });
+    }
+  }
+
+  // 导出实例对象
+  const http = new HttpRequest();
+
+  var tplEdt = "<div class=\"mz-edt\">\n  <div class=\"act-tab\" style=\"display: flex;\">操作模式：</div>\n  <hr>\n  <h2>「标签」或「分类」（区分大小写）: </h2>\n  <p>\n    <input class=\"js-input\" type=\"text\" name=\"filter\" style=\"width: 97%;\" placeholder=\"包含要修改项目的「标签」或「分类」，或新建一个\">\n  </p>\n  <h2>Tracker: <span class=\"js-tip-btn\"></span></h2>\n  <div class=\"act-body\"></div>\n  <p class=\"pb-less text-16\">「<a target=\"_blank\" title=\"投喂支持\" href=\"https://afdian.com/a/wdssmq\" rel=\"nofollow\">打钱给作者-爱发电</a>」\n    「<a target=\"_blank\" title=\"QQ 群 - 我的咸鱼心\" href=\"https://jq.qq.com/?_wv=1027&k=SRYaRV6T\" rel=\"nofollow\">QQ 群 - 我的咸鱼心</a>」\n  </p>\n  <hr>\n  <p class=\"pb-less p-bold\">选中要操作的 Torrent 任务（可多选），右键里「标签」或「分类」添加或指定，建议用「标签」；</p>\n  <p class=\"pb-less\">「替换」时请使用完整地址，或者使用「子串替换」；</p>\n  <p class=\"pb-less\">特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</p>\n</div>";
+
+  function styleInject(css, ref) {
+    if ( ref === void 0 ) ref = {};
+    var insertAt = ref.insertAt;
+
+    if (!css || typeof document === 'undefined') { return; }
+
+    var head = document.head || document.getElementsByTagName('head')[0];
+    var style = document.createElement('style');
+    style.type = 'text/css';
+
+    if (insertAt === 'top') {
+      if (head.firstChild) {
+        head.insertBefore(style, head.firstChild);
+      } else {
+        head.appendChild(style);
+      }
+    } else {
+      head.appendChild(style);
+    }
+
+    if (style.styleSheet) {
+      style.styleSheet.cssText = css;
+    } else {
+      style.appendChild(document.createTextNode(css));
+    }
+  }
+
+  var css_248z = ".mz-edt {\n  padding: 13px 23px;\n  font-size: 14px;\n  line-height: 20px\n}\n\n.mz-edt .text-16 {\n  font-size: 16px;\n  line-height: 24px\n}\n\n.mz-edt .p-bold {\n  font-weight: 700;\n  border-bottom: 1px solid currentColor;\n  margin-bottom: 4px;\n  padding-bottom: 0;\n}\n\n.mz-edt p.pb-less {\n  padding-bottom: 3px\n}";
+  styleInject(css_248z);
+
+  /* global __GM_api, MochaUI */
 
   if (typeof __GM_api !== "undefined") {
     _log(__GM_api);
@@ -260,7 +289,7 @@
     data: {
       qbtVer: sessionStorage.qbtVersion,
       apiVer: "2.x",
-      apiBase: curUrl + "api/v2/",
+      apiBase: `${curUrl}api/v2/`,
       listTorrent: [],
       curTorrentTrackers: [],
       tips: {
@@ -278,7 +307,8 @@
       }
       if (type === "json") {
         return JSON.parse(res.response);
-      } else {
+      }
+      else {
         return res.response;
       }
     },
@@ -286,12 +316,47 @@
     apiUrl(method = "app/webapiVersion") {
       return gob.data.apiBase + method;
     },
-    // 获取种子列表: torrents/info?&category=test
-    apiTorrents(category = "", fn = () => { }) {
-      const url = gob.apiUrl(`torrents/info?category=${category}`);
-      gob.http.get(url).then((res) => {
-        gob.data.listTorrent = gob.parseReq(res, "json");
-      }).finally(fn);
+    // 获取种子列表: torrents/info?tag=test 或 category=test
+    apiTorrents(filter = "", fn = () => { }) {
+      // category 查询
+      const tryCategory = () => {
+        const url = gob.apiUrl(`torrents/info?category=${filter}`);
+        gob.http.get(url).then((res) => {
+          gob.data.listTorrent = gob.parseReq(res, "json");
+          fn();
+        }).catch(() => {
+          gob.data.listTorrent = [];
+          fn();
+        });
+      };
+      // tag 查询
+      const tryTag = () => {
+        const url = gob.apiUrl(`torrents/info?tag=${filter}`);
+        gob.http.get(url).then((res) => {
+          const list = gob.parseReq(res, "json");
+          if (list.length > 0) {
+            gob.data.listTorrent = list;
+            fn();
+          }
+          else {
+            tryCategory();
+          }
+        }).catch(tryCategory);
+      };
+      if (filter) {
+        tryTag();
+      }
+      else {
+        // 如果为空，查询所有
+        const url = gob.apiUrl("torrents/info");
+        gob.http.get(url).then((res) => {
+          gob.data.listTorrent = gob.parseReq(res, "json");
+          fn();
+        }).catch(() => {
+          gob.data.listTorrent = [];
+          fn();
+        });
+      }
     },
     // 获取指定种子的 Trackers: torrents/trackers
     apiGetTrackers(hash, fn = () => { }) {
@@ -315,7 +380,8 @@
             }
           });
         });
-      } else {
+      }
+      else {
         gob.http.post(url, { hash, origUrl, newUrl });
       }
     },
@@ -347,7 +413,7 @@
           const $el = $n(`.js-tip-${key}`);
           const text = JSON.stringify(tip).replace(/(,|:)"/g, "$1 ").replace(/["{}]/g, "");
           if (text) {
-            $el.innerText = `(${text})`;
+            $el.textContent = `(${text})`;
           }
           if (key === "btn") {
             $el.style.color = "var(--color-text-red)";
@@ -376,42 +442,26 @@
     "<li><a class=\"js-modal\"><b>→批量替换 Tracker←</b></a></li>",
   );
 
-  // 构建编辑框
-  const strHtml = `
-<div style="padding:13px 23px;">\
-    <div class="act-tab" style="display: flex;">操作模式：</div>\
-    <hr>
-    <h2>分类: （不能是「全部」或「未分类」，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;" placeholder="包含要修改项目的分类或新建一个">\
-    <h2>Tracker: <span class="js-tip-btn"></span></h2>\
-    <div class="act-body"></div>\
-    <hr>
-    「<a target="_blank" title="投喂支持" href="https://www.wdssmq.com/guestbook.html#h3-u6295u5582u652Fu6301" rel="nofollow">投喂支持</a>」\
-    「<a target="_blank" title="QQ 群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ 群 - 我的咸鱼心</a>」\
-    <p>注：
-      <span>「替换」时请使用完整地址，或者使用「子串替换」；</span>\
-      <span>特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</span>\
-    </p>\
-</div>\
-`;
-
   // js-modal 绑定点击事件
-  $n(".js-modal").addEventListener("click", function() {
+  $n(".js-modal").addEventListener("click", () => {
     new MochaUI.Window({
       id: "js-modal",
       title: "批量替换 Tracker <span class=\"js-tip-tit\"></span>",
       loadMethod: "iframe",
       contentURL: "",
       scrollbars: true,
-      resizable: false,
+      resizable: true,
       maximizable: false,
       closable: true,
       paddingVertical: 0,
       paddingHorizontal: 0,
       width: 500,
-      height: 250,
+      height: 360,
     });
+    // console.log(modal);
+
     const modalContent = $n("#js-modal_content");
-    modalContent.innerHTML = strHtml;
+    modalContent.innerHTML = tplEdt;
     const modalContentWrapper = $n("#js-modal_contentWrapper");
     modalContentWrapper.style.height = "auto";
     gob.data.modalShow = true;
@@ -421,7 +471,7 @@
     });
 
     // 初始化表单
-    gob.formObj = new defForm();
+    gob.formObj = new DefForm();
 
     // debug
     // $n(".js-input[name=category]").value = "test";
@@ -430,27 +480,24 @@
     // $n(".js-input[name=matchSubstr]").click();
   });
 
-  // // 自动点击
-  // $n(".js-modal").click();
-
-  const fnCheckUrl = (name, url) => {
+  function fnCheckUrl(name, url) {
     // 判断是否以 udp:// 或 http(s):// 开头
-    const regex = /^(udp|http(s)?):\/\//;
+    const regex = /^(?:udp|https?):\/\//;
     return [
       name,
       regex.test(url),
     ];
-  };
+  }
 
-  document.addEventListener("click", function(event) {
+  document.addEventListener("click", (event) => {
     if (event.target.classList.contains("btn-act")) {
       gob.act = gob.formObj.curSelect;
       gob.urlCheck = [];
       const formData = gob.formObj.getFormData();
-      // 判断分类
-      if (!formData.category || formData.category === "全部" || formData.category === "未分类") {
+      // 判断筛选条件
+      if (!formData.filter || /全部|未分类|无标签/.test(formData.filter)) {
         gob.upTips("btn", {
-          msg: "「分类」字段错误",
+          msg: "「标签」或「分类」错误，请重新输入",
         });
         return;
       }
@@ -458,19 +505,19 @@
       for (const key in formData) {
         if (Object.prototype.hasOwnProperty.call(formData, key)) {
           const value = formData[key];
-          if (key.indexOf("Url") > -1) {
+          if (key.includes("Url")) {
             // 判断是否符合要求
             gob.urlCheck.push(fnCheckUrl(key, value));
           }
         }
       }
 
-      let isOk = gob.urlCheck.every(function(item) {
+      let isOk = gob.urlCheck.every((item) => {
         return item[1];
       });
 
       if (gob.act === "partialReplace") {
-        const isOk2 = gob.urlCheck.every(function(item) {
+        const isOk2 = gob.urlCheck.every((item) => {
           return !item[1];
         });
         if (!isOk && !isOk2) {
@@ -487,12 +534,11 @@
       }
 
       if (!isOk) {
-        gob.urlCheck.map(function(item) {
+        gob.urlCheck.forEach((item) => {
           if (!item[1]) {
             gob.upTips("btn", {
               msg: `「${item[0]}」不符合要求`,
             });
-            return;
           }
         });
         return;
@@ -501,14 +547,14 @@
       const fnRemoveAll = (hash) => {
         gob.apiGetTrackers(hash, () => {
           const seedTrackers = gob.data.curTorrentTrackers;
-          const seedTrackersUrl = seedTrackers.map(function(item) {
+          const seedTrackersUrl = seedTrackers.map((item) => {
             return item.url;
           });
           gob.apiDelTracker(hash, seedTrackersUrl.join("|"));
         });
       };
 
-      gob.apiTorrents(formData.category, () => {
+      gob.apiTorrents(formData.filter, () => {
         const list = gob.data.listTorrent;
         _log("apiTorrents()\n", list);
         if (list.length === 0) {
@@ -517,7 +563,7 @@
           });
           return;
         }
-        list.map(function(item) {
+        list.forEach((item) => {
           switch (gob.act) {
             case "replace":
               gob.apiEdtTracker(item.hash, formData.origUrl, formData.newUrl, false);
@@ -541,7 +587,6 @@
           msg: "操作完成",
         });
       });
-      return;
     }
   });
 
