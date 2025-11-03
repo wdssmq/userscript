@@ -6,6 +6,8 @@ import html from "rollup-plugin-html-string";
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 
+import postcss from "rollup-plugin-postcss";
+
 import { gm_banner, gm_name, gm_require } from "./src/__info.js";
 
 // console.log("typeof monkey：", typeof monkey);
@@ -43,6 +45,11 @@ const prodConfig = {
   },
   plugins: [
     html(),
+    postcss(),
+    replace({
+      "preventAssignment": true,
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+    }),
   ],
 };
 
@@ -55,7 +62,7 @@ const devConfig = {
     banner: "/* eslint-disable */\n",
   },
   plugins: [
-    html(),
+    ...prodConfig.plugins,
     monkey({
       listen: gobConfig.listen,
       onListen(web) {

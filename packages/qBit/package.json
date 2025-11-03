@@ -14,7 +14,8 @@
     "open": "^8.4.0",
     "rollup": "^3.28.1",
     "rollup-plugin-html-string": "^1.0.1",
-    "rollup-plugin-monkey": "^1.0.9"
+    "rollup-plugin-monkey": "^1.0.9",
+    "rollup-plugin-postcss": "^4.0.2"
   },
   "devDependencies": {
     "eslint": "^8.57.1"
