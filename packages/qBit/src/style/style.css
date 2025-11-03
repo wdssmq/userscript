@@ -1,0 +1,21 @@
+.mz-edt {
+  padding: 13px 23px;
+  font-size: 14px;
+  line-height: 20px
+}
+
+.mz-edt .text-16 {
+  font-size: 16px;
+  line-height: 24px
+}
+
+.mz-edt .p-bold {
+  font-weight: 700;
+  border-bottom: 1px solid currentColor;
+  margin-bottom: 4px;
+  padding-bottom: 0;
+}
+
+.mz-edt p.pb-less {
+  padding-bottom: 3px
+}

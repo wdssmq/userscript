@@ -129,11 +129,9 @@ class DefForm {
       inputField.classList.add("js-input");
       inputField.style = "width: 95%;";
 
-      const label = document.createElement("label");
-      // label.textContent = input.text;
-      label.appendChild(inputField);
-      this.$body.appendChild(label);
-      this.$body.appendChild(document.createElement("br"));
+      const p = document.createElement("p");
+      p.appendChild(inputField);
+      this.$body.appendChild(p);
     });
 
     const $submit = document.createElement("input");

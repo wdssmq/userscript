@@ -7,6 +7,8 @@ import {
 } from "./_base";
 import DefForm from "./_defForm";
 import { http } from "./_http";
+import tplEdt from "./tpl/edt.html";
+import "./style/style.css"
 
 if (typeof __GM_api !== "undefined") {
   _log(__GM_api);
@@ -167,24 +169,6 @@ $n("#desktopNavbar ul").insertAdjacentHTML(
   "<li><a class=\"js-modal\"><b>→批量替换 Tracker←</b></a></li>",
 );
 
-// 构建编辑框
-const strHtml = `
-<div style="padding:13px 23px;">\
-    <div class="act-tab" style="display: flex;">操作模式：</div>\
-    <hr>
-    <h2>「标签」或「分类」: （区分大小写）<h2><input class="js-input" type="text" name="filter" style="width: 97%;" placeholder="包含要修改项目的「标签」或「分类」，或新建一个">\
-    <h2>Tracker: <span class="js-tip-btn"></span></h2>\
-    <div class="act-body"></div>\
-    <hr>
-    「<a target="_blank" title="投喂支持" href="https://www.wdssmq.com/guestbook.html#h3-u6295u5582u652Fu6301" rel="nofollow">投喂支持</a>」\
-    「<a target="_blank" title="QQ 群 - 我的咸鱼心" href="https://jq.qq.com/?_wv=1027&k=SRYaRV6T" rel="nofollow">QQ 群 - 我的咸鱼心</a>」\
-    <p>注：
-      <span>「替换」时请使用完整地址，或者使用「子串替换」；</span>\
-      <span>特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</span>\
-    </p>\
-</div>\
-`;
-
 // js-modal 绑定点击事件
 $n(".js-modal").addEventListener("click", () => {
   const _modal = new MochaUI.Window({
@@ -193,18 +177,18 @@ $n(".js-modal").addEventListener("click", () => {
     loadMethod: "iframe",
     contentURL: "",
     scrollbars: true,
-    resizable: false,
+    resizable: true,
     maximizable: false,
     closable: true,
     paddingVertical: 0,
     paddingHorizontal: 0,
     width: 500,
-    height: 250,
+    height: 360,
   });
   // console.log(modal);
 
   const modalContent = $n("#js-modal_content");
-  modalContent.innerHTML = strHtml;
+  modalContent.innerHTML = tplEdt;
   const modalContentWrapper = $n("#js-modal_contentWrapper");
   modalContentWrapper.style.height = "auto";
   gob.data.modalShow = true;
@@ -223,8 +207,12 @@ $n(".js-modal").addEventListener("click", () => {
   // $n(".js-input[name=matchSubstr]").click();
 });
 
-// // 自动点击
-// $n(".js-modal").click();
+// 自动点击
+if (process.env.NODE_ENV === "dev") {
+  setTimeout(() => {
+    $n(".js-modal").click();
+  }, 1500);
+}
 
 function fnCheckUrl(name, url) {
   // 判断是否以 udp:// 或 http(s):// 开头
@@ -240,10 +228,10 @@ document.addEventListener("click", (event) => {
     gob.act = gob.formObj.curSelect;
     gob.urlCheck = [];
     const formData = gob.formObj.getFormData();
-    // 判断分类或 tag
-    if (!formData.filter || formData.filter === "全部" || formData.filter === "未分类") {
+    // 判断筛选条件
+    if (!formData.filter || /全部|未分类|无标签/.test(formData.filter)) {
       gob.upTips("btn", {
-        msg: "「分类或 tag」字段错误",
+        msg: "「标签」或「分类」错误，请重新输入",
       });
       return;
     }
