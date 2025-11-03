@@ -105,7 +105,7 @@ const gob = {
         const $el = $n(`.js-tip-${key}`);
         const text = JSON.stringify(tip).replace(/(,|:)"/g, "$1 ").replace(/["{}]/g, "");
         if (text) {
-          $el.textContentd = `(${text})`;
+          $el.textContent = `(${text})`;
         }
         if (key === "btn") {
           $el.style.color = "var(--color-text-red)";
