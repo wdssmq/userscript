@@ -1,6 +1,7 @@
 import process from "node:process";
 import replace from "@rollup/plugin-replace";
 import open from "open";
+import html from "rollup-plugin-html-string";
 
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
@@ -40,7 +41,9 @@ const prodConfig = {
     format: "iife",
     banner: gobConfig.gm_banner,
   },
-  plugins: [],
+  plugins: [
+    html(),
+  ],
 };
 
 const devConfig = {
@@ -52,6 +55,7 @@ const devConfig = {
     banner: "/* eslint-disable */\n",
   },
   plugins: [
+    html(),
     monkey({
       listen: gobConfig.listen,
       onListen(web) {
