@@ -1,3 +1,6 @@
+packages:
+  - 'packages/*'
+
 onlyBuiltDependencies:
   - bufferutil
   - utf-8-validate
