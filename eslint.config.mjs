@@ -29,6 +29,7 @@ export default antfu(
       "no-unused-vars": "off", // 关闭原生的 no-unused-vars 规则，使用插件的版本
       "unused-imports/no-unused-vars": ["error", { vars: "all", varsIgnorePattern: "^_" }],
       "unused-imports/no-unused-imports": ["error", { vars: "all", varsIgnorePattern: "^_" }],
+      "node/prefer-global/process": ["off"],
     },
   },
 

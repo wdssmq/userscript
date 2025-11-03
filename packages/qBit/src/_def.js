@@ -8,7 +8,7 @@ import {
 import DefForm from "./_defForm";
 import { http } from "./_http";
 import tplEdt from "./tpl/edt.html";
-import "./style/style.css"
+import "./style/style.css";
 
 if (typeof __GM_api !== "undefined") {
   _log(__GM_api);
@@ -47,19 +47,6 @@ const gob = {
   },
   // 获取种子列表: torrents/info?tag=test 或 category=test
   apiTorrents(filter = "", fn = () => { }) {
-    // tag 查询
-    const tryTag = () => {
-      const url = gob.apiUrl(`torrents/info?tag=${filter}`);
-      gob.http.get(url).then((res) => {
-        const list = gob.parseReq(res, "json");
-        if (list.length > 0) {
-          gob.data.listTorrent = list;
-          fn();
-        } else {
-          tryCategory();
-        }
-      }).catch(tryCategory);
-    };
     // category 查询
     const tryCategory = () => {
       const url = gob.apiUrl(`torrents/info?category=${filter}`);
@@ -71,9 +58,24 @@ const gob = {
         fn();
       });
     };
+    // tag 查询
+    const tryTag = () => {
+      const url = gob.apiUrl(`torrents/info?tag=${filter}`);
+      gob.http.get(url).then((res) => {
+        const list = gob.parseReq(res, "json");
+        if (list.length > 0) {
+          gob.data.listTorrent = list;
+          fn();
+        }
+        else {
+          tryCategory();
+        }
+      }).catch(tryCategory);
+    };
     if (filter) {
       tryTag();
-    } else {
+    }
+    else {
       // 如果为空，查询所有
       const url = gob.apiUrl("torrents/info");
       gob.http.get(url).then((res) => {
