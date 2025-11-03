@@ -155,7 +155,7 @@ class DefForm {
         data[input.name] = $input.value.trim();
       }
     });
-    data.category = $n(".js-input[name=category]").value.trim();
+    data.filter = $n(".js-input[name=filter]").value.trim();
     return data;
   }
 }

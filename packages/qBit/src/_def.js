@@ -43,12 +43,45 @@ const gob = {
   apiUrl(method = "app/webapiVersion") {
     return gob.data.apiBase + method;
   },
-  // 获取种子列表: torrents/info?&category=test
-  apiTorrents(category = "", fn = () => { }) {
-    const url = gob.apiUrl(`torrents/info?category=${category}`);
-    gob.http.get(url).then((res) => {
-      gob.data.listTorrent = gob.parseReq(res, "json");
-    }).finally(fn);
+  // 获取种子列表: torrents/info?tag=test 或 category=test
+  apiTorrents(filter = "", fn = () => { }) {
+    // tag 查询
+    const tryTag = () => {
+      const url = gob.apiUrl(`torrents/info?tag=${filter}`);
+      gob.http.get(url).then((res) => {
+        const list = gob.parseReq(res, "json");
+        if (list.length > 0) {
+          gob.data.listTorrent = list;
+          fn();
+        } else {
+          tryCategory();
+        }
+      }).catch(tryCategory);
+    };
+    // category 查询
+    const tryCategory = () => {
+      const url = gob.apiUrl(`torrents/info?category=${filter}`);
+      gob.http.get(url).then((res) => {
+        gob.data.listTorrent = gob.parseReq(res, "json");
+        fn();
+      }).catch(() => {
+        gob.data.listTorrent = [];
+        fn();
+      });
+    };
+    if (filter) {
+      tryTag();
+    } else {
+      // 如果为空，查询所有
+      const url = gob.apiUrl("torrents/info");
+      gob.http.get(url).then((res) => {
+        gob.data.listTorrent = gob.parseReq(res, "json");
+        fn();
+      }).catch(() => {
+        gob.data.listTorrent = [];
+        fn();
+      });
+    }
   },
   // 获取指定种子的 Trackers: torrents/trackers
   apiGetTrackers(hash, fn = () => { }) {
@@ -139,7 +172,7 @@ const strHtml = `
 <div style="padding:13px 23px;">\
     <div class="act-tab" style="display: flex;">操作模式：</div>\
     <hr>
-    <h2>分类: （不能是「全部」或「未分类」，区分大小写）<h2><input class="js-input" type="text" name="category" style="width: 97%;" placeholder="包含要修改项目的分类或新建一个">\
+    <h2>「标签」或「分类」: （区分大小写）<h2><input class="js-input" type="text" name="filter" style="width: 97%;" placeholder="包含要修改项目的「标签」或「分类」，或新建一个">\
     <h2>Tracker: <span class="js-tip-btn"></span></h2>\
     <div class="act-body"></div>\
     <hr>
@@ -207,10 +240,10 @@ document.addEventListener("click", (event) => {
     gob.act = gob.formObj.curSelect;
     gob.urlCheck = [];
     const formData = gob.formObj.getFormData();
-    // 判断分类
-    if (!formData.category || formData.category === "全部" || formData.category === "未分类") {
+    // 判断分类或 tag
+    if (!formData.filter || formData.filter === "全部" || formData.filter === "未分类") {
       gob.upTips("btn", {
-        msg: "「分类」字段错误",
+        msg: "「分类或 tag」字段错误",
       });
       return;
     }
@@ -267,7 +300,7 @@ document.addEventListener("click", (event) => {
       });
     };
 
-    gob.apiTorrents(formData.category, () => {
+    gob.apiTorrents(formData.filter, () => {
       const list = gob.data.listTorrent;
       _log("apiTorrents()\n", list);
       if (list.length === 0) {
