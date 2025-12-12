@@ -4,26 +4,11 @@ import {
 
 import config from "./_config";
 
-// 添加批量复制磁力链接功能
-function fnAddBatchCopy($th, magnetList) {
-  // _log("fnAddBatchCopy", magnetList);
-  const $btn = document.createElement("button");
-  $btn.textContent = "批量复制";
-  $btn.addEventListener("click", () => {
-    const magnetStr = magnetList.join("\n");
-    GM_setClipboard(magnetStr);
-    $btn.textContent = "复制成功";
-    _log(`已复制 ${magnetStr}`);
-  }, false);
-  // appendChild 2 elements
-  $th.appendChild($btn);
-}
-
-// 过滤磁力链接中的 tr
-function fnRemoveTracker(magnet) {
-  const regex = /&tr=.+?(?=&|$)/g;
-  return magnet.replace(regex, "");
-}
+// // 过滤磁力链接中的 tr
+// function fnRemoveTracker(magnet) {
+//   const regex = /&tr=.+?(?=&|$)/g;
+//   return magnet.replace(regex, "");
+// }
 
 // 通过正则表达式筛选文本
 function fnPickByRegex(text, regex = null) {
@@ -37,48 +22,54 @@ function fnPickByRegex(text, regex = null) {
   return oRegex.test(text);
 }
 
-export default function (name, $table) {
-  const pickRules = config.data.pickRules;
-  // 数组中查找 name 对应的规则
-  const curRule = pickRules.find((rule) => {
-    return name === rule.name;
-  });
+// 绑定指定组的规则设置
+function setRuleBinding(groupName, $subscribed) {
+  if ($subscribed) {
+    // 添加一个文本框到 $subscribed 后边
+    const $input = document.createElement("input");
+    $input.type = "button";
+    $input.value = "点击设置规则";
+    $subscribed.insertAdjacentElement("afterend", $input);
+    $input.addEventListener("click", () => {
+      const curRule = config.getRule(groupName);
+      const userInput = prompt(`请输入发布组 "${groupName}" 的筛选规则（多个规则用 | 分隔）：`, curRule ? (Array.isArray(curRule.regex) ? curRule.regex.join("|") : curRule.regex) : "");
+      if (userInput !== null) {
+        const newRegex = userInput.split("|").map(item => item.trim());
+        console.log(userInput, newRegex);
+        config.updateRule(groupName, newRegex.length === 1 ? newRegex[0] : newRegex);
+      }
+    });
+  }
+}
+
+export default function (group) {
+  const { name, $table, $subscribed } = group;
+  // 获取当前规则
+  const curRule = config.getRule(name);
+  // 绑定规则设置按钮
+  setRuleBinding(name, $subscribed);
+
+  // _log("_pick() group: ", group);
   // _log("_pick() curRule: ", curRule);
   // _log("_pick() name: ", name);
-  // _log("_pick() -----\n","-----");
+  // _log("_pick() -----\n", "-----");
+  if (!curRule) {
+    return;
+  }
   const $listTr = $table.querySelectorAll("tr");
   // _log($listTr.length);
 
-  const magnetList = [];
-  // 记录第一个 th
-  let $firstTh = null;
-
   $listTr.forEach(($tr, _i) => {
     // _log("_pick()", i, $listTr.length);
-    if ($tr.textContent.includes("番组名")) {
-      $firstTh = $tr.querySelector("th");
-      // $lstTh = $curTh;
-      // _log("fnMain() $curTh\n", $curTh);
-      // return;
-    }
+
     const $curA = $tr.querySelector(".magnet-link-wrap");
-    const $curB = $tr.querySelector(".js-magnet");
     if (!$curA) {
       return;
     }
     const curText = $curA.textContent.toLowerCase();
-    // data-clipboard-text
-    let magnet = $curB.getAttribute("data-clipboard-text");
-    magnet = fnRemoveTracker(magnet);
-    // _log("_pick():", magnet);
-    if (fnPickByRegex(curText, curRule?.regex)) {
-      magnetList.push(magnet);
-    }
-    else {
+
+    if (!fnPickByRegex(curText, curRule.regex)) {
       $tr.remove();
     }
   });
-
-  // 添加批量复制按钮
-  fnAddBatchCopy($firstTh, magnetList);
 }

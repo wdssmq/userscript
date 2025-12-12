@@ -20,11 +20,14 @@ function fnGetGroupInfo() {
   const $listGroup = $na(".subgroup-text");
   fnEachNodeList($listGroup, ($group, _i) => {
     const $groupTitle = $group.querySelector("div.dropdown-toggle span") || $group.querySelector("a");
+    const $subscribed = $group.querySelector(".subscribed");
+
     const groupName = $groupTitle.textContent;
     const $groupTable = $group.nextElementSibling;
     arrGroup.push({
       name: groupName,
       $table: $groupTable,
+      $subscribed,
     });
   });
   return arrGroup;
@@ -35,7 +38,7 @@ function fnMain() {
   const arrGroup = fnGetGroupInfo();
   // _log("arrGroup", arrGroup);
   arrGroup.forEach((group) => {
-    _pick(group.name, group.$table);
+    _pick(group);
     // _log("group", group);
   });
 }

@@ -38,10 +38,21 @@ const _config = {
     // 记录是否为第一次运行
     firstRun: true,
   },
-  optToggle: (opt, ret = false) => {
-    console.log(opt, ret);
+  // 获取指定规则
+  getRule: (name) => {
+    return _config.data.pickRules.find(rule => rule.name === name);
   },
-  menuCommand: () => {
+  // 更新指定规则
+  updateRule: (name, regex) => {
+    // _log("updateRule() ", name, regex);
+    const index = _config.data.pickRules.findIndex(rule => rule.name === name);
+    if (index !== -1) {
+      _config.data.pickRules[index] = { name, regex };
+    }
+    else {
+      _config.data.pickRules.push({ name, regex });
+    }
+    _config.save();
   },
   save: () => {
     GM_setValue("config", _config.data);
@@ -54,7 +65,6 @@ const _config = {
       _config.data.firstRun = false;
       _config.save();
     }
-    _config.menuCommand();
   },
 };
 
