@@ -15,7 +15,7 @@ jobs:
     steps:
       # Checkout
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Get Post Changes
       - name: Get changed files
@@ -35,13 +35,13 @@ jobs:
 
       # Setup Node
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version: "18"
+          node-version: 24
 
       # Install pnpm && Build Packages
       - name: Install pnpm && Build Packages
-        if: steps.changed-files.outputs.packages_any_changed  == 'true'
+        # if: steps.changed-files.outputs.packages_any_changed  == 'true'
         run: |
           npm install -g pnpm
           pnpm install
