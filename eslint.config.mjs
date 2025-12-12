@@ -18,6 +18,7 @@ export default antfu(
 
     languageOptions: {
       globals: {
+        unsafeWindow: "readonly",
         GM_getValue: "readonly",
         GM_registerMenuCommand: "readonly",
         GM_setClipboard: "readonly",
