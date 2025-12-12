@@ -151,7 +151,7 @@
       [].forEach.call($cols, ($e, i) => {
         // 获取 $e 的类名
         $e.className;
-        const text = $e.innerText;
+        const text = $e.textContent;
         if (text === "") {
           $e.innerHTML = "<div><div class=\"list list-feed\"></div>";
           $el = $n(".list.list-feed");

@@ -86,7 +86,7 @@
     const $cdn_a = document.createElement("a");
     const cdnUrl = fnGetCDNUrl(curURL);
     $cdn_a.className = "node-item node-item-cdn";
-    $cdn_a.title = `${$cur_a.innerText}`;
+    $cdn_a.title = `${$cur_a.textContent}`;
     $cdn_a.href = cdnUrl;
     $cdn_a.setAttribute("target", "_blank");
     $cdn_a.innerHTML = "「cdn」";

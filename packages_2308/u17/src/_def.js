@@ -88,7 +88,7 @@ function fnGenInfo() {
     chapter = fnChapterFromTitle(name);
   }
   const curImgUrl = fnGenUrl();
-  const _pages = $n(".pagenum").innerText.trim().split("/"); // 页数
+  const _pages = $n(".pagenum").textContent.trim().split("/"); // 页数
   return { name, chapter, curImgUrl, curPage: _pages[0], totalPage: _pages[1] };
 }
 

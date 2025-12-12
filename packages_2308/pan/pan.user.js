@@ -94,7 +94,7 @@
     const $listInput = $na(".nd-share .u-input__inner");
     let url, pwd;
     let title = $n(".nd-share .u-dialog__title")
-      .innerText
+      .textContent
       .replace(/分享文件\(夹\):|文件上传|上传完成/g, "");
 
     if (gob.lstUrl === url) {

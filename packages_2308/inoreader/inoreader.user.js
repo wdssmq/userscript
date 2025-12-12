@@ -179,7 +179,7 @@
       // _log(e);
 
       // 移除不能用于文件名的字符
-      let title = e.title || e.innerText;
+      let title = e.title || e.textContent;
       title = title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
       title = title.replace(/["'\s]/g, "");
       // _log(title);
@@ -210,13 +210,13 @@
   // 星标文章导出为 *.url 文件
   $n("#reader_pane").addEventListener("mouseup", function (event) {
     const $target = event.target;
-    if ($target.tagName !== "DIV" || "已没有更多文章." !== $target.innerText) {
+    if ($target.tagName !== "DIV" || "已没有更多文章." !== $target.textContent) {
       return;
     }
     // _log("$target", $target);
     const listItems = fnNodeListToArray(gob.$$Stars);
     GM_setClipboard(fnMKShell(listItems, "inoreader"));
-    $target.innerText = "已复制到剪贴板";
+    $target.textContent = "已复制到剪贴板";
   }, false);
 
 })();

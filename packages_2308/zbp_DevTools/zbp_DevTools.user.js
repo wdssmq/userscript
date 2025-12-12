@@ -284,7 +284,7 @@
       const $input = $n(".ivu-input-number-input");
       const $amt = $n(".ivu-alert-message p b");
       if ($input === null) return;
-      $input.value = $amt.innerText;
+      $input.value = $amt.textContent;
       mutationObserver.disconnect();
     });
   })();
