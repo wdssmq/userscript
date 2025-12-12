@@ -1,13 +1,13 @@
 {
-  "version": "1.0.2",
   "type": "module",
+  "version": "1.0.2",
   "scripts": {
     "build": "rollup -c --environment NODE_ENV:prod",
     "dev": "rollup -c -w --environment NODE_ENV:dev",
-    "lint": "eslint --ext .js,.mjs . --fix",
     "clean:out": "rm -rf dev *.user.js",
     "clean:deps": "rm -rf node_modules",
-    "up:ver": "npm version patch && npm run build"
+    "up:ver": "npm version patch && npm run build",
+    "lint": "cd ../../ && eslint packages/Mikan_Proj --fix"
   },
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.5",
@@ -16,6 +16,6 @@
     "rollup-plugin-monkey": "^1.0.9"
   },
   "devDependencies": {
-    "eslint": "^8.57.1"
+    "baseline-browser-mapping": "^2.9.6"
   }
 }

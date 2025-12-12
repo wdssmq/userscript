@@ -1,8 +1,6 @@
 import {
-  _log,
-  $n,
   $na,
-  fnElChange,
+  _log,
 } from "./_base";
 
 import _pick from "./_pick";
@@ -20,9 +18,9 @@ function fnGetGroupInfo() {
   const arrGroup = [];
   // 获取全部 div.subgroup-text
   const $listGroup = $na(".subgroup-text");
-  fnEachNodeList($listGroup, ($group, i) => {
+  fnEachNodeList($listGroup, ($group, _i) => {
     const $groupTitle = $group.querySelector("div.dropdown-toggle span") || $group.querySelector("a");
-    const groupName = $groupTitle.innerText;
+    const groupName = $groupTitle.textContent;
     const $groupTable = $group.nextElementSibling;
     arrGroup.push({
       name: groupName,
@@ -52,10 +50,11 @@ function fnAutoExpand() {
 
   // 判断每个按钮是否为 display: none
   const isVisible = el => el.offsetParent !== null;
-  fnEachNodeList($more, ($btn, i) => {
+  fnEachNodeList($more, ($btn, _i) => {
     if (isVisible($btn)) {
       $btn.click();
-    } else {
+    }
+    else {
       clickCount++;
     }
   });

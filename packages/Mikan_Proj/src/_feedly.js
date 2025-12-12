@@ -1,4 +1,4 @@
-import { _curUrl, $na } from "./_base";
+import { $na, _curUrl } from "./_base";
 
 const _feedly = {
   data: {
@@ -13,18 +13,16 @@ const _feedly = {
   },
   menuCommand: (curUrl = "") => {
     if (curUrl.includes("feedly.com")) {
-      GM_registerMenuCommand("在 feedly 应用过滤",
-        () => {
-          _feedly.data.fnAction();
-        },
-      );
+      GM_registerMenuCommand("在 feedly 应用过滤", () => {
+        _feedly.data.fnAction();
+      });
     }
   },
   regAction: (fnEachNodeList, fnFilter, _filter) => {
     _feedly.data.fnAction = () => {
       const $list = _feedly.getList();
       fnEachNodeList($list, ($item) => {
-        const curText = $item.querySelector("a.entry__title").innerText.toLowerCase();
+        const curText = $item.querySelector("a.entry__title").textContent.toLowerCase();
         if (fnFilter(curText, _filter)) {
           $item.remove();
         }
@@ -41,4 +39,3 @@ const _feedly = {
 _feedly.init();
 
 export default _feedly;
-

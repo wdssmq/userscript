@@ -8,11 +8,11 @@ import config from "./_config";
 function fnAddBatchCopy($th, magnetList) {
   // _log("fnAddBatchCopy", magnetList);
   const $btn = document.createElement("button");
-  $btn.innerText = "批量复制";
+  $btn.textContent = "批量复制";
   $btn.addEventListener("click", () => {
     const magnetStr = magnetList.join("\n");
     GM_setClipboard(magnetStr);
-    $btn.innerText = "复制成功";
+    $btn.textContent = "复制成功";
     _log(`已复制 ${magnetStr}`);
   }, false);
   // appendChild 2 elements
@@ -37,12 +37,11 @@ function fnPickByRegex(text, regex = null) {
   return oRegex.test(text);
 }
 
-
-export default function(name, $table) {
+export default function (name, $table) {
   const pickRules = config.data.pickRules;
   // 数组中查找 name 对应的规则
   const curRule = pickRules.find((rule) => {
-    return name == rule.name;
+    return name === rule.name;
   });
   // _log("_pick() curRule: ", curRule);
   // _log("_pick() name: ", name);
@@ -54,9 +53,9 @@ export default function(name, $table) {
   // 记录第一个 th
   let $firstTh = null;
 
-  $listTr.forEach(($tr, i) => {
+  $listTr.forEach(($tr, _i) => {
     // _log("_pick()", i, $listTr.length);
-    if ($tr.innerText.includes("番组名")) {
+    if ($tr.textContent.includes("番组名")) {
       $firstTh = $tr.querySelector("th");
       // $lstTh = $curTh;
       // _log("fnMain() $curTh\n", $curTh);
@@ -67,14 +66,15 @@ export default function(name, $table) {
     if (!$curA) {
       return;
     }
-    const curText = $curA.innerText.toLowerCase();
+    const curText = $curA.textContent.toLowerCase();
     // data-clipboard-text
     let magnet = $curB.getAttribute("data-clipboard-text");
     magnet = fnRemoveTracker(magnet);
     // _log("_pick():", magnet);
     if (fnPickByRegex(curText, curRule?.regex)) {
       magnetList.push(magnet);
-    } else {
+    }
+    else {
       $tr.remove();
     }
   });

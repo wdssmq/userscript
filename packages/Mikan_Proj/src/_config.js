@@ -39,6 +39,7 @@ const _config = {
     firstRun: true,
   },
   optToggle: (opt, ret = false) => {
+    console.log(opt, ret);
   },
   menuCommand: () => {
   },
