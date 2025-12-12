@@ -1,15 +1,15 @@
 import {
-  _getDateStr,
-  _log,
-  _sleep,
   $n,
   $na,
   _curUrl,
+  _getDateStr,
+  _log,
+  _sleep,
   fnElChange,
 } from "./_base";
 
-import { gob } from "./_gob";
 import config from "./_config";
+import { gob } from "./_gob";
 import {
   // createPromise,
   createQueue,
@@ -37,7 +37,7 @@ gob.post = async (info, data) => {
   }
   const { baseUrl, authToken } = config.data;
   const headers = {
-    "Authorization": "Bearer " + authToken,
+    Authorization: `Bearer ${authToken}`,
   };
   info.title = gob.filter(info.title);
   const url = `${baseUrl}add?url=${info.url}&title=${info.title}&author=${data.username}&category=${data.category}&date=${data.date}`;
@@ -56,7 +56,8 @@ gob.post = async (info, data) => {
     gob.remoteTotal = resJSON.data.count || 0;
     fnShowProgress(gob.postIndex, gob.remoteTotal);
     return true;
-  } catch (error) {
+  }
+  catch (error) {
     gob.errCount += 1;
     _log("gob.post() - error\n", error);
     return false;
@@ -167,12 +168,13 @@ const bilibili = {
       const resData = await this.apiGet(url);
       if (resData.code === 0) {
         return resData.data.list.vlist;
-      } else {
+      }
+      else {
         _log("bilibili.getVideos() - resData\n", resData);
       }
-    } catch (error) {
+    }
+    catch (error) {
       _log("bilibili.getVideos() - error\n", error);
-      return;
     }
   },
 
@@ -238,9 +240,9 @@ const bilibili = {
       bilibili.data.showProgress = (itemIndex, remoteTotal) => {
         bilibili.showProgress(itemIndex, vlist.length, remoteTotal);
       };
-      // 获取用户 uid 和 username
-      const uid = this.getUid();
-      const username = this.getUsername();
+      // // 获取用户 uid 和 username
+      // const uid = this.getUid();
+      // const username = this.getUsername();
       // 计数器清零
       gob.postIndex = 0;
       gob.postCount = 0;

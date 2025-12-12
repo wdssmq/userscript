@@ -1,21 +1,18 @@
 {
-  "version": "1.0.0",
   "type": "module",
+  "version": "1.0.0",
   "scripts": {
     "build": "rollup -c --environment NODE_ENV:prod",
     "dev": "rollup -c -w --environment NODE_ENV:dev",
-    "lint": "eslint --ext .js,.mjs . --fix",
     "clean:out": "rm -rf dev *.user.js",
     "clean:deps": "rm -rf node_modules",
-    "up:ver": "npm version patch && npm run build"
+    "up:ver": "npm version patch && npm run build",
+    "lint": "eslint --fix"
   },
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.2",
     "open": "^8.4.0",
     "rollup": "^3.28.1",
     "rollup-plugin-monkey": "^1.0.9"
-  },
-  "devDependencies": {
-    "eslint": "^8.57.1"
   }
 }

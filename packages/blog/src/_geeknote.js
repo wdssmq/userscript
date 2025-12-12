@@ -1,8 +1,7 @@
-
-import { _log, $n, $na } from "./_base";
+import { $n, _log } from "./_base";
 import { gob } from "./_gob";
 
-const fnGeekNote = () => {
+function fnGeekNote() {
   _log("[fnGeekNote()]");
   gob.setTags = (tags) => {
     const $select = $n("select.selector__select");
@@ -65,8 +64,6 @@ const fnGeekNote = () => {
   gob.$content = $n("#post_content");
 
   gob.bind();
-};
+}
 
 export default fnGeekNote;
-
-

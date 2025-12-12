@@ -1,4 +1,6 @@
-import { _log, curHost, curUrl, $n } from "./_base";
+import { $n, _log, curHost, curUrl } from "./_base";
+
+import _config from "./_config";
 
 // 从页面中获取链接
 function fnGetUrlInDOM(selector, attrName) {
@@ -11,7 +13,7 @@ function fnGetUrlInDOM(selector, attrName) {
 
 // 获取链接中的参数
 function fnGetParamInUrl(name, url) {
-  const match = RegExp("[?&]" + name + "=(?<value>[^&]*)").exec(url);
+  const match = new RegExp(`[?&]${name}=(?<value>[^&]*)`).exec(url);
   return match && decodeURIComponent(match.groups.value);
 }
 
@@ -20,7 +22,7 @@ function fnCheckUrl(url) {
   if (url.indexOf("http") === 0) {
     return url;
   }
-  return "http://" + url;
+  return `http://${url}`;
 }
 
 const siteList = [
@@ -75,18 +77,17 @@ function fnShowTip(tipNode, text, url) {
     return;
   }
   switch (tipNode[1]) {
-    default:
     case "after":
+    default:
       $node.insertAdjacentHTML("afterend", $insertTips);
       break;
   }
 }
 
-import _config from "./_config";
-
 // 各种中转页跳过
 siteList.forEach((site) => {
   const { name, hostList, url } = site;
+  _log(`检测站点：${name}`);
   if (hostList.includes(curHost)) {
     if (!url) {
       return;
@@ -102,11 +103,11 @@ siteList.forEach((site) => {
         fnShowTip(site.tipNode, `即将跳转到，剩余 ${cntDown} 秒`, newUrl);
         cntDown--;
       }, 1000);
-    } else {
+    }
+    else {
       setTimeout(() => {
         window.location.href = newUrl;
       }, 10000);
     }
   }
 });
-

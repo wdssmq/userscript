@@ -1,8 +1,8 @@
 import {
-  _curUrl,
-  _warn,
-  _getDateStr,
   $n,
+  _curUrl,
+  _getDateStr,
+  _warn,
   fnElChange,
   fnFindDom,
 } from "./_base";
@@ -10,7 +10,7 @@ import { gob } from "./_gob";
 
 gob.addLink = (link) => {
   const { linkLog } = gob;
-  if (linkLog.indexOf(link) === -1) {
+  if (!linkLog.includes(link)) {
     linkLog.push(link);
   }
   _warn("addLink()\n", linkLog);
@@ -31,10 +31,10 @@ window.addEventListener("focus", () => {
 
 // 记录已签到的贴吧
 
-const fnLogSigned = () => {
+function fnLogSigned() {
   const curUrl = _curUrl();
   // 地址内不含有 /i/i/forum 且 不含有 /f?kw= 的不执行
-  if (curUrl.indexOf("/i/i/forum") === -1 && curUrl.indexOf("/f?kw=") === -1) {
+  if (!curUrl.includes("/i/i/forum") && !curUrl.includes("/f?kw=")) {
     return;
   }
 
@@ -50,7 +50,7 @@ const fnLogSigned = () => {
     const $itemLink = fnFindDom($table, "a");
     // 遍历判断是否已签到
     [].forEach.call($itemLink, ($link) => {
-      const text = $link.innerText;
+      const text = $link.textContent;
       const title = $link.title;
       if (text === title) {
         const item = gob.签到列表[`${title}吧`];
@@ -62,7 +62,7 @@ const fnLogSigned = () => {
         // 监听点击事件
         $link.classList.add("name");
         // 点击事件，包括中键点击
-        $link.addEventListener("mousedown", (e) => {
+        $link.addEventListener("mousedown", (_e) => {
           gob.addLink(title);
         });
       }
@@ -83,7 +83,7 @@ const fnLogSigned = () => {
   // 记录签到到 ls
   const logSigned = () => {
     gob.load(true);
-    const { 签到列表, 当前日期, 当前吧名 } = gob;
+    const { 签到列表, _当前日期, 当前吧名 } = gob;
     签到列表[当前吧名] = _getDateStr();
     gob.签到列表 = 签到列表;
     gob.save();
@@ -91,7 +91,7 @@ const fnLogSigned = () => {
 
   const $body = $n("body");
 
-  fnElChange($body, (mr, mo) => {
+  fnElChange($body, (_mr, mo) => {
     // 贴吧列表页
     colorForumList();
     if (中止监听) {
@@ -102,7 +102,7 @@ const fnLogSigned = () => {
     if (!$sign_today_date) {
       return;
     }
-    const sign_today_date = $sign_today_date.innerText;
+    const sign_today_date = $sign_today_date.textContent;
     gob.当前日期 = sign_today_date.trim();
     gob.getCurForumName();
     // console.log(gob.data);
@@ -111,12 +111,11 @@ const fnLogSigned = () => {
       mo.disconnect();
     }
   });
-
-};
+}
 
 try {
   fnLogSigned();
-} catch (error) {
+}
+catch (error) {
   _warn(error);
 }
-

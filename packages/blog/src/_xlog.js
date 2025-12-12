@@ -1,16 +1,16 @@
-import { _log, $n, $na, fnElChange } from "./_base";
+import { $n, _log, fnElChange } from "./_base";
 import { gob } from "./_gob";
 
-const fnXLog = () => {
+function fnXLog() {
   _log("[fnXLog()]");
   gob.$body = $n("body");
 
-  gob.getPost = (record, Observer) => {
+  gob.getPost = (_record, Observer) => {
     const $cmContent = $n(".cm-content");
     if (!$cmContent) {
       return;
     }
-    gob.content = $cmContent.innerText;
+    gob.content = $cmContent.textContent;
     gob.yml2json();
     if (Object.keys(gob.doc).length > 0) {
       // _log("[gob.getPost()]\n", gob.content);
@@ -34,8 +34,8 @@ const fnXLog = () => {
 >
 > [https://www.wdssmq.com/post/{slug}.html](https://www.wdssmq.com/post/{slug}.html "{title}")
 `.trim();
-    const prefix = tpl.replace(/{title}/g, gob.title)
-      .replace(/{slug}/g, gob.doc.alias);
+    const prefix = tpl.replace(/\{title\}/g, gob.title)
+      .replace(/\{slug\}/g, gob.doc.alias);
 
     _log(prefix);
     // 判断是否已经存在 dialog
@@ -61,7 +61,7 @@ const fnXLog = () => {
 
     // 关闭按钮
     const $closeBtn = document.createElement("button");
-    $closeBtn.innerText = "关闭";
+    $closeBtn.textContent = "关闭";
     // 添加 CSS
     $closeBtn.classList.add("button", "is-auto-width", "is-primary");
     // block
@@ -92,7 +92,7 @@ const fnXLog = () => {
     }
   };
 
-  gob.checkLoaded = (record, Observer) => {
+  gob.checkLoaded = (_record, Observer) => {
     gob.$title = $n("input[name=title]");
     gob.$slug = $n("input[name=slug]");
     if (gob.$title && gob.$slug) {
@@ -114,6 +114,6 @@ const fnXLog = () => {
   // gob.$content = $n("#post_content");
 
   gob.bind();
-};
+}
 
 export default fnXLog;

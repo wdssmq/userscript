@@ -4,9 +4,9 @@
   "scripts": {
     "build": "rollup -c --environment NODE_ENV:prod",
     "dev": "rollup -c -w --environment NODE_ENV:dev",
-    "lint": "eslint --ext .js,.mjs . --fix",
     "clean:out": "rm -rf dev *.user.js",
     "clean:deps": "rm -rf node_modules",
-    "up:ver": "npm version patch && npm run build"
+    "up:ver": "npm version patch && npm run build",
+    "lint": "eslint --fix"
   }
 }

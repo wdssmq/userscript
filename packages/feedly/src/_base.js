@@ -4,12 +4,12 @@ import { gm_name } from "./__info";
 const curUrl = window.location.href;
 const curDate = new Date();
 // ---------------------------------------------------
-const _curUrl = () => { return window.location.href };
-const _curDate = () => { return new Date() };
-const _getDateStr = (date = curDate) => {
+const _curUrl = () => window.location.href;
+const _curDate = () => new Date();
+function _getDateStr(date = curDate) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-};
+}
 const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 // ---------------------------------------------------
 const _log = (...args) => console.log(`[${gm_name}]|`, ...args);
@@ -24,7 +24,7 @@ function $na(e) {
   return document.querySelectorAll(e);
 }
 // ---------------------------------------------------
-const fnElChange = (el, fn = () => { }) => {
+function fnElChange(el, fn = () => { }) {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
     // _log('mutationRecord = ', mutationRecord);
     // _log('mutationObserver === observer', mutationObserver === observer);
@@ -38,7 +38,7 @@ const fnElChange = (el, fn = () => { }) => {
     // characterData: false,
     subtree: true,
   });
-};
+}
 function fnRemoveDOM(el) {
   el.parentNode.removeChild(el);
 }
@@ -58,20 +58,20 @@ function fnFindDomUp(el, selector) {
 }
 // ---------------------------------------------------
 export {
-  curUrl,
-  curDate,
-  _curUrl,
-  _curDate,
-  _getDateStr,
-  _sleep,
-  _log,
-  _warn,
-  _error,
   // $,
   $n,
   $na,
+  _curDate,
+  _curUrl,
+  _error,
+  _getDateStr,
+  _log,
+  _sleep,
+  _warn,
+  curDate,
+  curUrl,
   fnElChange,
-  fnRemoveDOM,
   fnFindDom,
   fnFindDomUp,
+  fnRemoveDOM,
 };

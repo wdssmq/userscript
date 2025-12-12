@@ -1,7 +1,6 @@
-import { $n, $na, fnFindDom, curUrl } from "./_base";
-import { _log } from "./_base";
+import { $n, _log, curUrl } from "./_base";
 import config from "./_config";
-import { formatJSON, formatYAML, addCopyBtn, btnToggle } from "./_func";
+import { addCopyBtn } from "./_func";
 
 const noteScheme = config.noteScheme;
 
@@ -18,7 +17,8 @@ async function git_repoInfo() {
     repoInfo.tags = data.topics;
     repoInfo.data = data;
     _log("repoInfo", repoInfo);
-  } else {
+  }
+  else {
     repoInfo.data = null;
     _log("response", response);
   }
@@ -41,7 +41,8 @@ function git_noteScheme(repoInfo) {
 function git_btnCopy() {
   const $base = $n(".BorderGrid-cell>div");
   // _log("$base", $base);
-  if (!$base) return;
+  if (!$base)
+    return;
   addCopyBtn($base, noteScheme.item, "复制 YAML", "yaml");
   // insertAdjacentHTML 添加一个 span
   $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
@@ -49,9 +50,9 @@ function git_btnCopy() {
 }
 
 (async () => {
-  if (!curUrl.includes("github.com/wdssmq")) return;
+  if (!curUrl.includes("github.com/wdssmq"))
+    return;
   const repoInfo = await git_repoInfo();
   git_noteScheme(repoInfo);
   git_btnCopy();
 })();
-

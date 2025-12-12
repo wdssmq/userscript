@@ -1,6 +1,6 @@
 /* global Comlink, saveAs */
 
-import { _log, _sleep, $n, $na } from "./_base";
+import { $n, $na, _log, _sleep } from "./_base";
 
 import { gob } from "./_gob";
 
@@ -48,8 +48,8 @@ function fnAutoNextChap() {
 }
 
 // 网络请求
-const fnGet = (url, responseType = "json", retry = 2) =>
-  new Promise((resolve, reject) => {
+function fnGet(url, responseType = "json", retry = 2) {
+  return new Promise((resolve, reject) => {
     try {
       // console.log(navigator.userAgent);
       GM_xmlhttpRequest({
@@ -57,11 +57,13 @@ const fnGet = (url, responseType = "json", retry = 2) =>
         url,
         headers: {
           "User-Agent": navigator.userAgent, // If not specified, navigator.userAgent will be used.
-          referer: "https://www.manhuagui.com/",
+          "referer": "https://www.manhuagui.com/",
         },
         responseType,
         onerror: (e) => {
-          if (retry === 0) reject(e);
+          if (retry === 0) {
+            reject(e);
+          }
           else {
             console.warn("Network error, retry.");
             setTimeout(() => {
@@ -70,8 +72,12 @@ const fnGet = (url, responseType = "json", retry = 2) =>
           }
         },
         onload: ({ status, response }) => {
-          if (status === 200) resolve(response);
-          else if (retry === 0) reject(`${status} ${url}`);
+          if (status === 200) {
+            resolve(response);
+          }
+          else if (retry === 0) {
+            reject(new Error(`${status} ${url}`));
+          }
           else {
             console.warn(status, url);
             setTimeout(() => {
@@ -80,11 +86,12 @@ const fnGet = (url, responseType = "json", retry = 2) =>
           }
         },
       });
-    } catch (error) {
+    }
+    catch (error) {
       reject(error);
     }
   });
-
+}
 
 const JSZip = (() => {
   const blob = new Blob(
@@ -97,16 +104,17 @@ const JSZip = (() => {
   return Comlink.wrap(worker);
 })();
 
-const getCompressionOptions = (level = 4) => {
-  if (level === 0) return {};
+function getCompressionOptions(level = 4) {
+  if (level === 0)
+    return {};
   return {
     compression: "DEFLATE",
-    compressionOptions: { level: level },
+    compressionOptions: { level },
   };
-};
+}
 
 // 处理章节名，仅提取 `第xxx话` 的部分，并补全前导 0
-const fnGetChapName = (chapName, len = 3) => {
+function fnGetChapName(chapName, len = 3) {
   const reg = /第(\d+)(?:话|回)/;
   const match = chapName.match(reg);
   if (match) {
@@ -114,9 +122,9 @@ const fnGetChapName = (chapName, len = 3) => {
     return `第${String(num).padStart(len, 0)}话`;
   }
   return chapName;
-};
+}
 
-const fnDownload = async ($btn = null) => {
+async function fnDownload($btn = null) {
   const info = fnGenInfo();
   info.chapter = fnGetChapName(info.chapter);
   const cfName = `${info.name}_${info.chapter}`;
@@ -134,13 +142,13 @@ const fnDownload = async ($btn = null) => {
   };
   const btnCompressingProgress = (percent = 0) => {
     if ($btn) {
-      $btn.innerHTML = percent == 100 ? "已完成√" : `正在压缩：${percent}`;
+      $btn.innerHTML = percent === 100 ? "已完成√" : `正在压缩：${percent}`;
     }
   };
   // 下载并添加到 zip
   // page 从 1 开始
   const fileNameLen = (len => len > 2 ? len : 2)(info.pages.toString().length);
-  const dlPromise = async (url, page, threadID = 0) => {
+  const dlPromise = async (url, page, _threadID = 0) => {
     const fileName = ((i) => {
       return `${String(i).padStart(fileNameLen, 0)}.jpg`;
     })(page);
@@ -148,7 +156,8 @@ const fnDownload = async ($btn = null) => {
       const data = await fnGet(url, "arraybuffer");
       await zip.file(fileName, Comlink.transfer({ data }, [data]));
       info.done++;
-    } catch (e) {
+    }
+    catch (e) {
       _log("[error]dlPromise()\n", e);
       await zip.file(`${fileName}.bad.txt`, "");
       info.bad[page] = `${url}`;
@@ -174,10 +183,10 @@ const fnDownload = async ($btn = null) => {
     // let lastZipFile = "";
     const { data } = await zip.generateAsync(
       { type: "arraybuffer", ...getCompressionOptions() },
-      Comlink.proxy(({ percent, currentFile }) => {
-        // if (lastZipFile !== currentFile && currentFile) {
-        //   lastZipFile = currentFile;
-        //   console.log(`Compressing ${percent.toFixed(2)}%`, currentFile);
+      Comlink.proxy(({ percent, _currentFile }) => {
+        // if (lastZipFile !== _currentFile && _currentFile) {
+        //   lastZipFile = _currentFile;
+        //   console.log(`Compressing ${percent.toFixed(2)}%`, _currentFile);
         // }
         btnCompressingProgress(percent.toFixed(2));
         info.compressingPercent = percent;
@@ -191,11 +200,10 @@ const fnDownload = async ($btn = null) => {
       error: info.error,
     };
   };
-};
-
+}
 
 // 单图查看
-const setCurImgLink = () => {
+function setCurImgLink() {
   if ($n("#curimg")) {
     $n("#curimg").href = fnGenUrl();
     return;
@@ -209,12 +217,11 @@ const setCurImgLink = () => {
   $imgLink.style.background = "#0077D1";
   $imgLink.style.cursor = "pointer";
   $n(".main-btn").insertBefore($imgLink, $n("#viewList"));
-};
+}
 setCurImgLink();
 
-
 // 下载按钮
-const setBtnDownload = () => {
+function setBtnDownload() {
   const $btn = document.createElement("a");
   $btn.id = "gm-btn-download";
   $btn.className = "btn-red";
@@ -223,7 +230,7 @@ const setBtnDownload = () => {
   $btn.style.background = "#0077D1";
   $btn.style.cursor = "pointer";
   $btn.addEventListener("click", async () => {
-    let curPage = parseInt($n("#page").innerHTML);
+    const curPage = Number.parseInt($n("#page").innerHTML);
     if (curPage > 1) {
       alert("请从第一页开始下载");
       return false;
@@ -239,16 +246,15 @@ const setBtnDownload = () => {
     gob.save();
     $btn.click();
   }
-};
+}
 setBtnDownload();
-
 
 window.addEventListener("hashchange", () => {
   setCurImgLink();
 });
 
 export {
-  fnGenUrl,
   fnGenInfo,
+  fnGenUrl,
   fnGet,
 };

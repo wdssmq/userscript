@@ -1,7 +1,7 @@
-import { _log, curTimestamp } from "./_base";
 import { gm_name } from "./__info";
-import http from "./_http";
+import { _log, curTimestamp } from "./_base";
 import config from "./_config";
+import http from "./_http";
 
 // localStorage 封装
 const lsObj = {
@@ -86,7 +86,7 @@ gob.http = http;
 gob.delUrl = async (url, category) => {
   const { baseUrl, authToken } = config.data;
   const headers = {
-    "Authorization": "Bearer " + authToken,
+    Authorization: `Bearer ${authToken}`,
   };
 
   const apiUrl = `${baseUrl}admin/${category}/del-url/?url=${url}`;
@@ -95,9 +95,10 @@ gob.delUrl = async (url, category) => {
     // _log("gob.delUrl()\n", res);
     // _log("gob.delUrl()\n", res.responseText);
     const resJSON = JSON.parse(res.responseText);
-    _log("gob.delUrl()\n",resJSON);
+    _log("gob.delUrl()\n", resJSON);
     return true;
-  } catch (error) {
+  }
+  catch (error) {
     gob.errCount += 1;
     _log("gob.delUrl() - error\n", error);
     return false;
@@ -139,6 +140,6 @@ gob.stopBySendLimit = (url, dayLimit = 37, sendLimit = 4) => {
 gob.init().load();
 
 export {
-  lsObj,
   gob,
+  lsObj,
 };

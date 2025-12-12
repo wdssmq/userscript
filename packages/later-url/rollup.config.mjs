@@ -1,9 +1,9 @@
-import { gm_name, gm_banner, gm_require } from "./src/__info.js";
 import replace from "@rollup/plugin-replace";
 import open from "open";
-
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
+
+import { gm_banner, gm_name, gm_require } from "./src/__info.js";
 
 // console.log("typeof monkey：", typeof monkey);
 // // typeof monkey： function
@@ -14,7 +14,7 @@ import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
-  gm_banner: gm_banner.trim() + "\n",
+  gm_banner: `${gm_banner.trim()}\n`,
   gm_version: process.env.npm_package_version,
   gm_dev: monkeyPath.devJS,
   ...monkeyRequire(gm_require),
@@ -28,7 +28,7 @@ const gobConfig = {
 gobConfig.url = `http://${gobConfig.listen.host}:${gobConfig.listen.port}`;
 gobConfig.gm_banner = gobConfig.gm_banner.replace("placeholder.pkg.version", gobConfig.gm_version);
 if (gm_require.length > 0) {
-  gobConfig.gm_banner = gobConfig.gm_banner.replace("// ==/", gobConfig.gm_require + "\n// ==/");
+  gobConfig.gm_banner = gobConfig.gm_banner.replace("// ==/", `${gobConfig.gm_require}\n// ==/`);
 }
 
 if (process.env.NODE_ENV === "prod") {
@@ -58,19 +58,19 @@ const devConfig = {
       listen: gobConfig.listen,
       onListen(web) {
         web.server.log.info({
-          "msg": "{{header}} install script for dev {{url}}",
-          "url": `${gobConfig.url}/dev/${gobConfig.gm_file}`,
+          msg: "{{header}} install script for dev {{url}}",
+          url: `${gobConfig.url}/dev/${gobConfig.gm_file}`,
         });
         web.server.log.info({
-          "msg": "{{header}} install script for prod {{url}}",
-          "url": `${gobConfig.url}/${gobConfig.gm_file}`,
+          msg: "{{header}} install script for prod {{url}}",
+          url: `${gobConfig.url}/${gobConfig.gm_file}`,
         });
         open(`${gobConfig.url}/dev/${gobConfig.gm_file}`);
       },
     }),
     replace({
       preventAssignment: true,
-      "NODE_ENV": process.env.NODE_ENV,
+      NODE_ENV: process.env.NODE_ENV,
     }),
   ],
 };
@@ -84,7 +84,7 @@ const loaderConfig = {
   },
   plugins: [
     replace({
-      preventAssignment: true,
+      "preventAssignment": true,
       "placeholder.livereload.js": `${gobConfig.url}/livereload.js?snipver=1`,
       "placeholder.user.js": `${gobConfig.url}/dev/main.js`,
       "placeholder.gm_api": gobConfig.gm_api,

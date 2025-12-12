@@ -1,7 +1,4 @@
 class HttpRequest {
-  constructor() {
-  }
-
   get(url, headers = {}) {
     return this.request({
       method: "GET",

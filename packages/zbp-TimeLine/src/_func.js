@@ -8,8 +8,8 @@ function formatJSON(obj) {
     strJSON = strJSON.replace(reg, "\n$1 ");
   });
   // 花括号换行
-  strJSON = strJSON.replace(/({)\n*/g, "$1\n");
-  strJSON = strJSON.replace(/\n*(})/g, "\n$1");
+  strJSON = strJSON.replace(/(\{)\n*/g, "$1\n");
+  strJSON = strJSON.replace(/\n*(\})/g, "\n$1");
   return strJSON;
 }
 
@@ -25,7 +25,7 @@ function formatData(obj) {
   }
   // Desc 截取 59 个字符
   if (obj.Desc && obj.Desc.length > 59) {
-    obj.Desc = obj.Desc.slice(0, 53) + "…";
+    obj.Desc = `${obj.Desc.slice(0, 53)}…`;
   }
   return obj;
 }
@@ -51,9 +51,10 @@ function addCopyBtn($btnWrap, note, btnCon = "复制", copyType = "json") {
   $btnWrap.appendChild($btn);
   // 由 copyType 决定复制的内容
   let copyText = "";
-  if ("json" === copyType) {
+  if (copyType === "json") {
     copyText = formatJSON(note);
-  } else if ("yaml" === copyType) {
+  }
+  else if (copyType === "yaml") {
     copyText = formatYAML(note);
   }
   // 复制按钮事件
@@ -73,4 +74,4 @@ function btnToggle($btn, text) {
   }, 3000);
 }
 
-export { formatJSON, formatYAML, addCopyBtn, btnToggle };
+export { addCopyBtn, btnToggle, formatJSON, formatYAML };

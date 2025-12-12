@@ -1,5 +1,7 @@
+/* globals $ */
+
 // 表格内提取指定应用信息
-const fnGetAppInfo = () => {
+function fnGetAppInfo() {
   // 一个提取应用 id 的函数
   const fnGetAppId = (src) => {
     // http://127.0.0.1:8081/zb_users/plugin/mz_admin2/logo.png，应用 id 为 mz_admin2
@@ -7,8 +9,8 @@ const fnGetAppInfo = () => {
     return appId;
   };
   const appList = [];
-  $(".td25 + .td20").each(function() {
-    if ($(this).text() == "沉冰浮水") {
+  $(".td25 + .td20").each(function () {
+    if ($(this).text() === "沉冰浮水") {
       const $img = $(this).parent().find(".td5 img");
       const imgUrl = $img.attr("src");
       const appId = fnGetAppId(imgUrl);
@@ -19,10 +21,10 @@ const fnGetAppInfo = () => {
     }
   });
   return appList;
-};
+}
 
 // 封装一个函数，用于检查图片能正常加载
-const fnCheckAppLogo = (appList, cb = () => { }) => {
+function fnCheckAppLogo(appList, cb = () => { }) {
   appList.forEach(({ imgUrl, appId }) => {
     $.ajax({
       url: imgUrl,
@@ -33,7 +35,7 @@ const fnCheckAppLogo = (appList, cb = () => { }) => {
       },
     });
   });
-};
+}
 
 // 随机颜色
 function fnRndColor() {
@@ -63,10 +65,10 @@ function fnGetDefColor(i) {
 }
 
 // 绑定元素事件
-const fnBindEvent = (i) => {
+function fnBindEvent(i) {
   const $curBox = $(`div.i-${i}`);
   const color = $curBox.attr("data-color");
-  $curBox.on("click", function() {
+  $curBox.on("click", () => {
     document.title = `${i} - ${color}`;
     console.log(`"${color}",`);
   });
@@ -74,7 +76,7 @@ const fnBindEvent = (i) => {
   // $curBox.on("mouseover", function() {
   //   document.title = `${i} - ${color}`;
   // });
-};
+}
 
 export {
   fnBindEvent,

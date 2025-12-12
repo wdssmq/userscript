@@ -34,8 +34,8 @@ const gm_require = [
   //   "func": "$",
   // },
   {
-    "url": "https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
-    "func": "jsyaml",
+    url: "https://cdn.bootcdn.net/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
+    func: "jsyaml",
   },
 ];
 

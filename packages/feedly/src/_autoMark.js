@@ -1,4 +1,4 @@
-import { _log, $n, fnFindDomUp } from "./_base";
+import { $n, _log, fnFindDomUp } from "./_base";
 // 自动标记已读
 (() => {
   if (!$n("#root") || $n("#root").dataset.MarkRead === "bind") {
@@ -12,7 +12,8 @@ import { _log, $n, fnFindDomUp } from "./_base";
     // _log("fnEventFilter", eType, eTgt);
 
     let pick = false;
-    let objRlt = null, objDef = {
+    let objRlt = null;
+    const objDef = {
       $entry: null,
       $btn: null,
     };
@@ -31,8 +32,9 @@ import { _log, $n, fnFindDomUp } from "./_base";
         };
         pick = true;
       }
-    } else if (eType === "mouseover") {
-      if (eTgt.nodeName === "ARTICLE" && eTgt.className.indexOf("entry") > -1) {
+    }
+    else if (eType === "mouseover") {
+      if (eTgt.nodeName === "ARTICLE" && eTgt.className.includes("entry")) {
         objRlt = {
           // 当前内容条目元素
           $entry: eTgt,
@@ -43,17 +45,17 @@ import { _log, $n, fnFindDomUp } from "./_base";
         // _log("fnEventFilter", "移入");
         // _log("fnEventFilter", eTgt.dataset.leaveCount, typeof eTgt.dataset.leaveCount);
 
-        const intLeaveCount = parseInt(eTgt.dataset.leaveCount);
+        const intLeaveCount = Number.parseInt(eTgt.dataset.leaveCount);
 
         // 已经触发过 leave 事件时才通过
-        pick = intLeaveCount >= 1 ? true : false;
+        pick = intLeaveCount >= 1;
         if (pick) {
           return objRlt;
         }
 
         // _log("fnEventFilter", intLeaveCount);
 
-        if (!isNaN(intLeaveCount)) {
+        if (!Number.isNaN(intLeaveCount)) {
           // _log("fnEventFilter", "已绑定移出事件");
           return objDef;
         }
@@ -61,7 +63,7 @@ import { _log, $n, fnFindDomUp } from "./_base";
         // 绑定移出事件
         eTgt.addEventListener("mouseleave", () => {
           // _log("fnEventFilter", "移出");
-          const intLeaveCount = parseInt(eTgt.dataset.leaveCount);
+          const intLeaveCount = Number.parseInt(eTgt.dataset.leaveCount);
           if (intLeaveCount === 0) {
             // await _sleep(1000);
             eTgt.dataset.leaveCount = "1";
@@ -91,7 +93,7 @@ import { _log, $n, fnFindDomUp } from "./_base";
       return;
     }
     // 判断是否含有指定类名
-    if ($entry.className.indexOf("entry--read") === -1) {
+    if (!$entry.className.includes("entry--read")) {
       _log("fnMarRead", event.button, "自动标记已读");
       $btn.click();
     }

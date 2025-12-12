@@ -1,4 +1,4 @@
-import { _log, _getDateStr, $n, $na } from "./_base";
+import { $n, _getDateStr, _log } from "./_base";
 import { gob } from "./_gob";
 
 // nodeList 转换为 Array
@@ -14,28 +14,27 @@ function fnMKShell(arrList, prefix = "") {
   const _lenTitle = (title) => {
     // 获取长度，中文算两个字符
     const len = title.length;
-    const len2 = title.replace(/[\u4e00-\u9fa5]/g, "").length;
+    const len2 = title.replace(/[\u4E00-\u9FA5]/g, "").length;
     return len2 + (len - len2) * 2;
-
   };
-  let strRlt =
-    "if [ ! -d \"prefix-date\" ]; then\n" +
-    "mkdir prefix-date\n" +
-    "fi\n" +
-    "cd prefix-date\n\n";
+  let strRlt
+    = "if [ ! -d \"prefix-date\" ]; then\n"
+      + "mkdir prefix-date\n"
+      + "fi\n"
+      + "cd prefix-date\n\n";
   strRlt = strRlt.replace(/prefix/g, prefix);
   strRlt = strRlt.replace(/date/g, curDateStr);
 
   /**
    * e {title:"", href:""}
    */
-  arrList.forEach(function(e, i) {
+  arrList.forEach((e, i) => {
     const serial = i + 1;
     // _log(e);
 
     // 移除不能用于文件名的字符
-    let title = e.title || e.innerText;
-    title = title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
+    let title = e.title || e.textContent;
+    title = title.replace(/[\\/:*!<>]|\?\]/g, "");
     title = title.replace(/["'\s]/g, "");
     // _log(title);
 
@@ -64,18 +63,18 @@ function fnMKShell(arrList, prefix = "") {
 }
 
 // 星标文章导出为 *.url 文件
-$n("#root").addEventListener("mouseup", function(event) {
+$n("#root").addEventListener("mouseup", (event) => {
   gob.GetStarItems();
   const $target = event.target;
   // 判断是 h2 标签
   if ($target.tagName !== "H2") {
     return;
   }
-  // console.log($target, $target.innerText);
-  const curText = $target.innerText.trim().toUpperCase();
-  if (curText.indexOf("END OF FEED") > -1) {
+  // console.log($target, $target.textContent);
+  const curText = $target.textContent.trim().toUpperCase();
+  if (curText.includes("END OF FEED")) {
     const listItems = fnNodeListToArray(gob.$$Stars);
     GM_setClipboard(fnMKShell(listItems, "feedly"));
-    $target.innerText = "已复制到剪贴板";
+    $target.textContent = "已复制到剪贴板";
   }
 }, false);

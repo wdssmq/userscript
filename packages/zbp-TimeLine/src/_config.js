@@ -1,13 +1,13 @@
 // note 条目格式定义
 const noteScheme = {
   item: {
-    "Title": "node:.post-title a",
-    "Desc": "node:.post-intro",
-    "Image": null,
-    "Source": "[url=https://www.wdssmq.com]沉冰浮水的博客[/url]",
-    "Tags": "node:.post-intro .a-tag",
-    "Type": "文章",
-    "Url": "node:.post-title a",
+    Title: "node:.post-title a",
+    Desc: "node:.post-intro",
+    Image: null,
+    Source: "[url=https://www.wdssmq.com]沉冰浮水的博客[/url]",
+    Tags: "node:.post-intro .a-tag",
+    Type: "文章",
+    Url: "node:.post-title a",
   },
   parent: ".post",
   remove: "span.a-tag",

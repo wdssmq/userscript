@@ -33,16 +33,16 @@ const gm_name = "zbp-xiuno";
 
 const gm_require = [
   {
-    "url": "https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js",
-    "func": "LZString",
+    url: "https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js",
+    func: "LZString",
   },
   {
-    "url": "https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
-    "func": "jsyaml",
+    url: "https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js",
+    func: "jsyaml",
   },
   {
-    "url": "https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js",
-    "func": "showdown",
+    url: "https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js",
+    func: "showdown",
   },
 ];
 

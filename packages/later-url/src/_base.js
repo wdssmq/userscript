@@ -7,13 +7,13 @@ const curTimestamp = Math.floor(curDate.getTime() / 1000);
 
 // -------------------------------------
 
-const _curUrl = () => { return window.location.href };
-const _curDate = () => { return new Date() };
-const _curTimestamp = () => { return Math.floor(_curDate().getTime() / 1000) };
-const _getDateStr = (date = curDate) => {
+const _curUrl = () => window.location.href;
+const _curDate = () => new Date();
+const _curTimestamp = () => Math.floor(_curDate().getTime() / 1000);
+function _getDateStr(date = curDate) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-};
+}
 const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // -------------------------------------
@@ -35,7 +35,7 @@ function $na(e) {
 // -------------------------------------
 
 // 元素变化监听
-const fnElChange = (el, fn = () => { }) => {
+function fnElChange(el, fn = () => { }) {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
     // _log('mutationRecord = ', mutationRecord);
     // _log('mutationObserver === observer', mutationObserver === observer);
@@ -49,11 +49,14 @@ const fnElChange = (el, fn = () => { }) => {
     // characterData: false,
     subtree: true,
   });
-};
+}
 
 // -------------------------------------
 
 export {
+  // $,
+  $n,
+  $na,
   _curDate,
   _curTimestamp,
   _curUrl,
@@ -62,9 +65,6 @@ export {
   _log,
   _sleep,
   _warn,
-  // $,
-  $n,
-  $na,
   curDate,
   curTimestamp,
   curUrl,

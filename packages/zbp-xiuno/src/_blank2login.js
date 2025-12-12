@@ -1,6 +1,6 @@
 import {
-  _log,
   $n,
+  _log,
   curHref,
   lsObj,
 } from "./_base.js";

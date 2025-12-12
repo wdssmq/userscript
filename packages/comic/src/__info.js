@@ -33,12 +33,12 @@ const gm_require = [
   //   "func": "$",
   // },
   {
-    "url": "https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js",
-    "func": "Comlink",
+    url: "https://cdn.jsdelivr.net/npm/comlink@4.3.0/dist/umd/comlink.min.js",
+    func: "Comlink",
   },
   {
-    "url": "https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js",
-    "func": "saveAs",
+    url: "https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js",
+    func: "saveAs",
   },
 ];
 

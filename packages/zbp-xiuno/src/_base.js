@@ -8,10 +8,10 @@ const UE = window.UE || unsafeWindow.UE;
 const curHref = location.href.replace(location.hash, "");
 // localStorage 封装
 const lsObj = {
-  setItem: function(key, value) {
+  setItem(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem: function(key, def = "") {
+  getItem(key, def = "") {
     const item = localStorage.getItem(key);
     if (item) {
       return JSON.parse(item);
@@ -32,10 +32,11 @@ function fnGetRequest(strURL, strData, fnCallback) {
     method: "GET",
     data: strData,
     url: strURL,
-    onload: function(responseDetail) {
+    onload(responseDetail) {
       if (responseDetail.status === 200) {
         fnCallback(responseDetail.responseText, strURL);
-      } else {
+      }
+      else {
         console.log(responseDetail);
         alert("请求失败，请检查网络！");
       }
@@ -48,15 +49,15 @@ function fnFormatTime() {
   const strYear = objTime.getFullYear();
   const strMonth = objTime.getMonth() + 1;
   const strDate = objTime.getDate();
-  const strHour = objTime.getHours();
-  const strMinute = objTime.getMinutes();
-  const strSecond = objTime.getSeconds();
+  // const strHour = objTime.getHours();
+  // const strMinute = objTime.getMinutes();
+  // const strSecond = objTime.getSeconds();
   return (
-    [strYear, strMonth, strDate].map(n => n.toString().padStart(2, "0")).join("-") +
+    `${[strYear, strMonth, strDate].map(n => n.toString().padStart(2, "0")).join("-")
     // " " +
     // [strHour, strMinute, strSecond].map((n) => n.toString().padStart(2, "0")).join(":") +
-    ""
+    }`
   ).trim();
 }
 
-export { $n, $, UM, UE, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime };
+export { $, $n, _hash, _log, curHref, fnFormatTime, fnGetRequest, lsObj, UE, UM };

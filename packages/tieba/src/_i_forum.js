@@ -1,7 +1,6 @@
-import { fnAfter, fnAppendStart, $n, _warn } from "./_base";
+import { $n, _warn, fnAfter } from "./_base";
 
-
-const fnMain = () => {
+function fnMain() {
   // 导航设置
   const $sub_nav_list = $n(".sub_nav_list");
   if (!$sub_nav_list) {
@@ -23,12 +22,11 @@ const fnMain = () => {
   $nav_i.style.float = "right";
   // 插入到导航栏
   fnAfter($nav_i, $nav_personal);
-
-};
+}
 
 try {
   fnMain();
-} catch (error) {
+}
+catch (error) {
   _warn(error);
 }
-

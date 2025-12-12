@@ -1,10 +1,11 @@
-/* globals jsyaml*/
+/* globals jsyaml */
 
 // _devView.js | 开发者申请查看
-import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_base.js";
+import { $, _hash, _log, curHref, fnFormatTime, fnGetRequest, lsObj } from "./_base.js";
+
 (() => {
   // _log(curHref);
-  if (curHref.indexOf("bbs.zblogcn.com") === -1) {
+  if (!curHref.includes("bbs.zblogcn.com")) {
     return;
   }
   _log("devView");
@@ -90,29 +91,29 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
       lstLogs: [],
       lstCheck: null,
     },
-    init: function() {
+    init() {
       this.data = lsObj.getItem("gobDev", this.data);
       _log("gobDev init", this.data);
       this.ymlList = fnInitYML();
     },
-    checkUrl: function(url) {
+    checkUrl(url) {
       let rlt = null;
       this.data.lstLogs.forEach((log) => {
-        if (log.url.indexOf(url) > -1) {
+        if (log.url.includes(url)) {
           _log("checkUrl", url, log.url);
           rlt = log;
         }
       });
       return rlt;
     },
-    clear: function() {
+    clear() {
       this.data.lstLogs = [];
       lsObj.setItem("gobDev", this.data);
     },
-    save: function() {
+    save() {
       lsObj.setItem("gobDev", this.data);
     },
-    update: function() {
+    update() {
       const curHour = fnTime2Hour();
       if (this.data.lstCheck === curHour && this.data.lstLogs.length > 0) {
         return;
@@ -121,7 +122,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
       this.data.lstCheck = curHour;
       this.ajax();
     },
-    ajax: function() {
+    ajax() {
       const self = this;
       this.ymlList.forEach((yml) => {
         fnGetRequest(yml, (responseText, url) => {
@@ -144,7 +145,8 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
     if (curHash === "clearDone") {
       window.location.href = `${curHref}`;
       // window.location.reload();
-    } else if (doClear || curHash === "clear") {
+    }
+    else if (doClear || curHash === "clear") {
       gobDev.clear();
       window.location.href = `${curHref}#clearDone`;
       setTimeout(() => {
@@ -157,7 +159,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
 
   // 缓存清理按钮
   const $btnClear = $("<span class=\"small\"><a href=\"javascript:;\" title=\"清理缓存\" class=\"badge badge-warning\">清理缓存</a></span>");
-  $btnClear.on("click", function() {
+  $btnClear.on("click", () => {
     if (confirm("清理缓存？")) {
       _clearAct(1);
     }
@@ -166,7 +168,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
   // 根据 log 数据设置状态徽章
   const _setBadge = (log, $item = null, act = "after") => {
     // console.log("log", log);
-    let badgeClass, $badge;
+    let badgeClass;
     const status = log?.status || "未记录";
     switch (status) {
       case "通过":
@@ -182,12 +184,13 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
         badgeClass = "badge-warning";
         break;
     }
-    $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
+    const $badge = $(`<span class="badge ${badgeClass}">${status}</span>`);
 
     if (act === "after") {
       $item.after($badge);
       // $item.after($btnClear);
-    } else {
+    }
+    else {
       $item.append($badge);
       $item.append(" ");
       $item.append($btnClear);
@@ -196,11 +199,11 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
 
   // 标题列表
   const $titleList = $("li.media .subject a");
-  $titleList.each(function() {
+  $titleList.each(function () {
     const $this = $(this);
     const href = $this.attr("href");
     const title = $this.text();
-    if (title.indexOf("申请开发者") === -1) {
+    if (!title.includes("申请开发者")) {
       return;
     }
     const log = gobDev.checkUrl(href);
@@ -210,7 +213,7 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
   // 博文内页
   const $h4 = $(".media-body h4");
   let title = $h4.text().trim();
-  if (title.indexOf("申请开发者") === -1) {
+  if (!title.includes("申请开发者")) {
     return;
   }
   const log = gobDev.checkUrl(curHref);
@@ -219,8 +222,8 @@ import { $, curHref, lsObj, _log, _hash, fnGetRequest, fnFormatTime } from "./_b
   _log("curLog", log);
 
   // 初始化
-  $("div.message").each(function() {
-    if ($(this).attr("isfirst") == 1) {
+  $("div.message").each(function () {
+    if ($(this).attr("isfirst") === 1) {
       $(this).prepend(
         "<blockquote class=\"blockquote\"><pre class=\"pre-yml\"></pre></blockquote>",
       );

@@ -1,4 +1,4 @@
-import { _log, $ } from "./_base";
+import { $, _log } from "./_base";
 import config from "./_config";
 import {
   fnBindEvent,
@@ -12,7 +12,7 @@ import {
   const appList = fnGetAppInfo();
 
   const fnMain = (hash = "") => {
-    if (location.hash == "" && hash == "") {
+    if (location.hash === "" && hash === "") {
       return;
     }
     $("body>*").remove();
@@ -24,7 +24,6 @@ import {
     const appText = config.appText.map(item => item);
     appText[1] = appText[1].replace(/-hash-/, appName);
     // console.log(appText, appName, config.appText);
-
 
     // 生成 logo 列表
     for (let i = 0; i < 73; i++) {

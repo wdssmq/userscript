@@ -1,6 +1,6 @@
 /* global showdown */
 
-import { $, UM, UE, _log, curHref } from "./_base.js";
+import { $, _log, curHref, UE, UM } from "./_base.js";
 
 class GM_editor {
   $def;
@@ -10,10 +10,11 @@ class GM_editor {
   mdEditor = null;
   mdContent = "";
   defOption = {
-    init($md) { },
+    init(_$md) { },
     autoSync: false,
     curType: "html",
   };
+
   option = {};
   constructor(option) {
     this.option = Object.assign({}, this.defOption, option);
@@ -21,6 +22,7 @@ class GM_editor {
     this.option.init(this.$md);
     this.getContent("html").covert2("md").syncContent("md");
   }
+
   init() {
     const _this = this;
     this.$def = this.option.$defContainer || $(".edui-container");
@@ -59,33 +61,40 @@ class GM_editor {
       });
     }
   }
+
   // 读取内容
   getContent(type = "html") {
     if (type === "html") {
       this.htmlContent = this.defEditor.getContent();
-    } else if (type === "md") {
+    }
+    else if (type === "md") {
       this.mdContent = this.mdEditor.getContent();
     }
     return this;
   }
+
   // 封装转换函数
   covert2(to = "md") {
     const converter = new showdown.Converter();
     if (to === "md") {
       this.mdContent = converter.makeMarkdown(this.htmlContent);
-    } else if (to === "html") {
+    }
+    else if (to === "html") {
       this.htmlContent = converter.makeHtml(this.mdContent);
     }
     return this;
   }
+
   // 封装同步函数
   syncContent(to = "md") {
     if (to === "md") {
       this.mdEditor.setContent(this.mdContent);
-    } else if (to === "html") {
+    }
+    else if (to === "html") {
       this.defEditor.setContent(this.htmlContent, false);
     }
   }
+
   // 自动设置 #message_md 的高度
   autoSetHeight() {
     const $mdText = this.$md.find("#message_md");
@@ -101,6 +110,7 @@ class GM_editor {
       this.autoSetHeight();
     });
   }
+
   // 切换编辑器
   switchEditor() {
     this.$def.toggle();
@@ -110,6 +120,7 @@ class GM_editor {
     // 切换后自动设置高度
     this.autoSetHeight();
   }
+
   // 创建 markdown 编辑器
   createMdEditor() {
     return $(`
@@ -146,7 +157,7 @@ GM_addStyle(`
   }
 `);
 
-const mainForBBS = () => {
+function mainForBBS() {
   const gm_editor = new GM_editor({
     init($md) {
       $(".edui-container").after($md);
@@ -164,7 +175,6 @@ const mainForBBS = () => {
     $("input[name='quotepid']").after("<div class=\"form-group\"><span></span></div>");
   }
 
-
   // name 为 quotepid 的 input 下一行追加切换按钮
   $("input[name='quotepid'] + .form-group").addClass("d-flex justify-content-between").append(btnSwitchEditor);
 
@@ -172,9 +182,9 @@ const mainForBBS = () => {
   $("#btnSwitchEditor").click(() => {
     gm_editor.switchEditor();
   });
-};
+}
 
-const mainForAPP = () => {
+function mainForAPP() {
   const gm_editor = new GM_editor({
     init($md) {
       $("#editor_content").after($md);
@@ -194,16 +204,15 @@ const mainForAPP = () => {
   <span class="is-pulled-right">「<a href="javascript:;" class="btn btn-primary" id="btnSwitchEditor" title="切换编辑器">切换编辑器</a>」</span>
 `);
 
-
   // 切换编辑器
   $("#btnSwitchEditor").click(() => {
     gm_editor.switchEditor();
   });
-};
+}
 
 (() => {
   // 判断是否在应用中心编辑页
-  if (curHref.indexOf("edit.php") > -1) {
+  if (curHref.includes("edit.php")) {
     // _log(UE)
     const editor_api = window.editor_api || unsafeWindow.editor_api;
     editor_api.editor.content.obj.ready(mainForAPP);

@@ -1,7 +1,7 @@
 import {
-  _log,
   $n,
   $na,
+  _log,
   curUrl,
   fnElChange,
 } from "./_base";
@@ -9,7 +9,7 @@ import {
 import { gob } from "./_gob";
 
 (() => {
-  if (curUrl.indexOf("feedly") === -1) {
+  if (!curUrl.includes("feedly")) {
     return;
   }
   // _log($n("body").innerHTML);
@@ -56,7 +56,8 @@ import { gob } from "./_gob";
     let $展开的文章;
     if ($$展开的文章.length > 0) {
       $展开的文章 = $$展开的文章[0];
-    } else {
+    }
+    else {
       return;
     }
     // 如果已经设置 data-url-btn="true"，则不再设置
@@ -80,5 +81,4 @@ import { gob } from "./_gob";
   };
 
   fnElChange($root, onElChange);
-
 })();

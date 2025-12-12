@@ -1,7 +1,6 @@
-import { $n, $na, fnFindDom } from "./_base";
-import { _log } from "./_base";
+import { $na, _log, fnFindDom } from "./_base";
 import config from "./_config";
-import { formatJSON, formatYAML, addCopyBtn, btnToggle } from "./_func";
+import { addCopyBtn } from "./_func";
 
 // alert("getNoteByZBP");
 
@@ -33,14 +32,17 @@ Array.from($items).forEach(($item) => {
           arr.push($n.textContent.trim());
         });
         note[key] = arr;
-      } else if ($node) {
-        if ("Url" === key) {
+      }
+      else if ($node) {
+        if (key === "Url") {
           note[key] = $node.href;
-        } else {
+        }
+        else {
           note[key] = $node.textContent.trim().replace(/\s+/g, " ");
         }
       }
-    } else {
+    }
+    else {
       note[key] = selector;
     }
   });

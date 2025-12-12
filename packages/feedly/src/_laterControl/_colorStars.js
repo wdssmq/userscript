@@ -1,5 +1,5 @@
-import { _log, $na, fnFindDom, fnFindDomUp } from "../_base";
-import { gob, cur4Minutes } from "../_gob";
+import { $na, _log, fnFindDom, fnFindDomUp } from "../_base";
+import { cur4Minutes, gob } from "../_gob";
 import { fnCheckControl } from "./_funcs";
 
 gob.pickRule = {
@@ -32,7 +32,8 @@ function fnRndNodeList(nodeList) {
     const node = nodeList[i];
     if (Math.random() > 0.5) {
       parent.insertBefore(node, lstNode);
-    } else {
+    }
+    else {
       parent.insertBefore(lstNode, node);
     }
     lstNode = node;
@@ -43,7 +44,7 @@ function fnRndNodeList(nodeList) {
 function fnColorStars(offset = 0) {
   // begin fnColorStars
   const $stars = gob.$$Stars;
-  const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
+  const isLock = fnCheckControl(gob.data.diffStars) === "lock";
   // console.log("fnColorStars", fnCheckControl(gob.data.diffStars), isLock);
   const oConfig = gob.pickRule;
   const $$pick = $na(".pick");
@@ -74,7 +75,7 @@ function fnColorStars(offset = 0) {
     // begin forEach
     const $ago = fnFindDom(fnFindDomUp($e, "div.SelectedEntryScroller"), ".ago");
     const href = $e.href;
-    const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
+    const hash = Number.parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
     // _log("fnColorStars", $ago, href, hash);
     const $item = fnFindDomUp($e, ".entry");
     if ($item.classList.contains("pick")) {
@@ -103,11 +104,12 @@ function fnColorStars(offset = 0) {
       return rlt;
     })();
     // ----------------------------
-    let intNum = parseInt(hash + cur4Minutes) + offset;
-    if (intNum % oConfig.forMod == 0 && bolPick) {
+    const intNum = Number.parseInt(hash + cur4Minutes) + offset;
+    if (intNum % oConfig.forMod === 0 && bolPick) {
       oConfig.pickList.push(hash);
       fnPick($item, i);
-    } else {
+    }
+    else {
       if (isLock || i >= 37) {
         $item.classList.add("lock");
         [].forEach.call(fnFindDom($item, "a, span, div>svg, .summary"), ($ite) => {
@@ -121,8 +123,8 @@ function fnColorStars(offset = 0) {
   if (pickCount <= oConfig.minPick) {
     if (offset < oConfig.forMod) {
       fnColorStars(offset + 1);
-      return;
-    } else {
+    }
+    else {
       _log("fnColorStars", "未能选够");
       _log("fnColorStars", oConfig);
       oConfig.pickList = [];
@@ -135,4 +137,3 @@ function fnColorStars(offset = 0) {
 export {
   fnColorStars,
 };
-

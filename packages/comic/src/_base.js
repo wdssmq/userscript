@@ -7,12 +7,12 @@ const curDate = new Date();
 
 // -------------------------------------
 
-const _curUrl = () => { return window.location.href };
-const _curDate = () => { return new Date() };
-const _getDateStr = (date = curDate) => {
+const _curUrl = () => window.location.href;
+const _curDate = () => new Date();
+function _getDateStr(date = curDate) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-};
+}
 const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // -------------------------------------
@@ -47,7 +47,7 @@ function fnFindDom(el, selector) {
 // -------------------------------------
 
 // 元素变化监听
-const fnElChange = (el, fn = () => { }) => {
+function fnElChange(el, fn = () => { }) {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
     // _log('mutationRecord = ', mutationRecord);
     // _log('mutationObserver === observer', mutationObserver === observer);
@@ -61,25 +61,25 @@ const fnElChange = (el, fn = () => { }) => {
     // characterData: false,
     subtree: true,
   });
-};
+}
 
 // -------------------------------------
 
 export {
-  curUrl,
-  curHost,
-  curDate,
-  _curUrl,
-  _curDate,
-  _sleep,
-  _getDateStr,
-  _log,
-  _warn,
-  _error,
   // $,
   $n,
   $na,
+  _curDate,
+  _curUrl,
+  _error,
+  _getDateStr,
+  _log,
+  _sleep,
+  _warn,
+  curDate,
+  curHost,
+  curUrl,
   fnAfter,
-  fnFindDom,
   fnElChange,
+  fnFindDom,
 };

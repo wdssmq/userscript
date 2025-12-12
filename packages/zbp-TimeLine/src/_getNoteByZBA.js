@@ -1,7 +1,6 @@
-import { $n, $na, fnFindDom, curUrl } from "./_base";
-import { _log } from "./_base";
+import { $n, _log, curUrl } from "./_base";
 import config from "./_config";
-import { formatJSON, formatYAML, addCopyBtn, btnToggle } from "./_func";
+import { addCopyBtn } from "./_func";
 
 const noteScheme = config.noteScheme;
 
@@ -12,7 +11,8 @@ function zba_appInfo() {
   appInfo.desc = document.title;
   appInfo.img = (() => {
     const $img = $n(".app-header-image>img");
-    if (!$img) return "";
+    if (!$img)
+      return "";
     return $img.src.replace("-logo", "");
   })();
   // _log("img", img);
@@ -38,7 +38,8 @@ function zba_noteScheme() {
 function zba_btnCopy() {
   const $base = $n(".app-download");
   // _log("$base", $base);
-  if (!$base) return;
+  if (!$base)
+    return;
   addCopyBtn($base, noteScheme.item, "复制 YAML", "yaml");
   // insertAdjacentHTML 添加一个 span
   $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
@@ -46,7 +47,8 @@ function zba_btnCopy() {
 }
 
 (async () => {
-  if (!curUrl.includes("zblogcn.com/?id=")) return;
+  if (!curUrl.includes("zblogcn.com/?id="))
+    return;
   zba_noteScheme();
   zba_btnCopy();
 })();

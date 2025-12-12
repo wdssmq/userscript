@@ -1,12 +1,12 @@
-import { _log } from "./_base";
 import { gm_name } from "./__info";
+import { _log } from "./_base";
 
 // localStorage 封装
 const lsObj = {
-  setItem: function(key, value) {
+  setItem(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem: function(key, def = "") {
+  getItem(key, def = "") {
     const item = localStorage.getItem(key);
     if (item) {
       return JSON.parse(item);
@@ -91,6 +91,6 @@ const gob = {
 gob.init().load();
 
 export {
-  lsObj,
   gob,
+  lsObj,
 };

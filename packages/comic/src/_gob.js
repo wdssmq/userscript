@@ -1,18 +1,29 @@
-import { _log, $n, $na } from "./_base";
 import { gm_name } from "./__info";
+import { _log } from "./_base";
 
 // localStorage 封装
 const lsObj = {
-  setItem: function(key, value) {
+  setItem(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem: function(key, def = "") {
+  getItem(key, def = "") {
     const item = localStorage.getItem(key);
     if (item) {
       return JSON.parse(item);
     }
     return def;
   },
+};
+
+// 初始化 gobInfo
+const gobInfo = {
+  // key: [默认值, 是否记录至 ls]
+  curImgUrl: ["", 0],
+  curInfo: [{}, 0],
+  autoNextC: [0, 1],
+  autoNextChap: [0, 1],
+  wgetImgs: [[], 1],
+  maxWget: [7, 0],
 };
 
 // 数据读写封装
@@ -68,21 +79,10 @@ const gob = {
   },
 };
 
-// 初始化 gobInfo
-const gobInfo = {
-  // key: [默认值, 是否记录至 ls]
-  curImgUrl: ["", 0],
-  curInfo: [{}, 0],
-  autoNextC: [0, 1],
-  autoNextChap: [0, 1],
-  wgetImgs: [[], 1],
-  maxWget: [7, 0],
-};
-
 // 初始化
 gob.init().load();
 
 export {
-  lsObj,
   gob,
+  lsObj,
 };

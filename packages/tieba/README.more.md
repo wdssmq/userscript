@@ -12,4 +12,3 @@ tieba.baidu.com###spage_game_tab_wrapper
 tieba.baidu.com##.aggregate_entrance_wrap
 
 ```
-

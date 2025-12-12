@@ -1,12 +1,12 @@
-import { fnAfter, $n, fnElChange, _warn } from "./_base";
+import { $n, _warn, fnAfter, fnElChange } from "./_base";
 
-const fnFixReply = () => {
+function fnFixReply() {
   const $body = $n("body");
   // 判断封装
   const loadCheck = {
     t: null,
     check(text) {
-      return text.indexOf("查看回复") > -1;
+      return text.includes("查看回复");
     },
     delay() {
       loadCheck.clearDelay();
@@ -33,23 +33,23 @@ const fnFixReply = () => {
   // 监听页面改动
   fnElChange($body, () => {
     const $sys_notify = $n("div.u_notity_bd");
-    if (!$sys_notify || $sys_notify.textContent.indexOf("查看私信") === -1) {
+    if (!$sys_notify || !$sys_notify.textContent.includes("查看私信")) {
       return;
     }
     if (!loadCheck.check($sys_notify.textContent)) {
       // _warn($sys_notify.textContent.replace(/\s+/g, " "));
       loadCheck.addLink($sys_notify);
       // loadCheck.clearDelay()
-      return;
-    } else {
+    }
+    else {
       // loadCheck.delay();
     }
   });
-};
+}
 
 try {
   fnFixReply();
-} catch (error) {
+}
+catch (error) {
   _warn(error);
 }
-

@@ -1,15 +1,15 @@
-import { _curUrl, $n, _log } from "../_base";
-import { gob, curHours } from "../_gob";
+import { $n, _curUrl, _log } from "../_base";
+import { curHours, gob } from "../_gob";
 
 // 判断当前地址是否是收藏页
-const fnCheckUrl = () => {
-  if ("https://feedly.com/i/saved" === _curUrl()) {
+function fnCheckUrl() {
+  if (_curUrl() === "https://feedly.com/i/saved") {
     return true;
   }
   return false;
-};
+}
 
-const fnCheckControl = (diff) => {
+function fnCheckControl(diff) {
   const iTime = curHours;
   const modTime = iTime % 4;
   gob._time.cycle = iTime;
@@ -20,12 +20,13 @@ const fnCheckControl = (diff) => {
   if (diff.decr >= 17 && diff.decr - diff.incr >= 4) {
     if (modTime === 0) {
       return "reset";
-    } else {
+    }
+    else {
       return "lock";
     }
   }
   return "default";
-};
+}
 
 // 星标变动控制
 function fnControl() {
@@ -62,7 +63,8 @@ function fnControl() {
   if (diff > 0) {
     // 新增星标计数
     diffStars.incr += Math.abs(diff);
-  } else {
+  }
+  else {
     // 已读星标计数
     diffStars.decr += Math.abs(diff);
   }
@@ -96,10 +98,9 @@ function fnViewStars() {
   $n("#header-title").innerHTML = strText;
 }
 
-
 export {
-  fnCheckUrl,
   fnCheckControl,
+  fnCheckUrl,
   fnControl,
   fnViewStars,
 };

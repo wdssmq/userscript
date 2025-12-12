@@ -1,4 +1,4 @@
-import { $, UM, _log } from "./_base.js";
+import { $, _log, UM } from "./_base.js";
 // 引入元素插入
 (() => {
   if (typeof UM === "undefined") {
@@ -21,10 +21,10 @@ import { $, UM, _log } from "./_base.js";
   (() => {
     const $btn = $.eduibutton({
       icon: "blockquote",
-      click: function() {
+      click() {
         fnBlockQuote();
       },
-      title: UM.getEditor("message").getLang("labelMap")["blockquote"] || "",
+      title: UM.getEditor("message").getLang("labelMap").blockquote || "",
     });
     $(".edui-btn-name-insertcode").after($btn);
   })();
@@ -46,7 +46,7 @@ import { $, UM, _log } from "./_base.js";
   (() => {
     const $btn = $.eduibutton({
       icon: "auto-format",
-      click: function() {
+      click() {
         fnAutoFormat();
       },
       title: "自动排版",

@@ -1,7 +1,7 @@
 import {
-  _log,
   $n,
   $na,
+  _log,
   fnElChange,
 } from "./_base";
 
@@ -34,12 +34,13 @@ const _sidebar = {
     if (!this.loaded) {
       return;
     }
-    const _ToggleLeftnav = (act= "show") => {
+    const _ToggleLeftnav = (act = "show") => {
       $n("body").classList.add("animate-leftnav");
-      if (act == "show") {
+      if (act === "show") {
         this.$feedlyChrome.classList.remove("feedlyChrome--leftnav-closed");
         this.$feedlyChrome.classList.add("feedlyChrome--leftnav-open");
-      } else {
+      }
+      else {
         this.$feedlyChrome.classList.remove("feedlyChrome--leftnav-open");
         this.$feedlyChrome.classList.add("feedlyChrome--leftnav-closed");
       }
@@ -52,7 +53,7 @@ const _sidebar = {
     // 当鼠标移出 .Leftnav 时，隐藏侧栏
     $n(".Leftnav").addEventListener("mouseleave", () => {
       // 判断 $navLeft 的 aria-hidden 属性，为 "false" 时不自动隐藏
-      if (this.$navLeft.getAttribute("aria-hidden") == "false") {
+      if (this.$navLeft.getAttribute("aria-hidden") === "false") {
         return;
       }
       _ToggleLeftnav("hide");

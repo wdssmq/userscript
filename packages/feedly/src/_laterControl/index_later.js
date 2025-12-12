@@ -1,8 +1,7 @@
-import { _curUrl, _log, $n, fnElChange, _warn } from "../_base";
+import { $n, _curUrl, _log, _warn, fnElChange } from "../_base";
 import { gob } from "../_gob";
-import { fnCheckUrl, fnControl } from "./_funcs";
-import { fnViewStars } from "./_funcs";
 import { fnColorStars } from "./_colorStars";
+import { fnCheckUrl, fnControl, fnViewStars } from "./_funcs";
 
 // 滚动条滚动时触发
 function fnOnScroll() {
@@ -31,7 +30,7 @@ function fnHandler(e = null) {
 }
 
 // 星标部分入口函数
-function fnMain(record, observer) {
+function fnMain(_record, observer) {
   if (!fnCheckUrl()) {
     return;
   }

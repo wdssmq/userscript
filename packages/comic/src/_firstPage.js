@@ -1,6 +1,6 @@
-import { _log, $n, fnAfter } from "./_base";
+import { $n, _log, fnAfter } from "./_base";
+import { fnGenInfo, fnGenUrl, fnGet } from "./_def";
 import { gob } from "./_gob";
-import { fnGenUrl, fnGenInfo, fnGet } from "./_def";
 
 gob.curImgUrl = fnGenUrl();
 gob.curInfo = fnGenInfo();
@@ -17,21 +17,21 @@ gob.curInfo = fnGenInfo();
 //   return bash;
 // };
 
-const fnDLImg = async (pageInfo) => {
+async function fnDLImg(pageInfo) {
   // const data = await fnGet(pageInfo.url, "arraybuffer");
   // const data = await fnGet(pageInfo.url, "blob");
   fnGet(pageInfo.url, "arraybuffer").then(
     (res) => {
-      let url = window.URL.createObjectURL(new Blob([res]));
-      let a = document.createElement("a");
+      const url = window.URL.createObjectURL(new Blob([res]));
+      const a = document.createElement("a");
       a.setAttribute("download", `${pageInfo.chapter}.jpg`);
       a.href = url;
       a.click();
     },
   );
-};
+}
 
-const fnCheckFistPage = (cur, list) => {
+function fnCheckFistPage(cur, list) {
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
     if (item.name === cur.name && item.chapter === cur.chapter) {
@@ -39,9 +39,9 @@ const fnCheckFistPage = (cur, list) => {
     }
   }
   return false;
-};
+}
 
-const fnGenFistPage = (auto = false) => {
+function fnGenFistPage(auto = false) {
   // _log("[log]fnGenFistPage()", auto);
   // 当前页面信息
   const curPage = {
@@ -59,7 +59,8 @@ const fnGenFistPage = (auto = false) => {
     gob.autoNextC = 0;
     // gob.save();
     // return;
-  } else {
+  }
+  else {
     gob.autoNextC = auto ? 1 : 0;
   }
   // 自动下载，并加入已收集列表
@@ -71,7 +72,7 @@ const fnGenFistPage = (auto = false) => {
   }
   // 询问是否重复下载
   if (bolHasWget && confirm("已收集过该首图，是否重复下载？")) {
-      fnDLImg(curPage);
+    fnDLImg(curPage);
   }
   _log("[log]fnGenFistPage\n", gob.wgetImgs, "\n", gob.autoNextC);
   if (gob.autoNextC && $n(".nextC")) {
@@ -80,24 +81,25 @@ const fnGenFistPage = (auto = false) => {
     }, 3000);
   }
   gob.save();
-};
+}
 
-const fnBtn = () => {
+function fnBtn() {
   const btn = document.createElement("span");
-  if (gob.wgetImgs.length >= gob.maxWget || gob.wgetImgs.length == 0) {
+  if (gob.wgetImgs.length >= gob.maxWget || gob.wgetImgs.length === 0) {
     btn.innerHTML = "收集首图";
-  } else {
+  }
+  else {
     btn.innerHTML = `收集首图(${gob.wgetImgs.length + 1} / ${gob.maxWget})`;
   }
   btn.style = "color: #f00; font-size: 12px; cursor: pointer; font-weight: bold; text-decoration: underline; padding-left: 1em;";
-  btn.onclick = (() => {
+  btn.onclick = () => {
     if (gob.wgetImgs.length >= gob.maxWget) {
       gob.wgetImgs = [];
     }
     fnGenFistPage(true);
-  });
+  };
   fnAfter(btn, $n("#lighter"));
-};
+}
 
 fnBtn();
 

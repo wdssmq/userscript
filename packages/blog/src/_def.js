@@ -1,7 +1,10 @@
 /* global jsyaml */
 
-import { curUrl, _log, $n } from "./_base";
+import { _log, curUrl } from "./_base";
+import fnGeekNote from "./_geeknote";
+
 import { gob } from "./_gob";
+import fnXLog from "./_xlog";
 
 gob.yml2json = () => {
   let content = gob.content;
@@ -17,7 +20,8 @@ gob.yml2json = () => {
   // tags 处理
   if (!gob.doc.tags) {
     gob.doc.tags = [];
-  } else if (!Array.isArray(gob.doc.tags)) {
+  }
+  else if (!Array.isArray(gob.doc.tags)) {
     gob.doc.tags = [gob.doc.tags];
   }
   // 处理 content
@@ -25,20 +29,16 @@ gob.yml2json = () => {
   gob.content = content;
 };
 
-import fnGeekNote from "./_geeknote";
-import fnXLog from "./_xlog";
-
 gob.site = (() => {
   const list = ["jianshu", "csdn", "cnblogs", "geeknote", "xlog"];
   let rlt = "";
   list.forEach((name) => {
-    if (curUrl.indexOf(name) > -1) {
+    if (curUrl.includes(name)) {
       rlt = name;
     }
   });
   return rlt;
 })();
-
 
 switch (gob.site) {
   case "geeknote":
@@ -50,5 +50,3 @@ switch (gob.site) {
   default:
     break;
 }
-
-
