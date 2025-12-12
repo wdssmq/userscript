@@ -45,9 +45,9 @@ jobs:
         run: |
           npm install -g pnpm
           pnpm install
-          pnpm -r --filter=./packages/* install
-          pnpm -r --filter=./packages/* run lint
-          pnpm -r --filter=./packages/* run build
+          # pnpm -r install
+          pnpm -r run lint
+          pnpm -r run build
 
       # Setup Python
       - name: Setup Python
