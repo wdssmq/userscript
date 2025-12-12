@@ -18,7 +18,11 @@ export default antfu(
 
     languageOptions: {
       globals: {
-        GM_xmlhttpRequest: "readonly", // 或 "writable"，多数情况用 "readonly"
+        GM_getValue: "readonly",
+        GM_registerMenuCommand: "readonly",
+        GM_setClipboard: "readonly",
+        GM_setValue: "readonly",
+        GM_xmlhttpRequest: "readonly",
       },
     },
 
@@ -27,7 +31,10 @@ export default antfu(
       "no-alert": "off", // 允许使用 alert
       "no-console": "off", // 允许使用 console
       "no-unused-vars": "off", // 关闭原生的 no-unused-vars 规则，使用插件的版本
-      "unused-imports/no-unused-vars": ["error", { vars: "all", varsIgnorePattern: "^_" }],
+      "unused-imports/no-unused-vars": [
+        "error",
+        { vars: "all", varsIgnorePattern: "^_", args: "all", argsIgnorePattern: "^_" },
+      ],
       "unused-imports/no-unused-imports": ["error", { vars: "all", varsIgnorePattern: "^_" }],
       "node/prefer-global/process": ["off"],
     },

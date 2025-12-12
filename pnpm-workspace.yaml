@@ -1,6 +1,7 @@
 packages:
-  - 'packages/*'
+  - packages/*
 
 onlyBuiltDependencies:
   - bufferutil
+  - esbuild
   - utf-8-validate
