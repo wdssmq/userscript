@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "scripts": {
     "build": "rollup -c --environment NODE_ENV:prod",
     "dev": "rollup -c -w --environment NODE_ENV:dev",
