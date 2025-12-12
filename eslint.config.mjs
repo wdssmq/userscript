@@ -23,6 +23,7 @@ export default antfu(
         GM_setClipboard: "readonly",
         GM_setValue: "readonly",
         GM_xmlhttpRequest: "readonly",
+        GM_addStyle: "readonly",
       },
     },
 

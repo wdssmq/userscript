@@ -1,10 +1,9 @@
 import {
-  _log,
-  _getDateStr,
-  fnCopy,
-  fnFindDom,
   $n,
   $na,
+  _getDateStr,
+  _log,
+  fnCopy,
 } from "./_base";
 import { http } from "./_http";
 
@@ -19,24 +18,24 @@ const gob = {
 // 构造 Bash Shell 脚本
 function fnMKShell(arrList, prefix = "") {
   const curDateStr = _getDateStr();
-  let strRlt =
-    "if [ ! -d \"prefix-date\" ]; then\n" +
-    "mkdir prefix-date\n" +
-    "fi\n" +
-    "cd prefix-date\n\n";
+  let strRlt
+    = "if [ ! -d \"prefix-date\" ]; then\n"
+      + "mkdir prefix-date\n"
+      + "fi\n"
+      + "cd prefix-date\n\n";
   strRlt = strRlt.replace(/prefix/g, prefix);
   strRlt = strRlt.replace(/date/g, curDateStr);
 
   /**
    * e {title:"", href:""}
    */
-  arrList.forEach(function(e, i) {
+  arrList.forEach((e, i) => {
     const serial = i + 1;
     // _log(e);
 
     // 移除不能用于文件名的字符
-    let title = e.title || e.innerText;
-    title = title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
+    let title = e.title || e.textContent;
+    title = title.replace(/[\\/:*!<>]|\?\]/g, "");
     title = title.replace(/["'\s]/g, "");
     // _log(title);
 
@@ -64,7 +63,7 @@ function fnMKShell(arrList, prefix = "") {
 }
 
 // Ajax 封装
-function fnGetAjax(callback = function() { }) {
+function fnGetAjax(callback = function () { }) {
   http.get("https://api.bilibili.com/x/v2/history/toview/web", {
     // 可根据需要添加 headers
     // "Content-Type": "application/json"
@@ -73,7 +72,8 @@ function fnGetAjax(callback = function() { }) {
       let data;
       try {
         data = typeof res.response === "string" ? JSON.parse(res.response) : res.response;
-      } catch (e) {
+      }
+      catch (e) {
         console.error("解析响应失败", e);
         return;
       }
@@ -129,13 +129,13 @@ function fnGetAjax(callback = function() { }) {
 
   const fnGetLinkList = ($epList) => {
     // _log("fnOnCLick", $epList);
-    const arrList = Array.prototype.map.call($epList, ($item, index) => {
+    const arrList = Array.prototype.map.call($epList, ($item, _index) => {
       const href = $item.href;
-      const title = $item.innerText.replace(/\n[^\n]+$/g, "").replace("\n", "_");
+      const title = $item.textContent.replace(/\n[^\n]+$/g, "").replace("\n", "_");
       return {
         href,
         title,
-        innerText: $item.innerText,
+        textContent: $item.textContent,
       };
     });
     _log("arrList", arrList);
@@ -145,9 +145,9 @@ function fnGetAjax(callback = function() { }) {
   const fnMain = () => {
     // const elListDom = [];
     // 遍历 NodeList，不能直接使用 forEach
-    Array.prototype.forEach.call($$epBox, ($epBox, index) => {
+    Array.prototype.forEach.call($$epBox, ($epBox, _index) => {
       const { $epBoxTitle, $epList } = fnGetDom($epBox);
-      const textTitle = $epBoxTitle.innerText;
+      const textTitle = $epBoxTitle.textContent;
       // 注册点击复制
       fnCopy($epBoxTitle, fnMKShell(fnGetLinkList($epList), textTitle));
       // elListDom.push({
@@ -174,20 +174,19 @@ function fnGetAjax(callback = function() { }) {
   }
   // 如果匹配为 /watchlater/list
   if (location.href.includes("/watchlater/list")) {
-
     let tmpHTML = $n(gob.laterTitle).innerHTML;
-    fnGetAjax(function(list) {
+    fnGetAjax((list) => {
       const arrRlt = [];
-      list.forEach((item, index) => {
+      list.forEach((item, _index) => {
         arrRlt.push({
           title: item.title,
           href: `https://www.bilibili.com/video/${item.bvid}`,
           bvid: item.bvid,
         });
-        // _log(item, index);
+        // _log(item, _index);
       });
       // _log("稍后再看", arrRlt.length);
-      tmpHTML = tmpHTML.replace(/· 0/, "· " + arrRlt.length);
+      tmpHTML = tmpHTML.replace(/· 0/, `· ${arrRlt.length}`);
       // $n(gob.laterTitle).innerHTML = tmpHTML + "「点击这里复制 bash shell 命令」";
       let appCon = "「已复制」";
       if (arrRlt.length > 37) {

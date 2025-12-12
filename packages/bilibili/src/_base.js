@@ -6,12 +6,12 @@ const curDate = new Date();
 
 // ---------------------------------------------------
 
-const _curUrl = () => { return window.location.href };
-const _curDate = () => { return new Date() };
-const _getDateStr = (date = curDate) => {
+const _curUrl = () => window.location.href;
+const _curDate = () => new Date();
+function _getDateStr(date = curDate) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-};
+}
 const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // ---------------------------------------------------
@@ -51,7 +51,7 @@ function fnFindDom(el, selector) {
 // ---------------------------------------------------
 
 // 元素变化监听
-const fnElChange = (el, fn = () => { }, onetime = true) => {
+function fnElChange(el, fn = () => { }, onetime = true) {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
     // _log('mutationRecord = ', mutationRecord);
     // _log('mutationObserver === observer', mutationObserver === observer);
@@ -67,13 +67,13 @@ const fnElChange = (el, fn = () => { }, onetime = true) => {
     // characterData: false,
     subtree: true,
   });
-};
+}
 
 // 点击指定元素复制内容
 function fnCopy(eTrig, content, fnCB = () => { }) {
   // 判断 eTrig 是否为字符串
   const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
-  $eTrig.addEventListener("click", function(e) {
+  $eTrig.addEventListener("click", function (e) {
     GM_setClipboard(content);
     fnCB(e);
     this.style.color = "gray";
@@ -82,14 +82,14 @@ function fnCopy(eTrig, content, fnCB = () => { }) {
 
 // cookie 封装
 const ckeObj = {
-  setItem: function(key, value) {
+  setItem(key, value) {
     const Days = 137;
     const exp = new Date();
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-    document.cookie = key + "=" + encodeURIComponent(value) + ";path=/;domain=.bilibili.com;expires=" + exp.toGMTString();
+    document.cookie = `${key}=${encodeURIComponent(value)};path=/;domain=.bilibili.com;expires=${exp.toGMTString()}`;
   },
-  getItem: function(key, def = "") {
-    const reg = new RegExp("(^| )" + key + "=([^;]*)(;|$)");
+  getItem(key, def = "") {
+    const reg = new RegExp(`(^| )${key}=([^;]*)(;|$)`);
     const arr = document.cookie.match(reg);
     if (arr) {
       return decodeURIComponent(arr[2]);
@@ -101,21 +101,21 @@ const ckeObj = {
 // ---------------------------------------------------
 
 export {
-  curUrl,
-  curDate,
-  _curUrl,
-  _curDate,
-  _sleep,
-  _getDateStr,
-  _log,
-  _warn,
-  _error,
   // $,
   $n,
   $na,
-  fnAfter,
-  fnFindDom,
-  fnElChange,
-  fnCopy,
+  _curDate,
+  _curUrl,
+  _error,
+  _getDateStr,
+  _log,
+  _sleep,
+  _warn,
   ckeObj,
+  curDate,
+  curUrl,
+  fnAfter,
+  fnCopy,
+  fnElChange,
+  fnFindDom,
 };

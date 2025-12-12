@@ -1,5 +1,5 @@
-import { _log } from "./_base";
 import { gm_name } from "./__info";
+import { _log } from "./_base";
 
 // localStorage 封装
 const lsObj = {
@@ -79,6 +79,6 @@ const gob = {
 gob.init().load();
 
 export {
-  lsObj,
   gob,
+  lsObj,
 };

@@ -1,7 +1,7 @@
 class HttpRequest {
   constructor() {
     if (typeof GM_xmlhttpRequest === "undefined") {
-      throw new Error("GM_xmlhttpRequest is not defined");
+      throw new TypeError("GM_xmlhttpRequest is not defined");
     }
   }
 
@@ -32,11 +32,11 @@ class HttpRequest {
     return new Promise((resolve, reject) => {
       const requestOptions = Object.assign({}, options);
 
-      requestOptions.onload = function(res) {
+      requestOptions.onload = function (res) {
         resolve(res);
       };
 
-      requestOptions.onerror = function(error) {
+      requestOptions.onerror = function (error) {
         reject(error);
       };
 

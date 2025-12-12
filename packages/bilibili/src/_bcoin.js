@@ -1,18 +1,18 @@
 /* global GM_notification GM */
 
-import { curUrl, curDate, _log, $n, ckeObj, fnElChange } from "./_base.js";
+import { $n, _log, ckeObj, curDate, curUrl, fnElChange } from "./_base.js";
 
 // 日期转字符串
-const getDateStr = (date) => {
+function getDateStr(date) {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return date.toLocaleDateString("zh-CN", options);
-};
+}
 
 // 判断日期间隔
-const diffDateDays = (date1, date2) => {
+function diffDateDays(date1, date2) {
   const diff = date1.getTime() - date2.getTime();
   return diff / (1000 * 60 * 60 * 24);
-};
+}
 
 // B 币领取提醒
 (() => {
@@ -28,7 +28,7 @@ const diffDateDays = (date1, date2) => {
   const notify = (title, body) => {
     _log(`通知标题: ${title}`);
     GM_notification({
-      title: title,
+      title,
       text: body,
       timeout: 0,
       onclick: () => {
@@ -43,14 +43,15 @@ const diffDateDays = (date1, date2) => {
     const $bcoin = $n(".security-right .coupon-wrapper");
     // _log("fnCheckByDOM", $bcoin);
     // $bcoin && _log("fnCheckByDOM", $bcoin.innerHTML);
-    if ($bcoin && $bcoin.innerText.includes("本次已领")) {
-      const match = $bcoin.innerText.match(/\d{4}\/\d+\/\d+/);
+    if ($bcoin && $bcoin.textContent.includes("本次已领")) {
+      const match = $bcoin.textContent.match(/\d{4}\/\d+\/\d+/);
       if (match && match[0] !== nxtDateStr) {
         ckeObj.setItem(ckeName, match[0]);
         _log("已领取过，更新下次领取日期", match[0]);
         return true;
       }
-    } else {
+    }
+    else {
       fnElChange($n("body"), fnCheckByDOM);
     }
     return false;
@@ -63,9 +64,10 @@ const diffDateDays = (date1, date2) => {
   const iniDiff = diffDateDays(curDate, new Date(nxtDateStr));
   if (iniDiff > 0) {
     _log(curUrl, "\n", bcoinUrl);
-    if (curUrl.indexOf(bcoinUrl) > -1) {
+    if (curUrl.includes(bcoinUrl)) {
       fnCheckByDOM();
-    } else {
+    }
+    else {
       notify("B 币领取提醒", "点击查看 B 币领取情况");
     }
   }

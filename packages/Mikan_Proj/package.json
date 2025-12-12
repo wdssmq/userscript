@@ -7,7 +7,7 @@
     "clean:out": "rm -rf dev *.user.js",
     "clean:deps": "rm -rf node_modules",
     "up:ver": "npm version patch && npm run build",
-    "lint": "cd ../../ && eslint packages/Mikan_Proj --fix"
+    "lint": "eslint --fix"
   },
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.5",

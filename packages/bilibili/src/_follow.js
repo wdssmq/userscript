@@ -1,25 +1,25 @@
-import { _log, $n, $na, fnAfter, fnElChange } from "./_base";
+import { $n, $na, _log, fnAfter, fnElChange } from "./_base";
 
 // 关注列表增强
 (() => {
   const gob = {
     done: false,
     _rssUrl: (uid) => {
-      let RSSHub = localStorage.RSSHub ? localStorage.RSSHub : "https://rsshub.app/bilibili/user/video/:uid/";
+      const RSSHub = localStorage.RSSHub ? localStorage.RSSHub : "https://rsshub.app/bilibili/user/video/:uid/";
       localStorage.RSSHub = RSSHub;
       return RSSHub.replace(":uid", uid);
     },
   };
   // 获取关注列表
   const fnGetFollowList = () => {
-    let $list = $na("li.list-item");
+    const $list = $na("li.list-item");
     return $list;
   };
 
   // 针对每个关注列表项
   const fnUpView = ($up) => {
     const url = $up.querySelector("a.cover").href;
-    const name = $up.querySelector("span.fans-name").innerText;
+    const name = $up.querySelector("span.fans-name").textContent;
 
     const { uid, uname } = ((url, name) => {
       const uid = url.match(/\/(\d+)\/$/)[1];
@@ -65,5 +65,4 @@ import { _log, $n, $na, fnAfter, fnElChange } from "./_base";
     fnElChange($n("body"), fnCheckByDOM);
   };
   fnCheckByDOM();
-
 })();

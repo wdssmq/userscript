@@ -1,4 +1,4 @@
-import { $n, _warn, _curUrl } from "./_base.js";
+import { $n, _curUrl, _warn } from "./_base.js";
 // 时间轴书签
 
 const gob = {
@@ -10,7 +10,7 @@ const gob = {
   step: 73,
 };
 
-const fnUpTitle = (part, time) => {
+function fnUpTitle(part, time) {
   if (gob.title === "") {
     gob.title = $n("h1.video-title").innerHTML;
   }
@@ -31,9 +31,9 @@ const fnUpTitle = (part, time) => {
   $n("title").innerHTML = `${gob.title}${strAdd}_bilibili`;
   // debug
   _warn(`title: ${$n("title").innerHTML}`);
-};
+}
 
-const fnUpUrl = (p, time) => {
+function fnUpUrl(p, time) {
   let url = _curUrl();
   let urlNew = url;
   // 清理参数
@@ -55,24 +55,25 @@ const fnUpUrl = (p, time) => {
   window.history.pushState(null, null, urlNew);
   // debug
   _warn(`url: ${urlNew}`);
-};
+}
 
-const fnGetTime = () => {
+function fnGetTime() {
   const $timLabel = $n(".bpx-player-ctrl-time-label");
   const $curTime = $n(".bpx-player-ctrl-time-current");
   if ($timLabel && $curTime) {
     const str = $curTime.innerHTML;
     const arr = str.split(":");
     if (arr.length === 3) {
-      return parseInt(arr[0]) * 3600 + parseInt(arr[1]) * 60 + parseInt(arr[2]);
-    } else {
-      return parseInt(arr[0]) * 60 + parseInt(arr[1]);
+      return Number.parseInt(arr[0]) * 3600 + Number.parseInt(arr[1]) * 60 + Number.parseInt(arr[2]);
+    }
+    else {
+      return Number.parseInt(arr[0]) * 60 + Number.parseInt(arr[1]);
     }
   }
   return 0;
-};
+}
 
-const fnGetPart = () => {
+function fnGetPart() {
   const $list = $n("ul.list-box");
   const $cur = $list?.querySelector("li.on");
   const $curHref = $cur?.querySelector("a");
@@ -81,13 +82,13 @@ const fnGetPart = () => {
     const str = $curHref.href;
     const arr = str.split("?p=");
     if (arr.length === 2) {
-      return parseInt(arr[1]);
+      return Number.parseInt(arr[1]);
     }
   }
   return null;
-};
+}
 
-const fnDelay = (time, fnc = () => { }) => {
+function fnDelay(time, fnc = () => { }) {
   if (gob.isRunning) {
     return;
   }
@@ -96,11 +97,11 @@ const fnDelay = (time, fnc = () => { }) => {
     fnc();
     gob.isRunning = false;
   }, time);
-};
+}
 
 document.addEventListener(
   "mouseover",
-  function(e) {
+  (_e) => {
     // const $target = e.target;
     fnDelay(1000, () => {
       // bpx-player-container bpx-state-no-cursor
@@ -115,7 +116,7 @@ document.addEventListener(
         if (gob.curTime < gob.lstTime) {
           bolFlag = true;
         }
-        if (gob.lstTime <= parseInt(gob.step / 4)) {
+        if (gob.lstTime <= Number.parseInt(gob.step / 4)) {
           bolFlag = true;
         }
         if (bolFlag) {
@@ -125,7 +126,6 @@ document.addEventListener(
         }
         // _warn("进度条触发", e.target);
         // _warn("进度条触发", gob);
-        return;
       }
     });
   },

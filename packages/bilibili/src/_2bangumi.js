@@ -1,4 +1,4 @@
-import { _warn, $n, ckeObj, fnElChange } from "./_base";
+import { $n, _warn, ckeObj, fnElChange } from "./_base";
 
 // 番剧链接改为我的追番
 (() => {
@@ -10,7 +10,8 @@ import { _warn, $n, ckeObj, fnElChange } from "./_base";
     if (match) {
       uid = match[0];
       ckeObj.setItem("bilibili-helper-uid", uid);
-    } else {
+    }
+    else {
       uid = ckeObj.getItem("bilibili-helper-uid");
     }
     return uid;

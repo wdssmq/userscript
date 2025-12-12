@@ -1,6 +1,6 @@
 // 本文件代码来自：https://github.com/lisonge/vite-plugin-monkey
 
- (({
+(({
   entryList = [],
   apiList = [],
 }) => {
@@ -14,7 +14,8 @@
       if (fn) {
         Reflect.set(_unsafeWindow, s, fn);
         mountedApiList.push(s);
-      } else {
+      }
+      else {
         unMountedApiList.push(s);
       }
     });
@@ -41,11 +42,11 @@
     `[rollup-gm-loader] mount ${entryList.length} module to document.head`,
   );
 })({
-  "entryList": [
+  entryList: [
     "placeholder.livereload.js",
     "placeholder.user.js",
   ],
-  "apiList": [
+  apiList: [
     "GM",
     "GM_addElement",
     "GM_addStyle",

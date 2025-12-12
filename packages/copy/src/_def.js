@@ -1,4 +1,4 @@
-import { _log, $n } from "./_base";
+import { _log } from "./_base";
 
 function fnReplace(params) {
   const { url, title } = params;
@@ -22,7 +22,7 @@ function fnReplace(params) {
   urlFilter.forEach((item) => {
     newUrl = newUrl.replace(...item);
   });
-  if (location.host == "greasyfork.org") {
+  if (location.host === "greasyfork.org") {
     newUrl = newUrl.replace(/(\/\d+)-.+/, "$1");
   }
   // _log("fnReplace", { url, title }, { newUrl, newTitle });
@@ -35,15 +35,14 @@ function fnGetInfo(md = false) {
     title: document.title.trim(),
   });
   if (md) {
-    // eslint-disable-next-line no-useless-escape
-    title = title.replace(/([_\[\]])/g, "\\$1");
+    title = title.replace(/([_[\]])/g, "\\$1");
   }
   return [title, url];
 }
 
 GM_registerMenuCommand("复制", () => {
   const [title, url] = fnGetInfo();
-  GM_setClipboard(title + "\n" + url);
+  GM_setClipboard(`${title}\n${url}`);
 });
 
 GM_registerMenuCommand("复制 HTML", () => {
