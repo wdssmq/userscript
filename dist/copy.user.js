@@ -47,6 +47,32 @@
     return queryList.length > 1 ? queryList : null;
   }
 
+  // 指定元素中的链接增加 target="_blank"
+  const config = [
+    [".markdown_body", ".reply_content"],
+    ["#additional-info"],
+    ["div.forum_table table"],
+  ];
+
+  function fnSetBlank($a) {
+    $a.setAttribute("target", "_blank");
+  }
+
+  config.forEach((e) => {
+    const selector = e.join(",");
+    const $$container = $na(selector);
+    // // print $$container
+    // _log($$container);
+    // 遍历 $$container
+    [].forEach.call($$container, ($el) => {
+      const $$a = fnFindDom($el, "a");
+      // _log($$a);
+      if ($$a.length > 0) {
+        [].map.call($$a, fnSetBlank);
+      }
+    });
+  });
+
   function fnReplace(params) {
     const { url, title } = params;
     // _log("fnReplace", params);
@@ -69,7 +95,7 @@
     urlFilter.forEach((item) => {
       newUrl = newUrl.replace(...item);
     });
-    if (location.host == "greasyfork.org") {
+    if (location.host === "greasyfork.org") {
       newUrl = newUrl.replace(/(\/\d+)-.+/, "$1");
     }
     // _log("fnReplace", { url, title }, { newUrl, newTitle });
@@ -82,15 +108,14 @@
       title: document.title.trim(),
     });
     if (md) {
-      // eslint-disable-next-line no-useless-escape
-      title = title.replace(/([_\[\]])/g, "\\$1");
+      title = title.replace(/([_[\]])/g, "\\$1");
     }
     return [title, url];
   }
 
   GM_registerMenuCommand("复制", () => {
     const [title, url] = fnGetInfo();
-    GM_setClipboard(title + "\n" + url);
+    GM_setClipboard(`${title}\n${url}`);
   });
 
   GM_registerMenuCommand("复制 HTML", () => {
@@ -119,32 +144,6 @@
   GM_registerMenuCommand("复制为 Markdown「引用」", () => {
     const [title, url] = fnGetInfo(true);
     GM_setClipboard(tplMarkQuote.replace(/\{title\}/g, title).replace(/\{url\}/g, url));
-  });
-
-  // 指定元素中的链接增加 target="_blank"
-  const config = [
-      [".markdown_body", ".reply_content"],
-      ["#additional-info"],
-      ["div.forum_table table"],
-  ];
-
-  const fnSetBlank = ($a) => {
-      $a.setAttribute("target", "_blank");
-  };
-
-  config.forEach((e) => {
-      const selector = e.join(",");
-      const $$container = $na(selector);
-      // // print $$container
-      // _log($$container);
-      // 遍历 $$container
-      [].forEach.call($$container, ($el) => {
-          const $$a = fnFindDom($el, "a");
-          // _log($$a);
-          if ($$a.length > 0) {
-              [].map.call($$a, fnSetBlank);
-          }
-      });
   });
 
 })();

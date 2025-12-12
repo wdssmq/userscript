@@ -47,7 +47,7 @@
   // -------------------------------------
 
   // 元素变化监听
-  const fnElChange = (el, fn = () => { }) => {
+  function fnElChange(el, fn = () => { }) {
     const observer = new MutationObserver((mutationRecord, mutationObserver) => {
       // _log('mutationRecord = ', mutationRecord);
       // _log('mutationObserver === observer', mutationObserver === observer);
@@ -61,14 +61,14 @@
       // characterData: false,
       subtree: true,
     });
-  };
+  }
 
   // localStorage 封装
   const lsObj = {
-    setItem: function(key, value) {
+    setItem(key, value) {
       localStorage.setItem(key, JSON.stringify(value));
     },
-    getItem: function(key, def = "") {
+    getItem(key, def = "") {
       const item = localStorage.getItem(key);
       if (item) {
         return JSON.parse(item);
@@ -152,7 +152,7 @@
   // 初始化
   gob.init().load();
 
-  const fnGeekNote = () => {
+  function fnGeekNote() {
     _log("[fnGeekNote()]");
     gob.setTags = (tags) => {
       const $select = $n("select.selector__select");
@@ -215,18 +215,18 @@
     gob.$content = $n("#post_content");
 
     gob.bind();
-  };
+  }
 
-  const fnXLog = () => {
+  function fnXLog() {
     _log("[fnXLog()]");
     gob.$body = $n("body");
 
-    gob.getPost = (record, Observer) => {
+    gob.getPost = (_record, Observer) => {
       const $cmContent = $n(".cm-content");
       if (!$cmContent) {
         return;
       }
-      gob.content = $cmContent.innerText;
+      gob.content = $cmContent.textContent;
       gob.yml2json();
       if (Object.keys(gob.doc).length > 0) {
         // _log("[gob.getPost()]\n", gob.content);
@@ -250,8 +250,8 @@
 >
 > [https://www.wdssmq.com/post/{slug}.html](https://www.wdssmq.com/post/{slug}.html "{title}")
 `.trim();
-      const prefix = tpl.replace(/{title}/g, gob.title)
-        .replace(/{slug}/g, gob.doc.alias);
+      const prefix = tpl.replace(/\{title\}/g, gob.title)
+        .replace(/\{slug\}/g, gob.doc.alias);
 
       _log(prefix);
       // 判断是否已经存在 dialog
@@ -277,7 +277,7 @@
 
       // 关闭按钮
       const $closeBtn = document.createElement("button");
-      $closeBtn.innerText = "关闭";
+      $closeBtn.textContent = "关闭";
       // 添加 CSS
       $closeBtn.classList.add("button", "is-auto-width", "is-primary");
       // block
@@ -308,7 +308,7 @@
       }
     };
 
-    gob.checkLoaded = (record, Observer) => {
+    gob.checkLoaded = (_record, Observer) => {
       gob.$title = $n("input[name=title]");
       gob.$slug = $n("input[name=slug]");
       if (gob.$title && gob.$slug) {
@@ -330,7 +330,7 @@
     // gob.$content = $n("#post_content");
 
     gob.bind();
-  };
+  }
 
   /* global jsyaml */
 
@@ -349,7 +349,8 @@
     // tags 处理
     if (!gob.doc.tags) {
       gob.doc.tags = [];
-    } else if (!Array.isArray(gob.doc.tags)) {
+    }
+    else if (!Array.isArray(gob.doc.tags)) {
       gob.doc.tags = [gob.doc.tags];
     }
     // 处理 content
@@ -361,13 +362,12 @@
     const list = ["jianshu", "csdn", "cnblogs", "geeknote", "xlog"];
     let rlt = "";
     list.forEach((name) => {
-      if (curUrl.indexOf(name) > -1) {
+      if (curUrl.includes(name)) {
         rlt = name;
       }
     });
     return rlt;
   })();
-
 
   switch (gob.site) {
     case "geeknote":

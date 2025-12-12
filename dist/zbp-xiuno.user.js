@@ -43,10 +43,10 @@
   const curHref = location.href.replace(location.hash, "");
   // localStorage 封装
   const lsObj = {
-    setItem: function(key, value) {
+    setItem(key, value) {
       localStorage.setItem(key, JSON.stringify(value));
     },
-    getItem: function(key, def = "") {
+    getItem(key, def = "") {
       const item = localStorage.getItem(key);
       if (item) {
         return JSON.parse(item);
@@ -106,66 +106,6 @@
     setTimeout(checkLogin, 3000);
   })();
 
-  /* globals LZString jsyaml*/
-
-  (() => {
-    // 定义按钮及提示信息
-    const $btnBad = $(" <a class=\"btn btn-primary\">BAD</a>");
-    const strTip = "<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>";
-
-    // 绑定点击事件
-    $btnBad.css({ color: "#fff" }).click(function() {
-      let um = UM.getEditor("message");
-      let str = um.getContent();
-      if (str.indexOf("#~~") > -1) {
-        return;
-      }
-      let strCode = LZString.compressToBase64(str);
-      um.setContent(strTip + `<p>#~~${strCode}~~#</p>`);
-      console.log(LZString.decompressFromBase64(strCode));
-      // let strDeCode = LZString.decompressFromBase64(strCode);
-      // um.setContent(strCode + strDeCode);
-    });
-
-    // 放置按钮
-    if ($("input[name=update_reason]").length > 0) {
-      $("#submit").after($btnBad);
-    }
-
-    // 解码
-    $("div.message").each(function() {
-      let $secP = $(this).find("p:nth-child(2)");
-      if ($secP.length == 0) {
-        console.log("skip");
-        return;
-      }
-      let str = $secP.html();
-      if (str.indexOf("#~~") == -1) {
-        return;
-      }
-      console.log(str);
-      str = str.replace(/#~~(.+)~~#/, function(a, b) {
-        console.log(arguments);
-        let strDeCode = LZString.decompressFromBase64(b);
-        console.log(strDeCode);
-        return strDeCode;
-      });
-      $secP.after(str).remove();
-    });
-  })();
-
-  // _pid.js | 楼层地址
-  (() => {
-    $("li.media.post").each(function() {
-      const $me = $(this);
-      const pid = $me.data("pid");
-      const $date = $me.find("span.date");
-      $date.after(
-        `<a class="text-grey ml-2" title="获取当前楼层链接" href="${curHref}#${pid}">「楼层地址」</a>`,
-      );
-    });
-  })();
-
   // 引入元素插入
   (() => {
     if (typeof UM === "undefined") {
@@ -188,10 +128,10 @@
     (() => {
       const $btn = $.eduibutton({
         icon: "blockquote",
-        click: function() {
+        click() {
           fnBlockQuote();
         },
-        title: UM.getEditor("message").getLang("labelMap")["blockquote"] || "",
+        title: UM.getEditor("message").getLang("labelMap").blockquote || "",
       });
       $(".edui-btn-name-insertcode").after($btn);
     })();
@@ -213,7 +153,7 @@
     (() => {
       const $btn = $.eduibutton({
         icon: "auto-format",
-        click: function() {
+        click() {
           fnAutoFormat();
         },
         title: "自动排版",
@@ -233,10 +173,11 @@
     mdEditor = null;
     mdContent = "";
     defOption = {
-      init($md) { },
+      init(_$md) { },
       autoSync: false,
       curType: "html",
     };
+
     option = {};
     constructor(option) {
       this.option = Object.assign({}, this.defOption, option);
@@ -244,6 +185,7 @@
       this.option.init(this.$md);
       this.getContent("html").covert2("md").syncContent("md");
     }
+
     init() {
       const _this = this;
       this.$def = this.option.$defContainer || $(".edui-container");
@@ -282,33 +224,40 @@
         });
       }
     }
+
     // 读取内容
     getContent(type = "html") {
       if (type === "html") {
         this.htmlContent = this.defEditor.getContent();
-      } else if (type === "md") {
+      }
+      else if (type === "md") {
         this.mdContent = this.mdEditor.getContent();
       }
       return this;
     }
+
     // 封装转换函数
     covert2(to = "md") {
       const converter = new showdown.Converter();
       if (to === "md") {
         this.mdContent = converter.makeMarkdown(this.htmlContent);
-      } else if (to === "html") {
+      }
+      else if (to === "html") {
         this.htmlContent = converter.makeHtml(this.mdContent);
       }
       return this;
     }
+
     // 封装同步函数
     syncContent(to = "md") {
       if (to === "md") {
         this.mdEditor.setContent(this.mdContent);
-      } else if (to === "html") {
+      }
+      else if (to === "html") {
         this.defEditor.setContent(this.htmlContent, false);
       }
     }
+
     // 自动设置 #message_md 的高度
     autoSetHeight() {
       const $mdText = this.$md.find("#message_md");
@@ -324,6 +273,7 @@
         this.autoSetHeight();
       });
     }
+
     // 切换编辑器
     switchEditor() {
       this.$def.toggle();
@@ -333,6 +283,7 @@
       // 切换后自动设置高度
       this.autoSetHeight();
     }
+
     // 创建 markdown 编辑器
     createMdEditor() {
       return $(`
@@ -369,7 +320,7 @@
   }
 `);
 
-  const mainForBBS = () => {
+  function mainForBBS() {
     const gm_editor = new GM_editor({
       init($md) {
         $(".edui-container").after($md);
@@ -387,7 +338,6 @@
       $("input[name='quotepid']").after("<div class=\"form-group\"><span></span></div>");
     }
 
-
     // name 为 quotepid 的 input 下一行追加切换按钮
     $("input[name='quotepid'] + .form-group").addClass("d-flex justify-content-between").append(btnSwitchEditor);
 
@@ -395,9 +345,9 @@
     $("#btnSwitchEditor").click(() => {
       gm_editor.switchEditor();
     });
-  };
+  }
 
-  const mainForAPP = () => {
+  function mainForAPP() {
     const gm_editor = new GM_editor({
       init($md) {
         $("#editor_content").after($md);
@@ -417,16 +367,15 @@
   <span class="is-pulled-right">「<a href="javascript:;" class="btn btn-primary" id="btnSwitchEditor" title="切换编辑器">切换编辑器</a>」</span>
 `);
 
-
     // 切换编辑器
     $("#btnSwitchEditor").click(() => {
       gm_editor.switchEditor();
     });
-  };
+  }
 
   (() => {
     // 判断是否在应用中心编辑页
-    if (curHref.indexOf("edit.php") > -1) {
+    if (curHref.includes("edit.php")) {
       // _log(UE)
       const editor_api = window.editor_api || unsafeWindow.editor_api;
       editor_api.editor.content.obj.ready(mainForAPP);
@@ -435,6 +384,68 @@
     if ($("textarea#message").length > 0 && $("li.newpost").length === 0) {
       mainForBBS();
     }
+  })();
+
+  /* globals LZString */
+
+
+  (() => {
+    // 定义按钮及提示信息
+    const $btnBad = $(" <a class=\"btn btn-primary\">BAD</a>");
+    const strTip = "<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>";
+
+    // 绑定点击事件
+    $btnBad.css({ color: "#fff" }).click(() => {
+      const um = UM.getEditor("message");
+      const str = um.getContent();
+      if (str.includes("#~~")) {
+        return;
+      }
+      const strCode = LZString.compressToBase64(str);
+      um.setContent(`${strTip}<p>#~~${strCode}~~#</p>`);
+      console.log(LZString.decompressFromBase64(strCode));
+      // let strDeCode = LZString.decompressFromBase64(strCode);
+      // um.setContent(strCode + strDeCode);
+    });
+
+    // 放置按钮
+    if ($("input[name=update_reason]").length > 0) {
+      $("#submit").after($btnBad);
+    }
+
+    // 解码
+    $("div.message").each(function () {
+      const $secP = $(this).find("p:nth-child(2)");
+      if ($secP.length === 0) {
+        console.log("skip");
+        return;
+      }
+      let str = $secP.html();
+      if (!str.includes("#~~")) {
+        return;
+      }
+      console.log(str);
+      str = str.replace(/#~~(.+)~~#/, (_a, b) => {
+        // console.log(arguments);
+        const strDeCode = LZString.decompressFromBase64(b);
+        console.log(strDeCode);
+        return strDeCode;
+      });
+      $secP.after(str).remove();
+    });
+  })();
+
+  // _pid.js | 楼层地址
+
+  (() => {
+    $("li.media.post").each(function () {
+      const $me = $(this);
+      const pid = $me.data("pid");
+      const $date = $me.find("span.date");
+      $date.after(
+        `<a class="text-grey ml-2" title="获取当前楼层链接" href="${curHref}#${pid}">「楼层地址」</a>`,
+      );
+    });
   })();
 
 })();

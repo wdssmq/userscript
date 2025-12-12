@@ -253,7 +253,7 @@
     if ( ref === void 0 ) ref = {};
     var insertAt = ref.insertAt;
 
-    if (!css || typeof document === 'undefined') { return; }
+    if (typeof document === 'undefined') { return; }
 
     var head = document.head || document.getElementsByTagName('head')[0];
     var style = document.createElement('style');
@@ -280,6 +280,7 @@
   styleInject(css_248z);
 
   /* global __GM_api, MochaUI */
+
 
   if (typeof __GM_api !== "undefined") {
     _log(__GM_api);

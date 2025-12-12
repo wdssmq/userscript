@@ -147,8 +147,8 @@ a.mz-link:hover {
 
   // 解析文本内容，将网址转换为链接
   gob.parseText = (text) => {
-    const reg = /(https?:\/\/[^\s]+)/g;
-    const newText = text.replace(reg, (match, p1) => {
+    const reg = /(https?:\/\/\S+)/g;
+    const newText = text.replace(reg, (_match, p1) => {
       return `<a class="mz-link" title="${p1}" href="${p1}" target="_blank">${p1}</a>`;
     });
     return newText;

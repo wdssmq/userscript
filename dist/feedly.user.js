@@ -31,11 +31,11 @@
 
   const curDate = new Date();
   // ---------------------------------------------------
-  const _curUrl = () => { return window.location.href };
-  const _getDateStr = (date = curDate) => {
+  const _curUrl = () => window.location.href;
+  function _getDateStr(date = curDate) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-  };
+  }
   // ---------------------------------------------------
   const _log = (...args) => console.log(`[${gm_name}]|`, ...args);
   const _warn = (...args) => console.warn(`[${gm_name}]|`, ...args);
@@ -48,7 +48,7 @@
     return document.querySelectorAll(e);
   }
   // ---------------------------------------------------
-  const fnElChange = (el, fn = () => { }) => {
+  function fnElChange(el, fn = () => { }) {
     const observer = new MutationObserver((mutationRecord, mutationObserver) => {
       // _log('mutationRecord = ', mutationRecord);
       // _log('mutationObserver === observer', mutationObserver === observer);
@@ -62,7 +62,7 @@
       // characterData: false,
       subtree: true,
     });
-  };
+  }
   function fnFindDom(el, selector) {
     return el.querySelectorAll(selector);
   }
@@ -77,6 +77,139 @@
     }
     return el;
   }
+
+  // 自动标记已读
+  (() => {
+    if (!$n("#root") || $n("#root").dataset.MarkRead === "bind") {
+      return;
+    }
+    // _log("fnAutoMark", "自动标记已读");
+    $n("#root").dataset.MarkRead = "bind";
+
+    // 根据事件返回需要的 dom 元素
+    const fnEventFilter = (eType, eTgt) => {
+      // _log("fnEventFilter", eType, eTgt);
+
+      let pick = false;
+      let objRlt = null;
+      const objDef = {
+        $entry: null,
+        $btn: null,
+      };
+      if (eType === "mouseup") {
+        if (
+          eTgt.classList.contains("EntryTitle") && eTgt.nodeName === "DIV"
+        ) {
+          const $entry = fnFindDomUp(eTgt, "article.entry");
+          const $btn = $entry.querySelector("button.EntryMarkAsReadButton");
+          // _log("fnEventFilter", $entry, $btn);
+          objRlt = {
+            // 当前条目元素
+            $entry,
+            // 标记已读的按钮
+            $btn,
+          };
+          pick = true;
+        }
+      }
+      else if (eType === "mouseover") {
+        if (eTgt.nodeName === "ARTICLE" && eTgt.className.includes("entry")) {
+          objRlt = {
+            // 当前内容条目元素
+            $entry: eTgt,
+            // 标记已读的按钮
+            $btn: eTgt.querySelector("button.EntryMarkAsReadButton"),
+          };
+
+          // _log("fnEventFilter", "移入");
+          // _log("fnEventFilter", eTgt.dataset.leaveCount, typeof eTgt.dataset.leaveCount);
+
+          const intLeaveCount = Number.parseInt(eTgt.dataset.leaveCount);
+
+          // 已经触发过 leave 事件时才通过
+          pick = intLeaveCount >= 1;
+          if (pick) {
+            return objRlt;
+          }
+
+          // _log("fnEventFilter", intLeaveCount);
+
+          if (!Number.isNaN(intLeaveCount)) {
+            // _log("fnEventFilter", "已绑定移出事件");
+            return objDef;
+          }
+
+          // 绑定移出事件
+          eTgt.addEventListener("mouseleave", () => {
+            // _log("fnEventFilter", "移出");
+            const intLeaveCount = Number.parseInt(eTgt.dataset.leaveCount);
+            if (intLeaveCount === 0) {
+              // await _sleep(1000);
+              eTgt.dataset.leaveCount = "1";
+            }
+          }, false);
+
+          // 设置初始值
+          eTgt.dataset.leaveCount = 0;
+        }
+      }
+      if (pick) {
+        return objRlt;
+      }
+      return objDef;
+    };
+    // 事件处理函数
+    const fnEventHandler = (event) => {
+      // 限制鼠标在元素右侧移入才会触发
+      if (event.type === "mouseover") {
+        const intDiff = Math.abs(event.offsetX - event.target.offsetWidth);
+        if (intDiff > 17) {
+          return;
+        }
+      }
+      const { $entry, $btn } = fnEventFilter(event.type, event.target);
+      if (!$entry || !$btn) {
+        return;
+      }
+      // 判断是否含有指定类名
+      if (!$entry.className.includes("entry--read")) {
+        _log("fnMarRead", event.button, "自动标记已读");
+        $btn.click();
+      }
+    };
+    // 绑定监听事件
+    $n("#root").addEventListener("mouseup", fnEventHandler, false);
+    $n("#root").addEventListener("mouseover", fnEventHandler, false);
+  })();
+
+  // 拿回订阅源地址
+  // 绑定监听事件到 div#box 上
+  $n("#root").addEventListener("mouseup", (event) => {
+    // 输出触发事件的元素
+    // 根据内容判断是否执行相应操作
+    const elText = event.target.innerHTML;
+    if (
+      // elText.indexOf("Feed not found") > -1 ||
+      elText.includes("Wrong feed URL")
+    ) {
+      // 内部再输出一次确定判断条件正确
+      _log("elText", elText);
+
+      const curUrl = decodeURIComponent(_curUrl()).replace("https://feedly.com/i/subscription/feed/", "");
+
+      _log("curUrl", curUrl);
+
+      // 拿到解码后的订阅源地址
+      // const curUrl = ((url) => {
+      //   return url.replace("https://feedly.com/i/subscription/feed/", "");
+      // })(decodeURIComponent(curUrl));
+      // 输出到页面中
+      $n("#feedlyPageFX h2").insertAdjacentHTML(
+        "beforeend",
+        `<div class="sub">${curUrl}</div>`,
+      );
+    }
+  }, false);
 
   const curTime = Math.floor(curDate.getTime() / 1000);
   const curHours = Math.floor(curTime / 3600);
@@ -202,15 +335,91 @@
     _log(key, value);
   };
 
+  // nodeList 转换为 Array
+  function fnNodeListToArray(nodeList) {
+    return Array.prototype.slice.call(nodeList);
+  }
+
+  // 构造 Bash Shell 脚本
+  function fnMKShell(arrList, prefix = "") {
+    const curDateStr = _getDateStr();
+    const _lenTitle = (title) => {
+      // 获取长度，中文算两个字符
+      const len = title.length;
+      const len2 = title.replace(/[\u4E00-\u9FA5]/g, "").length;
+      return len2 + (len - len2) * 2;
+    };
+    let strRlt
+      = "if [ ! -d \"prefix-date\" ]; then\n"
+        + "mkdir prefix-date\n"
+        + "fi\n"
+        + "cd prefix-date\n\n";
+    strRlt = strRlt.replace(/prefix/g, prefix);
+    strRlt = strRlt.replace(/date/g, curDateStr);
+
+    /**
+     * e {title:"", href:""}
+     */
+    arrList.forEach((e, i) => {
+      const serial = i + 1;
+      // _log(e);
+
+      // 移除不能用于文件名的字符
+      let title = e.title || e.textContent;
+      title = title.replace(/[\\/:*!<>]|\?\]/g, "");
+      title = title.replace(/["'\s]/g, "");
+      // _log(title);
+
+      const lenTitle = _lenTitle(title);
+      // 判断太长时截取
+      if (lenTitle >= 137) {
+        title = title.substring(0, 69); // 截取前 69 个字符
+      }
+
+      // 获取文章链接
+      const href = e.href || e.url;
+
+      // url 文件名
+      const urlFileName = `${serial}丨${title}.url`;
+
+      strRlt += `echo [InternetShortcut] > "${urlFileName}"\n`;
+      strRlt += `echo "URL=${href}" >> "${urlFileName}"\n`;
+      strRlt += "\n";
+    });
+
+    {
+      strRlt += "exit\n\n";
+    }
+
+    return strRlt;
+  }
+
+  // 星标文章导出为 *.url 文件
+  $n("#root").addEventListener("mouseup", (event) => {
+    gob.GetStarItems();
+    const $target = event.target;
+    // 判断是 h2 标签
+    if ($target.tagName !== "H2") {
+      return;
+    }
+    // console.log($target, $target.textContent);
+    const curText = $target.textContent.trim().toUpperCase();
+    if (curText.includes("END OF FEED")) {
+      const listItems = fnNodeListToArray(gob.$$Stars);
+      GM_setClipboard(fnMKShell(listItems, "feedly"));
+      $target.textContent = "已复制到剪贴板";
+    }
+  }, false);
+
   // 判断当前地址是否是收藏页
-  const fnCheckUrl = () => {
-    if ("https://feedly.com/i/saved" === _curUrl()) {
+  function fnCheckUrl() {
+    if (_curUrl() === "https://feedly.com/i/saved") {
       return true;
     }
     return false;
-  };
+  }
 
-  const fnCheckControl = (diff) => {
+  function fnCheckControl(diff) {
     const iTime = curHours;
     const modTime = iTime % 4;
     gob._time.cycle = iTime;
@@ -221,12 +430,13 @@
     if (diff.decr >= 17 && diff.decr - diff.incr >= 4) {
       if (modTime === 0) {
         return "reset";
-      } else {
+      }
+      else {
         return "lock";
       }
     }
     return "default";
-  };
+  }
 
   // 星标变动控制
   function fnControl() {
@@ -263,7 +473,8 @@
     if (diff > 0) {
       // 新增星标计数
       diffStars.incr += Math.abs(diff);
-    } else {
+    }
+    else {
       // 已读星标计数
       diffStars.decr += Math.abs(diff);
     }
@@ -327,7 +538,8 @@
       const node = nodeList[i];
       if (Math.random() > 0.5) {
         parent.insertBefore(node, lstNode);
-      } else {
+      }
+      else {
         parent.insertBefore(lstNode, node);
       }
       lstNode = node;
@@ -338,7 +550,7 @@
   function fnColorStars(offset = 0) {
     // begin fnColorStars
     const $stars = gob.$$Stars;
-    const isLock = "lock" === fnCheckControl(gob.data.diffStars) ? true : false;
+    const isLock = fnCheckControl(gob.data.diffStars) === "lock";
     // console.log("fnColorStars", fnCheckControl(gob.data.diffStars), isLock);
     const oConfig = gob.pickRule;
     const $$pick = $na(".pick");
@@ -369,7 +581,7 @@
       // begin forEach
       const $ago = fnFindDom(fnFindDomUp($e, "div.SelectedEntryScroller"), ".ago");
       const href = $e.href;
-      const hash = parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
+      const hash = Number.parseInt((href + $ago.innerHTML).replace(/\D/g, ""));
       // _log("fnColorStars", $ago, href, hash);
       const $item = fnFindDomUp($e, ".entry");
       if ($item.classList.contains("pick")) {
@@ -398,11 +610,12 @@
         return rlt;
       })();
       // ----------------------------
-      let intNum = parseInt(hash + cur4Minutes) + offset;
-      if (intNum % oConfig.forMod == 0 && bolPick) {
+      const intNum = Number.parseInt(hash + cur4Minutes) + offset;
+      if (intNum % oConfig.forMod === 0 && bolPick) {
         oConfig.pickList.push(hash);
         fnPick($item, i);
-      } else {
+      }
+      else {
         if (isLock || i >= 37) {
           $item.classList.add("lock");
           [].forEach.call(fnFindDom($item, "a, span, div>svg, .summary"), ($ite) => {
@@ -416,8 +629,8 @@
     if (pickCount <= oConfig.minPick) {
       if (offset < oConfig.forMod) {
         fnColorStars(offset + 1);
-        return;
-      } else {
+      }
+      else {
         _log("fnColorStars", "未能选够");
         _log("fnColorStars", oConfig);
         oConfig.pickList = [];
@@ -454,7 +667,7 @@
   }
 
   // 星标部分入口函数
-  function fnMain(record, observer) {
+  function fnMain(_record, observer) {
     if (!fnCheckUrl()) {
       return;
     }
@@ -481,216 +694,8 @@
 
   fnElChange($n("#root"), fnMain);
 
-  // nodeList 转换为 Array
-  function fnNodeListToArray(nodeList) {
-    return Array.prototype.slice.call(nodeList);
-  }
-
-  // 构造 Bash Shell 脚本
-  function fnMKShell(arrList, prefix = "") {
-    const curDateStr = _getDateStr();
-    const _lenTitle = (title) => {
-      // 获取长度，中文算两个字符
-      const len = title.length;
-      const len2 = title.replace(/[\u4e00-\u9fa5]/g, "").length;
-      return len2 + (len - len2) * 2;
-
-    };
-    let strRlt =
-      "if [ ! -d \"prefix-date\" ]; then\n" +
-      "mkdir prefix-date\n" +
-      "fi\n" +
-      "cd prefix-date\n\n";
-    strRlt = strRlt.replace(/prefix/g, prefix);
-    strRlt = strRlt.replace(/date/g, curDateStr);
-
-    /**
-     * e {title:"", href:""}
-     */
-    arrList.forEach(function(e, i) {
-      const serial = i + 1;
-      // _log(e);
-
-      // 移除不能用于文件名的字符
-      let title = e.title || e.innerText;
-      title = title.replace(/\\|\/|:|\*|!|\?]|<|>/g, "");
-      title = title.replace(/["'\s]/g, "");
-      // _log(title);
-
-      const lenTitle = _lenTitle(title);
-      // 判断太长时截取
-      if (lenTitle >= 137) {
-        title = title.substring(0, 69); // 截取前 69 个字符
-      }
-
-      // 获取文章链接
-      const href = e.href || e.url;
-
-      // url 文件名
-      const urlFileName = `${serial}丨${title}.url`;
-
-      strRlt += `echo [InternetShortcut] > "${urlFileName}"\n`;
-      strRlt += `echo "URL=${href}" >> "${urlFileName}"\n`;
-      strRlt += "\n";
-    });
-
-    {
-      strRlt += "exit\n\n";
-    }
-
-    return strRlt;
-  }
-
-  // 星标文章导出为 *.url 文件
-  $n("#root").addEventListener("mouseup", function(event) {
-    gob.GetStarItems();
-    const $target = event.target;
-    // 判断是 h2 标签
-    if ($target.tagName !== "H2") {
-      return;
-    }
-    // console.log($target, $target.innerText);
-    const curText = $target.innerText.trim().toUpperCase();
-    if (curText.indexOf("END OF FEED") > -1) {
-      const listItems = fnNodeListToArray(gob.$$Stars);
-      GM_setClipboard(fnMKShell(listItems, "feedly"));
-      $target.innerText = "已复制到剪贴板";
-    }
-  }, false);
-
-  // 拿回订阅源地址
-  // 绑定监听事件到 div#box 上
-  $n("#root").addEventListener("mouseup", function(event) {
-    // 输出触发事件的元素
-    // 根据内容判断是否执行相应操作
-    const elText = event.target.innerHTML;
-    if (
-      // elText.indexOf("Feed not found") > -1 ||
-      elText.indexOf("Wrong feed URL") > -1
-    ) {
-      // 内部再输出一次确定判断条件正确
-      _log("elText", elText);
-
-      const curUrl = decodeURIComponent(_curUrl()).replace("https://feedly.com/i/subscription/feed/", "");
-
-      _log("curUrl", curUrl);
-
-      // 拿到解码后的订阅源地址
-      // const curUrl = ((url) => {
-      //   return url.replace("https://feedly.com/i/subscription/feed/", "");
-      // })(decodeURIComponent(curUrl));
-      // 输出到页面中
-      $n("#feedlyPageFX h2").insertAdjacentHTML(
-        "beforeend",
-        `<div class="sub">${curUrl}</div>`,
-      );
-    }
-  }, false);
-
-  // 自动标记已读
-  (() => {
-    if (!$n("#root") || $n("#root").dataset.MarkRead === "bind") {
-      return;
-    }
-    // _log("fnAutoMark", "自动标记已读");
-    $n("#root").dataset.MarkRead = "bind";
-
-    // 根据事件返回需要的 dom 元素
-    const fnEventFilter = (eType, eTgt) => {
-      // _log("fnEventFilter", eType, eTgt);
-
-      let pick = false;
-      let objRlt = null, objDef = {
-        $entry: null,
-        $btn: null,
-      };
-      if (eType === "mouseup") {
-        if (
-          eTgt.classList.contains("EntryTitle") && eTgt.nodeName === "DIV"
-        ) {
-          const $entry = fnFindDomUp(eTgt, "article.entry");
-          const $btn = $entry.querySelector("button.EntryMarkAsReadButton");
-          // _log("fnEventFilter", $entry, $btn);
-          objRlt = {
-            // 当前条目元素
-            $entry,
-            // 标记已读的按钮
-            $btn,
-          };
-          pick = true;
-        }
-      } else if (eType === "mouseover") {
-        if (eTgt.nodeName === "ARTICLE" && eTgt.className.indexOf("entry") > -1) {
-          objRlt = {
-            // 当前内容条目元素
-            $entry: eTgt,
-            // 标记已读的按钮
-            $btn: eTgt.querySelector("button.EntryMarkAsReadButton"),
-          };
-
-          // _log("fnEventFilter", "移入");
-          // _log("fnEventFilter", eTgt.dataset.leaveCount, typeof eTgt.dataset.leaveCount);
-
-          const intLeaveCount = parseInt(eTgt.dataset.leaveCount);
-
-          // 已经触发过 leave 事件时才通过
-          pick = intLeaveCount >= 1 ? true : false;
-          if (pick) {
-            return objRlt;
-          }
-
-          // _log("fnEventFilter", intLeaveCount);
-
-          if (!isNaN(intLeaveCount)) {
-            // _log("fnEventFilter", "已绑定移出事件");
-            return objDef;
-          }
-
-          // 绑定移出事件
-          eTgt.addEventListener("mouseleave", () => {
-            // _log("fnEventFilter", "移出");
-            const intLeaveCount = parseInt(eTgt.dataset.leaveCount);
-            if (intLeaveCount === 0) {
-              // await _sleep(1000);
-              eTgt.dataset.leaveCount = "1";
-            }
-          }, false);
-
-          // 设置初始值
-          eTgt.dataset.leaveCount = 0;
-        }
-      }
-      if (pick) {
-        return objRlt;
-      }
-      return objDef;
-    };
-    // 事件处理函数
-    const fnEventHandler = (event) => {
-      // 限制鼠标在元素右侧移入才会触发
-      if (event.type === "mouseover") {
-        const intDiff = Math.abs(event.offsetX - event.target.offsetWidth);
-        if (intDiff > 17) {
-          return;
-        }
-      }
-      const { $entry, $btn } = fnEventFilter(event.type, event.target);
-      if (!$entry || !$btn) {
-        return;
-      }
-      // 判断是否含有指定类名
-      if ($entry.className.indexOf("entry--read") === -1) {
-        _log("fnMarRead", event.button, "自动标记已读");
-        $btn.click();
-      }
-    };
-    // 绑定监听事件
-    $n("#root").addEventListener("mouseup", fnEventHandler, false);
-    $n("#root").addEventListener("mouseover", fnEventHandler, false);
-  })();
-
   // 防止误点
-  const fnStopSource = (e) => {
+  function fnStopSource(e) {
     const $target = e.target;
     if ($target.classList.contains("entry__source")) {
       // 记录触发次数到 dataset
@@ -701,20 +706,19 @@
         e.stopPropagation();
         // e.stopImmediatePropagation();
         // alert("entry__source");
-        return;
       }
     }
-  };
+  }
 
   $n("#root").addEventListener("click", fnStopSource);
 
   // 条目标题处理
-  const fnItemTitle = ($e) => {
+  function fnItemTitle($e) {
     // _log("fnItemTitle", $e);
     if ($e.dataset.ptDone) {
       return;
     }
-    const origTitle = $e.innerText;
+    const origTitle = $e.textContent;
     // _log("origTitle", origTitle);
     // 定义一个函数用于获取年度及分辨率
     const fnGetVideoLabel = (videoTitle) => {
@@ -722,8 +726,10 @@
       // 定义一个正则数组，用于匹配年度及分辨率
       const arrRegexp = [
         /(?<year>\d{4})\.(?<res>\d+p)\./,
-        /(?<year>\d{4})\.S\d+.*?(?<res>\d+p)\./,
+        // eslint-disable-next-line regexp/no-super-linear-backtracking
+        /(?<year>\d{4})\.S\d.*?(?<res>\d+p)\./,
         /(?<year>\d{4})\.Complete\.(?<res>\d+p)\./,
+        // eslint-disable-next-line regexp/no-super-linear-backtracking
         /(?<year>\d{4})\..+?(?<res>\d+p)\./i,
       ];
       // 遍历正则数组，匹配年度及分辨率
@@ -738,20 +744,22 @@
       }
       return objLabel;
     };
+    // eslint-disable-next-line regexp/no-super-linear-backtracking
     const arrMatch = origTitle.match(/(?<cate>\[[^\]]+\])[^[]+-(?<group>[^[]+)(?<title>\[.+\])$/);
     if (arrMatch) {
+      // eslint-disable-next-line regexp/no-super-linear-backtracking
       const strCate = arrMatch.groups.cate.replace(/^\[[^)]+\(([^)]+)\)\]/, "[$1]");
       const strGroup = arrMatch.groups.group;
       const strTitle = arrMatch.groups.title;
       // 提取年度及分辨率
       const objLabel = fnGetVideoLabel(origTitle);
       const strNewTitle = `${strTitle} - ${strCate}[${objLabel?.year}][${objLabel?.res}][${strGroup}]`;
-      $e.innerText = strNewTitle;
+      $e.textContent = strNewTitle;
       $e.dataset.ptDone = "1";
     }
-  };
+  }
 
-  const fnItemTitleWrap = (e) => {
+  function fnItemTitleWrap() {
     const $$list = gob.GetEntriesList();
     if (!$$list.length) {
       _log("fnItemTitleWrap: No entries found");
@@ -765,7 +773,7 @@
         fnItemTitle($title);
       }
     }
-  };
+  }
 
   fnElChange($n("#root"), () => {
     fnItemTitleWrap();

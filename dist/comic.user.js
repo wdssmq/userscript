@@ -56,16 +56,27 @@
 
   // localStorage 封装
   const lsObj = {
-    setItem: function(key, value) {
+    setItem(key, value) {
       localStorage.setItem(key, JSON.stringify(value));
     },
-    getItem: function(key, def = "") {
+    getItem(key, def = "") {
       const item = localStorage.getItem(key);
       if (item) {
         return JSON.parse(item);
       }
       return def;
     },
+  };
+
+  // 初始化 gobInfo
+  const gobInfo = {
+    // key: [默认值, 是否记录至 ls]
+    curImgUrl: ["", 0],
+    curInfo: [{}, 0],
+    autoNextC: [0, 1],
+    autoNextChap: [0, 1],
+    wgetImgs: [[], 1],
+    maxWget: [7, 0],
   };
 
   // 数据读写封装
@@ -121,17 +132,6 @@
     },
   };
 
-  // 初始化 gobInfo
-  const gobInfo = {
-    // key: [默认值, 是否记录至 ls]
-    curImgUrl: ["", 0],
-    curInfo: [{}, 0],
-    autoNextC: [0, 1],
-    autoNextChap: [0, 1],
-    wgetImgs: [[], 1],
-    maxWget: [7, 0],
-  };
-
   // 初始化
   gob.init().load();
 
@@ -182,8 +182,8 @@
   }
 
   // 网络请求
-  const fnGet = (url, responseType = "json", retry = 2) =>
-    new Promise((resolve, reject) => {
+  function fnGet(url, responseType = "json", retry = 2) {
+    return new Promise((resolve, reject) => {
       try {
         // console.log(navigator.userAgent);
         GM_xmlhttpRequest({
@@ -191,11 +191,13 @@
           url,
           headers: {
             "User-Agent": navigator.userAgent, // If not specified, navigator.userAgent will be used.
-            referer: "https://www.manhuagui.com/",
+            "referer": "https://www.manhuagui.com/",
           },
           responseType,
           onerror: (e) => {
-            if (retry === 0) reject(e);
+            if (retry === 0) {
+              reject(e);
+            }
             else {
               console.warn("Network error, retry.");
               setTimeout(() => {
@@ -204,8 +206,12 @@
             }
           },
           onload: ({ status, response }) => {
-            if (status === 200) resolve(response);
-            else if (retry === 0) reject(`${status} ${url}`);
+            if (status === 200) {
+              resolve(response);
+            }
+            else if (retry === 0) {
+              reject(new Error(`${status} ${url}`));
+            }
             else {
               console.warn(status, url);
               setTimeout(() => {
@@ -214,11 +220,12 @@
             }
           },
         });
-      } catch (error) {
+      }
+      catch (error) {
         reject(error);
       }
     });
-
+  }
 
   const JSZip = (() => {
     const blob = new Blob(
@@ -231,16 +238,17 @@
     return Comlink.wrap(worker);
   })();
 
-  const getCompressionOptions = (level = 4) => {
-    if (level === 0) return {};
+  function getCompressionOptions(level = 4) {
+    if (level === 0)
+      return {};
     return {
       compression: "DEFLATE",
-      compressionOptions: { level: level },
+      compressionOptions: { level },
     };
-  };
+  }
 
   // 处理章节名，仅提取 `第xxx话` 的部分，并补全前导 0
-  const fnGetChapName = (chapName, len = 3) => {
+  function fnGetChapName(chapName, len = 3) {
     const reg = /第(\d+)(?:话|回)/;
     const match = chapName.match(reg);
     if (match) {
@@ -248,9 +256,9 @@
       return `第${String(num).padStart(len, 0)}话`;
     }
     return chapName;
-  };
+  }
 
-  const fnDownload = async ($btn = null) => {
+  async function fnDownload($btn = null) {
     const info = fnGenInfo();
     info.chapter = fnGetChapName(info.chapter);
     const cfName = `${info.name}_${info.chapter}`;
@@ -268,13 +276,13 @@
     };
     const btnCompressingProgress = (percent = 0) => {
       if ($btn) {
-        $btn.innerHTML = percent == 100 ? "已完成√" : `正在压缩：${percent}`;
+        $btn.innerHTML = percent === 100 ? "已完成√" : `正在压缩：${percent}`;
       }
     };
     // 下载并添加到 zip
     // page 从 1 开始
     const fileNameLen = (len => len > 2 ? len : 2)(info.pages.toString().length);
-    const dlPromise = async (url, page, threadID = 0) => {
+    const dlPromise = async (url, page, _threadID = 0) => {
       const fileName = ((i) => {
         return `${String(i).padStart(fileNameLen, 0)}.jpg`;
       })(page);
@@ -282,7 +290,8 @@
         const data = await fnGet(url, "arraybuffer");
         await zip.file(fileName, Comlink.transfer({ data }, [data]));
         info.done++;
-      } catch (e) {
+      }
+      catch (e) {
         _log("[error]dlPromise()\n", e);
         await zip.file(`${fileName}.bad.txt`, "");
         info.bad[page] = `${url}`;
@@ -308,10 +317,10 @@
       // let lastZipFile = "";
       const { data } = await zip.generateAsync(
         { type: "arraybuffer", ...getCompressionOptions() },
-        Comlink.proxy(({ percent, currentFile }) => {
-          // if (lastZipFile !== currentFile && currentFile) {
-          //   lastZipFile = currentFile;
-          //   console.log(`Compressing ${percent.toFixed(2)}%`, currentFile);
+        Comlink.proxy(({ percent, _currentFile }) => {
+          // if (lastZipFile !== _currentFile && _currentFile) {
+          //   lastZipFile = _currentFile;
+          //   console.log(`Compressing ${percent.toFixed(2)}%`, _currentFile);
           // }
           btnCompressingProgress(percent.toFixed(2));
           info.compressingPercent = percent;
@@ -325,11 +334,10 @@
         error: info.error,
       };
     };
-  };
-
+  }
 
   // 单图查看
-  const setCurImgLink = () => {
+  function setCurImgLink() {
     if ($n("#curimg")) {
       $n("#curimg").href = fnGenUrl();
       return;
@@ -343,12 +351,11 @@
     $imgLink.style.background = "#0077D1";
     $imgLink.style.cursor = "pointer";
     $n(".main-btn").insertBefore($imgLink, $n("#viewList"));
-  };
+  }
   setCurImgLink();
 
-
   // 下载按钮
-  const setBtnDownload = () => {
+  function setBtnDownload() {
     const $btn = document.createElement("a");
     $btn.id = "gm-btn-download";
     $btn.className = "btn-red";
@@ -357,7 +364,7 @@
     $btn.style.background = "#0077D1";
     $btn.style.cursor = "pointer";
     $btn.addEventListener("click", async () => {
-      let curPage = parseInt($n("#page").innerHTML);
+      const curPage = Number.parseInt($n("#page").innerHTML);
       if (curPage > 1) {
         alert("请从第一页开始下载");
         return false;
@@ -373,9 +380,8 @@
       gob.save();
       $btn.click();
     }
-  };
+  }
   setBtnDownload();
-
 
   window.addEventListener("hashchange", () => {
     setCurImgLink();
@@ -396,21 +402,21 @@
   //   return bash;
   // };
 
-  const fnDLImg = async (pageInfo) => {
+  async function fnDLImg(pageInfo) {
     // const data = await fnGet(pageInfo.url, "arraybuffer");
     // const data = await fnGet(pageInfo.url, "blob");
     fnGet(pageInfo.url, "arraybuffer").then(
       (res) => {
-        let url = window.URL.createObjectURL(new Blob([res]));
-        let a = document.createElement("a");
+        const url = window.URL.createObjectURL(new Blob([res]));
+        const a = document.createElement("a");
         a.setAttribute("download", `${pageInfo.chapter}.jpg`);
         a.href = url;
         a.click();
       },
     );
-  };
+  }
 
-  const fnCheckFistPage = (cur, list) => {
+  function fnCheckFistPage(cur, list) {
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
       if (item.name === cur.name && item.chapter === cur.chapter) {
@@ -418,9 +424,9 @@
       }
     }
     return false;
-  };
+  }
 
-  const fnGenFistPage = (auto = false) => {
+  function fnGenFistPage(auto = false) {
     // _log("[log]fnGenFistPage()", auto);
     // 当前页面信息
     const curPage = {
@@ -438,7 +444,8 @@
       gob.autoNextC = 0;
       // gob.save();
       // return;
-    } else {
+    }
+    else {
       gob.autoNextC = auto ? 1 : 0;
     }
     // 自动下载，并加入已收集列表
@@ -450,7 +457,7 @@
     }
     // 询问是否重复下载
     if (bolHasWget && confirm("已收集过该首图，是否重复下载？")) {
-        fnDLImg(curPage);
+      fnDLImg(curPage);
     }
     _log("[log]fnGenFistPage\n", gob.wgetImgs, "\n", gob.autoNextC);
     if (gob.autoNextC && $n(".nextC")) {
@@ -459,24 +466,25 @@
       }, 3000);
     }
     gob.save();
-  };
+  }
 
-  const fnBtn = () => {
+  function fnBtn() {
     const btn = document.createElement("span");
-    if (gob.wgetImgs.length >= gob.maxWget || gob.wgetImgs.length == 0) {
+    if (gob.wgetImgs.length >= gob.maxWget || gob.wgetImgs.length === 0) {
       btn.innerHTML = "收集首图";
-    } else {
+    }
+    else {
       btn.innerHTML = `收集首图(${gob.wgetImgs.length + 1} / ${gob.maxWget})`;
     }
     btn.style = "color: #f00; font-size: 12px; cursor: pointer; font-weight: bold; text-decoration: underline; padding-left: 1em;";
-    btn.onclick = (() => {
+    btn.onclick = () => {
       if (gob.wgetImgs.length >= gob.maxWget) {
         gob.wgetImgs = [];
       }
       fnGenFistPage(true);
-    });
+    };
     fnAfter(btn, $n("#lighter"));
-  };
+  }
 
   fnBtn();
 

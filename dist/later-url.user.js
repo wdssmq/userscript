@@ -37,11 +37,11 @@
 
   // -------------------------------------
 
-  const _curUrl = () => { return window.location.href };
-  const _getDateStr = (date = curDate) => {
+  const _curUrl = () => window.location.href;
+  function _getDateStr(date = curDate) {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-  };
+  }
   const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   // -------------------------------------
@@ -61,7 +61,7 @@
   // -------------------------------------
 
   // 元素变化监听
-  const fnElChange = (el, fn = () => { }) => {
+  function fnElChange(el, fn = () => { }) {
     const observer = new MutationObserver((mutationRecord, mutationObserver) => {
       // _log('mutationRecord = ', mutationRecord);
       // _log('mutationObserver === observer', mutationObserver === observer);
@@ -75,12 +75,30 @@
       // characterData: false,
       subtree: true,
     });
+  }
+
+  const config = {
+    data: {},
+    defData: {
+      baseUrl: "http://127.0.0.1:41897/",
+      authToken: "token_value_here",
+      isInit: false,
+    },
+    load() {
+      config.data = GM_getValue("config", this.defData);
+      if (!config.data.isInit) {
+        config.data.isInit = true;
+        config.save();
+      }
+    },
+    save() {
+      GM_setValue("config", config.data);
+    },
   };
 
-  class HttpRequest {
-    constructor() {
-    }
+  config.load();
 
+  class HttpRequest {
     get(url, headers = {}) {
       return this.request({
         method: "GET",
@@ -122,27 +140,6 @@
   }
 
   const http = new HttpRequest();
-
-  const config = {
-    data: {},
-    defData: {
-      baseUrl: "http://127.0.0.1:41897/",
-      authToken: "token_value_here",
-      isInit: false,
-    },
-    load() {
-      config.data = GM_getValue("config", this.defData);
-      if (!config.data.isInit) {
-        config.data.isInit = true;
-        config.save();
-      }
-    },
-    save() {
-      GM_setValue("config", config.data);
-    },
-  };
-
-  config.load();
 
   // localStorage 封装
   const lsObj = {
@@ -227,7 +224,7 @@
   gob.delUrl = async (url, category) => {
     const { baseUrl, authToken } = config.data;
     const headers = {
-      "Authorization": "Bearer " + authToken,
+      Authorization: `Bearer ${authToken}`,
     };
 
     const apiUrl = `${baseUrl}admin/${category}/del-url/?url=${url}`;
@@ -236,9 +233,10 @@
       // _log("gob.delUrl()\n", res);
       // _log("gob.delUrl()\n", res.responseText);
       const resJSON = JSON.parse(res.responseText);
-      _log("gob.delUrl()\n",resJSON);
+      _log("gob.delUrl()\n", resJSON);
       return true;
-    } catch (error) {
+    }
+    catch (error) {
       gob.errCount += 1;
       _log("gob.delUrl() - error\n", error);
       return false;
@@ -282,7 +280,7 @@
   // 执行队列，第二个参数控制是否循环执行
   async function runQueue(listPromises, loop = 0) {
     // console.log(listPromises);
-    for (let itemPromise of listPromises) {
+    for (const itemPromise of listPromises) {
       await itemPromise();
     }
     if (loop) {
@@ -292,7 +290,7 @@
 
   // 返回项为一个函数，该函数调用时会建立一个 Promise 对象并立即执行
   // 当内部调用 solve() 时表示该异步项执行结束
-  const createPromise = (cb, ...args) => {
+  function createPromise(cb, ...args) {
     return () => new Promise((resolve, reject) => {
       cb(...args).then((res) => {
         resolve(res);
@@ -300,14 +298,14 @@
         reject(error);
       });
     });
-  };
+  }
 
   // 构造任务队列
-  const createQueue = (arr, cb, ...args) => {
+  function createQueue(arr, cb, ...args) {
     return arr.map((item) => {
       return createPromise(cb, item, ...args);
     });
-  };
+  }
 
   // 过滤字符信息
   gob.filter = (str) => {
@@ -330,7 +328,7 @@
     }
     const { baseUrl, authToken } = config.data;
     const headers = {
-      "Authorization": "Bearer " + authToken,
+      Authorization: `Bearer ${authToken}`,
     };
     info.title = gob.filter(info.title);
     const url = `${baseUrl}add?url=${info.url}&title=${info.title}&author=${data.username}&category=${data.category}&date=${data.date}`;
@@ -349,7 +347,8 @@
       gob.remoteTotal = resJSON.data.count || 0;
       fnShowProgress(gob.postIndex, gob.remoteTotal);
       return true;
-    } catch (error) {
+    }
+    catch (error) {
       gob.errCount += 1;
       _log("gob.post() - error\n", error);
       return false;
@@ -460,12 +459,13 @@
         const resData = await this.apiGet(url);
         if (resData.code === 0) {
           return resData.data.list.vlist;
-        } else {
+        }
+        else {
           _log("bilibili.getVideos() - resData\n", resData);
         }
-      } catch (error) {
+      }
+      catch (error) {
         _log("bilibili.getVideos() - error\n", error);
-        return;
       }
     },
 
@@ -531,9 +531,9 @@
         bilibili.data.showProgress = (itemIndex, remoteTotal) => {
           bilibili.showProgress(itemIndex, vlist.length, remoteTotal);
         };
-        // 获取用户 uid 和 username
-        this.getUid();
-        this.getUsername();
+        // // 获取用户 uid 和 username
+        // const uid = this.getUid();
+        // const username = this.getUsername();
         // 计数器清零
         gob.postIndex = 0;
         gob.postCount = 0;
@@ -555,7 +555,7 @@
   bilibili.watch();
 
   (() => {
-    if (curUrl.indexOf("feedly") === -1) {
+    if (!curUrl.includes("feedly")) {
       return;
     }
     // _log($n("body").innerHTML);
@@ -602,7 +602,8 @@
       let $展开的文章;
       if ($$展开的文章.length > 0) {
         $展开的文章 = $$展开的文章[0];
-      } else {
+      }
+      else {
         return;
       }
       // 如果已经设置 data-url-btn="true"，则不再设置
@@ -626,7 +627,6 @@
     };
 
     fnElChange($root, onElChange);
-
   })();
 
 })();

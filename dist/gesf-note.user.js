@@ -15,7 +15,7 @@
 (function () {
   'use strict';
 
-  const d=new Set;const importCSS = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):document.head.appendChild(document.createElement("style")).append(t);})(e));};
+  const d=new Set;const importCSS = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
   const styleCss = ".js-note-btn{margin-left:8px;padding:4px 8px;color:#fff;background-color:#00aeec;border:none;border-radius:4px;cursor:pointer}.js-note-btn:hover{background-color:#00b8f6;color:#fff}";
   importCSS(styleCss);

@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         「蜜柑计划」列表过滤（简繁/画质）
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.2
+// @version      1.0.3
 // @author       沉冰浮水
-// @description  过滤蜜柑计划列表，按照简繁/画质过滤
+// @description  过滤蜜柑计划列表，仅保留匹配规则的条目
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
@@ -77,9 +77,21 @@
       // 记录是否为第一次运行
       firstRun: true,
     },
-    optToggle: (opt, ret = false) => {
+    // 获取指定规则
+    getRule: (name) => {
+      return _config.data.pickRules.find(rule => rule.name === name);
     },
-    menuCommand: () => {
+    // 更新指定规则
+    updateRule: (name, regex) => {
+      // _log("updateRule() ", name, regex);
+      const index = _config.data.pickRules.findIndex(rule => rule.name === name);
+      if (index !== -1) {
+        _config.data.pickRules[index] = { name, regex };
+      }
+      else {
+        _config.data.pickRules.push({ name, regex });
+      }
+      _config.save();
     },
     save: () => {
       GM_setValue("config", _config.data);
@@ -97,26 +109,11 @@
 
   _config.load();
 
-  // 添加批量复制磁力链接功能
-  function fnAddBatchCopy($th, magnetList) {
-    // _log("fnAddBatchCopy", magnetList);
-    const $btn = document.createElement("button");
-    $btn.innerText = "批量复制";
-    $btn.addEventListener("click", () => {
-      const magnetStr = magnetList.join("\n");
-      GM_setClipboard(magnetStr);
-      $btn.innerText = "复制成功";
-      _log(`已复制 ${magnetStr}`);
-    }, false);
-    // appendChild 2 elements
-    $th.appendChild($btn);
-  }
-
-  // 过滤磁力链接中的 tr
-  function fnRemoveTracker(magnet) {
-    const regex = /&tr=.+?(?=&|$)/g;
-    return magnet.replace(regex, "");
-  }
+  // // 过滤磁力链接中的 tr
+  // function fnRemoveTracker(magnet) {
+  //   const regex = /&tr=.+?(?=&|$)/g;
+  //   return magnet.replace(regex, "");
+  // }
 
   // 通过正则表达式筛选文本
   function fnPickByRegex(text, regex = null) {
@@ -130,50 +127,57 @@
     return oRegex.test(text);
   }
 
+  // 绑定指定组的规则设置
+  function setRuleBinding(groupName, $subscribed) {
+    if ($subscribed) {
+      // 添加一个文本框到 $subscribed 后边
+      const $input = document.createElement("input");
+      $input.type = "button";
+      $input.value = "点击设置规则";
+      $input.className = "btn btn-default btn-xs";
+      $subscribed.insertAdjacentElement("afterend", $input);
+      $input.addEventListener("click", () => {
+        const curRule = _config.getRule(groupName);
+        const userInput = prompt(`请输入发布组 "${groupName}" 的筛选规则（多个规则用 | 分隔）：`, curRule ? (Array.isArray(curRule.regex) ? curRule.regex.join("|") : curRule.regex) : "");
+        if (userInput !== null) {
+          const newRegex = userInput.split("|").map(item => item.trim());
+          console.log(userInput, newRegex);
+          _config.updateRule(groupName, newRegex.length === 1 ? newRegex[0] : newRegex);
+        }
+      });
+    }
+  }
 
-  function _pick(name, $table) {
-    const pickRules = _config.data.pickRules;
-    // 数组中查找 name 对应的规则
-    const curRule = pickRules.find((rule) => {
-      return name == rule.name;
-    });
+  function _pick (group) {
+    const { name, $table, $subscribed } = group;
+    // 获取当前规则
+    const curRule = _config.getRule(name);
+    // 绑定规则设置按钮
+    setRuleBinding(name, $subscribed);
+
+    // _log("_pick() group: ", group);
     // _log("_pick() curRule: ", curRule);
     // _log("_pick() name: ", name);
-    // _log("_pick() -----\n","-----");
+    // _log("_pick() -----\n", "-----");
+    if (!curRule) {
+      return;
+    }
     const $listTr = $table.querySelectorAll("tr");
     // _log($listTr.length);
 
-    const magnetList = [];
-    // 记录第一个 th
-    let $firstTh = null;
-
-    $listTr.forEach(($tr, i) => {
+    $listTr.forEach(($tr, _i) => {
       // _log("_pick()", i, $listTr.length);
-      if ($tr.innerText.includes("番组名")) {
-        $firstTh = $tr.querySelector("th");
-        // $lstTh = $curTh;
-        // _log("fnMain() $curTh\n", $curTh);
-        // return;
-      }
+
       const $curA = $tr.querySelector(".magnet-link-wrap");
-      const $curB = $tr.querySelector(".js-magnet");
       if (!$curA) {
         return;
       }
-      const curText = $curA.innerText.toLowerCase();
-      // data-clipboard-text
-      let magnet = $curB.getAttribute("data-clipboard-text");
-      magnet = fnRemoveTracker(magnet);
-      // _log("_pick():", magnet);
-      if (fnPickByRegex(curText, curRule?.regex)) {
-        magnetList.push(magnet);
-      } else {
+      const curText = $curA.textContent.toLowerCase();
+
+      if (!fnPickByRegex(curText, curRule.regex)) {
         $tr.remove();
       }
     });
-
-    // 添加批量复制按钮
-    fnAddBatchCopy($firstTh, magnetList);
   }
 
   // 遍历 nodeList
@@ -189,13 +193,16 @@
     const arrGroup = [];
     // 获取全部 div.subgroup-text
     const $listGroup = $na(".subgroup-text");
-    fnEachNodeList($listGroup, ($group, i) => {
+    fnEachNodeList($listGroup, ($group, _i) => {
       const $groupTitle = $group.querySelector("div.dropdown-toggle span") || $group.querySelector("a");
-      const groupName = $groupTitle.innerText;
+      const $subscribed = $group.querySelector(".subscribed");
+
+      const groupName = $groupTitle.textContent;
       const $groupTable = $group.nextElementSibling;
       arrGroup.push({
         name: groupName,
         $table: $groupTable,
+        $subscribed,
       });
     });
     return arrGroup;
@@ -206,7 +213,7 @@
     const arrGroup = fnGetGroupInfo();
     // _log("arrGroup", arrGroup);
     arrGroup.forEach((group) => {
-      _pick(group.name, group.$table);
+      _pick(group);
       // _log("group", group);
     });
   }
@@ -221,10 +228,11 @@
 
     // 判断每个按钮是否为 display: none
     const isVisible = el => el.offsetParent !== null;
-    fnEachNodeList($more, ($btn, i) => {
+    fnEachNodeList($more, ($btn, _i) => {
       if (isVisible($btn)) {
         $btn.click();
-      } else {
+      }
+      else {
         clickCount++;
       }
     });

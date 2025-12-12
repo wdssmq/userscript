@@ -62,6 +62,30 @@
     return el.querySelectorAll(selector);
   }
 
+  // 指定元素中的链接增加 target="_blank"
+  const config = [
+    [".markdown_body", ".reply_content"],
+  ];
+
+  function fnSetBlank($a) {
+    $a.setAttribute("target", "_blank");
+  }
+
+  config.forEach((e) => {
+    const selector = e.join(",");
+    const $$container = $na(selector);
+    // // print $$container
+    // _log($$container);
+    // 遍历 $$container
+    [].forEach.call($$container, ($el) => {
+      const $$a = fnFindDom($el, "a");
+      // _log($$a);
+      if ($$a.length > 0) {
+        [].map.call($$a, fnSetBlank);
+      }
+    });
+  });
+
   const _config = {
     data: {},
     dataDef: {
@@ -102,7 +126,7 @@
 
   // 获取链接中的参数
   function fnGetParamInUrl(name, url) {
-    const match = RegExp("[?&]" + name + "=(?<value>[^&]*)").exec(url);
+    const match = new RegExp(`[?&]${name}=(?<value>[^&]*)`).exec(url);
     return match && decodeURIComponent(match.groups.value);
   }
 
@@ -111,7 +135,7 @@
     if (url.indexOf("http") === 0) {
       return url;
     }
-    return "http://" + url;
+    return `http://${url}`;
   }
 
   const siteList = [
@@ -166,8 +190,8 @@
       return;
     }
     switch (tipNode[1]) {
-      default:
       case "after":
+      default:
         $node.insertAdjacentHTML("afterend", $insertTips);
         break;
     }
@@ -176,6 +200,7 @@
   // 各种中转页跳过
   siteList.forEach((site) => {
     const { name, hostList, url } = site;
+    _log(`检测站点：${name}`);
     if (hostList.includes(curHost)) {
       if (!url) {
         return;
@@ -191,7 +216,8 @@
           fnShowTip(site.tipNode, `即将跳转到，剩余 ${cntDown} 秒`, newUrl);
           cntDown--;
         }, 1000);
-      } else {
+      }
+      else {
         setTimeout(() => {
           window.location.href = newUrl;
         }, 10000);
@@ -209,29 +235,5 @@
     const newUrl = window.location.href.replace(curHost, "tieba.baidu.com");
     window.location.href = newUrl;
   }
-
-  // 指定元素中的链接增加 target="_blank"
-  const config = [
-      [".markdown_body", ".reply_content"],
-  ];
-
-  const fnSetBlank = ($a) => {
-      $a.setAttribute("target", "_blank");
-  };
-
-  config.forEach((e) => {
-      const selector = e.join(",");
-      const $$container = $na(selector);
-      // // print $$container
-      // _log($$container);
-      // 遍历 $$container
-      [].forEach.call($$container, ($el) => {
-          const $$a = fnFindDom($el, "a");
-          // _log($$a);
-          if ($$a.length > 0) {
-              [].map.call($$a, fnSetBlank);
-          }
-      });
-  });
 
 })();
