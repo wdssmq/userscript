@@ -41,7 +41,7 @@ jobs:
 
       # Install pnpm && Build Packages
       - name: Install pnpm && Build Packages
-        # if: steps.changed-files.outputs.packages_any_changed  == 'true'
+        if: steps.changed-files.outputs.packages_any_changed  == 'true'
         run: |
           npm install -g pnpm
           pnpm install

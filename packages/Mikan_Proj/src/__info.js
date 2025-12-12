@@ -4,7 +4,7 @@ const gm_banner = `
 // @namespace    https://www.wdssmq.com/
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
-// @description  过滤蜜柑计划列表，按照简繁/画质过滤
+// @description  过滤蜜柑计划列表，仅保留匹配规则的条目
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81

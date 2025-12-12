@@ -29,6 +29,7 @@ function setRuleBinding(groupName, $subscribed) {
     const $input = document.createElement("input");
     $input.type = "button";
     $input.value = "点击设置规则";
+    $input.className = "btn btn-default btn-xs";
     $subscribed.insertAdjacentElement("afterend", $input);
     $input.addEventListener("click", () => {
       const curRule = config.getRule(groupName);
