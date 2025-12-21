@@ -45,7 +45,23 @@ const gob = {
   apiUrl(method = "app/webapiVersion") {
     return gob.data.apiBase + method;
   },
-  // 获取种子列表: torrents/info?tag=test 或 category=test
+  // 判断 API 是否支持 tag 查询（2.8.3 及以上）
+  apiSupportsTag(min = "2.8.3") {
+    const ver = gob.data.apiVer || "";
+    const parse = s => s.split(".").map(n => Number.parseInt(n, 10) || 0);
+    const a = parse(ver);
+    const b = parse(min);
+    for (let i = 0; i < Math.max(a.length, b.length); i++) {
+      const ai = a[i] || 0;
+      const bi = b[i] || 0;
+      if (ai > bi)
+        return true;
+      if (ai < bi)
+        return false;
+    }
+    return true;
+  },
+  // 获取种子列表: torrents/info?tag=test 或 category=test (2.8.3+)
   apiTorrents(filter = "", fn = () => { }) {
     // category 查询
     const tryCategory = () => {
@@ -73,18 +89,13 @@ const gob = {
       }).catch(tryCategory);
     };
     if (filter) {
-      tryTag();
-    }
-    else {
-      // 如果为空，查询所有
-      const url = gob.apiUrl("torrents/info");
-      gob.http.get(url).then((res) => {
-        gob.data.listTorrent = gob.parseReq(res, "json");
-        fn();
-      }).catch(() => {
-        gob.data.listTorrent = [];
-        fn();
-      });
+      // tag 参数自 v2.8.3 支持，低版本使用 category 查询
+      if (gob.apiSupportsTag()) {
+        tryTag();
+      }
+      else {
+        tryCategory();
+      }
     }
   },
   // 获取指定种子的 Trackers: torrents/trackers
