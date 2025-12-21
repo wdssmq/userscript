@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」qBittorrent 管理脚本
 // @namespace    做最终做到的事，成为最终成为的人。
-// @version      1.0.8
+// @version      1.0.9
 // @author       沉冰浮水
 // @description  通过 WebUI 的 API 批量替换 Tracker
 // @license      MIT
@@ -247,7 +247,7 @@
   // 导出实例对象
   const http = new HttpRequest();
 
-  var tplEdt = "<div class=\"mz-edt\">\n  <div class=\"act-tab\" style=\"display: flex;\">操作模式：</div>\n  <hr>\n  <h2>「标签」或「分类」（区分大小写）: </h2>\n  <p>\n    <input class=\"js-input\" type=\"text\" name=\"filter\" style=\"width: 97%;\" placeholder=\"包含要修改项目的「标签」或「分类」，或新建一个\">\n  </p>\n  <h2>Tracker: <span class=\"js-tip-btn\"></span></h2>\n  <div class=\"act-body\"></div>\n  <p class=\"pb-less text-16\">「<a target=\"_blank\" title=\"投喂支持\" href=\"https://afdian.com/a/wdssmq\" rel=\"nofollow\">打钱给作者-爱发电</a>」\n    「<a target=\"_blank\" title=\"QQ 群 - 我的咸鱼心\" href=\"https://jq.qq.com/?_wv=1027&k=SRYaRV6T\" rel=\"nofollow\">QQ 群 - 我的咸鱼心</a>」\n  </p>\n  <hr>\n  <p class=\"pb-less p-bold\">选中要操作的 Torrent 任务（可多选），右键里「标签」或「分类」添加或指定，建议用「标签」；</p>\n  <p class=\"pb-less\">「替换」时请使用完整地址，或者使用「子串替换」；</p>\n  <p class=\"pb-less\">特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</p>\n</div>";
+  var tplEdt = "<div class=\"mz-edt\">\n  <div class=\"act-tab\" style=\"display: flex;\">操作模式：</div>\n  <hr>\n  <h2>「标签」或「分类」（区分大小写，标签仅在 v2.8.3 以上版本有效）: </h2>\n  <p>\n    <input class=\"js-input\" type=\"text\" name=\"filter\" style=\"width: 97%;\" placeholder=\"包含要修改项目的「标签」或「分类」，或新建一个\">\n  </p>\n  <h2>Tracker: <span class=\"js-tip-btn\"></span></h2>\n  <div class=\"act-body\"></div>\n  <p class=\"pb-less text-16\">「<a target=\"_blank\" title=\"投喂支持\" href=\"https://afdian.com/a/wdssmq\" rel=\"nofollow\">打钱给作者-爱发电</a>」\n    「<a target=\"_blank\" title=\"QQ 群 - 我的咸鱼心\" href=\"https://jq.qq.com/?_wv=1027&k=SRYaRV6T\" rel=\"nofollow\">QQ 群 - 我的咸鱼心</a>」\n  </p>\n  <hr>\n  <p class=\"pb-less p-bold\">选中要操作的 Torrent 任务（可多选），右键里「标签」或「分类」添加或指定，建议用「标签」；</p>\n  <p class=\"pb-less\">「替换」时请使用完整地址，或者使用「子串替换」；</p>\n  <p class=\"pb-less\">特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</p>\n</div>\n";
 
   function styleInject(css, ref) {
     if ( ref === void 0 ) ref = {};
