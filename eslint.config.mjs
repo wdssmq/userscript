@@ -11,9 +11,10 @@ export default antfu(
     ignores: [
       ".eslintrc.js",
       "packages_2308/**/*.{js,mjs,json}",
-      "docs/chunks/*.mjs",
+      "docs/**/*.{mjs,json}",
       "site-astro/src/content/gm_md/*.md",
       "packages/**/README.md",
+      "site-astro/.astro/**/*.{ts,mjs,json}",
     ],
 
     languageOptions: {
@@ -39,6 +40,7 @@ export default antfu(
       ],
       "unused-imports/no-unused-imports": ["error", { vars: "all", varsIgnorePattern: "^_" }],
       "node/prefer-global/process": ["off"],
+      "style/no-multiple-empty-lines": ["error", { max: 1 }],
     },
   },
 
