@@ -10,6 +10,8 @@ import { http } from "./_http";
 import tplEdt from "./tpl/edt.html";
 import "./style/style.css";
 
+import { registerRssAutoDlBtn } from "./_rssRule";
+
 if (typeof __GM_api !== "undefined") {
   _log(__GM_api);
 }
@@ -135,6 +137,24 @@ const gob = {
     const url = gob.apiUrl("torrents/removeTrackers");
     gob.http.post(url, { hash, urls });
   },
+
+  // 获取 RSS 订阅
+  apiRssFeeds(fn = () => { }) {
+    const url = gob.apiUrl("rss/items");
+    gob.http.get(url).then((res) => {
+      // _log("apiRssFeeds()\n", gob.parseReq(res, "json"));
+      return gob.parseReq(res, "json");
+    }).then(fn);
+  },
+
+  // RSS 自动下载规则
+  apiRssSetRule(ruleName, ruleDef, fn = () => { }) {
+    const url = gob.apiUrl("rss/setRule");
+    gob.http.post(url, { ruleName, ruleDef }).then((res) => {
+      _log("apiRssSetRule()\n", gob.parseReq(res));
+    }).finally(fn);
+  },
+
   // 获取 API 版本信息
   apiInfo(fn = () => { }) {
     const url = gob.apiUrl();
@@ -336,5 +356,9 @@ document.addEventListener("click", (event) => {
         msg: "操作完成",
       });
     });
+  }
+  // RSS 自动下载规则按钮
+  if (event.target.textContent.trim() === "RSS") {
+    registerRssAutoDlBtn(gob, event.target);
   }
 });

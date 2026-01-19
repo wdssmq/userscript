@@ -19,3 +19,7 @@
 .mz-edt p.pb-less {
   padding-bottom: 3px
 }
+
+.mz-hidden {
+  display: none !important;
+}
