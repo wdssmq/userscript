@@ -28,6 +28,7 @@ const gob = {
       btn: {},
     },
     modalShow: false,
+    categories: [],
   },
   http,
   // 解析返回
@@ -136,6 +137,24 @@ const gob = {
   apiDelTracker(hash, urls) {
     const url = gob.apiUrl("torrents/removeTrackers");
     gob.http.post(url, { hash, urls });
+  },
+
+  // 获取分类列表
+  apiCategories(fn = () => { }) {
+    const url = gob.apiUrl("torrents/categories");
+    gob.http.get(url).then((res) => {
+      // _log("apiCategories()\n", gob.parseReq(res, "json"));
+      return gob.parseReq(res, "json");
+    }).then(fn);
+  },
+
+  // 创建分类
+  apiCreateCategory(name, fn = () => { }) {
+    const url = gob.apiUrl("torrents/createCategory");
+    gob.http.post(url, { category: name }).then((res) => {
+      _log("apiCreateCategory()\n", gob.parseReq(res));
+      return gob.parseReq(res);
+    }).finally(fn);
   },
 
   // 获取 RSS 订阅
