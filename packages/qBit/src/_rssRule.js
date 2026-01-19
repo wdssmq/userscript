@@ -40,7 +40,7 @@ const fnSetRule = (gob, MiKanUrl) => {
     if (!gob.data.categories.includes(ruleName)) {
       gob.apiCreateCategory(ruleName, () => {
         gob.data.categories.push(ruleName);
-        _log(`已创建分类：${ruleName}`);
+        // _log(`已创建分类：${ruleName}`);
       });
     }
     setTimeout(() => {
