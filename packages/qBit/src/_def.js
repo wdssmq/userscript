@@ -7,10 +7,10 @@ import {
 } from "./_base";
 import DefForm from "./_defForm";
 import { http } from "./_http";
-import tplEdt from "./tpl/edt.html";
-import "./style/style.css";
-
 import { registerRssAutoDlBtn } from "./_rssRule";
+import tplEdt from "./tpl/edt.html";
+
+import "./style/style.css";
 
 if (typeof __GM_api !== "undefined") {
   _log(__GM_api);

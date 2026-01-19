@@ -1,9 +1,9 @@
 import {
-  $na,
   $n,
+  $na,
 } from "./_base";
 
-const fnSetRule = (gob, MiKanUrl) => {
+function fnSetRule(gob, MiKanUrl) {
   const $inputGroup = $n(".js-input-group.alignRight");
   if (!$inputGroup) {
     return;
@@ -50,10 +50,9 @@ const fnSetRule = (gob, MiKanUrl) => {
       });
     }, 500);
   });
-
 }
 
-export const registerRssAutoDlBtn = (gob, $rssBtn) => {
+export function registerRssAutoDlBtn(gob, $rssBtn) {
   if ($rssBtn.dataset.registered) {
     return;
   }
@@ -62,7 +61,8 @@ export const registerRssAutoDlBtn = (gob, $rssBtn) => {
   // 获取 RSS 订阅
   gob.apiRssFeeds((res) => {
     for (const name in res) {
-      if (!Object.hasOwn(res, name)) continue;
+      if (!Object.hasOwn(res, name))
+        continue;
       const item = res[name];
       // _log(name, item);
       if (name.includes("Mikan")) {
@@ -111,6 +111,4 @@ export const registerRssAutoDlBtn = (gob, $rssBtn) => {
     fnSetRule(gob, MiKanUrl);
   });
   $n("#rssDownloaderButton").after(btn);
-
-
 }
