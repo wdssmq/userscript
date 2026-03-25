@@ -1,5 +1,11 @@
 packages:
   - packages/*
+  - packages-lib/*
+
+catalog:
+  domq.js: ^0.7.1
+  rollup: ^4.60.0
+  rollup-plugin-md: ^1.0.1
 
 onlyBuiltDependencies:
   - bufferutil
