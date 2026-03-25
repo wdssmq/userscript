@@ -1,39 +1,39 @@
 import {
-    D,
-    on,
-    // isArray,
-    addClass,
-    append,
-    find,
-    hasClass,
-    text,
-    removeClass,
-    removeAttr,
-    attr,
-    html,
-    empty,
+  // isArray,
+  addClass,
+  append,
+  attr,
+  D,
+  empty,
+  find,
+  hasClass,
+  html,
+  on,
+  removeAttr,
+  removeClass,
+  text,
 } from "domq.js/src/domq.modular";
 
 // Static methods
 // https://github.com/nzbin/domq#static-methods
 const methods = {
-    // isArray,
+  // isArray,
 };
 
 // Instance methods
 // https://github.com/nzbin/domq#instance-methods
 const fnMethods = {
-    addClass,
-    append,
-    attr,
-    empty,
-    find,
-    hasClass,
-    html,
-    on,
-    removeAttr,
-    removeClass,
-    text,
+  addClass,
+  append,
+  attr,
+  empty,
+  find,
+  hasClass,
+  html,
+  on,
+  removeAttr,
+  removeClass,
+  text,
 };
 
 D.extend(methods);
