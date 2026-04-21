@@ -1,16 +1,11 @@
 {
   "name": "lib-menu",
+  "type": "module",
   "version": "1.0.0",
   "description": "lib-menu",
-  "main": "dist/lib-menu.js",
-  "type": "module",
   "moduleName": "mzLibMenu",
-  "scripts": {
-    "build": "rollup -c --environment NODE_ENV:prod",
-    "dev": "rollup -c -w --environment NODE_ENV:dev",
-    "demo": "live-server --watch=index.html,lib-menu.js",
-    "lint": "eslint --ext .js,.mjs ."
-  },
+  "author": "wdssmq",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/wdssmq/userscript"
@@ -20,17 +15,21 @@
     "scripts",
     "lib-scripts"
   ],
-  "author": "wdssmq",
-  "license": "MIT",
+  "main": "dist/lib-menu.js",
+  "scripts": {
+    "build": "rollup -c --environment NODE_ENV:prod",
+    "dev": "rollup -c -w --environment NODE_ENV:dev",
+    "demo": "live-server --watch=index.html,lib-menu.js",
+    "lint": "eslint --ext .js,.mjs ."
+  },
   "dependencies": {
-    "less": "^4.2.0",
-    "postcss": "^8.4.29",
-    "rollup": "^3.29.1",
-    "rollup-plugin-postcss": "^4.0.2"
+    "less": "catalog:",
+    "postcss": "catalog:",
+    "rollup": "catalog:conflicts_rollup_h3_30_0",
+    "rollup-plugin-postcss": "catalog:"
   },
   "devDependencies": {
-    "eslint": "^8.49.0",
-    "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-serve": "^2.0.2"
+    "rollup-plugin-livereload": "catalog:",
+    "rollup-plugin-serve": "catalog:"
   }
 }

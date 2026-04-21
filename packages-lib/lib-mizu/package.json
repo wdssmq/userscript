@@ -1,38 +1,37 @@
 {
-    "name": "lib-mizu",
-    "version": "1.0.0",
-    "description": "",
-    "main": "dist/lib-mizu.js",
-    "type": "module",
-    "extractCSS": true,
-    "scripts": {
-        "build": "rollup -c --environment NODE_ENV:prod",
-        "dev": "rollup -c -w --environment NODE_ENV:dev",
-        "demo": "live-server --watch=index.html,dist/*.js",
-        "lint": "eslint --ext .js,.mjs ."
-    },
-    "keywords": [
-        "lib",
-        "scripts",
-        "lib-scripts"
-    ],
-    "author": "wdssmq",
-    "license": "MIT",
-    "dependencies": {
-        "rollup-plugin-html-string": "^1.0.1",
-        "rollup-plugin-md": "^1.0.1",
-        "sass": "^1.77.4"
-    },
-    "devDependencies": {
-        "@rollup/plugin-node-resolve": "^15.2.3",
-        "@rollup/plugin-replace": "^5.0.5",
-        "bulma": "^1.0.1",
-        "eslint": "^8.57.0",
-        "postcss": "^8.4.38",
-        "rollup": "^3.29.4",
-        "rollup-plugin-copy": "^3.5.0",
-        "rollup-plugin-livereload": "^2.0.5",
-        "rollup-plugin-postcss": "^4.0.2",
-        "rollup-plugin-serve": "^2.0.3"
-    }
+  "name": "lib-mizu",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "extractCSS": true,
+  "author": "wdssmq",
+  "license": "MIT",
+  "keywords": [
+    "lib",
+    "scripts",
+    "lib-scripts"
+  ],
+  "main": "dist/lib-mizu.js",
+  "scripts": {
+    "build": "rollup -c --environment NODE_ENV:prod",
+    "dev": "rollup -c -w --environment NODE_ENV:dev",
+    "demo": "live-server --watch=index.html,dist/*.js",
+    "lint": "eslint --ext .js,.mjs ."
+  },
+  "dependencies": {
+    "rollup-plugin-html-string": "catalog:",
+    "rollup-plugin-md": "catalog:",
+    "sass": "catalog:"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "catalog:",
+    "@rollup/plugin-replace": "catalog:",
+    "bulma": "catalog:",
+    "postcss": "catalog:",
+    "rollup": "catalog:conflicts_rollup_h3_30_0",
+    "rollup-plugin-copy": "catalog:",
+    "rollup-plugin-livereload": "catalog:",
+    "rollup-plugin-postcss": "catalog:",
+    "rollup-plugin-serve": "catalog:"
+  }
 }

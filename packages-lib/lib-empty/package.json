@@ -20,18 +20,18 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
-    "rollup-plugin-html-string": "^1.0.1",
-    "rollup-plugin-md": "^1.0.1",
-    "sass": "^1.99.0"
+    "rollup-plugin-html-string": "catalog:",
+    "rollup-plugin-md": "catalog:",
+    "sass": "catalog:"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.3.1",
-    "@rollup/plugin-replace": "^5.0.7",
-    "postcss": "^8.5.10",
-    "rollup": "^3.30.0",
-    "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-serve": "^2.0.3"
+    "@rollup/plugin-node-resolve": "catalog:",
+    "@rollup/plugin-replace": "catalog:",
+    "postcss": "catalog:",
+    "rollup": "catalog:conflicts_rollup_h3_30_0",
+    "rollup-plugin-copy": "catalog:",
+    "rollup-plugin-livereload": "catalog:",
+    "rollup-plugin-postcss": "catalog:",
+    "rollup-plugin-serve": "catalog:"
   }
 }

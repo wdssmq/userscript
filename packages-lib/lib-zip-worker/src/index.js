@@ -1,20 +1,20 @@
-import { fnDownload } from './base';
+import { fnDownload } from "./base";
+
+import "./index.css";
 
 // 调用示例
 const urls = [
-    {
-        name: "userscript.png",
-        url: "https://opengraph.githubassets.com/0/wdssmq/userscript"
-    },
-    {
-        name: "GesF-Note.png",
-        url: "https://opengraph.githubassets.com/0/wdssmq/GesF-Note"
-    }
+  {
+    name: "userscript.png",
+    url: "https://opengraph.githubassets.com/0/wdssmq/userscript",
+  },
+  {
+    name: "GesF-Note.png",
+    url: "https://opengraph.githubassets.com/0/wdssmq/GesF-Note",
+  },
 ];
 
-import './index.css';
-
-document.querySelector('#root').innerHTML = `
+document.querySelector("#root").innerHTML = `
 <div class="content">
   <h1>Vanilla Rsbuild</h1>
   <p>Start building amazing things with Rsbuild.</p>
@@ -22,10 +22,10 @@ document.querySelector('#root').innerHTML = `
 </div>
 `;
 
-const $btn = document.querySelector('#btn');
+const $btn = document.querySelector("#btn");
 
-$btn.addEventListener('click', () => {
-    // 当前年月日时分秒
-    const now = (new Date()).toLocaleString().replace(/\/|:|\s/g, '-');
-    fnDownload(urls, `download-${now}`, (percent) => $btn.innerHTML = `正在压缩：${percent}%`);
+$btn.addEventListener("click", () => {
+  // 当前年月日时分秒
+  const now = (new Date()).toLocaleString().replace(/[/:\s]/g, "-");
+  fnDownload(urls, `download-${now}`, percent => $btn.innerHTML = `正在压缩：${percent}%`);
 });

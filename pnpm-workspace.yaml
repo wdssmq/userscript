@@ -5,6 +5,7 @@ packages:
 catalog:
   '@rollup/plugin-node-resolve': ^15.3.1
   '@rollup/plugin-replace': ^5.0.7
+  '@rollup/plugin-typescript': ^12.3.0
   '@rsbuild/core': ^1.7.5
   baseline-browser-mapping: ^2.10.20
   bulma: ^1.0.4
@@ -25,12 +26,17 @@ catalog:
   rollup-plugin-postcss: ^4.0.2
   rollup-plugin-serve: ^2.0.3
   sass: ^1.99.0
+  tslib: ^2.8.1
   tsx: ^4.20.6
   typescript: ^5.9.3
   vite: ^7.3.2
   vite-plugin-monkey: ^7.1.9
 
 catalogMode: prefer
+
+catalogs:
+  conflicts_rollup_h3_30_0:
+    rollup: ^3.30.0
 
 onlyBuiltDependencies:
   - '@parcel/watcher'
@@ -42,6 +48,3 @@ onlyBuiltDependencies:
 shellEmulator: true
 
 trustPolicy: no-downgrade
-catalogs:
-  conflicts_rollup_h3_30_0:
-    rollup: ^3.30.0
