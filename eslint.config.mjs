@@ -8,6 +8,8 @@ export default antfu(
       quotes: "double",
     },
 
+    typescript: true,
+
     ignores: [
       ".eslintrc.js",
       "packages_2308/**/*.{js,mjs,json}",
