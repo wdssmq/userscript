@@ -3,25 +3,25 @@ import { GM_getValue, GM_setValue } from "$";
 const _config = {
   default:
   {
-    "DEBUG": false,
-    "GIT_INFO": {
-      "GIT_REPO": "wdssmq/GesF-Note",
-      "GIT_TOKEN": "",
-      "GIT_USER": "wdssmq",
-      "PICK_LABEL": "pick",
+    DEBUG: false,
+    GIT_INFO: {
+      GIT_REPO: "wdssmq/GesF-Note",
+      GIT_TOKEN: "",
+      GIT_USER: "wdssmq",
+      PICK_LABEL: "pick",
     },
-    "firstRun": true,
-    "lastIssue": {
+    firstRun: true,
+    lastIssue: {
       number: -1,
       updated_at: "",
     },
     up: -1,
   },
   data: {} as Record<string, any>,
-  save: function() {
+  save() {
     GM_setValue("config", this.data);
   },
-  load: function() {
+  load() {
     this.data = GM_getValue("config", this.default);
     // 初始化配置
     if (this.data.firstRun) {
@@ -29,8 +29,7 @@ const _config = {
       this.save();
     }
   },
-}
-
+};
 
 _config.load();
 

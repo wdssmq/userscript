@@ -1,15 +1,15 @@
+import type { noteInfo } from "./_type";
+import { GM_setClipboard } from "$";
 import {
   // $n,
   _now,
 } from "./_base";
-import type { noteInfo } from "./_type";
+
 import _config from "./_config";
 
-import { GM_setClipboard } from "$";
-
 import {
-  http_git_issues,
   http_git_create_comment,
+  http_git_issues,
 } from "./_git_api";
 
 // updated_at : "2025-09-06T13:17:08Z"
@@ -25,8 +25,9 @@ function formatYAML(obj: noteInfo) {
   Object.entries(obj).forEach(([key, value]) => {
     if (Array.isArray(value)) {
       strYaml += `${key}: `;
-      strYaml += value.join(", ") + "\n";
-    } else {
+      strYaml += `${value.join(", ")}\n`;
+    }
+    else {
       value = value.replace(/\n/g, "");
       strYaml += `${key}: ${value}\n`;
     }
@@ -65,7 +66,7 @@ function pickIssue(issues: any[], maxComments: number): any | null {
 }
 
 function getLastIssue() {
-  const gitInfo = _config.data.GIT_INFO
+  const gitInfo = _config.data.GIT_INFO;
   if (!gitInfo.GIT_REPO || !gitInfo.GIT_TOKEN) {
     alert("请先配置 GitHub Token 及 Repo");
     return;
@@ -82,7 +83,7 @@ function getLastIssue() {
   const issues = http_git_issues(gitInfo.PICK_LABEL, gitInfo.GIT_REPO, gitInfo.GIT_TOKEN);
   issues.then((res) => {
     if (res.error) {
-      alert("获取 Issues 失败：" + res.message);
+      alert(`获取 Issues 失败：${res.message}`);
       console.log(res.data);
 
       return;
@@ -93,7 +94,8 @@ function getLastIssue() {
       alert("没有找到合适的 Issue");
       _config.data.lastIssue.number = -1;
       _config.data.lastIssue.updated_at = -1;
-    } else {
+    }
+    else {
       _config.data.lastIssue.number = lstIssue.number;
       _config.data.lastIssue.updated_at = lstIssue.updated_at;
     }
@@ -117,7 +119,7 @@ function createComment(strYaml: string) {
 
   http_git_create_comment(comments_url, postBody, gitInfo.GIT_TOKEN).then((res) => {
     if (res.error) {
-      alert("创建评论失败：" + res.message);
+      alert(`创建评论失败：${res.message}`);
       console.log(res.data);
       return;
     }
@@ -137,4 +139,4 @@ export {
   createComment,
   getLastIssue,
   pickIssue,
-}
+};

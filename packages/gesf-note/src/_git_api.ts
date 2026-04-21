@@ -2,13 +2,13 @@ import { http } from "./_http";
 
 function http_git_headers(token: string = "", other: Record<string, string> = {}): Record<string, string> {
   return {
-    "Accept": "application/vnd.github+json",
-    "Authorization": "token " + token,
-    ...other
+    Accept: "application/vnd.github+json",
+    Authorization: `token ${token}`,
+    ...other,
   };
 }
 
-function http_git_check(res_data: any): { error: boolean; message?: string; data: any } {
+function http_git_check(res_data: any): { error: boolean, message?: string, data: any } {
   let error_message = "";
   if (typeof res_data === "object" && res_data !== null && "status" in res_data) {
     if (res_data.status !== 200) {
