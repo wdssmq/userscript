@@ -1,3 +1,5 @@
+/* global importScripts, JSZip, Comlink */
+
 importScripts(
   "https://cdn.jsdelivr.net/npm/comlink@4.4.2/dist/umd/comlink.js",
   "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js",
