@@ -10,12 +10,12 @@
     "lint": "eslint --fix"
   },
   "dependencies": {
-    "@rollup/plugin-replace": "^5.0.5",
-    "open": "^8.4.2",
-    "rollup": "^3.29.4",
-    "rollup-plugin-monkey": "^1.0.9"
+    "@rollup/plugin-replace": "catalog:",
+    "open": "catalog:",
+    "rollup": "catalog:conflicts_rollup_h3_30_0",
+    "rollup-plugin-monkey": "catalog:"
   },
   "devDependencies": {
-    "baseline-browser-mapping": "^2.9.6"
+    "baseline-browser-mapping": "catalog:"
   }
 }
