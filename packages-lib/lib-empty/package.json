@@ -1,36 +1,37 @@
 {
-    "name": "lib-empty",
-    "version": "1.0.0",
-    "description": "",
-    "main": "dist/lib-{{name}}.js",
-    "type": "module",
-    "extractCSS": true,
-    "scripts": {
-        "build": "rollup -c --environment NODE_ENV:prod",
-        "dev": "rollup -c -w --environment NODE_ENV:dev",
-        "demo": "live-server --watch=index.html,dist/*.js",
-        "lint": "eslint --ext .js,.mjs ."
-    },
-    "keywords": [
-        "lib",
-        "scripts",
-        "lib-scripts"
-    ],
-    "author": "wdssmq",
-    "license": "MIT",
-    "dependencies": {
-        "rollup-plugin-html-string": "^1.0.1",
-        "rollup-plugin-md": "^1.0.1",
-        "sass": "^1.93.2"
-    },
-    "devDependencies": {
-        "@rollup/plugin-node-resolve": "^15.3.1",
-        "@rollup/plugin-replace": "^5.0.7",
-        "postcss": "^8.5.6",
-        "rollup": "^3.29.5",
-        "rollup-plugin-copy": "^3.5.0",
-        "rollup-plugin-livereload": "^2.0.5",
-        "rollup-plugin-postcss": "^4.0.2",
-        "rollup-plugin-serve": "^2.0.3"
-    }
+  "name": "lib-empty",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "extractCSS": true,
+  "author": "wdssmq",
+  "license": "MIT",
+  "keywords": [
+    "lib",
+    "scripts",
+    "lib-scripts"
+  ],
+  "main": "dist/lib-{{name}}.js",
+  "scripts": {
+    "build": "rollup -c --environment NODE_ENV:prod",
+    "dev": "rollup -c -w --environment NODE_ENV:dev",
+    "demo": "live-server --watch=index.html,dist/*.js",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "dependencies": {
+    "rollup-plugin-html-string": "^1.0.1",
+    "rollup-plugin-md": "^1.0.1",
+    "sass": "^1.99.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.3.1",
+    "@rollup/plugin-replace": "^5.0.7",
+    "postcss": "^8.5.10",
+    "rollup": "^3.30.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^2.0.3"
+  }
 }
