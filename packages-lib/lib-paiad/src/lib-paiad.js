@@ -1,5 +1,3 @@
-
-import $ from "./base/_domq.js";
 import { lsObj } from "./base/_util.js";
 import tplHtml from "./base/modal.html";
 import msgContent from "./base/msg.md";
@@ -107,31 +105,35 @@ class PaidOrAd {
     const strHtml = this.buildHtml();
     if (!this.domCreated) {
       this.domCreated = true;
-      $(document.body).append(strHtml);
+      document.body.insertAdjacentHTML("beforeend", strHtml);
     }
-    this.$modal = $(`#${this.modalId}`);
-    this.$modalOverlay = this.$modal.find(".mz-modal__overlay");
-    // this.$modalOverlay.removeAttr("data-mz-modal-close");
+    this.$modal = document.getElementById(this.modalId);
+    this.$modalOverlay = this.$modal.querySelector(".mz-modal__overlay");
+    // this.$modalOverlay.removeAttribute("data-mz-modal-close");
   }
 
   // 更新 Dom 内容
   updateDom() {
-    const $modalCon = this.$modal.find("#paiad-content");
+    const $modalCon = this.$modal.querySelector("#paiad-content");
     const modalCon = this.config.msg.content;
-    $modalCon.html(modalCon);
+    $modalCon.innerHTML = modalCon;
 
-    const $modalTitle = this.$modal.find("#paiad-title");
+    const $modalTitle = this.$modal.querySelector("#paiad-title");
     const modalTitle = this.config.msg.title
       .replace("{IntervalHour}", this.intervalHour)
       .replace("{IntervalDay}", this.intervalDay)
       .replace("{IntervalText}", this.intervalText);
-    $modalTitle.html(modalTitle);
+    $modalTitle.innerHTML = modalTitle;
 
     // 链接添加 target="_blank"
-    this.$modal.find("a").attr("target", "_blank");
+    const links = this.$modal.querySelectorAll("a");
+    links.forEach(link => link.setAttribute("target", "_blank"));
 
     // 追加元素
-    $modalTitle.append("<span class=\"js-mz-tips mz-hidden\">{tips}</span>");
+    const span = document.createElement("span");
+    span.className = "js-mz-tips mz-hidden";
+    span.textContent = "{tips}";
+    $modalTitle.appendChild(span);
     // 添加额外的 class
     this.addClass();
   }
