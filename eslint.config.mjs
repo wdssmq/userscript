@@ -11,6 +11,8 @@ export default antfu(
     typescript: true,
 
     ignores: [
+      "dist/*.user.js",
+      "dist-lib/lib-*.js",
       ".eslintrc.js",
       "packages_2308/**/*.{js,mjs,json}",
       "docs/**/*.{mjs,json}",

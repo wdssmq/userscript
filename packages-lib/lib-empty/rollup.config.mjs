@@ -23,7 +23,7 @@ const defConfig = {
     file: pkg.main,
     format: "umd",
     name: pkg.moduleName,
-    banner: "/* eslint-disable */\n",
+    // banner: "/* eslint-disable */\n",
     // sourcemap: true,
   },
   plugins: [
