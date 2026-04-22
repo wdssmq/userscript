@@ -356,7 +356,7 @@
 
     setTips() {
       const _tips = (cnt) => {
-        return cnt > 0 ? `${cnt} 秒后方可关闭` : "再次点击关闭→";
+        return cnt > 0 ? `${cnt}丨继续点→` : "最后一次→";
       };
       const $tips = this.$modal.querySelector(".js-mz-tips");
       $tips.textContent = _tips(this.cntDownCur);
