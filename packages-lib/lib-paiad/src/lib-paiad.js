@@ -174,11 +174,14 @@ class PaidOrAd {
 
   // 倒计时封装
   cntDown() {
+    this.setTips();
+    // 判断倒计时执行中
     if (this.cntDownRunning) {
+      // 重复点击可以加速
+      this.cntDownCur -= 1;
       return;
     }
     this.cntDownRunning = true;
-    this.setTips();
     const _this = this;
     const cnt = setInterval(() => {
       _this.cntDownCur -= 1;
