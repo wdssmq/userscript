@@ -11,14 +11,14 @@ export default antfu(
     typescript: true,
 
     ignores: [
-      "dist/*.user.js",
-      "dist-lib/lib-*.js",
       ".eslintrc.js",
-      "packages_2308/**/*.{js,mjs,json}",
+      "dist-lib/lib-*.js",
+      "dist/*.user.js",
       "docs/**/*.{mjs,json}",
-      "site-astro/src/content/gm_md/*.md",
+      "packages_2308/**/*.{js,mjs,json}",
       "packages/**/README.md",
       "site-astro/.astro/**/*.{ts,mjs,json}",
+      "site-astro/src/content/gm_md/*.md",
     ],
 
     languageOptions: {
