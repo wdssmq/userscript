@@ -44,13 +44,13 @@ class PaidOrAd {
 
   _onClose(args) {
     // console.log(args);
-    const $tips = this.$modal.find(".js-mz-tips");
+    const $tips = this.$modal.querySelector(".js-mz-tips");
     if (args.isDisabled) {
       // const $modal = $(args.modal);
-      $tips.removeClass("mz-hidden");
+      $tips.classList.remove("mz-hidden");
     }
     else {
-      $tips.addClass("mz-hidden");
+      $tips.classList.add("mz-hidden");
     }
     // 倒计时结束后才允许关闭
     this.cntDown();
@@ -142,13 +142,13 @@ class PaidOrAd {
   preventAccidentalClose() {
     const _this = this;
     // this.$modal 绑定鼠标按下事件
-    this.$modal.on("mousedown", (e) => {
+    this.$modal.addEventListener("mousedown", (e) => {
       // 触发元素不为 .mz-modal__overlay 或 .mz-modal__close
       if (!e.target.classList.contains("mz-modal__overlay") && !e.target.classList.contains("mz-modal__close")) {
-        _this.$modalOverlay.removeAttr("data-mz-modal-close");
+        _this.$modalOverlay.removeAttribute("data-mz-modal-close");
       }
       else {
-        _this.$modalOverlay.attr("data-mz-modal-close", "");
+        _this.$modalOverlay.setAttribute("data-mz-modal-close", "");
       }
     });
   }
@@ -156,15 +156,15 @@ class PaidOrAd {
   addClass() {
     if (this.config.adsFlag === false)
       return;
-    this.$modal.addClass("ads");
+    this.$modal.classList.add("ads");
   }
 
   setTips() {
     const _tips = (cnt) => {
       return cnt > 0 ? `${cnt} 秒后方可关闭` : "再次点击关闭→";
     };
-    const $tips = this.$modal.find(".js-mz-tips");
-    $tips.text(_tips(this.cntDownCur));
+    const $tips = this.$modal.querySelector(".js-mz-tips");
+    $tips.textContent = _tips(this.cntDownCur);
   }
 
   setLsData(key, value) {
@@ -182,7 +182,7 @@ class PaidOrAd {
     const _this = this;
     const cnt = setInterval(() => {
       _this.cntDownCur -= 1;
-      this.setTips();
+      _this.setTips();
       if (_this.cntDownCur <= 0) {
         clearTimeout(cnt);
         _this.enableClose();
@@ -193,12 +193,12 @@ class PaidOrAd {
   // 禁止关闭
   disableClose() {
     // console.log("disableClose");
-    this.$modal.addClass("disable-close");
+    this.$modal.classList.add("disable-close");
   }
 
   // 允许关闭
   enableClose() {
-    this.$modal.removeClass("disable-close");
+    this.$modal.classList.remove("disable-close");
     this.cntDownRunning = false;
   }
 
