@@ -8,5 +8,13 @@
     "clean:deps": "rm -rf node_modules",
     "up:ver": "npm version patch && npm run build",
     "lint": "eslint --fix"
+  },
+  "dependencies": {
+    "@rollup/plugin-replace": "catalog:",
+    "open": "catalog:",
+    "rollup": "catalog:",
+    "rollup-plugin-html-string": "catalog:",
+    "rollup-plugin-monkey": "catalog:",
+    "rollup-plugin-postcss": "catalog:"
   }
 }
