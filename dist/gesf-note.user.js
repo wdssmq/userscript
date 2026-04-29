@@ -17,15 +17,13 @@
 
   const d=new Set;const importCSS = async e=>{d.has(e)||(d.add(e),(t=>{typeof GM_addStyle=="function"?GM_addStyle(t):(document.head||document.documentElement).appendChild(document.createElement("style")).append(t);})(e));};
 
-  const styleCss = ".js-note-btn{margin-left:8px;padding:4px 8px;color:#fff;background-color:#00aeec;border:none;border-radius:4px;cursor:pointer}.js-note-btn:hover{background-color:#00b8f6;color:#fff}";
-  importCSS(styleCss);
   const _now = () => Math.floor(Date.now() / 1e3);
-  const $n = (selector, parent = document) => {
+  function $n(selector, parent = document) {
     return parent.querySelector(selector);
-  };
-  const fnElChange = (el, fn = (mr, mo) => {
+  }
+  function fnElChange(el, fn = (mr, mo) => {
     console.log(mr, mo);
-  }) => {
+  }) {
     const observer = new MutationObserver((mr, mo) => {
       fn(mr, mo);
     });
@@ -34,32 +32,32 @@
 childList: true,
 subtree: true
     });
-  };
+  }
   var _GM_getValue = (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
   var _GM_setClipboard = (() => typeof GM_setClipboard != "undefined" ? GM_setClipboard : void 0)();
   var _GM_setValue = (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
   var _GM_xmlhttpRequest = (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
   const _config = {
     default: {
-      "DEBUG": false,
-      "GIT_INFO": {
-        "GIT_REPO": "wdssmq/GesF-Note",
-        "GIT_TOKEN": "",
-        "GIT_USER": "wdssmq",
-        "PICK_LABEL": "pick"
+      DEBUG: false,
+      GIT_INFO: {
+        GIT_REPO: "wdssmq/GesF-Note",
+        GIT_TOKEN: "",
+        GIT_USER: "wdssmq",
+        PICK_LABEL: "pick"
       },
-      "firstRun": true,
-      "lastIssue": {
+      firstRun: true,
+      lastIssue: {
         number: -1,
         updated_at: ""
       },
       up: -1
     },
     data: {},
-    save: function() {
+    save() {
       _GM_setValue("config", this.data);
     },
-    load: function() {
+    load() {
       this.data = _GM_getValue("config", this.default);
       if (this.data.firstRun) {
         this.data.firstRun = false;
@@ -71,7 +69,7 @@ subtree: true
   class HttpRequest {
     constructor() {
       if (typeof _GM_xmlhttpRequest === "undefined") {
-        throw new Error("GM_xmlhttpRequest is not defined");
+        throw new TypeError("GM_xmlhttpRequest is not defined");
       }
     }
     get(url, headers = {}) {
@@ -84,13 +82,14 @@ subtree: true
     post(url, data = {}, headers = {}, dataType = "json") {
       const getData = (data2) => {
         switch (dataType) {
-          case "form":
+          case "form": {
             const formData = new FormData();
             for (const key in data2) {
               formData.append(key, data2[key]);
             }
             headers["Content-Type"] = "application/x-www-form-urlencoded";
             return formData;
+          }
           case "json":
           default:
             headers["Content-Type"] = "application/json";
@@ -120,8 +119,8 @@ subtree: true
   const http = new HttpRequest();
   function http_git_headers(token = "", other = {}) {
     return {
-      "Accept": "application/vnd.github+json",
-      "Authorization": "token " + token,
+      Accept: "application/vnd.github+json",
+      Authorization: `token ${token}`,
       ...other
     };
   }
@@ -156,7 +155,8 @@ subtree: true
     Object.entries(obj).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         strYaml += `${key}: `;
-        strYaml += value.join(", ") + "\n";
+        strYaml += `${value.join(", ")}
+`;
       } else {
         value = value.replace(/\n/g, "");
         strYaml += `${key}: ${value}
@@ -205,7 +205,7 @@ subtree: true
     const issues = http_git_issues(gitInfo.PICK_LABEL, gitInfo.GIT_REPO, gitInfo.GIT_TOKEN);
     issues.then((res) => {
       if (res.error) {
-        alert("获取 Issues 失败：" + res.message);
+        alert(`获取 Issues 失败：${res.message}`);
         console.log(res.data);
         return;
       }
@@ -238,7 +238,7 @@ ${strYaml}
     console.log(comments_url);
     http_git_create_comment(comments_url, postBody, gitInfo.GIT_TOKEN).then((res) => {
       if (res.error) {
-        alert("创建评论失败：" + res.message);
+        alert(`创建评论失败：${res.message}`);
         console.log(res.data);
         return;
       }
@@ -254,25 +254,27 @@ ${strYaml}
   class BiliNote {
     noteScheme = {
       item: {
-        "Title": "node:.video-info-title-inner h1",
-        "Desc": "node:.desc-info-text",
-        "Source": "[url=https://space.bilibili.com/44744006]沉冰浮水@bilibili[/url]",
-        "Tags": ["哔哩哔哩"],
-        "Type": "视频",
-        "Url": ""
+        Title: "node:.video-info-title-inner h1",
+        Desc: "node:.desc-info-text",
+        Source: "[url=https://space.bilibili.com/44744006]沉冰浮水@bilibili[/url]",
+        Tags: ["哔哩哔哩"],
+        Type: "视频",
+        Url: ""
       },
       btnWrap: ".video-info-meta"
     };
     _loadCheck() {
       const $btnSpan = $n(".js-note-btn");
-      if ($btnSpan) return "loaded";
+      if ($btnSpan)
+        return "loaded";
       const $title = $n(this.noteScheme.item.Title.slice(5));
       const $desc = $n(this.noteScheme.item.Desc.slice(5));
-      if (!$title || !$desc) return "-1";
+      if (!$title || !$desc)
+        return "-1";
       return "loading";
     }
     _getVideoUrl() {
-      return "https://www.bilibili.com/video/" + window.__INITIAL_STATE__?.bvid;
+      return `https://www.bilibili.com/video/${window.__INITIAL_STATE__?.bvid}`;
     }
     _getTitle() {
       return $n(this.noteScheme.item.Title.slice(5))?.textContent?.trim() || "";
@@ -287,27 +289,32 @@ ${strYaml}
       return Object.assign({}, this.noteScheme.item, { Title: title, Url: url, Desc: desc });
     }
   }
+  const styleCss = ".js-note-btn{margin-left:8px;padding:4px 8px;color:#fff;background-color:#00aeec;border:none;border-radius:4px;cursor:pointer}.js-note-btn:hover{background-color:#00b8f6;color:#fff}";
+  importCSS(styleCss);
   (() => {
     const $body = document.body;
     getLastIssue();
     let g;
+    let loadedCnt = 0;
     let t;
-    if ("www.bilibili.com" === location.hostname) {
+    if (location.hostname === "www.bilibili.com") {
       g = new BiliNote();
       fnElChange($body, (mr, mo) => {
         t = setTimeout(() => {
-          if ("loaded" === g._loadCheck()) {
+          if (g._loadCheck() === "loaded") {
+            loadedCnt++;
             mo.disconnect();
             clearTimeout(t);
+            console.log(loadedCnt);
           }
-          if ("loading" === g._loadCheck()) {
+          if (g._loadCheck() === "loading") {
             const $btnWrap = $n(g.noteScheme.btnWrap);
             if ($btnWrap) {
               addCopyBtn($btnWrap, ["js-note-btn"], g.note, createComment);
               addCopyBtn($btnWrap, ["js-note-btn"], g.note, copyNoteYaml, "复制 YAML");
             }
             console.log("body changed", mr, mo);
-          } else if ("-1" === g._loadCheck()) {
+          } else if (g._loadCheck() === "-1") {
             console.log("等待元素加载");
           }
         }, 500);
