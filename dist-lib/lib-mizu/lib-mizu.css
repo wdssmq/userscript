@@ -1,0 +1,247 @@
+.mz-reset * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.mz-content code {
+  background-color: hsl(0, 0%, 96%);
+  color: hsl(348, 100%, 61%);
+  font-weight: 400;
+  padding: 0.25em 0.5em;
+}
+
+.readonly + *[readonly] {
+  background-color: #fff;
+  color: inherit;
+  cursor: pointer;
+}
+.readonly + *[readonly]:hover {
+  cursor: pointer;
+}
+
+#divMain2 {
+  margin-bottom: 6rem;
+}
+#divMain2 textarea {
+  padding: 0.3em;
+}
+#divMain2 p:not(:last-of-type) {
+  margin-bottom: 0.6em;
+}
+
+.mz-tabs {
+  --tabs-item-active-border-bottom-color: #1d4c7d;
+  --tabs-item-border-bottom-color: transparent;
+  --tabs-item-color: #1d4c7d;
+  --tabs-item-hover-border-bottom-color: #d60000;
+  --tabs-item-hover-color: #d60000;
+  display: flex;
+}
+.mz-tabs > * {
+  border-bottom-color: var(--tabs-item-border-bottom-color);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  color: var(--tabs-item-color);
+  margin-bottom: -2px;
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+  transition-duration: 294ms;
+  transition-property: background-color, border-color, color;
+}
+.mz-tabs > *.active {
+  border-bottom-color: var(--tabs-item-active-border-bottom-color);
+  font-weight: bolder;
+}
+.mz-tabs > *:hover:not(.active) {
+  border-bottom-color: var(--tabs-item-hover-border-bottom-color);
+  color: var(--tabs-item-hover-color);
+}
+
+.mz-button {
+  padding: 4px 18px;
+}
+.mz-button.small {
+  font-size: 0.8em;
+  padding-left: 0.55em;
+  padding-right: 0.55em;
+}
+.mz-button.is-info {
+  background-color: #3a6ea5;
+  border-color: transparent;
+  color: #fff;
+}
+.mz-button.is-info:hover, .mz-button.is-info.hover {
+  background-color: #1496ed;
+}
+
+.mz-field:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+.mz-field.is-horizontal {
+  display: flex;
+  align-items: center;
+}
+.mz-field .field-label {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+  margin-right: 1.5rem;
+  text-align: right;
+}
+.mz-field .field-label .label {
+  font-size: 0.9em;
+  font-weight: normal;
+}
+.mz-field .field-body {
+  flex-basis: 0;
+  flex-grow: 6;
+  flex-shrink: 1;
+  align-items: center;
+}
+.mz-field .field-body .control {
+  flex-grow: 1;
+  max-width: 97%;
+}
+.mz-field .input, .mz-field .textarea {
+  box-shadow: inset 0 0.0625em 0.125em rgba(10, 10, 10, 0.05);
+  max-width: 100%;
+  width: 100%;
+  color: #606060;
+  padding: 0.35em 0.5em;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  transition: border 1s ease 0s;
+}
+.mz-field .input:focus, .mz-field .textarea:focus {
+  border-color: #66afe9;
+  outline: 0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.mz-column {
+  display: block;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: 0.75rem;
+}
+.mz-column.is-0 {
+  flex: none;
+  width: 0%;
+}
+.mz-column.is-1 {
+  flex: none;
+  width: 8.3333333333%;
+}
+.mz-column.is-2 {
+  flex: none;
+  width: 16.6666666667%;
+}
+.mz-column.is-3 {
+  flex: none;
+  width: 25%;
+}
+.mz-column.is-4 {
+  flex: none;
+  width: 33.3333333333%;
+}
+.mz-column.is-5 {
+  flex: none;
+  width: 41.6666666667%;
+}
+.mz-column.is-6 {
+  flex: none;
+  width: 50%;
+}
+.mz-column.is-7 {
+  flex: none;
+  width: 58.3333333333%;
+}
+.mz-column.is-8 {
+  flex: none;
+  width: 66.6666666667%;
+}
+.mz-column.is-9 {
+  flex: none;
+  width: 75%;
+}
+.mz-column.is-10 {
+  flex: none;
+  width: 83.3333333333%;
+}
+.mz-column.is-11 {
+  flex: none;
+  width: 91.6666666667%;
+}
+.mz-column.is-12 {
+  flex: none;
+  width: 100%;
+}
+
+.mz-columns {
+  display: flex;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  margin-top: -0.75rem;
+}
+.mz-columns:last-child {
+  margin-bottom: -0.75rem;
+}
+.mz-columns:not(:last-child) {
+  margin-bottom: calc(1.5rem - 0.75rem);
+}
+
+.mz-clearfix::after {
+  clear: both;
+  content: " ";
+  display: table;
+}
+
+.mz-pulled-left {
+  float: left !important;
+}
+
+.mz-pulled-right {
+  float: right !important;
+}
+
+.mz-block {
+  display: block !important;
+}
+
+.mz-flex {
+  display: flex !important;
+}
+
+.mz-inline {
+  display: inline !important;
+}
+
+.mz-inline-block {
+  display: inline-block !important;
+}
+
+.mz-inline-flex {
+  display: inline-flex !important;
+}
+
+.mz-hidden {
+  display: none !important;
+}
+
+.mz-sr-only {
+  border: none !important;
+  clip: rect(0, 0, 0, 0) !important;
+  height: 0.01em !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  white-space: nowrap !important;
+  width: 0.01em !important;
+}
+
+.mz-invisible {
+  visibility: hidden !important;
+}

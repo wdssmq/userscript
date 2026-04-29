@@ -13,14 +13,12 @@ import postcss from "rollup-plugin-postcss";
 const pkg = JSON.parse(readFileSync("./package.json"));
 
 // 是否将 CSS 提取到单独文件
-// const extractCSS = pkg.extractCSS ? `${pkg.name}.css` : false;
-const extractCSS = "mizu.css";
+const extractCSS = pkg.extractCSS ? `${pkg.name}.css` : false;
 
 const defConfig = {
   input: `src/${pkg.name}.js`,
   output: {
-    // file: pkg.main,
-    file: "/home/wdssmq/Git/2024-05-zbp/plugin/mz_SingleList/mizu-ui/mizu.js",
+    file: pkg.main,
     format: "umd",
     name: pkg.moduleName,
     banner: "/* eslint-disable */\n",

@@ -1,3 +1,5 @@
+@use "mz-base"
+
 =clearfix
   &::after
     clear: both
@@ -5,9 +7,9 @@
     display: table
 
 =ltr-property($property, $spacing, $right: true)
-  $normal: if($right, "right", "left")
-  $opposite: if($right, "left", "right")
-  @if $rtl
+  $normal: if(sass($right): "right"; else: "left")
+  $opposite: if(sass($right): "left"; else: "right")
+  @if mz-base.$rtl
     #{$property}-#{$opposite}: $spacing
   @else
     #{$property}-#{$normal}: $spacing

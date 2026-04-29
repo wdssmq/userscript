@@ -1,5 +1,6 @@
 // @import "sass:math"
-@import "../mz-mixins"
+@use "sass:math"
+@use "../mz-mixins"
 
 $column-gap: 0.75rem !default
 
@@ -12,12 +13,12 @@ $column-gap: 0.75rem !default
     @for $i from 0 through 12
         &.is-#{$i}
             flex: none
-            width: percentage(calc($i / 12))
+            width: math.percentage(calc($i / 12))
 
 .mz-columns
     display: flex
-    +ltr-property("margin", (-$column-gap), false)
-    +ltr-property("margin", (-$column-gap))
+    +mz-mixins.ltr-property("margin", (-$column-gap), false)
+    +mz-mixins.ltr-property("margin", (-$column-gap))
     margin-top: (-$column-gap)
     &:last-child
         margin-bottom: (-$column-gap)
