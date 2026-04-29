@@ -45,6 +45,7 @@ export default antfu(
       "unused-imports/no-unused-imports": ["error", { vars: "all", varsIgnorePattern: "^_" }],
       "node/prefer-global/process": ["off"],
       "style/no-multiple-empty-lines": ["error", { max: 1 }],
+      "eslint-comments/no-unlimited-disable": "off", // 允许使用 eslint-disable 来禁用所有规则
     },
   },
 
