@@ -11,7 +11,7 @@
     "lib-scripts"
   ],
   "main": "dist/lib-tag-sort.js",
-  "extractCSS": true,
+  "extractCSS": false,
   "scripts": {
     "build": "rollup -c --environment NODE_ENV:prod",
     "dev": "rollup -c -w --environment NODE_ENV:dev",

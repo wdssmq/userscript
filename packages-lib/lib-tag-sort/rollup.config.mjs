@@ -32,8 +32,9 @@ const defConfig = {
   plugins: [
     typescript({
       compilerOptions: {
-        lib: ["es2023", "dom"],
-        target: "es5",
+        moduleResolution: "bundler",
+        lib: ["esNext", "dom"],
+        target: "esNext",
       },
     }),
     postcss({
@@ -54,19 +55,23 @@ const defConfig = {
 if (process.env.NODE_ENV === "prod") {
   // 根据 pkg.extractCSS 的值，决定是否为项目创建单独的文件夹
   const distProd = pkg.extractCSS ? `../../dist-lib/${pkg.name}` : "../../dist-lib";
+  const targets = [
+    {
+      src: pkg.main,
+      dest: distProd,
+    },
+  ];
+  if (extractCSS) {
+    targets.push({
+      src: `dist/${pkg.name}.css`,
+      dest: distProd,
+    });
+  }
+
   // 将打包好的文件复制到 distProd 目录
   defConfig.plugins.push(
     copy({
-      targets: [
-        {
-          src: pkg.main,
-          dest: distProd,
-        },
-        {
-          src: `dist/${pkg.name}.css`,
-          dest: distProd,
-        },
-      ],
+      targets,
     }),
   );
 }
