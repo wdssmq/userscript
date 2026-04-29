@@ -19,6 +19,7 @@ const gm_banner = `
 // @match       *://*/post/*.html*
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*
+// @match       *://*/zb_users/plugin/mz_admin2/edtView.php*
 // @grant        none
 // ==/UserScript==
 

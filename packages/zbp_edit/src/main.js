@@ -1,7 +1,7 @@
-import { _log, $, curUrl } from "./_base";
+import { $, _log, curUrl } from "./_base";
 import _mdToc from "./_mdToc";
 
-$(function () {
+$(() => {
   _mdToc();
   // 添加编辑按钮
   $(".js-edt")
@@ -26,14 +26,14 @@ $(function () {
   $(".cmt-edit").css({ color: "#175199" });
 
   // 设置文章为回收
-  if (curUrl.indexOf("zblogcn.com") > -1) {
+  if (curUrl.includes("zblogcn.com")) {
     return;
   }
   $("#edtTitle").after(
     "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> 「设置为回收」</a>",
   );
-  let editor_api = window.editor_api;
-  $(".js-empty").click(function () {
+  const editor_api = window.editor_api;
+  $(".js-empty").click(() => {
     $("#edtTitle").val("回收");
     $("#edtTag").val("回收");
     $("#edtDateTime").datetimepicker("setDate", (new Date()));
@@ -41,10 +41,11 @@ $(function () {
     let strMore = "";
     if (typeof window.EDITORMD == "object") {
       strMore = "\n\n<!--more-->";
-    } else {
+    }
+    else {
       strMore = "<hr class=\"more\" />";
     }
-    let oBody = "回收" + strMore;
+    const oBody = `回收${strMore}`;
     editor_api.editor.content.put(oBody);
     editor_api.editor.intro.put("");
   });

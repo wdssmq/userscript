@@ -45,22 +45,21 @@ export default function () {
   };
 
   // 遍历
-  $$referenceLink.each(function (el) {
+  $$referenceLink.each(function (_el) {
     const $anchor = $(this).parent();
     const _this = $(this);
     _setAnchorLink($anchor, _this);
     // 绑定鼠标 hover 事件
-    $anchor.hover(function () {
+    $anchor.hover(() => {
       $anchor.find(".header-anchor").css({
         visibility: "visible",
         marginLeft: "-5px",
       });
-    }, function () {
+    }, () => {
       $anchor.find(".header-anchor").css({
         visibility: "hidden",
         marginLeft: "-11px",
       });
     });
   });
-
 }
