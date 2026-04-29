@@ -45,9 +45,8 @@ jobs:
         run: |
           npm install -g pnpm
           pnpm install
-          # pnpm -r install
-          pnpm -r run lint
-          pnpm -r run build
+          pnpm run eslint:fix
+          pnpm run build:script
 
       # Setup Python
       - name: Setup Python
