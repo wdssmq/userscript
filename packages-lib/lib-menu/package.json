@@ -23,9 +23,11 @@
     "lint": "eslint --ext .js,.mjs ."
   },
   "dependencies": {
+    "@rollup/plugin-replace": "catalog:",
     "less": "catalog:",
     "postcss": "catalog:",
     "rollup": "catalog:conflicts_rollup_h3_30_0",
+    "rollup-plugin-copy": "catalog:",
     "rollup-plugin-postcss": "catalog:"
   },
   "devDependencies": {
