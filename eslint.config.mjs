@@ -38,14 +38,21 @@ export default antfu(
       "no-alert": "off", // 允许使用 alert
       "no-console": "off", // 允许使用 console
       "no-unused-vars": "off", // 关闭原生的 no-unused-vars 规则，使用插件的版本
-      "unused-imports/no-unused-vars": [
-        "error",
-        { vars: "all", varsIgnorePattern: "^_", args: "all", argsIgnorePattern: "^_" },
-      ],
+      "unused-imports/no-unused-vars": ["error", {
+        vars: "all",
+        varsIgnorePattern: "^_",
+        args: "all",
+        argsIgnorePattern: "^_",
+      }],
       "unused-imports/no-unused-imports": ["error", { vars: "all", varsIgnorePattern: "^_" }],
       "node/prefer-global/process": ["off"],
       "style/no-multiple-empty-lines": ["error", { max: 1 }],
       "eslint-comments/no-unlimited-disable": "off", // 允许使用 eslint-disable 来禁用所有规则
+      "style/space-before-function-paren": ["error", {
+        anonymous: "never",
+        asyncArrow: "always",
+        named: "never",
+      }], // 函数定义时括号前的空格
     },
   },
 
