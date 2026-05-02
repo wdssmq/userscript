@@ -1,11 +1,12 @@
 import { $, _log, curUrl } from "./_base";
+import { _cmtPlus } from "./_cmtPlus";
 import _mdToc from "./_mdToc";
 
 $(() => {
   _mdToc();
   // 添加编辑按钮
   $(".js-edt")
-    .each(function () {
+    .each(function() {
       const id = $(this).data("id");
       const type = $(this).data("type");
       const act = type ? "PageEdt" : "ArticleEdt";
@@ -15,8 +16,20 @@ $(() => {
     })
     .removeClass("is-hidden hidden");
 
+  // 评论扩展
+  _cmtPlus(
+    () => {
+      $(".js-edt")
+        .each(function() {
+          const id = $(this).data("id");
+          const html = $(this).html();
+          $(this).html(`[<a class="cmt-search" title="搜索评论" rel="external" href="${window.bloghost}zb_system/admin/index.php?act=CommentMng&postID=${id}" target="_blank">搜索评论</a>] ${html}`);
+        });
+    },
+  );
+
   // 清理评论失效网址
-  $(".cmt-tips").each(function () {
+  $(".cmt-tips").each(function() {
     const $this = $(this);
     const authName = $this.data("name");
     $this.append(
