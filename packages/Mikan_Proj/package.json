@@ -12,7 +12,7 @@
   "dependencies": {
     "@rollup/plugin-replace": "catalog:",
     "open": "catalog:",
-    "rollup": "catalog:conflicts_rollup_h3_30_0",
+    "rollup": "catalog:",
     "rollup-plugin-monkey": "catalog:"
   },
   "devDependencies": {

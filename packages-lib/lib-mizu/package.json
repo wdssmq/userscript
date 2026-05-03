@@ -28,7 +28,7 @@
     "@rollup/plugin-replace": "catalog:",
     "bulma": "catalog:",
     "postcss": "catalog:",
-    "rollup": "catalog:conflicts_rollup_h3_30_0",
+    "rollup": "catalog:",
     "rollup-plugin-copy": "catalog:",
     "rollup-plugin-livereload": "catalog:",
     "rollup-plugin-postcss": "catalog:",
