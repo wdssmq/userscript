@@ -20,6 +20,7 @@ const gm_banner = `
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*
 // @match       *://*/zb_users/plugin/mz_admin2/edtView.php*
+// @match       *://*/zb_system/admin/index.php?act=ArticleMng*
 // @grant        none
 // ==/UserScript==
 

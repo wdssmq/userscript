@@ -1,9 +1,11 @@
 import { $, _log, curUrl } from "./_base";
 import { _cmtPlus } from "./_cmtPlus";
 import _mdToc from "./_mdToc";
+import _postMng from "./_postMng";
 
 $(() => {
   _mdToc();
+  _postMng.run();
   // 添加编辑按钮
   $(".js-edt")
     .each(function() {
