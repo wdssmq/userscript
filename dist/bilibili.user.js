@@ -390,7 +390,6 @@
   _log("_later2url.js", "开始");
 
   const gob$1 = {
-    bolDebug: false,
     // 选择器
     laterTitle: ".watchlater-list-title-left",
   };

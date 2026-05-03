@@ -44,7 +44,7 @@ jobs:
         if: steps.changed-files.outputs.packages_any_changed  == 'true'
         run: |
           npm install -g pnpm
-          pnpm install
+          pnpm install --filter '!./packages-lib/lib-empty'
           pnpm run lint:fix
           pnpm run build:script
 
