@@ -74,7 +74,17 @@ function fnCopy(eTrig, content, fnCB = () => { }) {
   // 判断 eTrig 是否为字符串
   const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
   $eTrig.addEventListener("click", function (e) {
+    // 记录原始文本
+    const originalText = this.textContent;
+    // 设置新的文本提示用户已复制
+    this.textContent = "已复制";
+    // 复制内容到剪贴板
     GM_setClipboard(content);
+    // 恢复原始文本
+    setTimeout(() => {
+      this.textContent = originalText;
+      this.style.color = "";
+    }, 2000);
     fnCB(e);
     this.style.color = "gray";
   });
