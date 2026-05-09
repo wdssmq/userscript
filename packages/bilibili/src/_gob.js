@@ -3,6 +3,7 @@ import {
 } from "./_base";
 
 export const gob = {
+    bolDebug: false, // 是否调试模式
     // url 列表下载为 .url 文件
     fnMakeUrlFile(arrList, prefix = "") {
         const curDateStr = _getDateStr();
