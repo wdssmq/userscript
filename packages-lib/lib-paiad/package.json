@@ -29,7 +29,7 @@
     "rollup": "catalog:",
     "rollup-plugin-html-string": "catalog:",
     "rollup-plugin-livereload": "catalog:",
-    "rollup-plugin-md": "catalog:",
+    "@mizu/rollup-plugin-md": "workspace:*",
     "rollup-plugin-postcss": "catalog:",
     "rollup-plugin-serve": "catalog:"
   }

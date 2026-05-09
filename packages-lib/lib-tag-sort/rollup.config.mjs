@@ -10,7 +10,7 @@ import livereload from "rollup-plugin-livereload";
 import postcss from "rollup-plugin-postcss";
 
 // import html from "rollup-plugin-html-string";
-// import md from "rollup-plugin-md";
+// import md from "@mizu/rollup-plugin-md";
 // import resolve from "@rollup/plugin-node-resolve";
 
 import serve from "rollup-plugin-serve";

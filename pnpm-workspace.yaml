@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - packages-lib/*
+  - packages-plugin/*
 
 catalog:
   '@rollup/plugin-node-resolve': ^15.3.1
@@ -21,7 +22,6 @@ catalog:
   rollup-plugin-copy: ^3.5.0
   rollup-plugin-html-string: ^1.0.1
   rollup-plugin-livereload: ^2.0.5
-  rollup-plugin-md: ^1.0.1
   rollup-plugin-monkey: ^1.0.9
   rollup-plugin-postcss: ^4.0.2
   rollup-plugin-serve: ^2.0.3

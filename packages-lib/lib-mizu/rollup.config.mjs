@@ -5,7 +5,7 @@ import replace from "@rollup/plugin-replace";
 import copy from "rollup-plugin-copy";
 
 // import html from "rollup-plugin-html-string";
-// import md from "rollup-plugin-md";
+// import md from "@mizu/rollup-plugin-md";
 // import resolve from "@rollup/plugin-node-resolve";
 
 import postcss from "rollup-plugin-postcss";

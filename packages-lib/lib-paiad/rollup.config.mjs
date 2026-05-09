@@ -6,7 +6,7 @@ import replace from "@rollup/plugin-replace";
 import html from "rollup-plugin-html-string";
 import livereload from "rollup-plugin-livereload";
 
-import md from "rollup-plugin-md";
+import md from "@mizu/rollup-plugin-md";
 import postcss from "rollup-plugin-postcss";
 import serve from "rollup-plugin-serve";
 

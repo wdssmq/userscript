@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "rollup-plugin-html-string": "catalog:",
-    "rollup-plugin-md": "catalog:",
+    "@mizu/rollup-plugin-md": "workspace:*",
     "sass": "catalog:"
   },
   "devDependencies": {
