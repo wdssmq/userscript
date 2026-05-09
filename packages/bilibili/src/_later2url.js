@@ -6,61 +6,12 @@ import {
   fnCopy,
 } from "./_base";
 import { http } from "./_http";
+import { gob } from "./_gob";
 
 _log("_later2url.js", "开始");
 
-const gob = {
-  bolDebug: false,
-  // 选择器
-  laterTitle: ".watchlater-list-title-left",
-};
-
-// 构造 Bash Shell 脚本
-function fnMKShell(arrList, prefix = "") {
-  const curDateStr = _getDateStr();
-  let strRlt
-    = "if [ ! -d \"prefix-date\" ]; then\n"
-      + "mkdir prefix-date\n"
-      + "fi\n"
-      + "cd prefix-date\n\n";
-  strRlt = strRlt.replace(/prefix/g, prefix);
-  strRlt = strRlt.replace(/date/g, curDateStr);
-
-  /**
-   * e {title:"", href:""}
-   */
-  arrList.forEach((e, i) => {
-    const serial = i + 1;
-    // _log(e);
-
-    // 移除不能用于文件名的字符
-    let title = e.title || e.textContent;
-    title = title.replace(/[\\/:*!<>]|\?\]/g, "");
-    title = title.replace(/["'\s]/g, "");
-    // _log(title);
-
-    const lenTitle = title.length;
-    if (lenTitle >= 155) {
-      title = `标题过长丨${lenTitle}`;
-    }
-
-    // 获取文章链接
-    const href = e.href || e.url;
-
-    // url 文件名
-    const urlFileName = `${serial}丨${title}.url`;
-
-    strRlt += `echo [InternetShortcut] > "${urlFileName}"\n`;
-    strRlt += `echo "URL=${href}" >> "${urlFileName}"\n`;
-    strRlt += "\n";
-  });
-
-  if (!gob.bolDebug) {
-    strRlt += "exit\n\n";
-  }
-
-  return strRlt;
-}
+gob.bolDebug = false;
+gob.laterTitle = ".watchlater-list-title-left";
 
 // Ajax 封装
 function fnGetAjax(callback = function () { }) {
@@ -149,7 +100,7 @@ function fnGetAjax(callback = function () { }) {
       const { $epBoxTitle, $epList } = fnGetDom($epBox);
       const textTitle = $epBoxTitle.textContent;
       // 注册点击复制
-      fnCopy($epBoxTitle, fnMKShell(fnGetLinkList($epList), textTitle));
+      fnCopy($epBoxTitle, gob.fnMakeUrlFile(fnGetLinkList($epList), textTitle));
       // elListDom.push({
       //   box: $epBox,
       //   title: $epBoxTitle,
@@ -193,7 +144,7 @@ function fnGetAjax(callback = function () { }) {
         appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
       }
       // 注册点击复制
-      fnCopy(gob.laterTitle, fnMKShell(arrRlt, "bilibili"), () => {
+      fnCopy(gob.laterTitle, gob.fnMakeUrlFile(arrRlt, "bilibili"), () => {
         $n(gob.laterTitle).innerHTML = tmpHTML + appCon;
       });
     });
