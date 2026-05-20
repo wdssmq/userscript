@@ -1,0 +1,39 @@
+{
+  "name": "lib-about",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "moduleName": "mzAbout",
+  "extractCSS": false,
+  "author": "wdssmq",
+  "license": "MIT",
+  "keywords": [
+    "lib",
+    "scripts",
+    "lib-scripts"
+  ],
+  "main": "dist/lib-about.js",
+  "scripts": {
+    "build": "rollup -c --environment NODE_ENV:prod",
+    "dev": "rollup -c -w --environment NODE_ENV:dev",
+    "demo": "live-server --watch=index.html,dist/*.js",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "dependencies": {
+    "@mizu/rollup-plugin-md": "workspace:*",
+    "rollup-plugin-html-string": "catalog:",
+    "sass": "catalog:"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "catalog:",
+    "@rollup/plugin-replace": "catalog:",
+    "dotenv": "catalog:",
+    "postcss": "catalog:",
+    "rollup": "catalog:",
+    "rollup-plugin-copy": "catalog:",
+    "rollup-plugin-livereload": "catalog:",
+    "rollup-plugin-postcss": "catalog:",
+    "rollup-plugin-serve": "catalog:"
+  }
+}
