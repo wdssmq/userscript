@@ -31,6 +31,7 @@ catalog:
   typescript: ^5.9.3
   vite: ^7.3.2
   vite-plugin-monkey: ^7.1.9
+  dotenv: ^17.4.2
 
 catalogMode: prefer
 

@@ -1,23 +1,24 @@
-note-*
+.env
 *-draft
+*.code-workspace
 *.draft.js
-*.url
 *.lnk
 *.tar.gz
-*.code-workspace
+*.url
+**/.eslintrc.yaml
+dev
 empty_def.user.js
 gm.user.js
-dev
-pnpm-lock.yaml
+note-*
 package-lock.json
-**/.eslintrc.yaml
+pnpm-lock.yaml
 
 # 2023-08-24
 __pycache__
 _debug_*
 .history
-node_modules
-/packages/**/*.user.js
 /packages-lib/**/dist
+/packages/**/*.user.js
 dist-lib/lib-empty
 dist-lib/lib-empty.*
+node_modules
