@@ -1,6 +1,9 @@
-import "./style/style.sass";
+import { lsObj } from "./base/_util";
 import aboutTpl from "./base/about.html";
+import "./style/style.sass";
 // import msgContent from "./base/msg.md";
+
+const LAST_SHOW_TIME_KEY = "mz-about-last-show-ts";
 
 const defaultConfig = {
   buttonText: "[关 于]",
@@ -41,6 +44,7 @@ class MzAbout {
     this.mainEl.classList.add("mz-about-hidden");
     this.aboutEl.hidden = false;
     this.isShown = true;
+    lsObj.setItem(LAST_SHOW_TIME_KEY, Math.floor(Date.now() / 1000));
   }
 
   _hideAboutView() {
@@ -58,7 +62,7 @@ class MzAbout {
       // msgContent,
     };
     let tpl = aboutTpl;
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach((key) => {
       const regex = new RegExp(`{{\\s*${key}\\s*}}`, "g");
       tpl = tpl.replace(regex, data[key]);
     });
