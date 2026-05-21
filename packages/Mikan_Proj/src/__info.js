@@ -18,6 +18,8 @@ const gm_banner = `
 // @run-at       document-end
 // @match        https://mikanani.me/Home/Bangumi/*
 // @match        https://mikanime.tv/Home/Bangumi/*
+// @match        https://mikanani.me/
+// @match        https://mikanime.tv/
 // @match        https://feedly.com/i/subscription/feed*
 // @grant        GM_getValue
 // @grant        GM_setValue
