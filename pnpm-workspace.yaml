@@ -1,25 +1,39 @@
-packages:
-  - packages/*
-  - packages-lib/*
-  - packages-plugin/*
-
 allowBuilds:
-  '@parcel/watcher': true
+  "@parcel/watcher": true
   bufferutil: true
   esbuild: true
   utf-8-validate: true
 
+catalogMode: prefer
+
+shellEmulator: true
+
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  - chokidar@4.0.3
+  - css-declaration-sorter@6.4.1
+  - pino@9.14.0
+  - "semver@5.7.2 || 6.3.1"
+packages:
+  - packages/*
+  - packages-lib/*
+  - packages-plugin/*
 catalog:
-  '@rollup/plugin-node-resolve': ^15.3.1
-  '@rollup/plugin-replace': ^5.0.7
-  '@rollup/plugin-typescript': ^12.3.0
+  "@antfu/eslint-config": ^6.7.3
+  "@rollup/plugin-node-resolve": ^15.3.1
+  "@rollup/plugin-replace": ^5.0.7
+  "@rollup/plugin-typescript": ^12.3.0
+  "@rollup/pluginutils": ^5.3.0
   baseline-browser-mapping: ^2.10.20
   bulma: ^1.0.4
   comlink: ^4.4.2
   cross-env: ^10.0.0
   domq.js: ^0.7.1
+  dotenv: ^17.4.2
+  eslint: ^9.39.4
   file-saver: ^2.0.5
   less: ^4.6.4
+  marked: ^16.4.1
   open: ^8.4.2
   plop: ^4.0.4
   postcss: ^8.5.10
@@ -36,27 +50,13 @@ catalog:
   typescript: ^5.9.3
   vite: ^7.3.2
   vite-plugin-monkey: ^7.1.9
-  dotenv: ^17.4.2
-  '@rollup/pluginutils': ^5.3.0
-
-catalogMode: prefer
-
 catalogs:
   conflicts_rollup_h3_30_0:
     rollup: ^3.30.0
-
 onlyBuiltDependencies:
-  - '@parcel/watcher'
+  - "@parcel/watcher"
   - bufferutil
   - core-js
   - esbuild
   - utf-8-validate
 
-shellEmulator: true
-
-trustPolicy: no-downgrade
-trustPolicyExclude:
-  - chokidar@4.0.3
-  - css-declaration-sorter@6.4.1
-  - pino@9.14.0
-  - 'semver@5.7.2 || 6.3.1'
