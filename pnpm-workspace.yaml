@@ -3,11 +3,16 @@ packages:
   - packages-lib/*
   - packages-plugin/*
 
+allowBuilds:
+  '@parcel/watcher': true
+  bufferutil: true
+  esbuild: true
+  utf-8-validate: true
+
 catalog:
   '@rollup/plugin-node-resolve': ^15.3.1
   '@rollup/plugin-replace': ^5.0.7
   '@rollup/plugin-typescript': ^12.3.0
-  '@rsbuild/core': ^1.7.5
   baseline-browser-mapping: ^2.10.20
   bulma: ^1.0.4
   comlink: ^4.4.2
@@ -49,3 +54,8 @@ onlyBuiltDependencies:
 shellEmulator: true
 
 trustPolicy: no-downgrade
+trustPolicyExclude:
+  - chokidar@4.0.3
+  - css-declaration-sorter@6.4.1
+  - pino@9.14.0
+  - 'semver@5.7.2 || 6.3.1'
