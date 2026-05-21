@@ -16,6 +16,9 @@
     "rollup-plugin-monkey": "catalog:"
   },
   "devDependencies": {
-    "baseline-browser-mapping": "catalog:"
+    "baseline-browser-mapping": "catalog:",
+    "postcss": "catalog:",
+    "rollup-plugin-postcss": "catalog:",
+    "sass": "catalog:"
   }
 }
