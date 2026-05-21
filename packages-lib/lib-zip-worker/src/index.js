@@ -16,8 +16,8 @@ const urls = [
 
 document.querySelector("#root").innerHTML = `
 <div class="content">
-  <h1>Vanilla Rsbuild</h1>
-  <p>Start building amazing things with Rsbuild.</p>
+  <h1>Vanilla Vite</h1>
+  <p>Start building amazing things with Vite.</p>
   <p><button id="btn">Download</button></p>
 </div>
 `;

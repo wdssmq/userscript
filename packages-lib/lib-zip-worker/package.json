@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "rsbuild dev --open",
-    "build": "rsbuild build",
-    "preview": "rsbuild preview"
+    "dev": "vite --open",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "comlink": "catalog:",
     "file-saver": "catalog:"
   },
   "devDependencies": {
-    "@rsbuild/core": "catalog:"
+    "vite": "catalog:"
   }
 }
