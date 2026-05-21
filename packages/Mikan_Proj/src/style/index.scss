@@ -1,0 +1,22 @@
+.is-flex {
+  display: flex;
+}
+
+.is-align-center {
+  align-items: center;
+}
+
+.is-justify-evenly {
+  justify-content: space-evenly;
+}
+
+.pagebar {
+
+  a:focus,
+  a:hover,
+  a:active {
+    outline: none;
+    color: #ff6f61;
+    text-decoration: none;
+  }
+}
