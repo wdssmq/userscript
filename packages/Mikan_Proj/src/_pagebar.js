@@ -5,6 +5,7 @@ import {
   fnElChange,
   lsObj,
 } from "./_base";
+import pageCache from "./_pageCache";
 
 const LAST_PAGE_KEY = "lastPage";
 
@@ -13,6 +14,7 @@ const pageBar = {
   nextPage: null,
   prevPage: null,
   gotoFlag: false,
+  captureObserver: null,
 
   $anList: null,
 
@@ -56,7 +58,7 @@ const pageBar = {
     // 绑定点击事件
     $prev.addEventListener("click", () => {
       if (this.prevPage !== null) {
-        this.gotoPage(this.prevPage, $prev, $next);
+        this.gotoPage(this.prevPage);
       }
     });
     $next.addEventListener("click", () => {
@@ -68,6 +70,10 @@ const pageBar = {
     // 监听 $dateText 的变化，更新分页信息
     fnElChange(this.$dateText, () => {
       this.updatePageInfo($prev, $next);
+      if (this.$dateText.textContent.trim().endsWith("*")) {
+        return;
+      }
+      this.observeAndCaptureAfterRender();
     });
 
     if (this.curPage !== 1) {
@@ -88,7 +94,57 @@ const pageBar = {
     this.gotoFlag = true;
     this.curPage = pageNo;
     const pageIndex = pageNo - 1;
-    this.$$dateLi[pageIndex].click();
+    // 尝试从缓存加载页面数据，如果命中则直接更新日期文本，否则模拟点击加载
+    const $li = this.getLiByPage(pageNo);
+    pageCache.applyIfHit(pageNo, $li, () => {
+      this.stopCaptureObserver();
+      const year = $li.getAttribute("data-year");
+      const season = $li.getAttribute("data-season");
+      this.$dateText.textContent = `${year} ${season}季番组*`;
+    }, () => {
+      this.observeAndCaptureAfterRender();
+      this.$$dateLi[pageIndex].click();
+    });
+  },
+
+  // 停止监听页面内容变化
+  stopCaptureObserver() {
+    if (this.captureObserver) {
+      this.captureObserver.disconnect();
+      this.captureObserver = null;
+    }
+  },
+
+  // 未命中缓存后，监听页面内容变化，在数据完整时再缓存
+  observeAndCaptureAfterRender() {
+    const $skBody = $n("#sk-body");
+    if (!$skBody) {
+      return;
+    }
+    this.stopCaptureObserver();
+    // _log("开始监听页面内容变化，以捕获完整数据");
+
+    const tryCapture = () => {
+      const pageNo = this.curPage;
+      const $li = this.getLiByPage(pageNo);
+      const captured = pageCache.capture(pageNo, $li);
+      if (captured) {
+        this.stopCaptureObserver();
+        return true;
+      }
+      return false;
+    };
+
+    this.captureObserver = new MutationObserver(() => {
+      tryCapture();
+    });
+
+    this.captureObserver.observe($skBody, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "data-src"],
+    });
   },
 
   // 根据季度文本获取页码（页码从 1 开始）
@@ -102,6 +158,14 @@ const pageBar = {
       }
     }
     return 1;
+  },
+
+  // 根据页码获取 $li 元素
+  getLiByPage(pageNo) {
+    if (pageNo < 1 || pageNo > this.$$dateLi.length) {
+      return null;
+    }
+    return this.$$dateLi[pageNo - 1];
   },
 
   // 更新分页信息

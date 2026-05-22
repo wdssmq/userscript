@@ -10,6 +10,12 @@
   justify-content: space-evenly;
 }
 
+.is-clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 .pagebar {
 
   a:focus,
