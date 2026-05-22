@@ -45,8 +45,8 @@ jobs:
         run: |
           npm install -g pnpm
           pnpm install --filter '!./packages-lib/lib-empty'
-          pnpm run lint:fix
           pnpm run build:script
+          pnpm run lint:fix
 
       # Setup Python
       - name: Setup Python

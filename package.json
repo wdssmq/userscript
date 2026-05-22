@@ -2,7 +2,7 @@
   "scripts": {
     "build:script": "pnpm -r --filter '!lib-empty' run build",
     "git:script": "git diff-index --quiet HEAD || (git commit -m \"build. dist/\" -a --no-verify)",
-    "build": "npm run build:script",
+    "build": "npm run build:script && pnpm lint:fix",
     "plop": "cross-env NODE_OPTIONS='--import tsx' plop --plopfile=plopfile.ts",
     "lint": "eslint",
     "lint:fix": "eslint --fix"

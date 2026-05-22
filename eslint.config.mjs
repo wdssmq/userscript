@@ -12,8 +12,8 @@ export default antfu(
 
     ignores: [
       ".eslintrc.js",
-      "dist-lib/lib-*.js",
-      "dist/*.user.js",
+      // "dist-lib/lib-*.js",
+      // "dist/*.user.js",
       "docs/**/*.{mjs,json}",
       "packages_2308/**/*.{js,mjs,json}",
       "packages/**/README.md",
