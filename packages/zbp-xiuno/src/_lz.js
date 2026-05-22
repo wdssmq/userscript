@@ -28,7 +28,7 @@ import { $, UM } from "./_base.js";
   }
 
   // 解码
-  $("div.message").each(function () {
+  $("div.message").each(function() {
     const $secP = $(this).find("p:nth-child(2)");
     if ($secP.length === 0) {
       console.log("skip");

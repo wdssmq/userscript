@@ -1,13 +1,13 @@
-// import pkg from "./package.json" assert {type: 'json'};
-import { config } from 'dotenv';
 import { readFileSync } from "node:fs";
+import path from "node:path";
+import md from "@mizu/rollup-plugin-md";
+import replace from "@rollup/plugin-replace";
+// import pkg from "./package.json" assert {type: 'json'};
+import { config } from "dotenv";
 import copy from "rollup-plugin-copy";
 import html from "rollup-plugin-html-string";
 import livereload from "rollup-plugin-livereload";
-import md from "@mizu/rollup-plugin-md";
-import path from "node:path";
 import postcss from "rollup-plugin-postcss";
-import replace from "@rollup/plugin-replace";
 import serve from "rollup-plugin-serve";
 
 // import resolve from "@rollup/plugin-node-resolve";

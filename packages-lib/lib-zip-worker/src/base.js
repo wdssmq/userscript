@@ -15,7 +15,7 @@ async function dlPromise(url, name) {
 
 async function fnDownload(urls, zipName, ProgressCB) {
   const JSZip = await new JSZipCLS();
-  const dlPromises = urls.map((item, i) => dlPromise(item.url, item.name));
+  const dlPromises = urls.map((item, _i) => dlPromise(item.url, item.name));
   const files = await Promise.all(dlPromises);
   files.forEach(
     ({ name, blob }) => JSZip.file(name, blob),

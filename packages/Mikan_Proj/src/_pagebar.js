@@ -1,7 +1,7 @@
 import {
-  _log,
   $n,
   $na,
+  _log,
   fnElChange,
   lsObj,
 } from "./_base";
@@ -46,7 +46,7 @@ const pageBar = {
       <a href="javascript:;" class="next">下一页</a>
     `;
     pagebarHTML = pagebarHTML.replace("{{curPage}}", this.$dateText.textContent.trim());
-    pagebar.innerHTML = pagebarHTML
+    pagebar.innerHTML = pagebarHTML;
     this.$anList.insertAdjacentElement("afterend", pagebar);
 
     // 获取分页按钮
@@ -61,7 +61,7 @@ const pageBar = {
     });
     $next.addEventListener("click", () => {
       if (this.nextPage !== null) {
-        this.gotoPage(this.nextPage, $prev, $next);
+        this.gotoPage(this.nextPage);
       }
     });
 
@@ -72,15 +72,16 @@ const pageBar = {
 
     if (this.curPage !== 1) {
       // 自动跳转到上次访问的页码
-      this.gotoPage(this.curPage, $prev, $next);
-    } else {
+      this.gotoPage(this.curPage);
+    }
+    else {
       // 初始更新分页信息
       this.updatePageInfo($prev, $next, true);
     }
   },
 
   // 跳转到指定页码（页码从 1 开始）
-  gotoPage(pageNo, $prev, $next) {
+  gotoPage(pageNo) {
     if (pageNo < 1 || pageNo > this.$$dateLi.length) {
       return;
     }
@@ -109,7 +110,8 @@ const pageBar = {
     if (!isInit) {
       if (this.gotoFlag) {
         this.gotoFlag = false;
-      } else {
+      }
+      else {
         this.curPage = this.getPageByDate(dateText);
       }
       lsObj.setItem(LAST_PAGE_KEY, this.curPage);
@@ -120,7 +122,8 @@ const pageBar = {
       this.nextPage = nextPage;
       $next.textContent = `下一页（${this.nextPage}）`;
       $next.classList.remove("disabled");
-    } else {
+    }
+    else {
       this.nextPage = null;
       $next.textContent = "";
       $next.classList.add("disabled");
@@ -130,13 +133,14 @@ const pageBar = {
       this.prevPage = prevPage;
       $prev.textContent = `上一页（${this.prevPage}）`;
       $prev.classList.remove("disabled");
-    } else {
+    }
+    else {
       this.prevPage = null;
       $prev.textContent = "";
       $prev.classList.add("disabled");
     }
-    $n(".pagebar .cur-page").textContent = dateText + `（${this.curPage}）`;
+    $n(".pagebar .cur-page").textContent = `${dateText}（${this.curPage}）`;
   },
-}
+};
 
 pageBar.init();

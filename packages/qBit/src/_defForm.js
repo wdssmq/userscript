@@ -94,7 +94,7 @@ class DefForm {
     label.textContent = option.text;
 
     const _this = this;
-    radioInput.addEventListener("change", function () {
+    radioInput.addEventListener("change", function() {
       if (this.checked) {
         // 如果选择子串替换，弹出确认
         if (this.value === "partialReplace") {

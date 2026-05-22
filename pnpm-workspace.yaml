@@ -28,7 +28,6 @@ catalog:
   bulma: ^1.0.4
   comlink: ^4.4.2
   cross-env: ^10.0.0
-  domq.js: ^0.7.1
   dotenv: ^17.4.2
   eslint: ^9.39.4
   file-saver: ^2.0.5
@@ -50,13 +49,10 @@ catalog:
   typescript: ^5.9.3
   vite: ^7.3.2
   vite-plugin-monkey: ^7.1.9
-catalogs:
-  conflicts_rollup_h3_30_0:
-    rollup: ^3.30.0
+
 onlyBuiltDependencies:
   - "@parcel/watcher"
   - bufferutil
   - core-js
   - esbuild
   - utf-8-validate
-

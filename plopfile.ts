@@ -1,6 +1,6 @@
 import type { NodePlopAPI } from "plop";
 
-export default function (plop: NodePlopAPI) {
+export default function(plop: NodePlopAPI) {
   plop.setGenerator("new-lib", {
     prompts: [
       {
@@ -12,13 +12,16 @@ export default function (plop: NodePlopAPI) {
     actions: [
       {
         type: "addMany",
-        destination: "lib-{{name}}",
-        templateFiles: ["lib-empty/**/*", "!lib-empty/node_modules/**"],
-        base: "lib-empty",
+        destination: "packages-lib/lib-{{name}}",
+        templateFiles: [
+          "packages-lib/lib-empty/**/*",
+          "!packages-lib/lib-empty/node_modules/**",
+        ],
+        base: "packages-lib/lib-empty",
       },
       {
         type: "modify",
-        path: "lib-{{name}}/package.json",
+        path: "packages-lib/lib-{{name}}/package.json",
         pattern: /lib-empty/g,
         template: "lib-{{name}}",
       },

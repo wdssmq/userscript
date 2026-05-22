@@ -87,7 +87,6 @@ class MzAbout {
     if (this.buttonEl) {
       this.buttonEl.classList.remove("is-countdown");
       this.buttonEl.textContent = this.config.buttonText;
-
     }
   }
 

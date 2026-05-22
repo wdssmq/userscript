@@ -1,6 +1,6 @@
 import { $, _log } from "./_base";
 
-export default function () {
+export default function() {
   const postTitle = $(".post-title");
   const $$referenceLink = $(".reference-link");
   // console.log("$$referenceLink = ", $$referenceLink);
@@ -45,7 +45,7 @@ export default function () {
   };
 
   // 遍历
-  $$referenceLink.each(function (_el) {
+  $$referenceLink.each(function(_el) {
     const $anchor = $(this).parent();
     const _this = $(this);
     _setAnchorLink($anchor, _this);

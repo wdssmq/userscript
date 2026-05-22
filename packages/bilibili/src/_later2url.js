@@ -5,8 +5,8 @@ import {
   _log,
   fnCopy,
 } from "./_base";
-import { http } from "./_http";
 import { gob } from "./_gob";
+import { http } from "./_http";
 
 _log("_later2url.js", "开始");
 
@@ -14,7 +14,7 @@ gob.bolDebug = false;
 gob.laterTitle = ".watchlater-list-title-left";
 
 // Ajax 封装
-function fnGetAjax(callback = function () { }) {
+function fnGetAjax(callback = function() { }) {
   http.get("https://api.bilibili.com/x/v2/history/toview/web", {
     // 可根据需要添加 headers
     // "Content-Type": "application/json"

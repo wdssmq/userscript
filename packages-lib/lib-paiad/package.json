@@ -24,12 +24,12 @@
     "lint:fix": "eslint --fix"
   },
   "devDependencies": {
+    "@mizu/rollup-plugin-md": "workspace:*",
     "@rollup/plugin-node-resolve": "catalog:",
     "@rollup/plugin-replace": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-html-string": "catalog:",
     "rollup-plugin-livereload": "catalog:",
-    "@mizu/rollup-plugin-md": "workspace:*",
     "rollup-plugin-postcss": "catalog:",
     "rollup-plugin-serve": "catalog:"
   }

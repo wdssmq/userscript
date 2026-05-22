@@ -3,11 +3,15 @@
     "build:script": "pnpm -r --filter '!lib-empty' run build",
     "git:script": "git diff-index --quiet HEAD || (git commit -m \"build. dist/\" -a --no-verify)",
     "build": "npm run build:script",
+    "plop": "cross-env NODE_OPTIONS='--import tsx' plop --plopfile=plopfile.ts",
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
-    "eslint": "catalog:"
+    "cross-env": "catalog:",
+    "eslint": "catalog:",
+    "plop": "catalog:",
+    "tsx": "catalog:"
   }
 }

@@ -199,7 +199,7 @@ import { $, _hash, _log, curHref, fnFormatTime, fnGetRequest, lsObj } from "./_b
 
   // 标题列表
   const $titleList = $("li.media .subject a");
-  $titleList.each(function () {
+  $titleList.each(function() {
     const $this = $(this);
     const href = $this.attr("href");
     const title = $this.text();
@@ -222,7 +222,7 @@ import { $, _hash, _log, curHref, fnFormatTime, fnGetRequest, lsObj } from "./_b
   _log("curLog", log);
 
   // 初始化
-  $("div.message").each(function () {
+  $("div.message").each(function() {
     if ($(this).attr("isfirst") === 1) {
       $(this).prepend(
         "<blockquote class=\"blockquote\"><pre class=\"pre-yml\"></pre></blockquote>",

@@ -73,7 +73,7 @@ function fnElChange(el, fn = () => { }, onetime = true) {
 function fnCopy(eTrig, content, fnCB = () => { }) {
   // 判断 eTrig 是否为字符串
   const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
-  $eTrig.addEventListener("click", function (e) {
+  $eTrig.addEventListener("click", function(e) {
     // 记录原始文本
     const originalText = this.textContent;
     // 设置新的文本提示用户已复制

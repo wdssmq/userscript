@@ -43,7 +43,7 @@ function setRuleBinding(groupName, $subscribed) {
   }
 }
 
-export default function (group) {
+export default function(group) {
   const { name, $table, $subscribed } = group;
   // 获取当前规则
   const curRule = config.getRule(name);

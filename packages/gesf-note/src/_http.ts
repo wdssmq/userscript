@@ -47,11 +47,11 @@ class HttpRequest {
     return new Promise((resolve, reject) => {
       const requestOptions: HttpRequestOptions = Object.assign({}, options);
 
-      requestOptions.onload = function (res) {
+      requestOptions.onload = function(res) {
         resolve(res);
       };
 
-      requestOptions.onerror = function (error) {
+      requestOptions.onerror = function(error) {
         reject(error);
       };
 

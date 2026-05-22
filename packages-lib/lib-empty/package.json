@@ -20,8 +20,8 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
-    "rollup-plugin-html-string": "catalog:",
     "@mizu/rollup-plugin-md": "workspace:*",
+    "rollup-plugin-html-string": "catalog:",
     "sass": "catalog:"
   },
   "devDependencies": {
