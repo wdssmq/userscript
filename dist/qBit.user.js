@@ -136,7 +136,7 @@
       label.textContent = option.text;
 
       const _this = this;
-      radioInput.addEventListener("change", function () {
+      radioInput.addEventListener("change", function() {
         if (this.checked) {
           // 如果选择子串替换，弹出确认
           if (this.value === "partialReplace") {
@@ -234,11 +234,11 @@
       return new Promise((resolve, reject) => {
         const requestOptions = Object.assign({}, options);
 
-        requestOptions.onload = function (res) {
+        requestOptions.onload = function(res) {
           resolve(res);
         };
 
-        requestOptions.onerror = function (error) {
+        requestOptions.onerror = function(error) {
           reject(error);
         };
 

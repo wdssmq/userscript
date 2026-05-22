@@ -95,8 +95,18 @@
   function fnCopy(eTrig, content, fnCB = () => { }) {
     // 判断 eTrig 是否为字符串
     const $eTrig = typeof eTrig === "string" ? $n(eTrig) : eTrig;
-    $eTrig.addEventListener("click", function (e) {
+    $eTrig.addEventListener("click", function(e) {
+      // 记录原始文本
+      const originalText = this.textContent;
+      // 设置新的文本提示用户已复制
+      this.textContent = "已复制";
+      // 复制内容到剪贴板
       GM_setClipboard(content);
+      // 恢复原始文本
+      setTimeout(() => {
+        this.textContent = originalText;
+        this.style.color = "";
+      }, 2000);
       fnCB(e);
       this.style.color = "gray";
     });
@@ -337,6 +347,56 @@
     fnCheckByDOM();
   })();
 
+  const gob$1 = {
+    bolDebug: false, // 是否调试模式
+    // url 列表下载为 .url 文件
+    fnMakeUrlFile(arrList, prefix = "") {
+      const curDateStr = _getDateStr();
+      let strRlt
+        = "if [ ! -d \"prefix-date\" ]; then\n"
+          + "mkdir prefix-date\n"
+          + "fi\n"
+          + "cd prefix-date\n\n";
+      strRlt = strRlt.replace(/prefix/g, prefix);
+      strRlt = strRlt.replace(/date/g, curDateStr);
+
+      /**
+       * e {title:"", href:""}
+       */
+      arrList.forEach((e, i) => {
+        const serial = i + 1;
+        // _log(e);
+
+        // 移除不能用于文件名的字符
+        let title = e.title || e.textContent;
+        title = title.replace(/[\\/:*!<>]|\?\]/g, "");
+        title = title.replace(/["'\s]/g, "");
+        // _log(title);
+
+        const lenTitle = title.length;
+        if (lenTitle >= 155) {
+          title = `标题过长丨${lenTitle}`;
+        }
+
+        // 获取文章链接
+        const href = e.href || e.url;
+
+        // url 文件名
+        const urlFileName = `${serial}丨${title}.url`;
+
+        strRlt += `echo [InternetShortcut] > "${urlFileName}"\n`;
+        strRlt += `echo "URL=${href}" >> "${urlFileName}"\n`;
+        strRlt += "\n";
+      });
+
+      if (!gob$1.bolDebug) {
+        strRlt += "exit\n\n";
+      }
+
+      return strRlt;
+    },
+  };
+
   class HttpRequest {
     constructor() {
       if (typeof GM_xmlhttpRequest === "undefined") {
@@ -371,11 +431,11 @@
       return new Promise((resolve, reject) => {
         const requestOptions = Object.assign({}, options);
 
-        requestOptions.onload = function (res) {
+        requestOptions.onload = function(res) {
           resolve(res);
         };
 
-        requestOptions.onerror = function (error) {
+        requestOptions.onerror = function(error) {
           reject(error);
         };
 
@@ -389,60 +449,11 @@
 
   _log("_later2url.js", "开始");
 
-  const gob$1 = {
-    // 选择器
-    laterTitle: ".watchlater-list-title-left",
-  };
-
-  // 构造 Bash Shell 脚本
-  function fnMKShell(arrList, prefix = "") {
-    const curDateStr = _getDateStr();
-    let strRlt
-      = "if [ ! -d \"prefix-date\" ]; then\n"
-        + "mkdir prefix-date\n"
-        + "fi\n"
-        + "cd prefix-date\n\n";
-    strRlt = strRlt.replace(/prefix/g, prefix);
-    strRlt = strRlt.replace(/date/g, curDateStr);
-
-    /**
-     * e {title:"", href:""}
-     */
-    arrList.forEach((e, i) => {
-      const serial = i + 1;
-      // _log(e);
-
-      // 移除不能用于文件名的字符
-      let title = e.title || e.textContent;
-      title = title.replace(/[\\/:*!<>]|\?\]/g, "");
-      title = title.replace(/["'\s]/g, "");
-      // _log(title);
-
-      const lenTitle = title.length;
-      if (lenTitle >= 155) {
-        title = `标题过长丨${lenTitle}`;
-      }
-
-      // 获取文章链接
-      const href = e.href || e.url;
-
-      // url 文件名
-      const urlFileName = `${serial}丨${title}.url`;
-
-      strRlt += `echo [InternetShortcut] > "${urlFileName}"\n`;
-      strRlt += `echo "URL=${href}" >> "${urlFileName}"\n`;
-      strRlt += "\n";
-    });
-
-    {
-      strRlt += "exit\n\n";
-    }
-
-    return strRlt;
-  }
+  gob$1.bolDebug = false;
+  gob$1.laterTitle = ".watchlater-list-title-left";
 
   // Ajax 封装
-  function fnGetAjax(callback = function () { }) {
+  function fnGetAjax(callback = function() { }) {
     http.get("https://api.bilibili.com/x/v2/history/toview/web", {
       // 可根据需要添加 headers
       // "Content-Type": "application/json"
@@ -528,7 +539,7 @@
         const { $epBoxTitle, $epList } = fnGetDom($epBox);
         const textTitle = $epBoxTitle.textContent;
         // 注册点击复制
-        fnCopy($epBoxTitle, fnMKShell(fnGetLinkList($epList), textTitle));
+        fnCopy($epBoxTitle, gob.fnMakeUrlFile(fnGetLinkList($epList), textTitle));
         // elListDom.push({
         //   box: $epBox,
         //   title: $epBoxTitle,
@@ -572,7 +583,7 @@
           appCon = "「已复制，数量过多建议保存为 .sh 文件执行」";
         }
         // 注册点击复制
-        fnCopy(gob$1.laterTitle, fnMKShell(arrRlt, "bilibili"), () => {
+        fnCopy(gob$1.laterTitle, gob$1.fnMakeUrlFile(arrRlt, "bilibili"), () => {
           $n(gob$1.laterTitle).innerHTML = tmpHTML + appCon;
         });
       });
@@ -714,5 +725,60 @@
     },
     false,
   );
+
+  const objPodList = {
+    baseInfo: {
+      $$page: null,
+      $podItem: null,
+      bid: null,
+      title: null,
+    },
+    pageUrlList: [],
+    init() {
+      this.setBase();
+    },
+    setBase() {
+      if (this.baseInfo.$podItem) {
+        return;
+      }
+      const $curVideo = Array.from($na(".pod-item.simple")).find($item => $item.dataset.scrolled === "true");
+      if (!$curVideo) {
+        return null;
+      }
+      // 解析分页信息
+      this.baseInfo.$$page = $curVideo.querySelectorAll(".page-item");
+      this.baseInfo.$podItem = $curVideo;
+      this.baseInfo.bid = $curVideo.dataset.key;
+      this.baseInfo.title = $curVideo.querySelector(".head .title-txt").textContent.trim();
+      // 生成分页链接列表
+      this.pageUrlList = this.genPageUrlList();
+      // 绑定复制链接事件
+      this.bindCopy();
+
+      _log(this.pageUrlList);
+    },
+    genPageUrlList() {
+      const pageUrlList = [];
+      this.baseInfo.$$page.forEach(($page, i) => {
+        const title = $page.querySelector(".title-txt").textContent.trim();
+        const cid = i + 1;
+        const url = `https://www.bilibili.com/video/${this.baseInfo.bid}/?p=${cid}`;
+        pageUrlList.push({
+          title,
+          cid,
+          url,
+        });
+      });
+      return pageUrlList;
+    },
+    bindCopy() {
+      const $btn = document.querySelector(".video-pod__header .pod-description-reference");
+      fnCopy($btn, gob$1.fnMakeUrlFile(this.pageUrlList, this.baseInfo.bid));
+    },
+  };
+
+  fnElChange(document.body, (_mutationRecord, _mutationObserver) => {
+    objPodList.init();
+  }, false);
 
 })();

@@ -414,7 +414,7 @@
     }
 
     // 解码
-    $("div.message").each(function () {
+    $("div.message").each(function() {
       const $secP = $(this).find("p:nth-child(2)");
       if ($secP.length === 0) {
         console.log("skip");
@@ -438,7 +438,7 @@
   // _pid.js | 楼层地址
 
   (() => {
-    $("li.media.post").each(function () {
+    $("li.media.post").each(function() {
       const $me = $(this);
       const pid = $me.data("pid");
       const $date = $me.find("span.date");

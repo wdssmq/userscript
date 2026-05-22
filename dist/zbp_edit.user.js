@@ -94,7 +94,7 @@
     }
   }
 
-  function _mdToc () {
+  function _mdToc() {
     const postTitle = $(".post-title");
     const $$referenceLink = $(".reference-link");
     // console.log("$$referenceLink = ", $$referenceLink);
@@ -139,7 +139,7 @@
     };
 
     // 遍历
-    $$referenceLink.each(function (_el) {
+    $$referenceLink.each(function(_el) {
       const $anchor = $(this).parent();
       const _this = $(this);
       _setAnchorLink($anchor, _this);

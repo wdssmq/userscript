@@ -51,7 +51,7 @@
       return appId;
     };
     const appList = [];
-    $(".td25 + .td20").each(function () {
+    $(".td25 + .td20").each(function() {
       if ($(this).text() === "沉冰浮水") {
         const $img = $(this).parent().find(".td5 img");
         const imgUrl = $img.attr("src");
