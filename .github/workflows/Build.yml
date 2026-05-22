@@ -72,8 +72,8 @@ jobs:
       - name: Install Deps && Build Astro
         run: |
           cd site-astro
-          npm install
-          npm run build
+          pnpm install
+          pnpm build
           # 写入 .nojekyll 到 docs 目录
           cd .. && touch docs/.nojekyll
 
