@@ -47,6 +47,7 @@ function initSortableList() {
       const li = createElement("li") as HTMLLIElement;
       li.draggable = true;
       li.dataset.index = String(idx);
+      li.classList.add("tag-item");
 
       // const handle = createElement('span', 'handle');
       // handle.title = '拖动调整顺序';
