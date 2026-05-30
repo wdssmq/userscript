@@ -61,7 +61,7 @@ function initSortableList() {
         const input = document.createElement("input");
         input.type = "text";
         input.value = it;
-        input.style.flex = "1";
+        input.classList.add("edit-input");
         li.innerHTML = "";
         li.appendChild(input);
         li.classList.add("editing");
