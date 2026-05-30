@@ -5,6 +5,8 @@
     $mz-li-base: 23px
     $mz-li-padding: 12px
     $mz-li-height: $mz-li-base + 2 * $mz-li-padding
+    $mz-border-color: #ddd
+    $mz-border-darker: #bbb
     margin: 12px
     max-width: 600px
 
@@ -14,17 +16,23 @@
         box-sizing: border-box
         padding: 6px
 
+    & input[type="text"]
+        padding: 6px
+        outline: none
+        border: 1px solid $mz-border-darker
+        border-radius: 4px
+
     & ul
         list-style: none
         padding: 0
         margin: 8px 0
-        border: 1px solid #ddd
+        border: 1px solid $mz-border-color
         min-height: 40px
 
     & li
         height: $mz-li-height
         padding: $mz-li-padding 10px
-        border-bottom: 1px solid #ddd
+        border-bottom: 1px solid $mz-border-color
         display: flex
         align-items: center
         gap: 8px
@@ -46,6 +54,6 @@
         border-bottom: none
 
     & .placeholder
-        height: $mz-li-height
+        height: $mz-li-height * 0.8
         border: 2px dashed #bbb
         margin: 4px 0

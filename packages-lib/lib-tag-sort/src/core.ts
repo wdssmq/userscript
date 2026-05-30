@@ -49,33 +49,30 @@ function initSortableList() {
       li.dataset.index = String(idx);
       li.classList.add("tag-item");
 
-      // const handle = createElement('span', 'handle');
-      // handle.title = '拖动调整顺序';
-      // li.appendChild(handle);
-
       const text = createElement("span", "text", it);
       li.appendChild(text);
 
-      // // 可直接点击编辑单项（双击）
-      // li.ondblclick = () => {
-      //     const input = document.createElement('input');
-      //     input.type = 'text';
-      //     input.value = it;
-      //     input.style.flex = '1';
-      //     li.innerHTML = '';
-      //     li.appendChild(handle);
-      //     li.appendChild(input);
-      //     input.focus();
-      //     input.onblur = () => {
-      //         items[idx] = input.value.trim();
-      //         syncToTextarea();
-      //         render();
-      //     };
-      //     input.onkeydown = (e) => {
-      //         if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
-      //         if (e.key === 'Escape') render();
-      //     };
-      // };
+      // 可直接点击编辑单项（双击）
+      li.ondblclick = () => {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = it;
+        input.style.flex = "1";
+        li.innerHTML = "";
+        li.appendChild(input);
+        input.focus();
+        input.onblur = () => {
+          items[idx] = input.value.trim();
+          syncToTextarea();
+          render();
+        };
+        input.onkeydown = (e) => {
+          if (e.key === "Enter")
+            (e.target as HTMLInputElement).blur();
+          if (e.key === "Escape")
+            render();
+        };
+      };
 
       // 拖拽事件
       li.addEventListener("dragstart", (e) => {
