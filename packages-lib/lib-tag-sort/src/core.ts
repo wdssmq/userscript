@@ -1,6 +1,9 @@
 // 独立模块：插入容器、文本框与可拖拽的可排序列表，双向同步（列表 <-> 文本框）
 
+import { lsObj } from "./base";
+
 type Item = string;
+const TEXT_CACHE_KEY = "lib-tag-sort:text";
 
 function createElement<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string, text?: string) {
   const el = document.createElement(tag);
@@ -23,7 +26,8 @@ function initSortableList() {
   // 文本框（以逗号分隔）
   const textarea = createElement("textarea") as HTMLTextAreaElement;
   textarea.placeholder = "用逗号分隔项目，例如：苹果, 香蕉, 橘子";
-  textarea.value = "苹果, 香蕉, 橘子";
+  const cacheText = lsObj.getItem(TEXT_CACHE_KEY, "苹果, 香蕉, 橘子");
+  textarea.value = typeof cacheText === "string" ? cacheText : "苹果, 香蕉, 橘子";
   textarea.name = "tags";
   container.appendChild(textarea);
 
@@ -123,11 +127,13 @@ function initSortableList() {
   function syncToTextarea() {
     // 去除空元素并保留顺序
     textarea.value = items.filter(s => s.trim() !== "").map(s => s.trim()).join(", ");
+    lsObj.setItem(TEXT_CACHE_KEY, textarea.value);
   }
 
   // 文本框 -> 列表
   textarea.addEventListener("input", () => {
     const raw = textarea.value.replace(/，/g, ",");
+    lsObj.setItem(TEXT_CACHE_KEY, raw);
     if (raw.trim() === "") {
       removeSelf();
       return;
