@@ -132,7 +132,7 @@ function initSortableList() {
 
   // 文本框 -> 列表
   textarea.addEventListener("input", () => {
-    const raw = textarea.value.replace(/，/g, ",");
+    const raw = textarea.value.replace(/[，+|]/g, ",");
     lsObj.setItem(TEXT_CACHE_KEY, raw);
     if (raw.trim() === "") {
       removeSelf();
