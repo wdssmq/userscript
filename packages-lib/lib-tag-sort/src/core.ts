@@ -60,7 +60,9 @@ function initSortableList() {
         input.style.flex = "1";
         li.innerHTML = "";
         li.appendChild(input);
+        li.classList.add("editing");
         input.focus();
+        // 失焦或按回车保存修改，按 Esc 取消修改
         input.onblur = () => {
           items[idx] = input.value.trim();
           syncToTextarea();
@@ -76,6 +78,11 @@ function initSortableList() {
 
       // 拖拽事件
       li.addEventListener("dragstart", (e) => {
+        // 任一项处于编辑态时，禁止拖拽排序
+        if (ul.querySelector(".editing")) {
+          e.preventDefault();
+          return;
+        }
         li.classList.add("dragging");
         fromIdx = idx;
         // 以 move 为默认效果
