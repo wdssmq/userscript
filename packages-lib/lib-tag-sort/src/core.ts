@@ -56,6 +56,18 @@ function initSortableList() {
       const text = createElement("span", "text", it);
       li.appendChild(text);
 
+      const actions = createElement("div", "actions");
+      const removeBtn = createElement("button", "delete-btn", "删除") as HTMLButtonElement;
+      removeBtn.type = "button";
+      removeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        items.splice(idx, 1);
+        syncToTextarea();
+        render();
+      });
+      actions.appendChild(removeBtn);
+      li.appendChild(actions);
+
       // 可直接点击编辑单项（双击）
       li.ondblclick = () => {
         const input = document.createElement("input");

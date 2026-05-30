@@ -38,6 +38,7 @@
         border-bottom: 1px solid $mz-border-color
         display: flex
         align-items: center
+        justify-content: space-between
         gap: 8px
         background: #fff
         cursor: grab
@@ -45,6 +46,23 @@
     & li .text,
     & li .edit-input
         flex: 1
+
+    & li .actions
+        display: flex
+        align-items: center
+        justify-content: flex-end
+
+    & li .delete-btn
+        border: 1px solid $mz-border-darker
+        background: #fff
+        color: #666
+        padding: 2px 8px
+        border-radius: 4px
+        cursor: pointer
+
+    & li .delete-btn:hover
+        color: #c00
+        border-color: #c88
 
     & li.dragging
         opacity: 0.5
