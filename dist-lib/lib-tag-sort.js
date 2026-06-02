@@ -1,11 +1,27 @@
 /* eslint-disable */
 
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 (function (factory) {
     typeof define === 'function' && define.amd ? define(factory) :
     factory();
 })((function () { 'use strict';
 
+    // localStorage 封装
+    const lsObj = {
+        setItem(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
+        },
+        getItem(key, def = "") {
+            const item = localStorage.getItem(key);
+            if (item) {
+                return JSON.parse(item);
+            }
+            return def;
+        },
+    };
+
     // 独立模块：插入容器、文本框与可拖拽的可排序列表，双向同步（列表 <-> 文本框）
+    const TEXT_CACHE_KEY = "lib-tag-sort:text";
     function createElement(tag, cls, text) {
         const el = document.createElement(tag);
         if (cls)
@@ -24,7 +40,8 @@
         // 文本框（以逗号分隔）
         const textarea = createElement("textarea");
         textarea.placeholder = "用逗号分隔项目，例如：苹果, 香蕉, 橘子";
-        textarea.value = "苹果, 香蕉, 橘子";
+        const cacheText = lsObj.getItem(TEXT_CACHE_KEY, "苹果, 香蕉, 橘子");
+        textarea.value = typeof cacheText === "string" ? cacheText : "苹果, 香蕉, 橘子";
         textarea.name = "tags";
         container.appendChild(textarea);
         // 列表容器
@@ -44,33 +61,50 @@
                 const li = createElement("li");
                 li.draggable = true;
                 li.dataset.index = String(idx);
-                // const handle = createElement('span', 'handle');
-                // handle.title = '拖动调整顺序';
-                // li.appendChild(handle);
+                li.classList.add("tag-item");
                 const text = createElement("span", "text", it);
                 li.appendChild(text);
-                // // 可直接点击编辑单项（双击）
-                // li.ondblclick = () => {
-                //     const input = document.createElement('input');
-                //     input.type = 'text';
-                //     input.value = it;
-                //     input.style.flex = '1';
-                //     li.innerHTML = '';
-                //     li.appendChild(handle);
-                //     li.appendChild(input);
-                //     input.focus();
-                //     input.onblur = () => {
-                //         items[idx] = input.value.trim();
-                //         syncToTextarea();
-                //         render();
-                //     };
-                //     input.onkeydown = (e) => {
-                //         if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
-                //         if (e.key === 'Escape') render();
-                //     };
-                // };
+                const actions = createElement("div", "actions");
+                const removeBtn = createElement("button", "delete-btn", "删除");
+                removeBtn.type = "button";
+                removeBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    items.splice(idx, 1);
+                    syncToTextarea();
+                    render();
+                });
+                actions.appendChild(removeBtn);
+                li.appendChild(actions);
+                // 可直接点击编辑单项（双击）
+                li.ondblclick = () => {
+                    const input = document.createElement("input");
+                    input.type = "text";
+                    input.value = it;
+                    input.classList.add("edit-input");
+                    li.innerHTML = "";
+                    li.appendChild(input);
+                    li.classList.add("editing");
+                    input.focus();
+                    // 失焦或按回车保存修改，按 Esc 取消修改
+                    input.onblur = () => {
+                        items[idx] = input.value.trim();
+                        syncToTextarea();
+                        render();
+                    };
+                    input.onkeydown = (e) => {
+                        if (e.key === "Enter")
+                            e.target.blur();
+                        if (e.key === "Escape")
+                            render();
+                    };
+                };
                 // 拖拽事件
                 li.addEventListener("dragstart", (e) => {
+                    // 任一项处于编辑态时，禁止拖拽排序
+                    if (ul.querySelector(".editing")) {
+                        e.preventDefault();
+                        return;
+                    }
                     li.classList.add("dragging");
                     fromIdx = idx;
                     // 以 move 为默认效果
@@ -109,10 +143,12 @@
         function syncToTextarea() {
             // 去除空元素并保留顺序
             textarea.value = items.filter(s => s.trim() !== "").map(s => s.trim()).join(", ");
+            lsObj.setItem(TEXT_CACHE_KEY, textarea.value);
         }
         // 文本框 -> 列表
         textarea.addEventListener("input", () => {
-            const raw = textarea.value.replace(/，/g, ",");
+            const raw = textarea.value.replace(/[，+|]/g, ",");
+            lsObj.setItem(TEXT_CACHE_KEY, raw);
             if (raw.trim() === "") {
                 removeSelf();
                 return;
@@ -206,7 +242,7 @@
       }
     }
 
-    var css_248z = "#tags-sortable-container, #tags-sortable-container * {\n  box-sizing: border-box;\n}\n\n#tags-sortable-container {\n  margin: 12px;\n  max-width: 600px;\n}\n#tags-sortable-container textarea {\n  width: 100%;\n  height: 60px;\n  box-sizing: border-box;\n  padding: 6px;\n}\n#tags-sortable-container ul {\n  list-style: none;\n  padding: 0;\n  margin: 8px 0;\n  border: 1px solid #ddd;\n  min-height: 40px;\n}\n#tags-sortable-container li {\n  height: 47px;\n  padding: 12px 10px;\n  border-bottom: 1px solid #eee;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: #fff;\n  cursor: grab;\n}\n#tags-sortable-container li.dragging {\n  opacity: 0.5;\n}\n#tags-sortable-container li .handle {\n  width: 16px;\n  height: 16px;\n  background: #ccc;\n  display: inline-block;\n  border-radius: 2px;\n  cursor: grab;\n}\n#tags-sortable-container li:last-child {\n  border-bottom: none;\n}\n#tags-sortable-container .placeholder {\n  height: 70.5px;\n  border: 2px dashed #bbb;\n  margin: 4px 0;\n}";
+    var css_248z = "#tags-sortable-container, #tags-sortable-container * {\n  box-sizing: border-box;\n}\n\n#tags-sortable-container {\n  font-size: 14px;\n  margin: 12px;\n  max-width: 600px;\n}\n#tags-sortable-container textarea {\n  width: 100%;\n  height: 60px;\n  box-sizing: border-box;\n  padding: 6px;\n  outline: none;\n}\n#tags-sortable-container input[type=text] {\n  padding: 6px;\n  outline: none;\n  border: 1px solid #bbb;\n  border-radius: 4px;\n}\n#tags-sortable-container ul {\n  list-style: none;\n  padding: 0;\n  margin: 8px 0;\n  border: 1px solid #ddd;\n  min-height: 40px;\n}\n#tags-sortable-container li {\n  height: 36.4px;\n  padding: 11.2px 10px;\n  border-bottom: 1px solid #ddd;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  background: #fff;\n  cursor: grab;\n}\n#tags-sortable-container li .text, #tags-sortable-container li .edit-input {\n  flex: 1;\n}\n#tags-sortable-container li .actions {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n}\n#tags-sortable-container li .delete-btn {\n  border: 1px solid #bbb;\n  background: #fff;\n  color: #666;\n  padding: 2px 8px;\n  border-radius: 4px;\n  cursor: pointer;\n}\n#tags-sortable-container li .delete-btn:hover {\n  color: #c00;\n  border-color: #c88;\n}\n#tags-sortable-container li.dragging {\n  opacity: 0.5;\n}\n#tags-sortable-container li .handle {\n  width: 16px;\n  height: 16px;\n  background: #ccc;\n  display: inline-block;\n  border-radius: 2px;\n  cursor: grab;\n}\n#tags-sortable-container li.tag-item:last-child {\n  border-bottom: none;\n}\n#tags-sortable-container .placeholder {\n  height: 29.12px;\n  border: 2px dashed #bbb;\n  margin: 4px 0;\n}";
     styleInject(css_248z);
 
     if (document.readyState === "loading") {
