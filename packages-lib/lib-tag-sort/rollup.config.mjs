@@ -36,11 +36,15 @@ const defConfig = {
   plugins: [
     typescript({
       compilerOptions: {
-        moduleResolution: "bundler",
-        lib: ["esNext", "dom"],
         target: "esNext",
         jsx: "preserve",
         jsxImportSource: "solid-js",
+        lib: [
+          "esNext",
+          "dom",
+        ],
+        moduleResolution: "bundler",
+        importHelpers: true,
       },
     }),
     postcss({
