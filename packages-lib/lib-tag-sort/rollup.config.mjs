@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import process from "node:process";
 
+import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 
 import typescript from "@rollup/plugin-typescript";
@@ -11,7 +12,6 @@ import postcss from "rollup-plugin-postcss";
 
 // import html from "rollup-plugin-html-string";
 // import md from "@mizu/rollup-plugin-md";
-// import resolve from "@rollup/plugin-node-resolve";
 
 import serve from "rollup-plugin-serve";
 
@@ -35,6 +35,8 @@ const defConfig = {
         moduleResolution: "bundler",
         lib: ["esNext", "dom"],
         target: "esNext",
+        jsx: "preserve",
+        jsxImportSource: "solid-js",
       },
     }),
     postcss({
@@ -44,7 +46,7 @@ const defConfig = {
       "preventAssignment": true,
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
     }),
-    // resolve(),
+    resolve(),
     // md(),
     // html({
     //     include: "src/**/*.html",

@@ -21,7 +21,8 @@
   "dependencies": {
     "@mizu/rollup-plugin-md": "workspace:*",
     "rollup-plugin-html-string": "catalog:",
-    "sass": "catalog:"
+    "sass": "catalog:",
+    "solid-js": "catalog:"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "catalog:",

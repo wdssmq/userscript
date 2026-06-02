@@ -1,23 +1,12 @@
+packages:
+  - packages/*
+  - packages-lib/*
+  - packages-plugin/*
 allowBuilds:
   "@parcel/watcher": true
   bufferutil: true
   esbuild: true
   utf-8-validate: true
-
-catalogMode: prefer
-
-shellEmulator: true
-
-trustPolicy: no-downgrade
-trustPolicyExclude:
-  - chokidar@4.0.3
-  - css-declaration-sorter@6.4.1
-  - pino@9.14.0
-  - "semver@5.7.2 || 6.3.1"
-packages:
-  - packages/*
-  - packages-lib/*
-  - packages-plugin/*
 catalog:
   "@antfu/eslint-config": ^6.7.3
   "@rollup/plugin-node-resolve": ^15.3.1
@@ -44,11 +33,14 @@ catalog:
   rollup-plugin-postcss: ^4.0.2
   rollup-plugin-serve: ^2.0.3
   sass: ^1.99.0
+  solid-js: ^1.9.13
   tslib: ^2.8.1
   tsx: ^4.20.6
   typescript: ^5.9.3
   vite: ^7.3.2
   vite-plugin-monkey: ^7.1.9
+
+catalogMode: prefer
 
 onlyBuiltDependencies:
   - "@parcel/watcher"
@@ -56,3 +48,12 @@ onlyBuiltDependencies:
   - core-js
   - esbuild
   - utf-8-validate
+
+shellEmulator: true
+
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  - chokidar@4.0.3
+  - css-declaration-sorter@6.4.1
+  - pino@9.14.0
+  - "semver@5.7.2 || 6.3.1"
