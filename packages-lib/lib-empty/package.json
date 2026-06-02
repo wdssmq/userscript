@@ -27,6 +27,7 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "catalog:",
     "@rollup/plugin-replace": "catalog:",
+    "dotenv": "catalog:",
     "postcss": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-copy": "catalog:",

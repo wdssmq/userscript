@@ -28,6 +28,7 @@
     "@rollup/plugin-node-resolve": "catalog:",
     "@rollup/plugin-replace": "catalog:",
     "@rollup/plugin-typescript": "catalog:",
+    "dotenv": "catalog:",
     "postcss": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-copy": "catalog:",
