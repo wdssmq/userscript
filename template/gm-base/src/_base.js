@@ -32,12 +32,6 @@ function $na(e) {
 
 // -------------------------------------
 
-// 添加内容到指定元素后面
-function fnAfter(newEl, el) {
-  el = typeof el === 'string' ? $n(el) : el
-  el.parentNode.insertBefore(newEl, el.nextSibling)
-}
-
 // 指定元素内查找子元素
 function fnFindDom(el, selector) {
   el = typeof el === 'string' ? $n(el) : el
@@ -82,7 +76,6 @@ export {
   _warn,
   curDate,
   curUrl,
-  fnAfter,
   fnElChange,
   fnFindDom,
 }
