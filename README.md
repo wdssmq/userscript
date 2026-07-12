@@ -37,26 +37,12 @@ GreasyFork： [https://greasyfork.org/zh-CN/users/6865](https://greasyfork.org/z
 
 占位
 
-## up empty_def
-
-```bash
-PROJECT_SCRIPT=empty_def
-rm -rf ${PROJECT_SCRIPT}
-# 下载初始模板
-wget https://ghproxy.com/https://github.com/wdssmq/rollup-plugin-monkey/releases/latest/download/script_def.tar.gz
-tar -xzvf script_def.tar.gz
-mv script_def ${PROJECT_SCRIPT}
-# cd ${PROJECT_SCRIPT}
-sed -i "s/\"script_def\"/\"${PROJECT_SCRIPT}\"/" ${PROJECT_SCRIPT}/src/__info.js
-eslint empty_def/**/*.js empty_def/*.mjs --fix
-rm -rf script_def.tar.gz
-```
-
 ## postcss
 
 ```bash
-cnpm i postcss rollup-plugin-postcss -d
+pnpm i postcss rollup-plugin-postcss -D
 # less sass stylus 按需安装对应的依赖
+
 ```
 
 ```js
