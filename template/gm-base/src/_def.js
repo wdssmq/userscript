@@ -1,4 +1,7 @@
-import { $n, _log } from './_base'
+import {
+  $n,
+  _log,
+} from './_base'
 
 // 一个全局数据存储封装，带 ls 读写
 import { gob } from './_gob.js'
