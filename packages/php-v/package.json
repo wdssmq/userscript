@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.34.1",
+  "scripts": {
+    "build": "rollup -c --environment NODE_ENV:prod",
+    "dev": "rollup -c -w --environment NODE_ENV:dev",
+    "lint": "eslint --ext .js,.mjs . --fix",
+    "clean:out": "rm -rf dev *.user.js",
+    "clean:deps": "rm -rf node_modules",
+    "up:ver": "npm version patch && npm run build"
+  },
+  "dependencies": {
+    "@rollup/plugin-replace": "^6.0.3",
+    "rollup": "^4.62.2",
+    "rollup-plugin-monkey": "^1.1.0"
+  }
+}
