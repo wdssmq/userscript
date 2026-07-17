@@ -6,7 +6,7 @@ import "./style/style.sass";
 // 最后一次显示关于视图的时间戳（单位：秒）
 const LAST_SHOW_TIME_KEY = "mz-about-last-show-ts";
 // 冷却时间，单位：秒
-const COOL_DOWN_TIME = 500;
+const COOL_DOWN_TIME = process.env.NODE_ENV === "production" ? 500 : 5;
 // 倒计时等待时间，单位：秒
 const COUNTDOWN_SECONDS = 15;
 
