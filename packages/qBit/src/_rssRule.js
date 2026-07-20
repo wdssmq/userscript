@@ -11,11 +11,11 @@ function fnSetRule(gob, MiKanUrl) {
   $inputGroup.innerHTML = `
     <label>
       自动下载规则名称：
-      <input type="text" class="js-rule-name" placeholder="规则名称" style="width: 120px; margin-right: 8px;">
+      <input type="text" class="js-rule-name mz-rss-input" placeholder="规则名称" style="width: 120px; margin-right: 8px;">
     </label>
     <label>
       自动下载规则定义：
-      <input type="text" class="js-rule-def" placeholder="正则表达式" style="width: 200px; margin-right: 8px;">
+      <input type="text" class="js-rule-def mz-rss-input" placeholder="正则表达式" style="width: 200px; margin-right: 8px;">
     </label>
     <button class="js-add-rule-btn">添加自动下载规则</button>
   `;
@@ -89,9 +89,13 @@ export function registerRssAutoDlBtn(gob, $rssBtn) {
   div.style.marginRight = "8px";
   div.style.display = "inline-block";
   // div.textContent = " （占位）";
-  $n("#rssDownloaderButton").after(div);
+  if ($n("#rssFilterToolbar")) {
+    $n("#rssFilterToolbar").after(div);
+  } else {
+    $n("#rssDownloaderButton").after(div);
+  }
 
-  // #rssDownloaderButton 前添加一个按钮
+  // 用于激活规则设置的按钮
   const btn = document.createElement("button");
   btn.innerHTML = "→ 添加自动下载规则 ←";
   btn.classList.add("alignRight", "js-set-rule");
@@ -110,5 +114,9 @@ export function registerRssAutoDlBtn(gob, $rssBtn) {
     btn.classList.add("disabled", "mz-hidden");
     fnSetRule(gob, MiKanUrl);
   });
-  $n("#rssDownloaderButton").after(btn);
+  if ($n("#rssFilterToolbar")) {
+    $n("#rssFilterToolbar").after(btn);
+  } else {
+    $n("#rssDownloaderButton").after(btn);
+  }
 }

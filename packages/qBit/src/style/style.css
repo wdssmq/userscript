@@ -23,3 +23,8 @@
 .mz-hidden {
   display: none !important;
 }
+
+#rssButtonBar input.mz-rss-input {
+  background: none;
+  padding-left: 4px;
+}
