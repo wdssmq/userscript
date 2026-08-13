@@ -25,12 +25,14 @@ class MzAbout {
   isShown = false;
   countdownTimer = null;
   countdownRemaining = 0;
+  curTime = 0;
 
   init(options = {}) {
     this.config = { ...defaultConfig, ...options };
     this.mainEl = document.querySelector(this.config.mainSelector);
     this._injectButton();
     this._injectAboutView();
+    this.curTime = Math.floor(Date.now() / 1000);
     return this;
   }
 
@@ -48,13 +50,13 @@ class MzAbout {
   }
 
   // 判断是否需要等待冷却时间才能显示
+  // true: 需要等待，false: 可以直接显示
   _shouldWaitBeforeShow() {
     const lastShowTime = Number(lsObj.getItem(LAST_SHOW_TIME_KEY, 0));
     if (!lastShowTime) {
       return true;
     }
-    const now = Math.floor(Date.now() / 1000);
-    const elapsed = now - lastShowTime;
+    const elapsed = this.curTime - lastShowTime;
     return elapsed >= COOL_DOWN_TIME;
   }
 
@@ -107,7 +109,8 @@ class MzAbout {
     this.mainEl.classList.add("mz-about-hidden");
     this.aboutEl.hidden = false;
     this.isShown = true;
-    lsObj.setItem(LAST_SHOW_TIME_KEY, Math.floor(Date.now() / 1000));
+    // 记录显示时间戳
+    lsObj.setItem(LAST_SHOW_TIME_KEY, this.curTime);
   }
 
   // 隐藏关于视图
