@@ -5,16 +5,16 @@ import "./style/style.sass";
 
 // 最后一次显示关于视图的时间戳（单位：秒）
 const LAST_SHOW_TIME_KEY = "mz-about-last-show-ts";
-// 冷却时间，单位：秒
-const COOL_DOWN_TIME = process.env.NODE_ENV === "production" ? 500 : 5;
-// 倒计时等待时间，单位：秒
-const COUNTDOWN_SECONDS = 15;
 
 const defaultConfig = {
   buttonText: "[关 于]",
   buttonTitle: "查看/隐藏关于",
   mainSelector: "#divMain2",
   menuSelector: ".SubMenu",
+  // 豁免时间，单位：秒；在此时间内重复点击不需要再等待
+  exemptTime: process.env.NODE_ENV === "production" ? 500 : 5,
+  // 倒计时等待时间，单位：秒
+  countdownSeconds: 15,
 };
 
 class MzAbout {
@@ -49,15 +49,15 @@ class MzAbout {
     return this;
   }
 
-  // 判断是否需要等待冷却时间才能显示
-  // true: 需要等待，false: 可以直接显示
+  // 判断是否需要等待，在豁免时间内重复点击不需要再等待
+  // true: 需要等待，false: 可直接显示
   _shouldWaitBeforeShow() {
     const lastShowTime = Number(lsObj.getItem(LAST_SHOW_TIME_KEY, 0));
     if (!lastShowTime) {
       return true;
     }
     const elapsed = this.curTime - lastShowTime;
-    return elapsed >= COOL_DOWN_TIME;
+    return elapsed >= this.config.exemptTime;
   }
 
   // 开始倒计时
@@ -65,7 +65,7 @@ class MzAbout {
     if (!this.buttonEl || this.countdownTimer) {
       return;
     }
-    this.countdownRemaining = this.config.countdownSeconds || COUNTDOWN_SECONDS;
+    this.countdownRemaining = this.config.countdownSeconds;
     this._setCountdownText();
     this.buttonEl.classList.add("is-countdown");
     this.countdownTimer = window.setInterval(() => {
@@ -110,7 +110,7 @@ class MzAbout {
     this.aboutEl.hidden = false;
     this.isShown = true;
     // 记录显示时间戳
-    lsObj.setItem(LAST_SHOW_TIME_KEY, this.curTime);
+    lsObj.setItem(LAST_SHOW_TIME_KEY, this.curTime + this.config.countdownSeconds);
   }
 
   // 隐藏关于视图
