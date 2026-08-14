@@ -6,6 +6,7 @@ import _postMng from "./_postMng";
 
 $(() => {
   const gm_window = window || unsafeWindow;
+  const bloghost = window.bloghost || unsafeWindow.bloghost || "";
   // 文章日志标记
   if (gm_window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
     _logReview.load()
@@ -23,7 +24,7 @@ $(() => {
       const type = $(this).data("type");
       const act = type ? "PageEdt" : "ArticleEdt";
       $(this).html(
-        `[<a title="编辑" rel="external" href="${gm_window.bloghost}zb_system/cmd.php?act=${act}&id=${id}">编辑</a>]`,
+        `[<a title="编辑" rel="external" href="${bloghost}zb_system/cmd.php?act=${act}&id=${id}">编辑</a>]`,
       );
     })
     .removeClass("is-hidden hidden");
@@ -35,7 +36,7 @@ $(() => {
         .each(function() {
           const id = $(this).data("id");
           const html = $(this).html();
-          $(this).html(`[<a class="cmt-search" title="搜索评论" rel="external" href="${gm_window.bloghost}zb_system/admin/index.php?act=CommentMng&postID=${id}" target="_blank">搜索评论</a>] ${html}`);
+          $(this).html(`[<a class="cmt-search" title="搜索评论" rel="external" href="${bloghost}zb_system/admin/index.php?act=CommentMng&postID=${id}" target="_blank">搜索评论</a>] ${html}`);
         });
     },
   );
@@ -45,7 +46,7 @@ $(() => {
     const $this = $(this);
     const authName = $this.data("name");
     $this.append(
-      ` <a class="cmt-edit" title="查找编辑" rel="external" href="${gm_window.bloghost}zb_users/plugin/cmt2rss/main.php?act=update&read_getWord=${authName}" target="_blank">查找编辑</a>`,
+      ` <a class="cmt-edit" title="查找编辑" rel="external" href="${bloghost}zb_users/plugin/cmt2rss/main.php?act=update&read_getWord=${authName}" target="_blank">查找编辑</a>`,
     );
   });
   $(".cmt-edit").css({ color: "#175199" });
