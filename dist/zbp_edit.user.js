@@ -19,8 +19,12 @@
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*
 // @match       *://*/zb_users/plugin/mz_admin2/edtView.php*
+// @match       *://*/zb_users/plugin/mz_ReviewLog/main.php*
 // @match       *://*/zb_system/admin/index.php?act=ArticleMng*
-// @grant        none
+// @grant       GM_xmlhttpRequest
+// @grant       GM_getValue
+// @grant       GM_setValue
+// @connect     raw.githubusercontent.com
 // ==/UserScript==
 
 /* eslint-disable */
@@ -93,6 +97,108 @@
       cb();
     }
   }
+
+  class HttpRequest {
+    constructor() {
+      if (typeof GM_xmlhttpRequest === "undefined") {
+        throw new TypeError("GM_xmlhttpRequest is not defined");
+      }
+    }
+
+    get(url, headers = {}) {
+      return this.request({
+        method: "GET",
+        url,
+        headers,
+      });
+    }
+
+    post(url, data = {}, headers = {}) {
+      const formData = new FormData();
+
+      for (const key in data) {
+        formData.append(key, data[key]);
+      }
+
+      return this.request({
+        method: "POST",
+        url,
+        data: formData,
+        headers,
+      });
+    }
+
+    request(options) {
+      return new Promise((resolve, reject) => {
+        const requestOptions = Object.assign({}, options);
+
+        requestOptions.onload = function(res) {
+          resolve(res);
+        };
+
+        requestOptions.onerror = function(error) {
+          reject(error);
+        };
+
+        GM_xmlhttpRequest(requestOptions);
+      });
+    }
+  }
+
+  // 导出实例对象
+  const http = new HttpRequest();
+
+  const configKey = "zbp_edit.logReview";
+
+  const logReview = {
+    url: "",
+    logs: null,
+    readConfig() {
+      const config = GM_getValue(configKey, {});
+      this.url = typeof config.url === "string" ? config.url.trim() : "";
+      return config;
+    },
+    setConfig(config = {}) {
+      const nextConfig = {
+        url: typeof config.url === "string" ? config.url.trim() : "",
+      };
+      GM_setValue(configKey, nextConfig);
+      this.url = nextConfig.url;
+      return nextConfig;
+    },
+    async load() {
+      this.readConfig();
+      if (!this.url) {
+        return null;
+      }
+      const response = await http.get(this.url);
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(`读取文章日志失败：${response.status} ${response.statusText}`);
+      }
+      this.logs = JSON.parse(response.responseText);
+
+      return this.logs;
+    },
+    markReviewedPosts() {
+      const logIds = new Set(
+        Object.values(this.logs || {})
+          .map(log => String(log.id)),
+      );
+      document.querySelectorAll("p.post").forEach((post) => {
+        if (!logIds.has(post.dataset.id)) {
+          return;
+        }
+        post.classList.add("is-log-reviewed");
+        Object.assign(post.style, {
+          // backgroundColor: "#fff8dc",
+          borderLeft: "3px solid #d4a017",
+          paddingLeft: "8px",
+        });
+      });
+    },
+  };
+
+  window.logReviewSet = config => logReview.setConfig(config);
 
   function _mdToc() {
     const postTitle = $(".post-title");
@@ -219,6 +325,14 @@
   _postMng.init();
 
   $(() => {
+    // 文章日志标记
+    if (window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
+      logReview.load()
+        .then(() => logReview.markReviewedPosts())
+        .catch(error => console.error(error));
+      return;
+    }
+
     _mdToc();
     _postMng.run();
     // 添加编辑按钮
