@@ -1,8 +1,8 @@
+blockExoticSubdeps: true
+catalog:
+  astro: ^5.18.2
+minimumReleaseAge: 10080
 onlyBuiltDependencies:
   - esbuild
   - sharp
 trustPolicy: no-downgrade
-blockExoticSubdeps: true
-minimumReleaseAge: 10080
-catalog:
-  astro: ^5.16.0
