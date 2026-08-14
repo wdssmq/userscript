@@ -20,8 +20,12 @@ const gm_banner = `
 // @match       *://*/*.html
 // @match       *://*/zb_system/admin/edit.php*
 // @match       *://*/zb_users/plugin/mz_admin2/edtView.php*
+// @match       *://*/zb_users/plugin/mz_ReviewLog/main.php*
 // @match       *://*/zb_system/admin/index.php?act=ArticleMng*
-// @grant        none
+// @grant       GM_xmlhttpRequest
+// @grant       GM_getValue
+// @grant       GM_setValue
+// @connect     raw.githubusercontent.com
 // ==/UserScript==
 
 /* eslint-disable */

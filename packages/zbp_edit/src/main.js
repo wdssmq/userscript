@@ -1,9 +1,18 @@
 import { $, _log, curUrl } from "./_base";
 import { _cmtPlus } from "./_cmtPlus";
+import _logReview from "./_logReview";
 import _mdToc from "./_mdToc";
 import _postMng from "./_postMng";
 
 $(() => {
+  // 文章日志标记
+  if (window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
+    _logReview.load()
+      .then(() => _logReview.markReviewedPosts())
+      .catch(error => console.error(error));
+    return;
+  }
+
   _mdToc();
   _postMng.run();
   // 添加编辑按钮
