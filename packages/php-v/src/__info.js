@@ -21,15 +21,15 @@ const gm_banner = `
 // ==/UserScript==
 
 /* eslint-disable */
-`
+`;
 
-const gm_name = 'php-v'
+const gm_name = "php-v";
 
 const gm_require = [
   {
-    url: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js',
-    func: '$',
+    url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js",
+    func: "$",
   },
-]
+];
 
-export { gm_banner, gm_name, gm_require }
+export { gm_banner, gm_name, gm_require };

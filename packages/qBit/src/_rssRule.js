@@ -91,7 +91,8 @@ export function registerRssAutoDlBtn(gob, $rssBtn) {
   // div.textContent = " （占位）";
   if ($n("#rssFilterToolbar")) {
     $n("#rssFilterToolbar").after(div);
-  } else {
+  }
+  else {
     $n("#rssDownloaderButton").after(div);
   }
 
@@ -116,7 +117,8 @@ export function registerRssAutoDlBtn(gob, $rssBtn) {
   });
   if ($n("#rssFilterToolbar")) {
     $n("#rssFilterToolbar").after(btn);
-  } else {
+  }
+  else {
     $n("#rssDownloaderButton").after(btn);
   }
 }

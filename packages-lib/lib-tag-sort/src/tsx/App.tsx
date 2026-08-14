@@ -1,16 +1,16 @@
 import type { Component, JSX } from "solid-js";
-import { createSignal, createMemo, For } from "solid-js";
+import { createMemo, createSignal, For } from "solid-js";
 
 import { core } from "../core";
 
-type RenderEntry =
-  | {
-    kind: "item";
-    index: number;
-    value: string;
+type RenderEntry
+  = | {
+    kind: "item"
+    index: number
+    value: string
   }
   | {
-    kind: "placeholder";
+    kind: "placeholder"
   };
 
 type ItemEntry = Extract<RenderEntry, { kind: "item" }>;
@@ -85,7 +85,6 @@ const App: Component = () => {
   // 编辑索引及草稿值
   const [editingIndex, setEditingIndex] = createSignal<number | null>(null);
   const [draftValue, setDraftValue] = createSignal("");
-
 
   // 文本变更时提交条目列表更新
   function commitItems(nextItems: string[]) {
@@ -178,45 +177,46 @@ const App: Component = () => {
     return (
       editingIndex() === contentProps.entry.index
         ? (
-          <input
-            type="text"
-            value={draftValue()}
-            onInput={event => setDraftValue(event.currentTarget.value)}
-            onBlur={() => handleSaveEdit(contentProps.entry.index)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.currentTarget.blur();
-              }
-              else if (event.key === "Escape") {
-                setEditingIndex(null);
-                setDraftValue("");
-              }
-            }}
-            ref={(element) => {
-              queueMicrotask(() => {
-                element.focus();
-              });
-            }}
-          />
-        )
+            <input
+              type="text"
+              value={draftValue()}
+              onInput={event => setDraftValue(event.currentTarget.value)}
+              onBlur={() => handleSaveEdit(contentProps.entry.index)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.currentTarget.blur();
+                }
+                else if (event.key === "Escape") {
+                  setEditingIndex(null);
+                  setDraftValue("");
+                }
+              }}
+              ref={(element) => {
+                queueMicrotask(() => {
+                  element.focus();
+                });
+              }}
+            />
+          )
         : (
-          <>
-            <span>
-              {contentProps.entry.value}
-            </span>
-            <div class="actions">
-              <button
-                type="button"
-                class="delete-btn"
-                onClick={() => {
-                  const nextItems = core.removeItem(items(), contentProps.entry.index);
-                  commitItems(nextItems);
-                }}>
-                删除
-              </button>
-            </div>
-          </>
-        )
+            <>
+              <span>
+                {contentProps.entry.value}
+              </span>
+              <div class="actions">
+                <button
+                  type="button"
+                  class="delete-btn"
+                  onClick={() => {
+                    const nextItems = core.removeItem(items(), contentProps.entry.index);
+                    commitItems(nextItems);
+                  }}
+                >
+                  删除
+                </button>
+              </div>
+            </>
+          )
     );
   };
 
@@ -225,31 +225,31 @@ const App: Component = () => {
     return (
       <ul onDragOver={event => event.preventDefault()}>
         <For each={entries()}>
-          {(entry) => (
+          {entry => (
             entry.kind === "placeholder"
               ? (
-                <li
-                  class="placeholder"
-                  onDragOver={event => event.preventDefault()}
-                  onDrop={handleDrop}
-                />
-              )
+                  <li
+                    class="placeholder"
+                    onDragOver={event => event.preventDefault()}
+                    onDrop={handleDrop}
+                  />
+                )
               : (
-                <li
-                  classList={{
-                    "tag-item": true,
-                    dragging: draggingIndex() === entry.index,
-                    editing: editingIndex() === entry.index,
-                  }}
-                  draggable="true"
-                  onDragStart={event => handleDragStart(entry.index, event)}
-                  onDragOver={event => handleDragOver(entry.index, event)}
-                  onDrop={handleDrop}
-                  onDblClick={() => handleStartEdit(entry.index)}
-                >
-                  <LiContent entry={entry} />
-                </li>
-              )
+                  <li
+                    classList={{
+                      "tag-item": true,
+                      "dragging": draggingIndex() === entry.index,
+                      "editing": editingIndex() === entry.index,
+                    }}
+                    draggable="true"
+                    onDragStart={event => handleDragStart(entry.index, event)}
+                    onDragOver={event => handleDragOver(entry.index, event)}
+                    onDrop={handleDrop}
+                    onDblClick={() => handleStartEdit(entry.index)}
+                  >
+                    <LiContent entry={entry} />
+                  </li>
+                )
           )}
         </For>
       </ul>
@@ -272,7 +272,7 @@ const App: Component = () => {
         <List />
       </div>
     </div>
-  )
+  );
 };
 
 export default App;

@@ -1,26 +1,26 @@
-import { gm_name } from './__info'
-import { _log } from './_base'
+import { gm_name } from "./__info";
+import { _log } from "./_base";
 
 // localStorage 封装
 const lsObj = {
   setItem(key, value) {
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, JSON.stringify(value));
   },
-  getItem(key, def = '') {
-    const item = localStorage.getItem(key)
+  getItem(key, def = "") {
+    const item = localStorage.getItem(key);
     if (item) {
-      return JSON.parse(item)
+      return JSON.parse(item);
     }
-    return def
+    return def;
   },
-}
+};
 
 // 数据读写封装
 const gobInfo = {
   // key: [默认值, 是否记录至 ls]
-  strTest: ['TEST', 0],
+  strTest: ["TEST", 0],
   intTest: [0, 1],
-}
+};
 const gob = {
   _lsKey: `${gm_name}_data`,
   _bolLoaded: false,
@@ -30,53 +30,53 @@ const gob = {
     // 根据 gobInfo 设置 gob 属性
     for (const key in gobInfo) {
       if (Object.hasOwnProperty.call(gobInfo, key)) {
-        const item = gobInfo[key]
-        this.data[key] = item[0]
+        const item = gobInfo[key];
+        this.data[key] = item[0];
         Object.defineProperty(this, key, {
           // value: item[0],
           // writable: true,
           get() { return this.data[key] },
           set(value) { this.data[key] = value },
-        })
+        });
       }
     }
-    return this
+    return this;
   },
   // 读取
   load() {
     if (this._bolLoaded) {
-      return
+      return;
     }
-    const lsData = lsObj.getItem(this._lsKey, this.data)
-    _log('[log]gob.load()', lsData)
+    const lsData = lsObj.getItem(this._lsKey, this.data);
+    _log("[log]gob.load()", lsData);
     for (const key in lsData) {
       if (Object.hasOwnProperty.call(lsData, key)) {
-        const item = lsData[key]
-        this.data[key] = item
+        const item = lsData[key];
+        this.data[key] = item;
       }
     }
-    this._bolLoaded = true
+    this._bolLoaded = true;
   },
   // 保存
   save() {
-    const lsData = {}
+    const lsData = {};
     for (const key in gobInfo) {
       if (Object.hasOwnProperty.call(gobInfo, key)) {
-        const item = gobInfo[key]
+        const item = gobInfo[key];
         if (item[1]) {
-          lsData[key] = this.data[key]
+          lsData[key] = this.data[key];
         }
       }
     }
-    _log('[log]gob.save()', lsData)
-    lsObj.setItem(this._lsKey, lsData)
+    _log("[log]gob.save()", lsData);
+    lsObj.setItem(this._lsKey, lsData);
   },
-}
+};
 
 // 初始化
-gob.init().load()
+gob.init().load();
 
 export {
   gob,
   lsObj,
-}
+};
