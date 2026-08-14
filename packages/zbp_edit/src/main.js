@@ -5,8 +5,9 @@ import _mdToc from "./_mdToc";
 import _postMng from "./_postMng";
 
 $(() => {
+  const gm_window = window || unsafeWindow;
   // 文章日志标记
-  if (window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
+  if (gm_window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
     _logReview.load()
       .then(() => _logReview.markReviewedPosts())
       .catch(error => console.error(error));
@@ -22,7 +23,7 @@ $(() => {
       const type = $(this).data("type");
       const act = type ? "PageEdt" : "ArticleEdt";
       $(this).html(
-        `[<a title="编辑" rel="external" href="${window.bloghost}zb_system/cmd.php?act=${act}&id=${id}">编辑</a>]`,
+        `[<a title="编辑" rel="external" href="${gm_window.bloghost}zb_system/cmd.php?act=${act}&id=${id}">编辑</a>]`,
       );
     })
     .removeClass("is-hidden hidden");
@@ -34,7 +35,7 @@ $(() => {
         .each(function() {
           const id = $(this).data("id");
           const html = $(this).html();
-          $(this).html(`[<a class="cmt-search" title="搜索评论" rel="external" href="${window.bloghost}zb_system/admin/index.php?act=CommentMng&postID=${id}" target="_blank">搜索评论</a>] ${html}`);
+          $(this).html(`[<a class="cmt-search" title="搜索评论" rel="external" href="${gm_window.bloghost}zb_system/admin/index.php?act=CommentMng&postID=${id}" target="_blank">搜索评论</a>] ${html}`);
         });
     },
   );
@@ -44,7 +45,7 @@ $(() => {
     const $this = $(this);
     const authName = $this.data("name");
     $this.append(
-      ` <a class="cmt-edit" title="查找编辑" rel="external" href="${window.bloghost}zb_users/plugin/cmt2rss/main.php?act=update&read_getWord=${authName}" target="_blank">查找编辑</a>`,
+      ` <a class="cmt-edit" title="查找编辑" rel="external" href="${gm_window.bloghost}zb_users/plugin/cmt2rss/main.php?act=update&read_getWord=${authName}" target="_blank">查找编辑</a>`,
     );
   });
   $(".cmt-edit").css({ color: "#175199" });
@@ -56,14 +57,14 @@ $(() => {
   $("#edtTitle").after(
     "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> 「设置为回收」</a>",
   );
-  const editor_api = window.editor_api;
+  const editor_api = gm_window.editor_api;
   $(".js-empty").click(() => {
     $("#edtTitle").val("回收");
     $("#edtTag").val("回收");
     $("#edtDateTime").datetimepicker("setDate", (new Date()));
     $("#cmbPostStatus").val("1");
     let strMore = "";
-    if (typeof window.EDITORMD == "object") {
+    if (typeof gm_window.EDITORMD == "object") {
       strMore = "\n\n<!--more-->";
     }
     else {
