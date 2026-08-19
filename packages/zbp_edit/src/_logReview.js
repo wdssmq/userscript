@@ -15,7 +15,8 @@ const logReview = {
   logs: null,
   cacheLogs: lsObj.getItem(lsCacheKey, defCacheData),
   readConfig() {
-    const config = GM_getValue(configKey, {});
+    const config = Object.assign({}, GM_getValue(configKey, {}), lsObj.getItem(configKey, {}));
+
     this.url = typeof config.url === "string" ? config.url.trim() : "";
     return config;
   },
@@ -30,6 +31,7 @@ const logReview = {
   async load() {
     this.readConfig();
     if (!this.url) {
+      console.warn("远程查询 URL 未配置，请在脚本设置中配置 URL");
       return null;
     }
     if (this.cacheLogs.lstTime > 0 && ts - this.cacheLogs.lstTime < 24 * 60 * 60) {
@@ -78,5 +80,7 @@ window.logReviewSet = config => logReview.setConfig(config);
 // window.logReviewSet({
 //   url: "https://raw.githubusercontent.com/wdssmq/Markdown-To-Z-Blog/refs/heads/main/_posts_logs.json",
 // });
+
+// localStorage.setItem("zbp_edit.logReview", JSON.stringify({url: "https://raw.githubusercontent.com/wdssmq/Markdown-To-Z-Blog/refs/heads/main/_posts_logs.json"}));
 
 export default logReview;

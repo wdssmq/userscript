@@ -9,6 +9,7 @@ $(() => {
   const bloghost = window.bloghost || unsafeWindow.bloghost || "";
   // 文章日志标记
   if (gm_window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
+    console.log("文章日志标记");
     _logReview.load()
       .then(() => _logReview.markReviewedPosts())
       .catch(error => console.error(error));
