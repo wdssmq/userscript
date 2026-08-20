@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「Z-Blog」前台编辑文章入口
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.3
+// @version      1.0.4
 // @author       沉冰浮水
 // @description  配合主题以显示前台编辑入口
 // @license      MIT
@@ -37,6 +37,7 @@
 
   // 初始常量或函数
   const curUrl = window.location.href;
+  const curDate = new Date();
   // ---------------------------------------------------
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
   // ---------------------------------------------------
@@ -148,13 +149,35 @@
   // 导出实例对象
   const http = new HttpRequest();
 
+  // localStorage 封装
+  const lsObj = {
+    setItem(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+    getItem(key, def = "") {
+      const item = localStorage.getItem(key);
+      if (item) {
+        return JSON.parse(item);
+      }
+      return def;
+    },
+  };
+
   const configKey = "zbp_edit.logReview";
+  const lsCacheKey = "zbp_edit.logReview.cache";
+  const defCacheData = {
+    lstTime: 0,
+    logs: {},
+  };
+  const ts = Number.parseInt(curDate.getTime() / 1000, 10);
 
   const logReview = {
     url: "",
     logs: null,
+    cacheLogs: lsObj.getItem(lsCacheKey, defCacheData),
     readConfig() {
-      const config = GM_getValue(configKey, {});
+      const config = Object.assign({}, GM_getValue(configKey, {}), lsObj.getItem(configKey, {}));
+
       this.url = typeof config.url === "string" ? config.url.trim() : "";
       return config;
     },
@@ -169,7 +192,12 @@
     async load() {
       this.readConfig();
       if (!this.url) {
+        console.warn("远程查询 URL 未配置，请在脚本设置中配置 URL");
         return null;
+      }
+      if (this.cacheLogs.lstTime > 0 && ts - this.cacheLogs.lstTime < 24 * 60 * 60) {
+        this.logs = this.cacheLogs.logs;
+        return this.logs;
       }
       const response = await http.get(this.url);
       if (response.status < 200 || response.status >= 300) {
@@ -177,21 +205,31 @@
       }
       this.logs = JSON.parse(response.responseText);
 
+      this.cacheLogs = {
+        lstTime: ts,
+        logs: this.logs,
+      };
+      lsObj.setItem(lsCacheKey, this.cacheLogs);
       return this.logs;
     },
     markReviewedPosts() {
+      // console.log(this.logs);
+
       const logIds = new Set(
         Object.values(this.logs || {})
           .map(log => String(log.id)),
       );
       document.querySelectorAll("p.post").forEach((post) => {
         if (!logIds.has(post.dataset.id)) {
+          Object.assign(post.style, {
+            borderLeft: "3px solid #ff0000",
+            paddingLeft: "8px",
+          });
           return;
         }
         post.classList.add("is-log-reviewed");
         Object.assign(post.style, {
-          // backgroundColor: "#fff8dc",
-          borderLeft: "3px solid #d4a017",
+          borderLeft: "3px solid #1ef10a",
           paddingLeft: "8px",
         });
       });
@@ -325,8 +363,11 @@
   _postMng.init();
 
   $(() => {
+    const gm_window = window || unsafeWindow;
+    const bloghost = window.bloghost || unsafeWindow.bloghost || "";
     // 文章日志标记
-    if (window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
+    if (gm_window.location.pathname === "/zb_users/plugin/mz_ReviewLog/main.php") {
+      console.log("文章日志标记");
       logReview.load()
         .then(() => logReview.markReviewedPosts())
         .catch(error => console.error(error));
@@ -342,7 +383,7 @@
         const type = $(this).data("type");
         const act = type ? "PageEdt" : "ArticleEdt";
         $(this).html(
-          `[<a title="编辑" rel="external" href="${window.bloghost}zb_system/cmd.php?act=${act}&id=${id}">编辑</a>]`,
+          `[<a title="编辑" rel="external" href="${bloghost}zb_system/cmd.php?act=${act}&id=${id}">编辑</a>]`,
         );
       })
       .removeClass("is-hidden hidden");
@@ -354,7 +395,7 @@
           .each(function() {
             const id = $(this).data("id");
             const html = $(this).html();
-            $(this).html(`[<a class="cmt-search" title="搜索评论" rel="external" href="${window.bloghost}zb_system/admin/index.php?act=CommentMng&postID=${id}" target="_blank">搜索评论</a>] ${html}`);
+            $(this).html(`[<a class="cmt-search" title="搜索评论" rel="external" href="${bloghost}zb_system/admin/index.php?act=CommentMng&postID=${id}" target="_blank">搜索评论</a>] ${html}`);
           });
       },
     );
@@ -364,7 +405,7 @@
       const $this = $(this);
       const authName = $this.data("name");
       $this.append(
-        ` <a class="cmt-edit" title="查找编辑" rel="external" href="${window.bloghost}zb_users/plugin/cmt2rss/main.php?act=update&read_getWord=${authName}" target="_blank">查找编辑</a>`,
+        ` <a class="cmt-edit" title="查找编辑" rel="external" href="${bloghost}zb_users/plugin/cmt2rss/main.php?act=update&read_getWord=${authName}" target="_blank">查找编辑</a>`,
       );
     });
     $(".cmt-edit").css({ color: "#175199" });
@@ -376,14 +417,14 @@
     $("#edtTitle").after(
       "<a class=\"js-empty\" href=\"javascript:;\" title=\"设置为回收\"> 「设置为回收」</a>",
     );
-    const editor_api = window.editor_api;
+    const editor_api = gm_window.editor_api;
     $(".js-empty").click(() => {
       $("#edtTitle").val("回收");
       $("#edtTag").val("回收");
       $("#edtDateTime").datetimepicker("setDate", (new Date()));
       $("#cmbPostStatus").val("1");
       let strMore = "";
-      if (typeof window.EDITORMD == "object") {
+      if (typeof gm_window.EDITORMD == "object") {
         strMore = "\n\n<!--more-->";
       }
       else {

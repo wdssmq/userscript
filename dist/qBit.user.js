@@ -258,11 +258,11 @@
     $inputGroup.innerHTML = `
     <label>
       自动下载规则名称：
-      <input type="text" class="js-rule-name" placeholder="规则名称" style="width: 120px; margin-right: 8px;">
+      <input type="text" class="js-rule-name mz-rss-input" placeholder="规则名称" style="width: 120px; margin-right: 8px;">
     </label>
     <label>
       自动下载规则定义：
-      <input type="text" class="js-rule-def" placeholder="正则表达式" style="width: 200px; margin-right: 8px;">
+      <input type="text" class="js-rule-def mz-rss-input" placeholder="正则表达式" style="width: 200px; margin-right: 8px;">
     </label>
     <button class="js-add-rule-btn">添加自动下载规则</button>
   `;
@@ -336,9 +336,14 @@
     div.style.marginRight = "8px";
     div.style.display = "inline-block";
     // div.textContent = " （占位）";
-    $n("#rssDownloaderButton").after(div);
+    if ($n("#rssFilterToolbar")) {
+      $n("#rssFilterToolbar").after(div);
+    }
+    else {
+      $n("#rssDownloaderButton").after(div);
+    }
 
-    // #rssDownloaderButton 前添加一个按钮
+    // 用于激活规则设置的按钮
     const btn = document.createElement("button");
     btn.innerHTML = "→ 添加自动下载规则 ←";
     btn.classList.add("alignRight", "js-set-rule");
@@ -357,7 +362,12 @@
       btn.classList.add("disabled", "mz-hidden");
       fnSetRule(gob, MiKanUrl);
     });
-    $n("#rssDownloaderButton").after(btn);
+    if ($n("#rssFilterToolbar")) {
+      $n("#rssFilterToolbar").after(btn);
+    }
+    else {
+      $n("#rssDownloaderButton").after(btn);
+    }
   }
 
   var tplEdt = "<div class=\"mz-edt\">\n  <div class=\"act-tab\" style=\"display: flex;\">操作模式：</div>\n  <hr>\n  <h2>「标签」或「分类」（区分大小写，标签仅在 v2.8.3 以上版本有效）: </h2>\n  <p>\n    <input class=\"js-input\" type=\"text\" name=\"filter\" style=\"width: 97%;\" placeholder=\"包含要修改项目的「标签」或「分类」，或新建一个\">\n  </p>\n  <h2>Tracker: <span class=\"js-tip-btn\"></span></h2>\n  <div class=\"act-body\"></div>\n  <p class=\"pb-less text-16\">「<a target=\"_blank\" title=\"投喂支持\" href=\"https://afdian.com/a/wdssmq\" rel=\"nofollow\">打钱给作者-爱发电</a>」\n    「<a target=\"_blank\" title=\"QQ 群 - 我的咸鱼心\" href=\"https://jq.qq.com/?_wv=1027&k=SRYaRV6T\" rel=\"nofollow\">QQ 群 - 我的咸鱼心</a>」\n  </p>\n  <hr>\n  <p class=\"pb-less p-bold\">选中要操作的 Torrent 任务（可多选），右键里「标签」或「分类」添加或指定，建议用「标签」；</p>\n  <p class=\"pb-less\">「替换」时请使用完整地址，或者使用「子串替换」；</p>\n  <p class=\"pb-less\">特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</p>\n</div>\n";
@@ -389,7 +399,7 @@
     }
   }
 
-  var css_248z = ".mz-edt {\n  padding: 13px 23px;\n  font-size: 14px;\n  line-height: 20px\n}\n\n.mz-edt .text-16 {\n  font-size: 16px;\n  line-height: 24px\n}\n\n.mz-edt .p-bold {\n  font-weight: 700;\n  border-bottom: 1px solid currentColor;\n  margin-bottom: 4px;\n  padding-bottom: 0;\n}\n\n.mz-edt p.pb-less {\n  padding-bottom: 3px\n}\n\n.mz-hidden {\n  display: none !important;\n}\n";
+  var css_248z = ".mz-edt {\n  padding: 13px 23px;\n  font-size: 14px;\n  line-height: 20px\n}\n\n.mz-edt .text-16 {\n  font-size: 16px;\n  line-height: 24px\n}\n\n.mz-edt .p-bold {\n  font-weight: 700;\n  border-bottom: 1px solid currentColor;\n  margin-bottom: 4px;\n  padding-bottom: 0;\n}\n\n.mz-edt p.pb-less {\n  padding-bottom: 3px\n}\n\n.mz-hidden {\n  display: none !important;\n}\n\n#rssButtonBar input.mz-rss-input {\n  background: none;\n  padding-left: 4px;\n}\n";
   styleInject(css_248z);
 
   /* global __GM_api, MochaUI */
