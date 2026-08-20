@@ -1,4 +1,5 @@
-import { defineCollection, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 
 const gm_md = defineCollection({
   // Type-check frontmatter using a schema
