@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "build": "cross-env NODE_ENV=prod rollup -c",
     "dev": "cross-env NODE_ENV=dev rollup -c -w",
