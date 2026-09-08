@@ -5,6 +5,7 @@ const templateRoot = __dirname;
 const repoRoot = path.resolve(templateRoot, "..");
 const packagesDir = path.resolve(repoRoot, "packages");
 const packagesLibDir = path.resolve(repoRoot, "packages-lib");
+const normalizeGlobPath = value => value.replace(/\\/g, "/");
 
 module.exports = function(plop) {
   plop.setHelper("mustacheL", () => "{{");
@@ -37,10 +38,10 @@ module.exports = function(plop) {
         type: "addMany",
         destination: `${packagesLibDir}/lib-{{name}}`,
         templateFiles: [
-          `${path.resolve(templateRoot, "lib-empty")}/**/*`,
-          `!${path.resolve(templateRoot, "lib-empty")}/**/node_modules/**`,
+          `${normalizeGlobPath(path.resolve(templateRoot, "lib-empty"))}/**/*`,
+          `!${normalizeGlobPath(path.resolve(templateRoot, "lib-empty"))}/**/node_modules/**`,
         ],
-        base: path.resolve(templateRoot, "lib-empty"),
+        base: normalizeGlobPath(path.resolve(templateRoot, "lib-empty")),
       },
       {
         type: "modify",
@@ -92,10 +93,10 @@ module.exports = function(plop) {
         type: "addMany",
         destination: `${packagesDir}/{{name}}`,
         templateFiles: [
-          `${path.resolve(templateRoot, "gm-base")}/**/*`,
-          `!${path.resolve(templateRoot, "gm-base")}/**/node_modules/**`,
+          `${normalizeGlobPath(path.resolve(templateRoot, "gm-base"))}/**/*`,
+          `!${normalizeGlobPath(path.resolve(templateRoot, "gm-base"))}/**/node_modules/**`,
         ],
-        base: path.resolve(templateRoot, "gm-base"),
+        base: normalizeGlobPath(path.resolve(templateRoot, "gm-base")),
         force: true,
       },
       {
