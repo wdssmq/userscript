@@ -1,21 +1,24 @@
-import { _log, $ } from "./_base";
+import { $, _log } from "./_base";
 
 (() => {
-  if ($ === null) return;
+  if ($ === null)
+    return;
   // 移除指定的节点
   function fnHide(t = "") {
     let curHtml;
-    $("tr").each(function () {
+    $("tr").each(function() {
       curHtml = $(this).html();
-      if (/待付款/.test(curHtml)) $(this).remove();
-      if (t === "all") $(this).remove();
+      if (/待付款/.test(curHtml))
+        $(this).remove();
+      if (t === "all")
+        $(this).remove();
     });
   }
 
   // 时间对比转天数
   function fnTimeDiff(recent, past) {
-    let timeDiff = recent.getTime() - past.getTime();
-    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const timeDiff = recent.getTime() - past.getTime();
+    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
   }
 
@@ -32,7 +35,7 @@ import { _log, $ } from "./_base";
     intTOL: 0,
     // 金额累加，输入为金额字符串，扣除分成
     add(amt) {
-      this.intTOL += parseFloat(amt) * 100 * 0.75;
+      this.intTOL += Number.parseFloat(amt) * 100 * 0.75;
     },
     diff() {
       const intDiff = fnTimeDiff(this.timeRan.recent, this.timeRan.past);
@@ -62,7 +65,7 @@ import { _log, $ } from "./_base";
   function fnSearch(q) {
     gob = Object.assign({}, gobBase);
     _log(JSON.stringify(gob));
-    const regPat = new RegExp(q + ".+已付款", "");
+    const regPat = new RegExp(`${q}.+已付款`, "");
     fnHide("all");
     fnAjax(1, regPat);
   }
@@ -71,23 +74,23 @@ import { _log, $ } from "./_base";
   function fnAjax(page, regPat) {
     $.ajax({
       url:
-        "https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php?page=" +
-        page,
+        `https://app.zblogcn.com/zb_users/plugin/AppBuy/shop/main.php?page=${
+          page}`,
       type: "get",
-      success: function (data) {
+      success(data) {
         if (/已付款/.test(data)) {
           // if (/已付款/.test(data) && page < 2) {
           // _log($(data));
           let curHtml;
           $(data)
             .find("#divMain2 table tr")
-            .each(function () {
+            .each(function() {
               curHtml = $(this)
                 .html()
-                .replace(/[\n\s]+/g, " ");
+                .replace(/\s+/g, " ");
               if (regPat.test(curHtml) === true) {
                 // 匹配时间字符串
-                let mltDate = curHtml.match(/<td.*>([^<]+)<\/td> <td>已付款<\/td>/);
+                const mltDate = curHtml.match(/<td[^>]*>([^<]+)<\/td> <td>已付款<\/td>/);
                 // 转换时间对象
                 gob.oDate = new Date(Date.parse(mltDate[1]));
 
@@ -103,19 +106,20 @@ import { _log, $ } from "./_base";
                 gob.intCount++;
                 // 匹配金额字符串
                 // let mltAMT = curHtml.match(/<td>￥([^<]+)<\/td>/);
-                let mltAMT = curHtml.match(/<td>￥[^<]+\(([^<]+)\)<\/td>/);
+                const mltAMT = curHtml.match(/<td>￥[^<(]+\(([^<]+)\)<\/td>/);
                 // 金额累加
                 gob.add(mltAMT[1]);
                 // 添加节点
                 $("table:not(#tbStatistic) tbody").append(
-                  "<tr>" + curHtml + "</tr>\n",
+                  `<tr>${curHtml}</tr>\n`,
                 );
               }
             });
           page++;
           fnAjax(page, regPat);
           $("#js-page").text(page);
-        } else {
+        }
+        else {
           $("#js-page").text("完成");
           const strTR = `<tr>
             <td colspan="2"></td>
@@ -138,13 +142,13 @@ import { _log, $ } from "./_base";
 
   // 放置搜索框
   $(".SubMenu").append(
-    "<input id=\"search\" style=\"float:left;margin-right: 2px;margin-top: 2px\" type=\"text\" value=\"\">" +
-    "<a href=\"javascript:;\" id=\"js-search\"><span class=\"m-left\">搜索</span></a>" +
-    "<span id=\"js-page\"></span>",
+    "<input id=\"search\" style=\"float:left;margin-right: 2px;margin-top: 2px\" type=\"text\" value=\"\">"
+    + "<a href=\"javascript:;\" id=\"js-search\"><span class=\"m-left\">搜索</span></a>"
+    + "<span id=\"js-page\"></span>",
   );
 
   // 搜索触发
-  $("#js-search").click(function () {
+  $("#js-search").click(() => {
     const search = $("#search").val();
     // alert(search);
     fnSearch(search);
