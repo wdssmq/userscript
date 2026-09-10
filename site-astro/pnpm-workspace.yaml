@@ -1,6 +1,6 @@
 blockExoticSubdeps: true
 catalog:
-  astro: 7.2.1
+  astro: 7.2.8
 minimumReleaseAge: 10080
 onlyBuiltDependencies:
   - esbuild
