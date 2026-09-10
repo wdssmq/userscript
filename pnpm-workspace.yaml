@@ -23,7 +23,7 @@ catalog:
   "@rollup/plugin-replace": ^5.0.7
   "@rollup/plugin-typescript": ^12.3.0
   "@rollup/pluginutils": ^5.3.0
-  baseline-browser-mapping: ^2.10.20
+  baseline-browser-mapping: ^2.11.0
   bulma: ^1.0.4
   comlink: ^4.4.2
   cross-env: ^10.1.0
