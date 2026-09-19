@@ -27,4 +27,6 @@ const gm_banner = `
 
 const gm_name = "zbp_DevTools";
 
-export { gm_banner, gm_name };
+const gm_require = [];
+
+export { gm_banner, gm_name, gm_require };
