@@ -41,6 +41,7 @@
   const UM = window.UM || unsafeWindow.UM;
   const UE = window.UE || unsafeWindow.UE;
   const curHref = location.href.replace(location.hash, "");
+  const _curHref = () => location.href.replace(location.hash, "");
   // localStorage 封装
   const lsObj = {
     setItem(key, value) {
@@ -446,6 +447,201 @@
         `<a class="text-grey ml-2" title="获取当前楼层链接" href="${curHref}#${pid}">「楼层地址」</a>`,
       );
     });
+  })();
+
+  const TRASH_KEY = "zbp-xiuno-trash-posts";
+  const VIEW_KEY = "zbp-xiuno-thread-last-view";
+  const DELETE_RETURN_KEY = "zbp-xiuno-delete-return-url";
+  const VIEW_WINDOW_MS = 240 * 60 * 1000;
+  const DELETE_RETURN_MS = 7 * 1000;
+
+  function fnGetThreadId(strURL = _curHref()) {
+    const match = strURL.match(/(?:\/|-)thread-(\d+)(?:\.html)?/i)
+      || strURL.match(/thread-(\d+)/i);
+    return match ? match[1] : "";
+  }
+
+  function fnUserText($sel) {
+    return $sel.first().text().replace(/\s+/g, " ").trim();
+  }
+
+  function fnLoadRecordMap(key, def = {}) {
+    const val = lsObj.getItem(key, def);
+    return val && typeof val === "object" ? val : def;
+  }
+
+  function fnIsCurrentUserThread() {
+    const threadId = fnGetThreadId();
+    if (!threadId) {
+      return false;
+    }
+
+    const authorName = fnUserText($(".media-body .username a, .card-thread .media .username a, .username a"));
+    const currentName = fnUserText($(".nav-item.username a.nav-link, header .nav-item.username a.nav-link"));
+
+    return Boolean(authorName && currentName && authorName === currentName);
+  }
+
+  function fnRecordThreadView() {
+    if (!_curHref().includes("/thread-") || !fnIsCurrentUserThread()) {
+      return;
+    }
+
+    const threadId = fnGetThreadId();
+    const viewMap = fnLoadRecordMap(VIEW_KEY, {});
+    viewMap[threadId] = Date.now();
+    lsObj.setItem(VIEW_KEY, viewMap);
+
+    const isTrash = $(".breadcrumb, .breadcrumb-item, .breadcrumb a").filter((_, el) => {
+      return $(el).text().includes("回收站");
+    }).length > 0;
+
+    if (isTrash) {
+      const arr = Array.isArray(lsObj.getItem(TRASH_KEY, [])) ? lsObj.getItem(TRASH_KEY, []) : [];
+      if (!arr.includes(threadId)) {
+        arr.push(threadId);
+        lsObj.setItem(TRASH_KEY, arr);
+      }
+      $(".media-body h4").append("<span class=\"zbp-del-post-trash-badge\">「回收站」</span>");
+    }
+  }
+
+  function fnIsThreadListPage() {
+    const $mySide = $("#my_aside");
+    return $mySide && $mySide.find(".active").text().trim() === "论坛帖子";
+  }
+
+  function fnBindThreadListRefresh() {
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && fnIsThreadListPage() && $(".js-unviewed").length) {
+        window.location.reload();
+      }
+    });
+    $(".threadlist .thread a").each(function() {
+      const $link = $(this);
+      $link.attr("target", "_blank");
+    });
+  }
+
+  function fnMarkThreadList() {
+    if (!fnIsThreadListPage()) {
+      return;
+    }
+
+    const viewMap = fnLoadRecordMap(VIEW_KEY, {});
+    const trashSet = new Set(Array.isArray(lsObj.getItem(TRASH_KEY, [])) ? lsObj.getItem(TRASH_KEY, []) : []);
+    const now = Date.now();
+
+    GM_addStyle(`
+    .zbp-del-post-badge {
+      display: inline-block;
+      margin-left: .45rem;
+      padding: .15rem .45rem;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #fff;
+      border-radius: 999px;
+      vertical-align: middle;
+    }
+    .zbp-del-post-viewed {
+      background: #28a745;
+      float: right;
+    }
+    .zbp-del-post-trash {
+      background: #dc3545;
+      float: right;
+    }
+  `);
+
+    $(".list-item, .thread-item, .media, .table tbody tr, .list-group-item").each(function() {
+      const $item = $(this);
+      const $link = $item.find("a[href*='/thread-'], a[href*='thread-'], .title a, .thread-title a").first();
+      if (!$link.length) {
+        return;
+      }
+
+      const threadId = fnGetThreadId($link.attr("href") || "");
+      if (!threadId) {
+        return;
+      }
+
+      const $target = $item.find(".thread-title, .title, .subject, .media-heading, .card-title, a[href*='thread-']").first();
+      if (!$target.length) {
+        return;
+      }
+
+      const lastView = Number(viewMap[threadId]);
+      const isViewedRecently = Number.isFinite(lastView) && (now - lastView) <= VIEW_WINDOW_MS;
+
+      if (isViewedRecently && !$target.find(".zbp-del-post-viewed").length) {
+        $target.append("<span class=\"zbp-del-post-badge zbp-del-post-viewed\">最近有看过</span>");
+      }
+      else {
+        $target.addClass("js-unviewed");
+      }
+
+      if (trashSet.has(threadId) && !$target.find(".zbp-del-post-trash").length) {
+        $target.append("<span class=\"zbp-del-post-badge zbp-del-post-trash\">回收站</span>");
+      }
+    });
+  }
+
+  function fnGetDeleteReturnInfo() {
+    const info = lsObj.getItem(DELETE_RETURN_KEY, null);
+    if (!info || typeof info !== "object") {
+      return null;
+    }
+    return info;
+  }
+
+  function fnCheckDeleteReturn() {
+    if (fnIsThreadListPage()) {
+      return;
+    }
+    const info = fnGetDeleteReturnInfo();
+    console.log(info);
+    if (!info || !info.url || !Number.isFinite(info.time)) {
+      return;
+    }
+    console.log(Date.now() - info.time);
+    if (Date.now() - info.time > DELETE_RETURN_MS) {
+      lsObj.setItem(DELETE_RETURN_KEY, null);
+      return;
+    }
+    if (_curHref() !== info.url) {
+      window.setTimeout(() => {
+        lsObj.setItem(DELETE_RETURN_KEY, null);
+        window.location.href = info.url;
+      }, 3000);
+    }
+  }
+
+  function fnBindDeleteReturn() {
+    document.addEventListener("click", (event) => {
+      const deleteLink = event.target.closest("a.post_delete");
+      if (!deleteLink) {
+        return;
+      }
+      const curUrl = _curHref();
+      const threadId = fnGetThreadId();
+      if (threadId && fnIsCurrentUserThread()) {
+        const viewMap = fnLoadRecordMap(VIEW_KEY, {});
+        viewMap[threadId] = Date.now();
+        lsObj.setItem(VIEW_KEY, viewMap);
+      }
+      lsObj.setItem(DELETE_RETURN_KEY, {
+        url: curUrl,
+        time: Date.now(),
+      });
+    }, true);
+  }
+
+  (() => {
+    fnCheckDeleteReturn();
+    fnBindDeleteReturn();
+    fnBindThreadListRefresh();
+    fnRecordThreadView();
+    fnMarkThreadList();
   })();
 
 })();
