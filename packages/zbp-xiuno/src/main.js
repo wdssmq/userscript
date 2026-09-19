@@ -15,3 +15,6 @@ import _lz from "./_lz.js";
 
 // 楼层地址
 import _pid from "./_pid.js";
+
+// 回收站帖子
+import "./_delPost.js";

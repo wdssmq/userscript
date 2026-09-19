@@ -6,6 +6,7 @@ const $ = window.jQuery || unsafeWindow.jQuery;
 const UM = window.UM || unsafeWindow.UM;
 const UE = window.UE || unsafeWindow.UE;
 const curHref = location.href.replace(location.hash, "");
+const _curHref = () => location.href.replace(location.hash, "");
 // localStorage 封装
 const lsObj = {
   setItem(key, value) {
@@ -60,4 +61,16 @@ function fnFormatTime() {
   ).trim();
 }
 
-export { $, $n, _hash, _log, curHref, fnFormatTime, fnGetRequest, lsObj, UE, UM };
+export {
+  $,
+  $n,
+  _curHref,
+  _hash,
+  _log,
+  curHref,
+  fnFormatTime,
+  fnGetRequest,
+  lsObj,
+  UE,
+  UM,
+};
