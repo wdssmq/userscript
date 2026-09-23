@@ -61,7 +61,7 @@ const devConfig = {
           msg: "{{header}} install script for prod {{url}}",
           url: `${gobConfig.url}/${gobConfig.gm_file}`,
         });
-        open(`${gobConfig.url}/dev/${gobConfig.gm_file}`);
+        // open(`${gobConfig.url}/dev/${gobConfig.gm_file}`);
       },
     }),
   ],
