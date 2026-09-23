@@ -44,6 +44,8 @@ function zba_btnCopy() {
   // insertAdjacentHTML 添加一个 span
   $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
   addCopyBtn($base, noteScheme.item, "复制 JSON", "json");
+  $base.insertAdjacentHTML("beforeend", "<span class=\"is-pulled-right\">&nbsp;&nbsp;</span>");
+  $base.insertAdjacentHTML("beforeend", "<a class=\"is-pulled-right\" target=\"_blank\" href=\"https://github.com/wdssmq/GesF-Note/issues\">GesF-Note</a>");
 }
 
 (async () => {
