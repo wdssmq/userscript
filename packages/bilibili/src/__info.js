@@ -11,7 +11,7 @@ const gm_banner = `
 // @null     ----------------------------
 // @link     https://greasyfork.org/scripts/398415
 // @link     https://github.com/wdssmq/userscript
-// @link     https://afdian.com/@wdssmq
+// @link     https://afdian.com/a/wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
 // @include      https://www.bilibili.com/*
