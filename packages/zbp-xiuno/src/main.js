@@ -1,20 +1,20 @@
 // // 空白页自动跳转登录
-// import _blank2login from "./_blank2login.js";
+// import "./_blank2login.js";
 
 // 编辑器 blockquote
-import _blockquote from "./_blockquote.js";
+import "./_blockquote.js";
 
 // 编辑器
-import _editor from "./_editor.js";
+import "./_editor.js";
 
 // // 开发者申请
-// import _dev from "./_dev.js";
+// import "./_dev.js";
 
 // // 加密
-// import _lz from "./_lz.js";
+// import "./_lz.js";
 
 // 楼层地址
-import _pid from "./_pid.js";
+import "./_pid.js";
 
 // 回收站帖子
 import "./_delPost.js";
