@@ -296,7 +296,7 @@
           if (toType === "html") {
             setTimeout(() => {
               $("div.edui-btn-auto-format").click();
-            }, 500);
+            }, 100);
           }
         },
       },
