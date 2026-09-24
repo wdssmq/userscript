@@ -178,6 +178,15 @@ function mainForBBS() {
       $(".edui-container").after($md);
     },
     autoSync: true,
+    bindAct: {
+      editorChange(toType) {
+        if (toType === "html") {
+          setTimeout(() => {
+            $("div.edui-btn-auto-format").click();
+          }, 500);
+        }
+      },
+    },
   });
 
   const btnSwitchEditor = `
