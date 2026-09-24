@@ -21,6 +21,11 @@ class GM_editor {
     init(_$md) { },
     autoSync: false,
     curType: "html",
+    bindAct: {
+      editorChange: (toType) => {
+        _log(`Editor changed to type: ${toType}`);
+      },
+    },
   };
 
   option = {};
@@ -127,6 +132,8 @@ class GM_editor {
     this.option.curType = this.$def.css("display") === "none" ? "md" : "html";
     // 切换后自动设置高度
     this.autoSetHeight();
+    // 触发切换事件
+    this.option.bindAct.editorChange && this.option.bindAct.editorChange(this.option.curType);
   }
 
   // 创建 markdown 编辑器
