@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等；
+// @name         「bilibili」水水自用 | B 币领取提醒、播放进度更新至网址等
 // @namespace    wdssmq.com
 // @version      1.0.5
 // @author       沉冰浮水
