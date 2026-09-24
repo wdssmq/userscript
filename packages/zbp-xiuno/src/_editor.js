@@ -3,12 +3,20 @@
 import { $, _log, curHref, UE, UM } from "./_base.js";
 
 class GM_editor {
+  // 默认编辑器容器
   $def;
-  defEditor = null;
-  htmlContent = "";
+  // md 编辑器容器
   $md;
-  mdEditor = null;
+  // 默认编辑器对象
+  defEditor = null;
+  // html 内容
+  htmlContent = "";
+  // md 内容
   mdContent = "";
+  // md 编辑器对象
+  mdEditor = null;
+
+  // 默认配置项
   defOption = {
     init(_$md) { },
     autoSync: false,
