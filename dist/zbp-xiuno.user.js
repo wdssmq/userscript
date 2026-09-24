@@ -35,8 +35,6 @@
 
   const gm_name = "zbp-xiuno";
 
-  // 初始变量
-  const $n = (selector, context = document) => context.querySelector(selector);
   const $ = window.jQuery || unsafeWindow.jQuery;
   const UM = window.UM || unsafeWindow.UM;
   const UE = window.UE || unsafeWindow.UE;
@@ -57,55 +55,6 @@
   };
   // 预置函数
   const _log = (...args) => console.log(`[${gm_name}]\n`, ...args);
-
-  (() => {
-    const $body = $n("body");
-    const defData = {
-      status: null, // 用于记录状态
-      href: "",
-    };
-
-    // 更新 lsData 中的 status 状态
-    const updateStatus = (status) => {
-      const lsData = lsObj.getItem("xiuno_login", defData);
-      lsData.status = status;
-      lsData.href = status === "未登录" ? curHref : "";
-      lsObj.setItem("xiuno_login", lsData);
-    };
-
-    // 登录后跳转前登录前的页面
-    const goUrl = () => {
-      // 读取 localStorage
-      const lsData = lsObj.getItem("xiuno_login", defData);
-      // 根据记录的状态判断是否跳转
-      if (lsData.status === "未登录" && lsData.href) {
-        // 读取要跳转的地址
-        const href = lsData.href;
-        // 更新状态
-        updateStatus("已登录");
-        // 跳转前的页面地址
-        location.href = href;
-      }
-    };
-
-    // 主入口函数，判断是否登录
-    const checkLogin = () => {
-      // 判断 body 内容是否为空
-      if ($body.textContent.trim() !== "") {
-        // 有内容，说明已登录，根据记录的地址跳转
-        goUrl();
-        return;
-      }
-      // 更新状态及 href 到 localStorage
-      updateStatus("未登录");
-      // 跳转登录页
-      location.href = "/user-login.html";
-    };
-
-    _log("检查登录状态");
-    // 延时 3 秒检查
-    setTimeout(checkLogin, 3000);
-  })();
 
   // 引入元素插入
   (() => {
@@ -167,16 +116,29 @@
 
 
   class GM_editor {
+    // 默认编辑器容器
     $def;
-    defEditor = null;
-    htmlContent = "";
+    // md 编辑器容器
     $md;
-    mdEditor = null;
+    // 默认编辑器对象
+    defEditor = null;
+    // html 内容
+    htmlContent = "";
+    // md 内容
     mdContent = "";
+    // md 编辑器对象
+    mdEditor = null;
+
+    // 默认配置项
     defOption = {
       init(_$md) { },
       autoSync: false,
       curType: "html",
+      bindAct: {
+        editorChange: (toType) => {
+          _log(`Editor changed to type: ${toType}`);
+        },
+      },
     };
 
     option = {};
@@ -283,6 +245,8 @@
       this.option.curType = this.$def.css("display") === "none" ? "md" : "html";
       // 切换后自动设置高度
       this.autoSetHeight();
+      // 触发切换事件
+      this.option.bindAct.editorChange && this.option.bindAct.editorChange(this.option.curType);
     }
 
     // 创建 markdown 编辑器
@@ -385,55 +349,6 @@
     if ($("textarea#message").length > 0 && $("li.newpost").length === 0) {
       mainForBBS();
     }
-  })();
-
-  /* globals LZString */
-
-
-  (() => {
-    // 定义按钮及提示信息
-    const $btnBad = $(" <a class=\"btn btn-primary\">BAD</a>");
-    const strTip = "<p>此贴内容或签名不符合论坛规范已作屏蔽处理，请查看置顶贴，以下为原始内容备份。</p>";
-
-    // 绑定点击事件
-    $btnBad.css({ color: "#fff" }).click(() => {
-      const um = UM.getEditor("message");
-      const str = um.getContent();
-      if (str.includes("#~~")) {
-        return;
-      }
-      const strCode = LZString.compressToBase64(str);
-      um.setContent(`${strTip}<p>#~~${strCode}~~#</p>`);
-      console.log(LZString.decompressFromBase64(strCode));
-      // let strDeCode = LZString.decompressFromBase64(strCode);
-      // um.setContent(strCode + strDeCode);
-    });
-
-    // 放置按钮
-    if ($("input[name=update_reason]").length > 0) {
-      $("#submit").after($btnBad);
-    }
-
-    // 解码
-    $("div.message").each(function() {
-      const $secP = $(this).find("p:nth-child(2)");
-      if ($secP.length === 0) {
-        console.log("skip");
-        return;
-      }
-      let str = $secP.html();
-      if (!str.includes("#~~")) {
-        return;
-      }
-      console.log(str);
-      str = str.replace(/#~~(.+)~~#/, (_a, b) => {
-        // console.log(arguments);
-        const strDeCode = LZString.decompressFromBase64(b);
-        console.log(strDeCode);
-        return strDeCode;
-      });
-      $secP.after(str).remove();
-    });
   })();
 
   // _pid.js | 楼层地址
