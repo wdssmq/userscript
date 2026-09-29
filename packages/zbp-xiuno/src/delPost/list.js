@@ -99,7 +99,7 @@ function fnHideOthersThreadsInTrash() {
   }
 
   // 按当前开关状态应用隐藏策略并更新开关文案
-  function fnApply() {
+  function fnApply($toggle) {
     const enabled = lsObj.getItem(HIDE_OTHERS_KEY, true);
     $toggle.find("a").text(`隐藏他人帖：${enabled ? "开" : "关"}`);
     $(".threadlist li.media.thread").each(function() {
@@ -128,10 +128,10 @@ function fnHideOthersThreadsInTrash() {
 
   $toggle.find("a").on("click", () => {
     lsObj.setItem(HIDE_OTHERS_KEY, !lsObj.getItem(HIDE_OTHERS_KEY, true));
-    fnApply();
+    fnApply($toggle);
   });
 
-  fnApply();
+  fnApply($toggle);
 }
 
 // 绑定列表页左右方向键换页：← 上一页、→ 下一页；输入框聚焦时不触发
