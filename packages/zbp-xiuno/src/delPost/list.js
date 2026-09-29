@@ -2,11 +2,13 @@ import { $, lsObj } from "../_base.js";
 import { TRASH_KEY, VIEW_KEY, VIEW_WINDOW_MS } from "./constants.js";
 import { fnGetThreadId, fnLoadRecordMap } from "./thread.js";
 
+// 判断当前是否为"论坛帖子"帖子列表页
 function fnIsThreadListPage() {
   const $mySide = $("#my_aside");
   return $mySide && $mySide.find(".active").text().trim() === "论坛帖子";
 }
 
+// 绑定列表页刷新逻辑：切回页面时若有未看帖子则自动刷新，并将帖子链接改为新窗口打开
 function fnBindThreadListRefresh() {
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible" && fnIsThreadListPage() && $(".js-unviewed").length) {
@@ -19,6 +21,7 @@ function fnBindThreadListRefresh() {
   });
 }
 
+// 标记列表页帖子：给近期看过的帖子加"最近有看过"徽章，回收站帖子加"回收站"徽章，未看的加 js-unviewed 类
 function fnMarkThreadList() {
   if (!fnIsThreadListPage()) {
     return;
