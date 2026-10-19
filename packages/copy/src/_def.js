@@ -19,6 +19,13 @@ function fnReplace(params) {
   titleFilter.forEach((item) => {
     newTitle = newTitle.replace(...item);
   });
+  if (location.hostname === "cnb.cool" && /^\/[^/]+\/[^/]+\/?$/.test(location.pathname)) {
+    const descriptionMeta = document.querySelector("meta[name=\"description\"]");
+    const description = descriptionMeta && descriptionMeta.content.trim();
+    if (description) {
+      newTitle = newTitle.replace(/ · Cloud Native Build$/, ` · ${description}`);
+    }
+  }
   urlFilter.forEach((item) => {
     newUrl = newUrl.replace(...item);
   });
