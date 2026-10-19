@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         「水水」复制标题网址
 // @namespace    https://www.wdssmq.com/
-// @version      2.1.6
+// @version      2.1.7
 // @author       沉冰浮水
 // @description  复制当前页面标题及网址，支持复制为 HTML 及 Markdown。
 // @license      MIT
@@ -92,6 +92,13 @@
     titleFilter.forEach((item) => {
       newTitle = newTitle.replace(...item);
     });
+    if (location.hostname === "cnb.cool" && /^\/[^/]+\/[^/]+\/?$/.test(location.pathname)) {
+      const descriptionMeta = document.querySelector("meta[name=\"description\"]");
+      const description = descriptionMeta && descriptionMeta.content.trim();
+      if (description) {
+        newTitle = newTitle.replace(/ · Cloud Native Build$/, ` · ${description}`);
+      }
+    }
     urlFilter.forEach((item) => {
       newUrl = newUrl.replace(...item);
     });
