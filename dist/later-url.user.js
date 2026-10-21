@@ -271,6 +271,17 @@
     return false;
   };
 
+  // 快速防重检查，指定 key 在本地存储中计数，达到 4 次则返回 true
+  gob.stopByQuickCheck = (quickKey) => {
+    const lsData = lsObj.getItem(quickKey, { count: 0 });
+    if (lsData.count >= 4) {
+      return true;
+    }
+    lsData.count += 1;
+    lsObj.setItem(quickKey, lsData);
+    return false;
+  };
+
   // 使用 lsObj 记录发送历史，同一个链接在指定天数内 dayLimit 内最多发送 sendLimit 次
   gob.stopBySendLimit = (url, dayLimit = 37, sendLimit = 4) => {
     const curDay = Math.floor(curTimestamp / 86400);
@@ -414,6 +425,8 @@
     _sent: new Set(),
     // 防止重复执行
     _busy: false,
+    // 快速防重 key
+    _quickKey: "",
 
     // 获取当前用户的 uid
     getUid() {
@@ -455,6 +468,10 @@
     async check(maxTry = 20) {
       this.data.username = this.getUsername();
       this.data.uid = this.getUid();
+      if (gob.stopByQuickCheck(this._quickKey)) {
+        _log("bilibili.check() - 快速防重触发\n", this._quickKey);
+        return false;
+      }
 
       for (let i = 0; i < maxTry; i++) {
         // 需要的页面元素：列表头部、标题、视频卡片
@@ -539,11 +556,12 @@
       const $subtitle = $card.querySelector(".bili-video-card__subtitle");
       const oDate = ($subtitle ? $subtitle.textContent : $card.textContent).match(RE_DATE);
       return {
+        uid: this.data.uid,
+        name: this.data.username,
         bvid,
         title: title.trim(),
         date: oDate ? oDate[0] : _getDateStr(),
         url: `https://www.bilibili.com/video/${bvid}`,
-        uid: this.data.uid,
         category: this.data.category,
       };
     },
@@ -561,6 +579,10 @@
         bvids.add(v.bvid);
         videos.push(v);
       });
+      // bvids 里取首尾各两个 bvid
+      const arrTmp = [...bvids];
+      const arrSet = new Set(arrTmp.slice(0, 2).concat(arrTmp.slice(-2)));
+      this._quickKey = Array.from(arrSet).join("_");
       return videos;
     },
 
@@ -593,6 +615,7 @@
         // 获取用户投稿视频
         return this.getVideosFromPage($cards);
       }).then((vlist) => {
+        _logOnce("bilibili.main()->vlist\n", vlist);
         // 过滤掉已经发送过的视频
         const list = vlist.filter(v => !this._sent.has(v.bvid));
         list.length && _log("bilibili.main()\n", {
