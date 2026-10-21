@@ -120,7 +120,7 @@ const bilibili = {
     const uid = oMatch[1];
     this.data.uid = uid;
     this.data.category = `bilibili_${uid}`;
-    _logOnce("bilibili.getUid()\n", this.data);
+    // _logOnce("bilibili.getUid()\n", this.data);
     return uid;
   },
 
@@ -137,7 +137,7 @@ const bilibili = {
         this.data.username = oMatch[1];
       }
     }
-    _logOnce("bilibili.getUsername()\n", this.data.username);
+    // _logOnce("bilibili.getUsername()\n", this.data.username);
     return this.data.username;
   },
 
@@ -150,8 +150,9 @@ const bilibili = {
   async check(maxTry = 20) {
     this.data.username = this.getUsername();
     this.data.uid = this.getUid();
+    _logOnce("bilibili.check() - 当前用户信息\n", this.data);
     if (gob.stopByQuickCheck(this._quickKey)) {
-      _log("bilibili.check() - 快速防重触发\n", this._quickKey);
+      _logOnce("bilibili.check() - 快速防重触发\n", this._quickKey);
       return false;
     }
 
