@@ -107,6 +107,8 @@ const bilibili = {
   _sent: new Set(),
   // 防止重复执行
   _busy: false,
+  // 快速防重 key
+  _quickKey: "",
 
   // 获取当前用户的 uid
   getUid() {
@@ -148,6 +150,10 @@ const bilibili = {
   async check(maxTry = 20) {
     this.data.username = this.getUsername();
     this.data.uid = this.getUid();
+    if (gob.stopByQuickCheck(this._quickKey)) {
+      _log("bilibili.check() - 快速防重触发\n", this._quickKey);
+      return false;
+    }
 
     for (let i = 0; i < maxTry; i++) {
       // 需要的页面元素：列表头部、标题、视频卡片
@@ -255,6 +261,10 @@ const bilibili = {
       bvids.add(v.bvid);
       videos.push(v);
     });
+    // bvids 里取首尾各两个 bvid
+    const arrTmp = [...bvids];
+    const arrSet = new Set(arrTmp.slice(0, 2).concat(arrTmp.slice(-2)));
+    this._quickKey = Array.from(arrSet).join("_");
     return videos;
   },
 

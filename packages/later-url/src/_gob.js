@@ -113,6 +113,17 @@ gob.stopByErrCount = () => {
   return false;
 };
 
+// 快速防重检查，指定 key 在本地存储中计数，达到 4 次则返回 true
+gob.stopByQuickCheck = (quickKey) => {
+  const lsData = lsObj.getItem(quickKey, { count: 0 });
+  if (lsData.count >= 4) {
+    return true;
+  }
+  lsData.count += 1;
+  lsObj.setItem(quickKey, lsData);
+  return false;
+};
+
 // 使用 lsObj 记录发送历史，同一个链接在指定天数内 dayLimit 内最多发送 sendLimit 次
 gob.stopBySendLimit = (url, dayLimit = 37, sendLimit = 4) => {
   const curDay = Math.floor(curTimestamp / 86400);
