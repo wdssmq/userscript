@@ -46,7 +46,27 @@
 
   // -------------------------------------
 
+  // 记录已输出的 log，用于「只输出一次」
+  const _logHis = new Set();
   const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
+  // 只输出一次的 log，以第一个参数为 key，可用 _logHis.clear() 重置
+  function _logOnce(...args) {
+    let key = typeof args[0] === "string" ? args[0] : "";
+    if (!key) {
+      try {
+        key = JSON.stringify(args);
+      }
+      catch {
+        key = String(args[0]);
+      }
+    }
+    if (_logHis.has(key)) {
+      return false;
+    }
+    _logHis.add(key);
+    _log(...args);
+    return true;
+  }
 
   // -------------------------------------
 
@@ -307,6 +327,24 @@
     });
   }
 
+  // 新版空间页（fresh-space）选择器
+  const SEL = {
+    // 用户名
+    username: ".header-upinfo .upinfo-detail .nickname",
+    // 单个视频卡片
+    card: ".space-upload .video-list .upload-video-card",
+    // 列表加载中
+    loading: ".space-upload .video-body .loading",
+    // 空列表
+    empty: ".space-upload .video-body .empty",
+    // 列表头部，进度条挂载位置
+    header: ".space-upload .video-header",
+  };
+  // 从链接中提取 BVID
+  const RE_BVID = /\/video\/(BV[0-9A-Za-z]+)/;
+  // 卡片中的日期文本
+  const RE_DATE = /\d{4}-\d{1,2}-\d{1,2}/;
+
   // 过滤字符信息
   gob.filter = (str) => {
     let rlt = str;
@@ -331,7 +369,7 @@
       Authorization: `Bearer ${authToken}`,
     };
     info.title = gob.filter(info.title);
-    const url = `${baseUrl}add?url=${info.url}&title=${info.title}&author=${data.username}&category=${data.category}&date=${data.date}`;
+    const url = `${baseUrl}add?url=${encodeURIComponent(info.url)}&title=${encodeURIComponent(info.title)}&author=${encodeURIComponent(data.username)}&category=${encodeURIComponent(data.category)}&date=${data.date}`;
     gob.postCount += 1;
     _log(`gob.post() - ${gob.postCount} \n`, url);
 
@@ -364,55 +402,76 @@
       date: _getDateStr(),
     },
 
+    // 已处理过的视频，避免列表重复渲染时重发
+    _sent: new Set(),
+    // 防止重复执行
+    _busy: false,
+
     // 获取当前用户的 uid
     getUid() {
-      const uid = gob.curUrl.match(/space\.bilibili\.com\/(\d+)/)[1];
+      const oMatch = gob.curUrl.match(/space\.bilibili\.com\/(\d+)/);
+      if (!oMatch) {
+        _logOnce("bilibili.getUid() - 未匹配到 uid\n", gob.curUrl);
+        return "";
+      }
+      const uid = oMatch[1];
       this.data.uid = uid;
       this.data.category = `bilibili_${uid}`;
-      _log("bilibili.getUid()\n", this.data);
+      _logOnce("bilibili.getUid()\n", this.data);
       return uid;
     },
 
     // 获取用户名
     getUsername() {
-      const $username = $n("span#h-name");
-      // console.log($username);
+      const $username = $n(SEL.username);
       if ($username) {
-        this.data.username = $username.textContent;
+        this.data.username = $username.textContent.trim();
       }
-      _log("bilibili.getUsername()\n", this.data);
+      // 兜底：document.title 形如 「某某的个人空间-某某个人主页-哔哩哔哩视频」
+      if (!this.data.username) {
+        const oMatch = document.title.match(/^(.+?)的个人空间/);
+        if (oMatch) {
+          this.data.username = oMatch[1];
+        }
+      }
+      _logOnce("bilibili.getUsername()\n", this.data.username);
       return this.data.username;
     },
 
-    _$videos() {
-      return $na("#submit-video-list ul.cube-list li");
+    // 当前页渲染出的视频卡片
+    _$cards() {
+      return $na(SEL.card);
     },
 
-    // 网页加载检查
-    async check() {
-      // 视频列表父元素
-      const $submitVideo = $n("#submit-video");
-      // 视频列表
-      const $videos = this._$videos();
-      // 视频列表不为空，并且不在加载状态
-      if ($videos.length > 0 && !$submitVideo.className.match("loading")) {
-        return $videos;
+    // 网页加载检查，等待列表渲染完成
+    async check(maxTry = 20) {
+      for (let i = 0; i < maxTry; i++) {
+        const $cards = this._$cards();
+        if ($cards.length > 0) {
+          return $cards;
+        }
+        // 没有卡片且不在加载中、且列表为空，则无需继续等待
+        if (!$n(SEL.loading) && $n(SEL.empty)) {
+          return [];
+        }
+        await _sleep(500);
       }
-      // _log("bilibili.check()", $submitVideo?.className);
-      // 否则，等待 1 秒后再次检查
-      await _sleep(1000);
-      return this.check();
+      _log("bilibili.check() - 等待超时\n", this._$cards().length);
+      return this._$cards();
     },
 
     // 在页面元素中显示进度
     showProgress(itemIndex, pageTotal, remoteTotal) {
-      const $warp = $n("#submit-video-type-filter");
+      const $warp = $n(SEL.header);
+      if (!$warp) {
+        return;
+      }
       // 向 $warp 中添加进度元素
       let $progress = $n("#gm-progress");
       if (!$progress) {
         const $div = document.createElement("div");
         $div.id = "gm-progress";
-        $div.style = "margin: 4px 0 4px 37px;";
+        $div.style = "margin: 4px 0;";
         $div.style.color = "red";
         $div.style.fontSize = "14px";
         $div.style.fontWeight = "bold";
@@ -431,80 +490,54 @@
       }
     },
 
-    // API JSON 查询
-    async apiGet(url) {
-      const res = await gob.http.get(url);
-      if (res.status !== 200) {
-        return {
-          code: res.status,
-          msg: res.statusText,
-        };
+    // 从卡片中提取需要的信息
+    pickCard($card) {
+      // 卡片中的视频链接（封面、标题均指向视频页）
+      const $link = $card.querySelector("a[href*=\"/video/BV\"]");
+      if (!$link) {
+        return null;
       }
-      const resData = JSON.parse(res.responseText);
-      if (resData.code !== 0) {
-        return {
-          code: resData.code,
-          msg: resData.message,
-        };
+      const oMatch = $link.getAttribute("href").match(RE_BVID);
+      if (!oMatch) {
+        return null;
       }
-      return resData;
-    },
-
-    // 获取用户投稿视频
-    async getVideos(pn = 1) {
-      const uid = this.getUid();
-      const url = `https://api.bilibili.com/x/space/wbi/arc/search?mid=${uid}&ps=50&pn=${pn}`;
-      _log("bilibili.getVideos()\n", url);
-      try {
-        const resData = await this.apiGet(url);
-        if (resData.code === 0) {
-          return resData.data.list.vlist;
-        }
-        else {
-          _log("bilibili.getVideos() - resData\n", resData);
+      const bvid = oMatch[1];
+      // 标题：网格模式在卡片标题，列表模式在卡片外层 a.title
+      let title = "";
+      const $title = $card.querySelector(".bili-video-card__title");
+      if ($title) {
+        title = $title.getAttribute("title") || $title.textContent;
+      }
+      if (!title) {
+        const $aTitle = $card.querySelector("a.title");
+        if ($aTitle) {
+          title = $aTitle.getAttribute("title") || $aTitle.textContent;
         }
       }
-      catch (error) {
-        _log("bilibili.getVideos() - error\n", error);
-      }
-    },
-
-    // 视频信息中提取需要的信息
-    pickInfo(video) {
-      const pickMap = {
-        bvid: "bvid",
-        title: "title",
-        description: "description",
-        pic: "pic",
-        length: "00:00",
+      // 日期：「xxxx-xx-xx」
+      const $subtitle = $card.querySelector(".bili-video-card__subtitle");
+      const oDate = ($subtitle ? $subtitle.textContent : $card.textContent).match(RE_DATE);
+      return {
+        bvid,
+        title: title.trim(),
+        date: oDate ? oDate[0] : _getDateStr(),
+        url: `https://www.bilibili.com/video/${bvid}`,
+        uid: this.data.uid,
+        category: this.data.category,
       };
-      const info = {};
-      for (const key in pickMap) {
-        if (Object.hasOwnProperty.call(pickMap, key)) {
-          info[key] = video[key];
-        }
-      }
-      info.url = `https://www.bilibili.com/video/${info.bvid}`;
-      info.uid = this.data.uid;
-      info.category = this.data.category;
-      return info;
     },
 
     // 从网页元素中获取投稿视频
     async getVideosFromPage() {
       const videoList = await this.check();
       const videos = [];
-      videoList.forEach((video) => {
-        const v = {};
-        const $title = video.querySelector("a.title");
-        const $time = video.querySelector("span.time");
-        v.bvid = video.dataset.aid;
-        v.title = $title.textContent;
-        // v.description = video.dataset.description;
-        // v.pic = video.dataset.pic;
-        // v.length = video.dataset.length;
-        v.date = $time.textContent;
-        v.url = `https://www.bilibili.com/video/${v.bvid}`;
+      const bvids = new Set();
+      videoList.forEach(($card) => {
+        const v = this.pickCard($card);
+        if (!v || bvids.has(v.bvid)) {
+          return;
+        }
+        bvids.add(v.bvid);
         videos.push(v);
       });
       return videos;
@@ -514,45 +547,77 @@
     main() {
       // 获取当前网址
       gob.curUrl = _curUrl();
-      // 判断网址是否匹配 https://space.bilibili.com/7078836/video
-      if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/video/)) {
+      // 判断网址是否匹配 https://space.bilibili.com/7078836/upload/video
+      if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/upload\/video/)) {
         return;
       }
-      // 仅在网址改变时重复执行
-      if (gob.curUrl === gob.lstUrl) {
+      // 避免 MutationObserver 触发导致的重复执行
+      if (this._busy) {
         return;
       }
-      gob.lstUrl = gob.curUrl;
-      // 重置进度条
-      bilibili.resetProgress();
+      // 网址改变时重置状态
+      if (gob.curUrl !== gob.lstUrl) {
+        gob.lstUrl = gob.curUrl;
+        this._sent.clear();
+        this.resetProgress();
+        _logHis.clear();
+      }
+      this._busy = true;
+      // 获取用户 uid 和 username
+      this.getUid();
+      this.getUsername();
       // 获取用户投稿视频并发送到远程
       this.getVideosFromPage().then((vlist) => {
+        // 过滤掉已经发送过的视频
+        const list = vlist.filter(v => !this._sent.has(v.bvid));
+        list.length && _log("bilibili.main()\n", {
+          total: vlist.length,
+          new: list.length,
+        });
+        if (list.length === 0) {
+          return;
+        }
+        list.forEach(v => this._sent.add(v.bvid));
         // 更新进度通过 bilibili.data 传递给 gob.post
         bilibili.data.showProgress = (itemIndex, remoteTotal) => {
-          bilibili.showProgress(itemIndex, vlist.length, remoteTotal);
+          bilibili.showProgress(itemIndex, list.length, remoteTotal);
         };
-        // // 获取用户 uid 和 username
-        // const uid = this.getUid();
-        // const username = this.getUsername();
         // 计数器清零
         gob.postIndex = 0;
         gob.postCount = 0;
         gob.errCount = 0;
-        // 对于 vlist 中的每个视频，发送到远程，使用异步队列
-        const queue = createQueue(vlist, gob.post, bilibili.data);
+        _logOnce("bilibili.main()->data", bilibili.data);
+        // 对于 list 中的每个视频，发送到远程，使用异步队列
+        const queue = createQueue(list, gob.post, bilibili.data);
         runQueue(queue);
+      }).catch((error) => {
+        _log("bilibili.main() - error\n", error);
+      }).finally(() => {
+        this._busy = false;
+        // 执行期间页面可能又渲染出新内容，补一次检查
+        const bHasNew = [...this._$cards()].some(($card) => {
+          const v = this.pickCard($card);
+          return v && !this._sent.has(v.bvid);
+        });
+        if (bHasNew) {
+          setTimeout(() => this.main(), 500);
+        }
       });
     },
 
     // 监听网页元素变化
     watch() {
       const $body = $n("body");
+      if (!$body) {
+        return;
+      }
       const _this = this;
       fnElChange($body, _this.main.bind(_this));
     },
   };
 
   bilibili.watch();
+  bilibili.main();
 
   (() => {
     if (!curUrl.includes("feedly")) {
