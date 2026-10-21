@@ -232,11 +232,12 @@ const bilibili = {
     const $subtitle = $card.querySelector(".bili-video-card__subtitle");
     const oDate = ($subtitle ? $subtitle.textContent : $card.textContent).match(RE_DATE);
     return {
+      uid: this.data.uid,
+      name: this.data.username,
       bvid,
       title: title.trim(),
       date: oDate ? oDate[0] : _getDateStr(),
       url: `https://www.bilibili.com/video/${bvid}`,
-      uid: this.data.uid,
       category: this.data.category,
     };
   },
@@ -286,6 +287,7 @@ const bilibili = {
       // 获取用户投稿视频
       return this.getVideosFromPage($cards);
     }).then((vlist) => {
+      _logOnce("bilibili.main()->vlist\n", vlist);
       // 过滤掉已经发送过的视频
       const list = vlist.filter(v => !this._sent.has(v.bvid));
       list.length && _log("bilibili.main()\n", {
