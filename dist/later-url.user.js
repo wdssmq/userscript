@@ -338,7 +338,7 @@
     // 空列表
     empty: ".space-upload .video-body .empty",
     // 列表头部，进度条挂载位置
-    header: ".space-upload .video-header",
+    header: ".video-header__top",
   };
   // 从链接中提取 BVID
   const RE_BVID = /\/video\/(BV[0-9A-Za-z]+)/;
@@ -402,6 +402,14 @@
       date: _getDateStr(),
     },
 
+    // 需要的页面元素
+    _$list: {
+      $warp: null,
+      $title: null,
+      $progress: null,
+      $cards: [],
+    },
+
     // 已处理过的视频，避免列表重复渲染时重发
     _sent: new Set(),
     // 防止重复执行
@@ -443,27 +451,42 @@
       return $na(SEL.card);
     },
 
-    // 网页加载检查，等待列表渲染完成
+    // 网页加载检查，等待需要的元素渲染完成，仅返回是否加载完成
     async check(maxTry = 20) {
+      this.data.username = this.getUsername();
+      this.data.uid = this.getUid();
+
       for (let i = 0; i < maxTry; i++) {
-        const $cards = this._$cards();
-        if ($cards.length > 0) {
-          return $cards;
+        // 需要的页面元素：列表头部、标题、视频卡片
+        const $warp = $n(SEL.header);
+        const $title = $warp?.querySelector(".title");
+        const $cards = [...this._$cards()];
+        this._$list.$warp = $warp;
+        this._$list.$title = $title;
+        this._$list.$cards = $cards;
+        // 三者都在，才算加载完成
+        if ($warp && $title && $cards.length > 0) {
+          return true;
         }
         // 没有卡片且不在加载中、且列表为空，则无需继续等待
         if (!$n(SEL.loading) && $n(SEL.empty)) {
-          return [];
+          return true;
         }
         await _sleep(500);
       }
-      _log("bilibili.check() - 等待超时\n", this._$cards().length);
-      return this._$cards();
+      _log("bilibili.check() - 等待超时\n", {
+        warp: !!this._$list.$warp,
+        title: !!this._$list.$title,
+        cards: this._$list.$cards.length,
+      });
+      return false;
     },
 
     // 在页面元素中显示进度
-    showProgress(itemIndex, pageTotal, remoteTotal) {
-      const $warp = $n(SEL.header);
-      if (!$warp) {
+    showProgress(itemIndex = -1, pageTotal = -1, remoteTotal = -1) {
+      const $warp = this._$list.$warp;
+      const $title = this._$list.$title;
+      if (!$warp || !$title) {
         return;
       }
       // 向 $warp 中添加进度元素
@@ -471,23 +494,21 @@
       if (!$progress) {
         const $div = document.createElement("div");
         $div.id = "gm-progress";
-        $div.style = "margin: 4px 0;";
+        $div.style = "margin: 4px 8px;";
         $div.style.color = "red";
-        $div.style.fontSize = "14px";
+        $div.style.fontSize = "18px";
         $div.style.fontWeight = "bold";
-        $warp.appendChild($div);
+        // 加到 $title 后面
+        $title.parentNode.insertBefore($div, $title.nextSibling);
         $progress = $div;
       }
       // 更新进度
-      $progress.textContent = `later-url: ${itemIndex}/${pageTotal} remote: ${remoteTotal}`;
+      $progress.textContent = `进度: ${itemIndex}/${pageTotal} 远程: ${remoteTotal}`;
     },
 
     // 重置进度条
     resetProgress() {
-      const $progress = $n("#gm-progress");
-      if ($progress) {
-        $progress.textContent = "";
-      }
+      this.showProgress(-1, -1, -1);
     },
 
     // 从卡片中提取需要的信息
@@ -528,8 +549,8 @@
     },
 
     // 从网页元素中获取投稿视频
-    async getVideosFromPage() {
-      const videoList = await this.check();
+    async getVideosFromPage($cards) {
+      const videoList = $cards || [...this._$cards()];
       const videos = [];
       const bvids = new Set();
       videoList.forEach(($card) => {
@@ -563,11 +584,15 @@
         _logHis.clear();
       }
       this._busy = true;
-      // 获取用户 uid 和 username
-      this.getUid();
-      this.getUsername();
-      // 获取用户投稿视频并发送到远程
-      this.getVideosFromPage().then((vlist) => {
+      // 等待列表渲染完成，元素存于 this._$list
+      this.check().then((bReady) => {
+        // 初始显示进度
+        this.showProgress();
+        // 取需要的页面元素
+        const $cards = bReady ? this._$list.$cards : [];
+        // 获取用户投稿视频
+        return this.getVideosFromPage($cards);
+      }).then((vlist) => {
         // 过滤掉已经发送过的视频
         const list = vlist.filter(v => !this._sent.has(v.bvid));
         list.length && _log("bilibili.main()\n", {
