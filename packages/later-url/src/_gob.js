@@ -114,13 +114,17 @@ gob.stopByErrCount = () => {
 };
 
 // 快速防重检查，指定 key 在本地存储中计数，达到 4 次则返回 true
-gob.stopByQuickCheck = (quickKey) => {
-  const lsData = lsObj.getItem(quickKey, { count: 0 });
+gob.stopByQuickCheck = (quickKey, write = false) => {
+  if (quickKey === "")
+    return false;
+  const lsData = lsObj.getItem(quickKey, { count: -1 });
   if (lsData.count >= 4) {
     return true;
   }
-  lsData.count += 1;
-  lsObj.setItem(quickKey, lsData);
+  if (write) {
+    lsData.count += 1;
+    lsObj.setItem(quickKey, lsData);
+  }
   return false;
 };
 
