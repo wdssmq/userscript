@@ -18,9 +18,29 @@ const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // -------------------------------------
 
+// 记录已输出的 log，用于「只输出一次」
+const _logHis = new Set();
 const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
 const _warn = (...args) => console.warn(`[${gm_name}] |`, ...args);
 const _error = (...args) => console.error(`[${gm_name}] |`, ...args);
+// 只输出一次的 log，以第一个参数为 key，可用 _logHis.clear() 重置
+function _logOnce(...args) {
+  let key = typeof args[0] === "string" ? args[0] : "";
+  if (!key) {
+    try {
+      key = JSON.stringify(args);
+    }
+    catch {
+      key = String(args[0]);
+    }
+  }
+  if (_logHis.has(key)) {
+    return false;
+  }
+  _logHis.add(key);
+  _log(...args);
+  return true;
+}
 
 // -------------------------------------
 
@@ -63,6 +83,8 @@ export {
   _error,
   _getDateStr,
   _log,
+  _logHis,
+  _logOnce,
   _sleep,
   _warn,
   curDate,
