@@ -146,14 +146,14 @@ const bilibili = {
     return $na(SEL.card);
   },
 
-  // 网页加载检查，等待需要的元素渲染完成，仅返回是否加载完成
+  // 网页加载检查，快速防重时返回 null，否则返回是否加载完成
   async check(maxTry = 20) {
     this.data.username = this.getUsername();
     this.data.uid = this.getUid();
     _logOnce("bilibili.check() - 当前用户信息\n", this.data);
     if (gob.stopByQuickCheck(this._quickKey)) {
       _logOnce("bilibili.check() - 快速防重触发\n", this._quickKey);
-      return false;
+      return null;
     }
 
     for (let i = 0; i < maxTry; i++) {
@@ -289,8 +289,13 @@ const bilibili = {
       _logHis.clear();
     }
     this._busy = true;
+    let bQuickCheckStopped = false;
     // 等待列表渲染完成，元素存于 this._$list
     this.check().then((bReady) => {
+      if (bReady === null) {
+        bQuickCheckStopped = true;
+        return;
+      }
       // 初始显示进度
       this.showProgress();
       // 取需要的页面元素
@@ -298,6 +303,9 @@ const bilibili = {
       // 获取用户投稿视频
       return this.getVideosFromPage($cards);
     }).then((vlist) => {
+      if (bQuickCheckStopped) {
+        return;
+      }
       _logOnce("bilibili.main()->vlist\n", vlist);
       // 过滤掉已经发送过的视频
       const list = vlist.filter(v => !this._sent.has(v.bvid));
@@ -325,6 +333,9 @@ const bilibili = {
       _log("bilibili.main() - error\n", error);
     }).finally(() => {
       this._busy = false;
+      if (bQuickCheckStopped) {
+        return;
+      }
       // 执行期间页面可能又渲染出新内容，补一次检查
       const bHasNew = [...this._$cards()].some(($card) => {
         const v = this.pickCard($card);
