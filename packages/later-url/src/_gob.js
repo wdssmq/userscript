@@ -1,7 +1,7 @@
 import { gm_name } from "./__info";
 import { _log, curTimestamp } from "./_base";
-import config from "./_config";
-import http from "./_http";
+import config from "./func/_config";
+import http from "./func/_http";
 
 // localStorage 封装
 const lsObj = {

@@ -4,9 +4,9 @@ import {
   _log,
   curUrl,
   fnElChange,
-} from "./_base";
+} from "../_base";
 
-import { gob } from "./_gob";
+import { gob } from "../_gob";
 
 (() => {
   if (!curUrl.includes("feedly")) {

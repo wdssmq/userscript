@@ -1,4 +1,4 @@
-import { _log } from "./_base";
+import { _log } from "../_base";
 
 const config = {
   data: {},

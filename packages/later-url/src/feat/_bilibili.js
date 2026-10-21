@@ -6,15 +6,15 @@ import {
   _log,
   _sleep,
   fnElChange,
-} from "./_base";
+} from "../_base";
 
-import config from "./_config";
-import { gob } from "./_gob";
+import config from "../func/_config";
+import { gob } from "../_gob";
 import {
   // createPromise,
   createQueue,
   runQueue,
-} from "./_queue";
+} from "../func/_queue";
 
 // 过滤字符信息
 gob.filter = (str) => {
