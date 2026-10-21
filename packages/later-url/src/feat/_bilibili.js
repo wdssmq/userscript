@@ -146,16 +146,20 @@ const bilibili = {
     return $na(SEL.card);
   },
 
-  // 网页加载检查，包括防重检查
+  // 检查快速防重是否触发
+  isQuickCheckStopped(quickKey) {
+    if (!quickKey || !gob.stopByQuickCheck(quickKey, true)) {
+      return false;
+    }
+    _logOnce("bilibili.main() - 快速防重触发\n", quickKey);
+    return true;
+  },
+
+  // 网页加载检查
   async check(maxTry = 20) {
     this.data.username = this.getUsername();
     this.data.uid = this.getUid();
-    let stopByQuick = false;
     _logOnce("bilibili.check() - 当前用户信息\n", this.data);
-    if (gob.stopByQuickCheck(this._quickKey)) {
-      _logOnce("bilibili.check() - 快速防重触发\n", this._quickKey);
-      stopByQuick = true;
-    }
 
     for (let i = 0; i < maxTry; i++) {
       // 需要的页面元素：列表头部、标题、视频卡片
@@ -169,14 +173,12 @@ const bilibili = {
       if ($warp && $title && $cards.length > 0) {
         return {
           loaded: true,
-          stopByQuick,
         };
       }
       // 没有卡片且不在加载中、且列表为空，则无需继续等待
       if (!$n(SEL.loading) && $n(SEL.empty)) {
         return {
           loaded: true,
-          stopByQuick,
         };
       }
       await _sleep(500);
@@ -188,7 +190,6 @@ const bilibili = {
     });
     return {
       loaded: false,
-      stopByQuick,
     };
   },
 
@@ -275,8 +276,10 @@ const bilibili = {
     // bvids 里取首尾各两个 bvid
     const arrTmp = [...bvids];
     const arrSet = new Set(arrTmp.slice(0, 2).concat(arrTmp.slice(-2)));
-    this._quickKey = Array.from(arrSet).join("_");
-    return videos;
+    return {
+      videos,
+      quickKey: Array.from(arrSet).join("_"),
+    };
   },
 
   // 主函数
@@ -295,32 +298,38 @@ const bilibili = {
     if (gob.curUrl !== gob.lstUrl) {
       gob.lstUrl = gob.curUrl;
       this._sent.clear();
+      this._quickKey = "";
       this.resetProgress();
       _logHis.clear();
     }
+    // 加载完成后的快速防重检查，实际加载检查在这之后
+    const quickKeyAtStart = this._quickKey;
+    if (this.isQuickCheckStopped(quickKeyAtStart)) {
+      return;
+    }
     this._busy = true;
+    // 加载检查中的快速防重标记
     let bQuickCheckStopped = false;
     // 等待列表渲染完成，元素存于 this._$list
     this.check().then((checkResult) => {
       // 初始显示进度
       this.showProgress();
-      bQuickCheckStopped = checkResult.stopByQuick;
-      if (bQuickCheckStopped) {
-        return;
-      }
       // 取需要的页面元素
       const $cards = checkResult.loaded ? this._$list.$cards : [];
       // 获取用户投稿视频
       return this.getVideosFromPage($cards);
-    }).then((vlist) => {
-      if (bQuickCheckStopped) {
+    }).then(({ videos, quickKey }) => {
+      _logOnce("bilibili.main()->vlist\n", videos);
+      // 更新快速防重 key
+      this._quickKey = quickKey;
+      if (quickKey !== quickKeyAtStart && this.isQuickCheckStopped(quickKey)) {
+        bQuickCheckStopped = true;
         return;
       }
-      _logOnce("bilibili.main()->vlist\n", vlist);
       // 过滤掉已经发送过的视频
-      const list = vlist.filter(v => !this._sent.has(v.bvid));
+      const list = videos.filter(v => !this._sent.has(v.bvid));
       list.length && _log("bilibili.main()\n", {
-        total: vlist.length,
+        total: videos.length,
         new: list.length,
       });
       if (list.length === 0) {
@@ -335,7 +344,7 @@ const bilibili = {
       gob.postIndex = 0;
       gob.postCount = 0;
       gob.errCount = 0;
-      _logOnce("bilibili.main()->data", bilibili.data);
+      // _logOnce("bilibili.main()->data", bilibili.data);
       // 对于 list 中的每个视频，发送到远程，使用异步队列
       const queue = createQueue(list, gob.post, bilibili.data);
       runQueue(queue);
