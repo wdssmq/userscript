@@ -281,14 +281,14 @@ const bilibili = {
 
   // 主函数
   main() {
+    // 避免 MutationObserver 触发导致的重复执行
+    if (this._busy) {
+      return;
+    }
     // 获取当前网址
     gob.curUrl = _curUrl();
     // 判断网址是否匹配 https://space.bilibili.com/7078836/upload/video
     if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/upload\/video/)) {
-      return;
-    }
-    // 避免 MutationObserver 触发导致的重复执行
-    if (this._busy) {
       return;
     }
     // 网址改变时重置状态
@@ -302,12 +302,12 @@ const bilibili = {
     let bQuickCheckStopped = false;
     // 等待列表渲染完成，元素存于 this._$list
     this.check().then((checkResult) => {
+      // 初始显示进度
+      this.showProgress();
       bQuickCheckStopped = checkResult.stopByQuick;
       if (bQuickCheckStopped) {
         return;
       }
-      // 初始显示进度
-      this.showProgress();
       // 取需要的页面元素
       const $cards = checkResult.loaded ? this._$list.$cards : [];
       // 获取用户投稿视频
