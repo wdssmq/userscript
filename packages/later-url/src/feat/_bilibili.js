@@ -31,7 +31,7 @@ const SEL = {
   // 空列表
   empty: ".space-upload .video-body .empty",
   // 列表头部，进度条挂载位置
-  header: ".space-upload .video-header",
+  header: ".video-header__top",
 };
 // 从链接中提取 BVID
 const RE_BVID = /\/video\/(BV[0-9A-Za-z]+)/;
@@ -177,8 +177,9 @@ const bilibili = {
 
   // 在页面元素中显示进度
   showProgress(itemIndex = -1, pageTotal = -1, remoteTotal = -1) {
-    const $warp = $n(SEL.header);
-    if (!$warp) {
+    const $warp = this._$list.$warp;
+    const $title = this._$list.$title;
+    if (!$warp || !$title) {
       return;
     }
     // 向 $warp 中添加进度元素
@@ -186,23 +187,21 @@ const bilibili = {
     if (!$progress) {
       const $div = document.createElement("div");
       $div.id = "gm-progress";
-      $div.style = "margin: 4px 0;";
+      $div.style = "margin: 4px 8px;";
       $div.style.color = "red";
-      $div.style.fontSize = "14px";
+      $div.style.fontSize = "18px";
       $div.style.fontWeight = "bold";
-      $warp.appendChild($div);
+      // 加到 $title 后面
+      $title.parentNode.insertBefore($div, $title.nextSibling);
       $progress = $div;
     }
     // 更新进度
-    $progress.textContent = `later-url: ${itemIndex}/${pageTotal} remote: ${remoteTotal}`;
+    $progress.textContent = `进度: ${itemIndex}/${pageTotal} 远程: ${remoteTotal}`;
   },
 
   // 重置进度条
   resetProgress() {
-    const $progress = $n("#gm-progress");
-    if ($progress) {
-      $progress.textContent = "";
-    }
+    this.showProgress(-1, -1, -1);
   },
 
   // 从卡片中提取需要的信息
