@@ -146,14 +146,15 @@ const bilibili = {
     return $na(SEL.card);
   },
 
-  // 网页加载检查，快速防重时返回 null，否则返回是否加载完成
+  // 网页加载检查，包括防重检查
   async check(maxTry = 20) {
     this.data.username = this.getUsername();
     this.data.uid = this.getUid();
+    let stopByQuick = false;
     _logOnce("bilibili.check() - 当前用户信息\n", this.data);
     if (gob.stopByQuickCheck(this._quickKey)) {
       _logOnce("bilibili.check() - 快速防重触发\n", this._quickKey);
-      return null;
+      stopByQuick = true;
     }
 
     for (let i = 0; i < maxTry; i++) {
@@ -166,11 +167,17 @@ const bilibili = {
       this._$list.$cards = $cards;
       // 三者都在，才算加载完成
       if ($warp && $title && $cards.length > 0) {
-        return true;
+        return {
+          loaded: true,
+          stopByQuick,
+        };
       }
       // 没有卡片且不在加载中、且列表为空，则无需继续等待
       if (!$n(SEL.loading) && $n(SEL.empty)) {
-        return true;
+        return {
+          loaded: true,
+          stopByQuick,
+        };
       }
       await _sleep(500);
     }
@@ -179,7 +186,10 @@ const bilibili = {
       title: !!this._$list.$title,
       cards: this._$list.$cards.length,
     });
-    return false;
+    return {
+      loaded: false,
+      stopByQuick,
+    };
   },
 
   // 在页面元素中显示进度
@@ -291,15 +301,15 @@ const bilibili = {
     this._busy = true;
     let bQuickCheckStopped = false;
     // 等待列表渲染完成，元素存于 this._$list
-    this.check().then((bReady) => {
-      if (bReady === null) {
-        bQuickCheckStopped = true;
+    this.check().then((checkResult) => {
+      bQuickCheckStopped = checkResult.stopByQuick;
+      if (bQuickCheckStopped) {
         return;
       }
       // 初始显示进度
       this.showProgress();
       // 取需要的页面元素
-      const $cards = bReady ? this._$list.$cards : [];
+      const $cards = checkResult.loaded ? this._$list.$cards : [];
       // 获取用户投稿视频
       return this.getVideosFromPage($cards);
     }).then((vlist) => {
