@@ -8,8 +8,8 @@ import {
   fnElChange,
 } from "../_base";
 
-import config from "../func/_config";
 import { gob } from "../_gob";
+import config from "../func/_config";
 import {
   // createPromise,
   createQueue,
