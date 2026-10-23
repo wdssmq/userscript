@@ -101,14 +101,14 @@ gob.zbpInfo = () => {
     return info;
   }
   info.host = oMatch[1];
-  info.usersUrl = `${info.host}zb_users/plugin/odd_Later/usr/bili.json`;
+  info.usersUrl = `${info.host}zb_users/plugin/odd_Later/usr/bili.json?ts=${curTimestamp}`;
   return info;
 };
 
 // 距上次同步超过一天时同步一次，成功才记录时间
-gob.checkSyncZbpUsers = async () => {
+gob.checkSyncZbpUsers = async (force = false) => {
   const curTime = curTimestamp;
-  if (gob.lstSync > 0 && curTime - gob.lstSync < 86400) {
+  if (!force && gob.lstSync > 0 && curTime - gob.lstSync < 86400) {
     return false;
   }
   const rlt = await gob.syncZbpUsers();

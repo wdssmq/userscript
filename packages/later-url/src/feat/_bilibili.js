@@ -241,6 +241,7 @@ const bilibili = {
           _error("bilibili.copyUpInfo() - error\n", error);
           $button.textContent = "复制失败";
         }
+        gob.checkSyncZbpUsers(true);
       });
       $progress.insertAdjacentElement("beforebegin", $button);
     }
