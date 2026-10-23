@@ -100,12 +100,26 @@
   const config = {
     data: {},
     defData: {
+      // 远程服务（原有）
       baseUrl: "http://127.0.0.1:41897/",
       authToken: "token_value_here",
+      // 远程服务开关
+      enableCf: false,
+      // 完整推送地址：{host}zb_system/cmd.php?act=ajax&src=odd_Later&token=xxx
+      zbpUrl: "",
+      // ZBP 插件（odd_Later）开关
+      enableZbp: false,
+      // 已登记 UP：{ [uid]: "name" }，须与插件后台列表一致
+      zbpUsers: {},
       isInit: false,
     },
     load() {
-      config.data = GM_getValue("config", this.defData);
+      const data = GM_getValue("config", this.defData) || {};
+      // 老版本存储中缺少新增字段，合并默认值补齐
+      config.data = Object.assign({}, this.defData, data);
+      if (!config.data.zbpUsers || typeof config.data.zbpUsers !== "object") {
+        config.data.zbpUsers = {};
+      }
       if (!config.data.isInit) {
         config.data.isInit = true;
         config.save();
@@ -113,6 +127,7 @@
     },
     save() {
       GM_setValue("config", config.data);
+      _log("[log]config.save()", config.data);
     },
   };
 
@@ -272,13 +287,17 @@
   };
 
   // 快速防重检查，指定 key 在本地存储中计数，达到 4 次则返回 true
-  gob.stopByQuickCheck = (quickKey) => {
-    const lsData = lsObj.getItem(quickKey, { count: 0 });
+  gob.stopByQuickCheck = (quickKey, write = false) => {
+    if (quickKey === "")
+      return null;
+    const lsData = lsObj.getItem(quickKey, { count: -1 });
     if (lsData.count >= 4) {
       return true;
     }
-    lsData.count += 1;
-    lsObj.setItem(quickKey, lsData);
+    if (write) {
+      lsData.count += 1;
+      lsObj.setItem(quickKey, lsData);
+    }
     return false;
   };
 
@@ -368,6 +387,11 @@
   gob.post = async (info, data) => {
     // 如果有 data.showProgress() 函数
     const fnShowProgress = typeof data.showProgress === "function" ? data.showProgress : () => { };
+    // 远程服务开关未启用时直接跳过，不计配额也不发请求
+    if (!config.data.enableCf) {
+      _logOnce("gob.post() - 远程服务未启用，跳过发送");
+      return false;
+    }
     gob.postIndex += 1;
     if (gob.stopByErrCount()) {
       return false;
@@ -464,16 +488,20 @@
       return $na(SEL.card);
     },
 
-    // 网页加载检查，包括防重检查
+    // 检查快速防重是否触发
+    isQuickCheckStopped(quickKey) {
+      if (!quickKey || !gob.stopByQuickCheck(quickKey, true)) {
+        return false;
+      }
+      _logOnce("bilibili.main() - 快速防重触发\n", quickKey);
+      return true;
+    },
+
+    // 网页加载检查
     async check(maxTry = 20) {
       this.data.username = this.getUsername();
       this.data.uid = this.getUid();
-      let stopByQuick = false;
       _logOnce("bilibili.check() - 当前用户信息\n", this.data);
-      if (gob.stopByQuickCheck(this._quickKey)) {
-        _logOnce("bilibili.check() - 快速防重触发\n", this._quickKey);
-        stopByQuick = true;
-      }
 
       for (let i = 0; i < maxTry; i++) {
         // 需要的页面元素：列表头部、标题、视频卡片
@@ -487,14 +515,12 @@
         if ($warp && $title && $cards.length > 0) {
           return {
             loaded: true,
-            stopByQuick,
           };
         }
         // 没有卡片且不在加载中、且列表为空，则无需继续等待
         if (!$n(SEL.loading) && $n(SEL.empty)) {
           return {
             loaded: true,
-            stopByQuick,
           };
         }
         await _sleep(500);
@@ -506,7 +532,6 @@
       });
       return {
         loaded: false,
-        stopByQuick,
       };
     },
 
@@ -593,52 +618,60 @@
       // bvids 里取首尾各两个 bvid
       const arrTmp = [...bvids];
       const arrSet = new Set(arrTmp.slice(0, 2).concat(arrTmp.slice(-2)));
-      this._quickKey = Array.from(arrSet).join("_");
-      return videos;
+      return {
+        videos,
+        quickKey: Array.from(arrSet).join("_"),
+      };
     },
 
     // 主函数
     main() {
+      // 避免 MutationObserver 触发导致的重复执行
+      if (this._busy) {
+        return;
+      }
       // 获取当前网址
       gob.curUrl = _curUrl();
       // 判断网址是否匹配 https://space.bilibili.com/7078836/upload/video
       if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/upload\/video/)) {
         return;
       }
-      // 避免 MutationObserver 触发导致的重复执行
-      if (this._busy) {
-        return;
-      }
       // 网址改变时重置状态
       if (gob.curUrl !== gob.lstUrl) {
         gob.lstUrl = gob.curUrl;
         this._sent.clear();
+        this._quickKey = "";
         this.resetProgress();
         _logHis.clear();
       }
+      // 加载完成后的快速防重检查，实际加载检查在这之后
+      const quickKeyAtStart = this._quickKey;
+      if (this.isQuickCheckStopped(quickKeyAtStart)) {
+        return;
+      }
       this._busy = true;
+      // 加载检查中的快速防重标记
       let bQuickCheckStopped = false;
       // 等待列表渲染完成，元素存于 this._$list
       this.check().then((checkResult) => {
-        bQuickCheckStopped = checkResult.stopByQuick;
-        if (bQuickCheckStopped) {
-          return;
-        }
         // 初始显示进度
         this.showProgress();
         // 取需要的页面元素
         const $cards = checkResult.loaded ? this._$list.$cards : [];
         // 获取用户投稿视频
         return this.getVideosFromPage($cards);
-      }).then((vlist) => {
-        if (bQuickCheckStopped) {
+      }).then(({ videos, quickKey }) => {
+        _logOnce("bilibili.main()->vlist\n", videos);
+        // 更新快速防重 key
+        this._quickKey = quickKey;
+        if (quickKey !== quickKeyAtStart && this.isQuickCheckStopped(quickKey)) {
+          bQuickCheckStopped = true;
           return;
         }
-        _logOnce("bilibili.main()->vlist\n", vlist);
         // 过滤掉已经发送过的视频
-        const list = vlist.filter(v => !this._sent.has(v.bvid));
+        const list = videos.filter(v => !this._sent.has(v.bvid));
         list.length && _log("bilibili.main()\n", {
-          total: vlist.length,
+          total: videos.length,
           new: list.length,
         });
         if (list.length === 0) {
@@ -653,7 +686,7 @@
         gob.postIndex = 0;
         gob.postCount = 0;
         gob.errCount = 0;
-        _logOnce("bilibili.main()->data", bilibili.data);
+        // _logOnce("bilibili.main()->data", bilibili.data);
         // 对于 list 中的每个视频，发送到远程，使用异步队列
         const queue = createQueue(list, gob.post, bilibili.data);
         runQueue(queue);
