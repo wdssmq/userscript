@@ -1,3 +1,6 @@
+// 远程发送：gob.postCF 与 gob.postZBP
+import "./func/_post";
+
 // _bilibili
 import "./feat/_bilibili";
 

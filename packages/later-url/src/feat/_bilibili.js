@@ -11,7 +11,6 @@ import {
 } from "../_base";
 
 import { gob } from "../_gob";
-import config from "../func/_config";
 import {
   // createPromise,
   createQueue,
@@ -37,59 +36,6 @@ const SEL = {
 const RE_BVID = /\/video\/(BV[0-9A-Za-z]+)/;
 // 卡片中的日期文本
 const RE_DATE = /\d{4}-\d{1,2}-\d{1,2}/;
-
-// 过滤字符信息
-gob.filter = (str) => {
-  let rlt = str;
-  rlt = rlt.replace(/\s/g, "");
-  rlt = rlt.replace(/#/g, "");
-  return rlt;
-};
-
-// 发送链接信息到远程
-gob.post = async (info, data) => {
-  // 如果有 data.showProgress() 函数
-  const fnShowProgress = typeof data.showProgress === "function" ? data.showProgress : () => { };
-  // 远程服务开关未启用时直接跳过，不计配额也不发请求
-  if (!config.data.enableCf) {
-    _logOnce("gob.post() - 远程服务未启用，跳过发送");
-    return false;
-  }
-  gob.postIndex += 1;
-  if (gob.stopByErrCount()) {
-    return false;
-  }
-  if (gob.stopBySendLimit(info.url)) {
-    return false;
-  }
-  const { baseUrl, authToken } = config.data;
-  const headers = {
-    Authorization: `Bearer ${authToken}`,
-  };
-  info.title = gob.filter(info.title);
-  const url = `${baseUrl}add?url=${encodeURIComponent(info.url)}&title=${encodeURIComponent(info.title)}&author=${encodeURIComponent(data.username)}&category=${encodeURIComponent(data.category)}&date=${data.date}`;
-  gob.postCount += 1;
-  _log(`gob.post() - ${gob.postCount} \n`, url);
-
-  try {
-    const res = await gob.http.get(url, headers);
-    // _log("gob.post()\n", res);
-    _log("gob.post()\n", res.responseText);
-    if (res.status !== 200) {
-      gob.errCount += 1;
-      return false;
-    }
-    const resJSON = JSON.parse(res.responseText);
-    gob.remoteTotal = resJSON.data.count || 0;
-    fnShowProgress(gob.postIndex, gob.remoteTotal);
-    return true;
-  }
-  catch (error) {
-    gob.errCount += 1;
-    _log("gob.post() - error\n", error);
-    return false;
-  }
-};
 
 // df For Old ↑
 // df For Old ↑
@@ -396,7 +342,7 @@ const bilibili = {
         return;
       }
       list.forEach(v => this._sent.add(v.bvid));
-      // 更新进度通过 bilibili.data 传递给 gob.post
+      // 更新进度通过 bilibili.data 传给 gob.postCF
       bilibili.data.showProgress = (itemIndex, remoteTotal) => {
         bilibili.showProgress(itemIndex, list.length, remoteTotal);
       };
@@ -405,8 +351,16 @@ const bilibili = {
       gob.postCount = 0;
       gob.errCount = 0;
       // _logOnce("bilibili.main()->data", bilibili.data);
+      // 两套远程各发一次，任一成功即算成功
+      const fnPost = async (info, data) => {
+        const rltCF = await gob.postCF(info, data);
+        const rltZBP = await gob.postZBP(info, data);
+        // 无论成功与否，该 bvid 都算走过一遍 fnPost
+        stopQuick.writeCheck(info.bvid);
+        return rltCF || rltZBP;
+      };
       // 对于 list 中的每个视频，发送到远程，使用异步队列
-      const queue = createQueue(list, gob.post, bilibili.data);
+      const queue = createQueue(list, fnPost, bilibili.data);
       runQueue(queue);
     }).catch((error) => {
       _log("bilibili.main() - error\n", error);

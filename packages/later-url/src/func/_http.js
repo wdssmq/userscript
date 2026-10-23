@@ -22,6 +22,16 @@ class HttpRequest {
     });
   }
 
+  // 以 JSON 字符串作为报文体，用于 odd_Later 这类读取 php://input 的接口
+  postJson(url, obj = {}, headers = {}) {
+    return this.request({
+      method: "POST",
+      url,
+      data: JSON.stringify(obj),
+      headers: Object.assign({ "Content-Type": "application/json" }, headers),
+    });
+  }
+
   request(options) {
     return new Promise((resolve, reject) => {
       const requestOptions = Object.assign({}, options);
