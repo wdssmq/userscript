@@ -49,6 +49,7 @@
   // 记录已输出的 log，用于「只输出一次」
   const _logHis = new Set();
   const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
+  const _error = (...args) => console.error(`[${gm_name}] |`, ...args);
   // 只输出一次的 log，以第一个参数为 key，可用 _logHis.clear() 重置
   function _logOnce(...args) {
     let key = typeof args[0] === "string" ? args[0] : "";
@@ -299,14 +300,14 @@
       return info;
     }
     info.host = oMatch[1];
-    info.usersUrl = `${info.host}zb_users/plugin/odd_Later/usr/bili.json`;
+    info.usersUrl = `${info.host}zb_users/plugin/odd_Later/usr/bili.json?ts=${curTimestamp}`;
     return info;
   };
 
   // 距上次同步超过一天时同步一次，成功才记录时间
-  gob.checkSyncZbpUsers = async () => {
+  gob.checkSyncZbpUsers = async (force = false) => {
     const curTime = curTimestamp;
-    if (gob.lstSync > 0 && curTime - gob.lstSync < 86400) {
+    if (!force && gob.lstSync > 0 && curTime - gob.lstSync < 86400) {
       return false;
     }
     const rlt = await gob.syncZbpUsers();
@@ -483,8 +484,8 @@
     _log("gob.postZBP()\n", body);
     try {
       const res = await gob.http.postJson(strUrl, body);
-      _log("gob.postZBP()\n", res.responseText);
       const resJSON = JSON.parse(res.responseText);
+      _log("gob.postZBP()\n", resJSON);
       // 6 为重复推送，视为已存在
       return resJSON.err === 0 || resJSON.err === 6;
     }
@@ -587,12 +588,12 @@
 
     // 记录走过一遍 fnPost 的 bvid，全部到齐后才写入计数
     // 网址变化或 key 变化前，同一 key 只写一次
-    writeCheck(bvid) {
+    writeCheck(bvid, rltPost = false) {
       if (bvid) {
         this.tried.add(bvid);
       }
       const { key, bvids, tried, written } = this;
-      if (written || !key || bvids.size === 0) {
+      if (written || !key || bvids.size === 0 || !rltPost) {
         return false;
       }
       const bAllTried = Array.from(bvids).every(item => tried.has(item));
@@ -715,7 +716,7 @@
       if (!$progress) {
         const $div = document.createElement("div");
         $div.id = "gm-progress";
-        $div.style = "margin: 4px 8px;";
+        $div.style = "margin-left: auto;";
         $div.style.color = "red";
         $div.style.fontSize = "18px";
         $div.style.fontWeight = "bold";
@@ -725,6 +726,30 @@
       }
       // 更新进度
       $progress.textContent = `进度: ${itemIndex}/${pageTotal} 远程: ${remoteTotal}`;
+      if (!$n("#gm-copy-up")) {
+        const $button = document.createElement("button");
+        $button.id = "gm-copy-up";
+        $button.type = "button";
+        $button.textContent = "复制";
+        $button.style = "margin-left: 8px;";
+        $button.classList.add("vui_button");
+        $button.addEventListener("click", async () => {
+          const text = `uid: ${this.data.uid}\nname: ${this.data.username}\ntype: up`;
+          try {
+            await navigator.clipboard.writeText(text);
+            $button.textContent = "已复制";
+            setTimeout(() => {
+              $button.textContent = "复制";
+            }, 1500);
+          }
+          catch (error) {
+            _error("bilibili.copyUpInfo() - error\n", error);
+            $button.textContent = "复制失败";
+          }
+          gob.checkSyncZbpUsers(true);
+        });
+        $progress.insertAdjacentElement("beforebegin", $button);
+      }
     },
 
     // 重置进度条
@@ -861,7 +886,7 @@
           const rltCF = await gob.postCF(info, data);
           const rltZBP = await gob.postZBP(info, data);
           // 无论成功与否，该 bvid 都算走过一遍 fnPost
-          stopQuick.writeCheck(info.bvid);
+          stopQuick.writeCheck(info.bvid, rltCF || rltZBP);
           return rltCF || rltZBP;
         };
         // 对于 list 中的每个视频，发送到远程，使用异步队列
