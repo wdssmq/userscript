@@ -83,12 +83,12 @@ const stopQuick = {
 
   // 记录走过一遍 fnPost 的 bvid，全部到齐后才写入计数
   // 网址变化或 key 变化前，同一 key 只写一次
-  writeCheck(bvid) {
+  writeCheck(bvid, rltPost = false) {
     if (bvid) {
       this.tried.add(bvid);
     }
     const { key, bvids, tried, written } = this;
-    if (written || !key || bvids.size === 0) {
+    if (written || !key || bvids.size === 0 || !rltPost) {
       return false;
     }
     const bAllTried = Array.from(bvids).every(item => tried.has(item));
@@ -380,7 +380,7 @@ const bilibili = {
         const rltCF = await gob.postCF(info, data);
         const rltZBP = await gob.postZBP(info, data);
         // 无论成功与否，该 bvid 都算走过一遍 fnPost
-        stopQuick.writeCheck(info.bvid);
+        stopQuick.writeCheck(info.bvid, rltCF || rltZBP);
         return rltCF || rltZBP;
       };
       // 对于 list 中的每个视频，发送到远程，使用异步队列
