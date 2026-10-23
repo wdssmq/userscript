@@ -54,6 +54,19 @@ function $na(e) {
 
 // -------------------------------------
 
+// 带校验的输入框：取消返回 null，校验不通过返回 false，通过返回输入值
+function fnPrompt(text = "", defValue = "", fnCheck = null) {
+  const val = prompt(text, defValue);
+  if (val === null) {
+    return null;
+  }
+  const strVal = String(val).trim();
+  if (typeof fnCheck === "function" && !fnCheck(strVal)) {
+    return false;
+  }
+  return strVal;
+}
+
 // 元素变化监听
 function fnElChange(el, fn = () => { }) {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
@@ -91,4 +104,5 @@ export {
   curTimestamp,
   curUrl,
   fnElChange,
+  fnPrompt,
 };
