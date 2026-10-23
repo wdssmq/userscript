@@ -70,12 +70,6 @@ const CSS = `
 .gm-later-ok{color:#3DBF7A;}
 .gm-later-warn{color:#F5A623;}
 .gm-later-err{color:#E5534B;}
-.gm-later-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
-.gm-later-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;
-  background:rgba(255,255,255,.08);color:#C9CCD4;font-size:12px;cursor:pointer;transition:background .16s ease;}
-.gm-later-chip:hover{background:rgba(229,83,75,.28);color:#fff;}
-.gm-later-chip[data-read="true"]{cursor:default;}
-.gm-later-chip[data-read="true"]:hover{background:rgba(255,255,255,.08);color:#C9CCD4;}
 .gm-later-status{margin-top:10px;padding:6px 8px;border-radius:8px;font-size:12px;
   color:#C9CCD4;background:rgba(255,255,255,.05);word-break:break-all;}
 .gm-later-fab{width:48px;height:48px;border-radius:50%;cursor:pointer;
@@ -205,9 +199,6 @@ const panel = {
             : `<span class="gm-later-warn">未登记：${escapeHtml(name || uid)}</span>`}
         </div>`
       : "";
-    const htmlChips = uidList.length
-      ? `<div class="gm-later-chips">${uidList.map(cur => `<span class="gm-later-chip" data-read="true" title="${escapeHtml(cur)}">${escapeHtml(users[cur] || cur)}（${escapeHtml(cur)}）</span>`).join("")}</div>`
-      : "";
     return `
       <div class="gm-later-sec">
         <div class="gm-later-title">
@@ -222,7 +213,6 @@ const panel = {
           <span>已登记 ${uidList.length} 个</span>
         </div>
         ${htmlCur}
-        ${htmlChips}
       </div>
     `;
   },
