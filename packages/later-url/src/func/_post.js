@@ -68,6 +68,11 @@ gob.postZBP = async (info, data = {}) => {
   try {
     const res = await gob.http.postJson(strUrl, body);
     const resJSON = JSON.parse(res.responseText);
+    gob.remoteTotal = resJSON.data.count || 0;
+    if (typeof data.showProgress === "function") {
+      gob.postIndex += 1;
+      data.showProgress(gob.postIndex, gob.remoteTotal);
+    }
     const { code, msg } = resJSON.err;
     _log(`gob.postZBP() -> ${code} - ${msg}\n`);
     return code === 0 || code === 6;

@@ -177,6 +177,11 @@ const bilibili = {
     this.data.username = this.getUsername();
     this.data.uid = this.getUid();
     _logOnce("bilibili.check() - 当前用户信息\n", this.data);
+    const initProgress = () => {
+      if (!this._$list.$progress) {
+        this.showProgress();
+      }
+    };
 
     for (let i = 0; i < maxTry; i++) {
       // 需要的页面元素：列表头部、标题、视频卡片
@@ -188,12 +193,14 @@ const bilibili = {
       this._$list.$cards = $cards;
       // 三者都在，才算加载完成
       if ($warp && $title && $cards.length > 0) {
+        initProgress();
         return {
           loaded: true,
         };
       }
       // 没有卡片且不在加载中、且列表为空，则无需继续等待
       if (!$n(SEL.loading) && $n(SEL.empty)) {
+        initProgress();
         return {
           loaded: true,
         };
@@ -229,6 +236,7 @@ const bilibili = {
       // 加到 $title 后面
       $title.parentNode.insertBefore($div, $title.nextSibling);
       $progress = $div;
+      this._$list.$progress = $progress;
     }
     // 更新进度
     $progress.textContent = `进度: ${itemIndex}/${pageTotal} 远程: ${remoteTotal}`;
@@ -361,8 +369,6 @@ const bilibili = {
     let bQuickCheckStopped = false;
     // 等待列表渲染完成，元素存于 this._$list
     this.check().then((checkResult) => {
-      // 初始显示进度
-      this.showProgress();
       // 取需要的页面元素
       const $cards = checkResult.loaded ? this._$list.$cards : [];
       // 获取用户投稿视频
@@ -385,7 +391,7 @@ const bilibili = {
         return;
       }
       list.forEach(v => this._sent.add(v.bvid));
-      // 更新进度通过 bilibili.data 传给 gob.postCF
+      // 更新进度通过 bilibili.data 传给发送封装
       bilibili.data.showProgress = (itemIndex, remoteTotal) => {
         bilibili.showProgress(itemIndex, list.length, remoteTotal);
       };
