@@ -14,6 +14,8 @@ const config = {
     enableZbp: false,
     // 已登记 UP：{ [uid]: "name" }，须与插件后台列表一致
     zbpUsers: {},
+    // 浮层面板是否折叠
+    panelFold: true,
     isInit: false,
   },
   load() {
