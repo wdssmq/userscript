@@ -28,8 +28,8 @@ const gobInfo = {
   lstSync: [-1, true],
   curUrl: [location.href, false],
   lstUrl: ["", false],
-  curPage: [-1, false],
-  lstPage: [-1, false],
+  curPage: [1, false],
+  lstPage: [1, false],
 };
 const gob = {
   _lsKey: `${gm_name}_data`,
