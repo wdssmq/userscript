@@ -24,6 +24,8 @@ const gobInfo = {
   postCount: [0, false],
   postIndex: [0, false],
   remoteTotal: [0, false],
+  // 上次同步登记名单的时间戳，-1 表示从未同步
+  lstSync: [-1, true],
   curUrl: [location.href, false],
   lstUrl: ["", false],
 };
@@ -52,7 +54,7 @@ const gob = {
   // 读取
   load() {
     if (this._bolLoaded) {
-      return;
+      return this;
     }
     const lsData = lsObj.getItem(this._lsKey, this.data);
     _log("[log]gob.load()", lsData);
@@ -63,6 +65,7 @@ const gob = {
       }
     }
     this._bolLoaded = true;
+    return this;
   },
   // 保存
   save() {
@@ -81,6 +84,69 @@ const gob = {
 };
 
 gob.http = http;
+
+// 由推送地址解析站点根与登记名单地址
+// zbpUrl: {host}zb_system/cmd.php?act=ajax&src=odd_Later&token=xxx
+gob.zbpInfo = () => {
+  const info = {
+    host: "",
+    usersUrl: "",
+  };
+  const strUrl = (config.data.zbpUrl || "").trim();
+  if (!strUrl) {
+    return info;
+  }
+  const oMatch = strUrl.match(/^(https?:\/\/[^/]+\/.*?)zb_system\/cmd\.php/i);
+  if (!oMatch) {
+    return info;
+  }
+  info.host = oMatch[1];
+  info.usersUrl = `${info.host}zb_users/plugin/odd_Later/usr/bili.json`;
+  return info;
+};
+
+// 距上次同步超过一天时同步一次，成功才记录时间
+gob.checkSyncZbpUsers = async () => {
+  const curTime = curTimestamp;
+  if (gob.lstSync > 0 && curTime - gob.lstSync < 86400) {
+    return false;
+  }
+  const rlt = await gob.syncZbpUsers();
+  if (rlt) {
+    gob.lstSync = curTime;
+    gob.save();
+  }
+  return rlt;
+};
+
+// 拉取登记名单（bili.json）并更新 zbpUsers
+// 名单形如：[{ uid, name, type }]
+gob.syncZbpUsers = async () => {
+  const { usersUrl } = gob.zbpInfo();
+  if (!usersUrl) {
+    _log("gob.syncZbpUsers() - 未配置推送地址");
+    return false;
+  }
+  try {
+    const res = await gob.http.get(usersUrl);
+    const list = JSON.parse(res.responseText);
+    const users = {};
+    list.forEach((item) => {
+      if (!item || !item.uid) {
+        return;
+      }
+      users[String(item.uid)] = String(item.name || item.uid);
+    });
+    config.data.zbpUsers = users;
+    config.save();
+    _log("gob.syncZbpUsers()\n", users);
+    return true;
+  }
+  catch (error) {
+    _log("gob.syncZbpUsers() - error\n", error);
+    return false;
+  }
+};
 
 // 删除 url
 gob.delUrl = async (url, category) => {
@@ -152,7 +218,7 @@ gob.stopBySendLimit = (url, dayLimit = 37, sendLimit = 4) => {
 };
 
 // 初始化
-gob.init().load();
+gob.init().load().checkSyncZbpUsers();
 
 export {
   gob,
