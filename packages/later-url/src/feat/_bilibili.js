@@ -2,6 +2,7 @@ import {
   $n,
   $na,
   _curUrl,
+  _error,
   _getDateStr,
   _log,
   _logHis,
@@ -210,7 +211,7 @@ const bilibili = {
     if (!$progress) {
       const $div = document.createElement("div");
       $div.id = "gm-progress";
-      $div.style = "margin: 4px 8px;";
+      $div.style = "margin-left: auto;";
       $div.style.color = "red";
       $div.style.fontSize = "18px";
       $div.style.fontWeight = "bold";
@@ -220,6 +221,29 @@ const bilibili = {
     }
     // 更新进度
     $progress.textContent = `进度: ${itemIndex}/${pageTotal} 远程: ${remoteTotal}`;
+    if (!$n("#gm-copy-up")) {
+      const $button = document.createElement("button");
+      $button.id = "gm-copy-up";
+      $button.type = "button";
+      $button.textContent = "复制";
+      $button.style = "margin-left: 8px;";
+      $button.classList.add("vui_button");
+      $button.addEventListener("click", async () => {
+        const text = `uid: ${this.data.uid}\nname: ${this.data.username}\ntype: up`;
+        try {
+          await navigator.clipboard.writeText(text);
+          $button.textContent = "已复制";
+          setTimeout(() => {
+            $button.textContent = "复制";
+          }, 1500);
+        }
+        catch (error) {
+          _error("bilibili.copyUpInfo() - error\n", error);
+          $button.textContent = "复制失败";
+        }
+      });
+      $progress.insertAdjacentElement("beforebegin", $button);
+    }
   },
 
   // 重置进度条
