@@ -227,6 +227,8 @@
     lstSync: [-1, true],
     curUrl: [location.href, false],
     lstUrl: ["", false],
+    curPage: [-1, false],
+    lstPage: [-1, false],
   };
   const gob = {
     _lsKey: `${gm_name}_data`,
@@ -485,6 +487,11 @@
     try {
       const res = await gob.http.postJson(strUrl, body);
       const resJSON = JSON.parse(res.responseText);
+      gob.remoteTotal = resJSON.data.count || 0;
+      if (typeof data.showProgress === "function") {
+        gob.postIndex += 1;
+        data.showProgress(gob.postIndex, gob.remoteTotal);
+      }
       const { code, msg } = resJSON.err;
       _log(`gob.postZBP() -> ${code} - ${msg}\n`);
       return code === 0 || code === 6;
@@ -537,6 +544,8 @@
     empty: ".space-upload .video-body .empty",
     // 列表头部，进度条挂载位置
     header: ".video-header__top",
+    // 当前分页
+    curPage: ".video-footer .vui_button--active-blue",
   };
   // 从链接中提取 BVID
   const RE_BVID = /\/video\/(BV[0-9A-Za-z]+)/;
@@ -666,11 +675,25 @@
       return $na(SEL.card);
     },
 
+    _$curPage() {
+      const $el = $n(SEL.curPage);
+      const num = $el ? Number.parseInt($el.textContent.trim(), 10) || -1 : -1;
+      return {
+        $el,
+        num,
+      };
+    },
+
     // 网页加载检查
     async check(maxTry = 20) {
       this.data.username = this.getUsername();
       this.data.uid = this.getUid();
       _logOnce("bilibili.check() - 当前用户信息\n", this.data);
+      const initProgress = () => {
+        if (!this._$list.$progress) {
+          this.showProgress();
+        }
+      };
 
       for (let i = 0; i < maxTry; i++) {
         // 需要的页面元素：列表头部、标题、视频卡片
@@ -682,12 +705,14 @@
         this._$list.$cards = $cards;
         // 三者都在，才算加载完成
         if ($warp && $title && $cards.length > 0) {
+          initProgress();
           return {
             loaded: true,
           };
         }
         // 没有卡片且不在加载中、且列表为空，则无需继续等待
         if (!$n(SEL.loading) && $n(SEL.empty)) {
+          initProgress();
           return {
             loaded: true,
           };
@@ -723,6 +748,7 @@
         // 加到 $title 后面
         $title.parentNode.insertBefore($div, $title.nextSibling);
         $progress = $div;
+        this._$list.$progress = $progress;
       }
       // 更新进度
       $progress.textContent = `进度: ${itemIndex}/${pageTotal} 远程: ${remoteTotal}`;
@@ -830,9 +856,16 @@
       if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/upload\/video/)) {
         return;
       }
+      // 获取当前页码
+      const { num } = this._$curPage();
+      gob.curPage = num;
+      if (gob.curPage < 0) {
+        return;
+      }
       // 网址改变时重置状态
-      if (gob.curUrl !== gob.lstUrl) {
+      if (gob.curUrl !== gob.lstUrl || gob.curPage !== gob.lstPage) {
         gob.lstUrl = gob.curUrl;
+        gob.lstPage = gob.curPage;
         this._sent.clear();
         stopQuick.reset();
         this.resetProgress();
@@ -848,8 +881,6 @@
       let bQuickCheckStopped = false;
       // 等待列表渲染完成，元素存于 this._$list
       this.check().then((checkResult) => {
-        // 初始显示进度
-        this.showProgress();
         // 取需要的页面元素
         const $cards = checkResult.loaded ? this._$list.$cards : [];
         // 获取用户投稿视频
@@ -872,7 +903,7 @@
           return;
         }
         list.forEach(v => this._sent.add(v.bvid));
-        // 更新进度通过 bilibili.data 传给 gob.postCF
+        // 更新进度通过 bilibili.data 传给发送封装
         bilibili.data.showProgress = (itemIndex, remoteTotal) => {
           bilibili.showProgress(itemIndex, list.length, remoteTotal);
         };
