@@ -21,3 +21,6 @@ _debug_*
 dist-lib/lib-empty
 dist-lib/lib-empty.*
 node_modules
+
+# For Dev
+.stash/
