@@ -97,6 +97,63 @@ gob.post = async (info, data) => {
 // df For New ↓
 // df For New ↓
 
+// 快速防重
+const stopQuick = {
+  key: "",
+  // 组成 key 的 bvid
+  bvids: new Set(),
+  // 本网址会话内已走过 fnPost 的 bvid
+  tried: new Set(),
+  // 当前 key 是否已写入过计数
+  written: false,
+
+  // 网址变化时重置
+  reset() {
+    this.key = "";
+    this.bvids.clear();
+    this.tried.clear();
+    this.written = false;
+  },
+
+  // 检查快速防重是否触发，只读检查
+  checkOnly(quickKey) {
+    if (!quickKey || !gob.stopByQuickCheck(quickKey, false)) {
+      return false;
+    }
+    _logOnce("stopQuick.checkOnly() - 快速防重触发\n", quickKey);
+    return true;
+  },
+
+  // 更新快速防重 key，并另存一份组成 key 的 bvid
+  setKey(quickKey, quickBvids) {
+    if (quickKey === this.key) {
+      return;
+    }
+    this.key = quickKey;
+    this.bvids = new Set(quickBvids);
+    this.written = false;
+  },
+
+  // 记录走过一遍 fnPost 的 bvid，全部到齐后才写入计数
+  // 网址变化或 key 变化前，同一 key 只写一次
+  writeCheck(bvid) {
+    if (bvid) {
+      this.tried.add(bvid);
+    }
+    const { key, bvids, tried, written } = this;
+    if (written || !key || bvids.size === 0) {
+      return false;
+    }
+    const bAllTried = Array.from(bvids).every(item => tried.has(item));
+    if (!bAllTried) {
+      return false;
+    }
+    this.written = true;
+    _logOnce("stopQuick.writeCheck() - 已全部发送，写入计数\n", key);
+    return !!gob.stopByQuickCheck(key, true);
+  },
+};
+
 // df bilibili
 
 const bilibili = {
@@ -120,11 +177,6 @@ const bilibili = {
   _sent: new Set(),
   // 防止重复执行
   _busy: false,
-  // 快速防重
-  _quickInfo: {
-    key: "",
-    bvids: new Set(),
-  },
 
   // 获取当前用户的 uid
   getUid() {
@@ -160,15 +212,6 @@ const bilibili = {
   // 当前页渲染出的视频卡片
   _$cards() {
     return $na(SEL.card);
-  },
-
-  // 检查快速防重是否触发
-  isQuickCheckStopped(quickKey) {
-    if (!quickKey || !gob.stopByQuickCheck(quickKey, true)) {
-      return false;
-    }
-    _logOnce("bilibili.main() - 快速防重触发\n", quickKey);
-    return true;
   },
 
   // 网页加载检查
@@ -315,14 +358,13 @@ const bilibili = {
     if (gob.curUrl !== gob.lstUrl) {
       gob.lstUrl = gob.curUrl;
       this._sent.clear();
-      this._quickInfo.key = "";
-      this._quickInfo.bvids.clear();
+      stopQuick.reset();
       this.resetProgress();
       _logHis.clear();
     }
     // 加载完成后的快速防重检查，实际加载检查在这之后
-    const quickKeyAtStart = this._quickInfo.key;
-    if (this.isQuickCheckStopped(quickKeyAtStart)) {
+    const quickKeyAtStart = stopQuick.key;
+    if (stopQuick.checkOnly(quickKeyAtStart)) {
       return;
     }
     this._busy = true;
@@ -339,9 +381,8 @@ const bilibili = {
     }).then(({ videos, quickKey, quickBvids }) => {
       _logOnce("bilibili.main()->vlist\n", videos);
       // 更新快速防重 key，并另存一份组成 key 的 bvid
-      this._quickInfo.key = quickKey;
-      this._quickInfo.bvids = new Set(quickBvids);
-      if (quickKey !== quickKeyAtStart && this.isQuickCheckStopped(quickKey)) {
+      stopQuick.setKey(quickKey, quickBvids);
+      if (quickKey !== quickKeyAtStart && stopQuick.checkOnly(quickKey)) {
         bQuickCheckStopped = true;
         return;
       }
