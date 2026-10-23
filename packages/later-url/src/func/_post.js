@@ -67,8 +67,8 @@ gob.postZBP = async (info, data = {}) => {
   _log("gob.postZBP()\n", body);
   try {
     const res = await gob.http.postJson(strUrl, body);
-    _log("gob.postZBP()\n", res.responseText);
     const resJSON = JSON.parse(res.responseText);
+    _log("gob.postZBP()\n", resJSON);
     // 6 为重复推送，视为已存在
     return resJSON.err === 0 || resJSON.err === 6;
   }
