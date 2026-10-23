@@ -485,9 +485,9 @@
     try {
       const res = await gob.http.postJson(strUrl, body);
       const resJSON = JSON.parse(res.responseText);
-      _log("gob.postZBP()\n", resJSON);
-      // 6 为重复推送，视为已存在
-      return resJSON.err === 0 || resJSON.err === 6;
+      const { code, msg } = resJSON.err;
+      _log(`gob.postZBP() -> ${code} - ${msg}\n`);
+      return code === 0 || code === 6;
     }
     catch (error) {
       _log("gob.postZBP() - error\n", error);
