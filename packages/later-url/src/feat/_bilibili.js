@@ -50,6 +50,11 @@ gob.filter = (str) => {
 gob.post = async (info, data) => {
   // 如果有 data.showProgress() 函数
   const fnShowProgress = typeof data.showProgress === "function" ? data.showProgress : () => { };
+  // 远程服务开关未启用时直接跳过，不计配额也不发请求
+  if (!config.data.enableCf) {
+    _logOnce("gob.post() - 远程服务未启用，跳过发送");
+    return false;
+  }
   gob.postIndex += 1;
   if (gob.stopByErrCount()) {
     return false;
