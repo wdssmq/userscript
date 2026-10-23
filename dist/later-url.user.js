@@ -483,7 +483,7 @@
       url: info.url,
       title: info.title,
     };
-    _log("gob.postZBP()\n", body);
+    // _log("gob.postZBP()\n", body);
     try {
       const res = await gob.http.postJson(strUrl, body);
       const resJSON = JSON.parse(res.responseText);
@@ -493,7 +493,8 @@
         data.showProgress(gob.postIndex, gob.remoteTotal);
       }
       const { code, msg } = resJSON.err;
-      _log(`gob.postZBP() -> ${code} - ${msg}\n`);
+      const logInfo = msg === "" ? info.bvid : `${msg} - ${info.bvid}`;
+      _log(`gob.postZBP() -> ${code} - ${logInfo}`);
       return code === 0 || code === 6;
     }
     catch (error) {
@@ -887,7 +888,7 @@
         // 获取用户投稿视频
         return this.getVideosFromPage($cards);
       }).then(({ videos, quickKey, quickBvids }) => {
-        const logInfo = videos.length;
+        let logInfo = videos.length;
         _logOnce("bilibili.main() - vlist:", logInfo);
         // 更新快速防重 key，并另存一份组成 key 的 bvid
         stopQuick.setKey(quickKey, quickBvids);
@@ -897,10 +898,8 @@
         }
         // 过滤掉已经发送过的视频
         const list = videos.filter(v => !this._sent.has(v.bvid));
-        list.length && _log("bilibili.main()\n", {
-          total: videos.length,
-          new: list.length,
-        });
+        logInfo = list.length;
+        _logOnce("bilibili.main() - new list length:", logInfo);
         if (list.length === 0) {
           return;
         }
