@@ -64,7 +64,7 @@ gob.postZBP = async (info, data = {}) => {
     url: info.url,
     title: info.title,
   };
-  _log("gob.postZBP()\n", body);
+  // _log("gob.postZBP()\n", body);
   try {
     const res = await gob.http.postJson(strUrl, body);
     const resJSON = JSON.parse(res.responseText);
@@ -74,7 +74,8 @@ gob.postZBP = async (info, data = {}) => {
       data.showProgress(gob.postIndex, gob.remoteTotal);
     }
     const { code, msg } = resJSON.err;
-    _log(`gob.postZBP() -> ${code} - ${msg}\n`);
+    const logInfo = msg === "" ? info.bvid : `${msg} - ${info.bvid}`;
+    _log(`gob.postZBP() -> ${code} - ${logInfo}`);
     return code === 0 || code === 6;
   }
   catch (error) {

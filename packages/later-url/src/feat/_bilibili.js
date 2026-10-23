@@ -375,7 +375,7 @@ const bilibili = {
       // 获取用户投稿视频
       return this.getVideosFromPage($cards);
     }).then(({ videos, quickKey, quickBvids }) => {
-      const logInfo = videos.length;
+      let logInfo = videos.length;
       _logOnce("bilibili.main() - vlist:", logInfo);
       // 更新快速防重 key，并另存一份组成 key 的 bvid
       stopQuick.setKey(quickKey, quickBvids);
@@ -385,10 +385,8 @@ const bilibili = {
       }
       // 过滤掉已经发送过的视频
       const list = videos.filter(v => !this._sent.has(v.bvid));
-      list.length && _log("bilibili.main()\n", {
-        total: videos.length,
-        new: list.length,
-      });
+      logInfo = list.length;
+      _logOnce("bilibili.main() - new list length:", logInfo);
       if (list.length === 0) {
         return;
       }
