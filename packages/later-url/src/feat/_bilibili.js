@@ -32,6 +32,8 @@ const SEL = {
   empty: ".space-upload .video-body .empty",
   // 列表头部，进度条挂载位置
   header: ".video-header__top",
+  // 当前分页
+  curPage: ".video-footer .vui_button--active-blue",
 };
 // 从链接中提取 BVID
 const RE_BVID = /\/video\/(BV[0-9A-Za-z]+)/;
@@ -159,6 +161,15 @@ const bilibili = {
   // 当前页渲染出的视频卡片
   _$cards() {
     return $na(SEL.card);
+  },
+
+  _$curPage() {
+    const $el = $n(SEL.curPage);
+    const num = $el ? Number.parseInt($el.textContent.trim(), 10) || -1 : -1;
+    return {
+      $el,
+      num,
+    };
   },
 
   // 网页加载检查
@@ -325,9 +336,16 @@ const bilibili = {
     if (!gob.curUrl.match(/space\.bilibili\.com\/\d+\/upload\/video/)) {
       return;
     }
+    // 获取当前页码
+    const { num } = this._$curPage();
+    gob.curPage = num;
+    if (gob.curPage < 0) {
+      return;
+    }
     // 网址改变时重置状态
-    if (gob.curUrl !== gob.lstUrl) {
+    if (gob.curUrl !== gob.lstUrl || gob.curPage !== gob.lstPage) {
       gob.lstUrl = gob.curUrl;
+      gob.lstPage = gob.curPage;
       this._sent.clear();
       stopQuick.reset();
       this.resetProgress();
