@@ -176,7 +176,8 @@ const bilibili = {
   async check(maxTry = 20) {
     this.data.username = this.getUsername();
     this.data.uid = this.getUid();
-    _logOnce("bilibili.check() - 当前用户信息\n", this.data);
+    const logInfo = JSON.stringify(this.data);
+    _logOnce("bilibili.check() - usrData:", logInfo);
     const initProgress = () => {
       if (!this._$list.$progress) {
         this.showProgress();
@@ -374,7 +375,8 @@ const bilibili = {
       // 获取用户投稿视频
       return this.getVideosFromPage($cards);
     }).then(({ videos, quickKey, quickBvids }) => {
-      _logOnce("bilibili.main()->vlist\n", videos);
+      const logInfo = videos.length;
+      _logOnce("bilibili.main() - vlist:", logInfo);
       // 更新快速防重 key，并另存一份组成 key 的 bvid
       stopQuick.setKey(quickKey, quickBvids);
       if (quickKey !== quickKeyAtStart && stopQuick.checkOnly(quickKey)) {
