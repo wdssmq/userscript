@@ -112,8 +112,11 @@ const bilibili = {
   _sent: new Set(),
   // 防止重复执行
   _busy: false,
-  // 快速防重 key
-  _quickKey: "",
+  // 快速防重
+  _quickInfo: {
+    key: "",
+    bvids: new Set(),
+  },
 
   // 获取当前用户的 uid
   getUid() {
@@ -284,6 +287,7 @@ const bilibili = {
     return {
       videos,
       quickKey: Array.from(arrSet).join("_"),
+      quickBvids: arrSet,
     };
   },
 
@@ -303,12 +307,13 @@ const bilibili = {
     if (gob.curUrl !== gob.lstUrl) {
       gob.lstUrl = gob.curUrl;
       this._sent.clear();
-      this._quickKey = "";
+      this._quickInfo.key = "";
+      this._quickInfo.bvids.clear();
       this.resetProgress();
       _logHis.clear();
     }
     // 加载完成后的快速防重检查，实际加载检查在这之后
-    const quickKeyAtStart = this._quickKey;
+    const quickKeyAtStart = this._quickInfo.key;
     if (this.isQuickCheckStopped(quickKeyAtStart)) {
       return;
     }
@@ -323,10 +328,11 @@ const bilibili = {
       const $cards = checkResult.loaded ? this._$list.$cards : [];
       // 获取用户投稿视频
       return this.getVideosFromPage($cards);
-    }).then(({ videos, quickKey }) => {
+    }).then(({ videos, quickKey, quickBvids }) => {
       _logOnce("bilibili.main()->vlist\n", videos);
-      // 更新快速防重 key
-      this._quickKey = quickKey;
+      // 更新快速防重 key，并另存一份组成 key 的 bvid
+      this._quickInfo.key = quickKey;
+      this._quickInfo.bvids = new Set(quickBvids);
       if (quickKey !== quickKeyAtStart && this.isQuickCheckStopped(quickKey)) {
         bQuickCheckStopped = true;
         return;
