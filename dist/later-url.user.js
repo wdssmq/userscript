@@ -227,8 +227,8 @@
     lstSync: [-1, true],
     curUrl: [location.href, false],
     lstUrl: ["", false],
-    curPage: [-1, false],
-    lstPage: [-1, false],
+    curPage: [1, false],
+    lstPage: [1, false],
   };
   const gob = {
     _lsKey: `${gm_name}_data`,
@@ -678,7 +678,7 @@
 
     _$curPage() {
       const $el = $n(SEL.curPage);
-      const num = $el ? Number.parseInt($el.textContent.trim(), 10) || -1 : -1;
+      const num = $el ? Number.parseInt($el.textContent.trim(), 10) || 1 : 1;
       return {
         $el,
         num,
@@ -861,9 +861,6 @@
       // 获取当前页码
       const { num } = this._$curPage();
       gob.curPage = num;
-      if (gob.curPage < 0) {
-        return;
-      }
       // 网址改变时重置状态
       if (gob.curUrl !== gob.lstUrl || gob.curPage !== gob.lstPage) {
         gob.lstUrl = gob.curUrl;
