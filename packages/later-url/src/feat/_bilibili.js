@@ -261,7 +261,10 @@ const bilibili = {
           _error("bilibili.copyUpInfo() - error\n", error);
           $button.textContent = "复制失败";
         }
+        // 强制同步一次
         gob.checkSyncZbpUsers(true);
+        // 重置下一次
+        gob.resetSyncZbpUsers();
       });
       $progress.insertAdjacentElement("beforebegin", $button);
     }

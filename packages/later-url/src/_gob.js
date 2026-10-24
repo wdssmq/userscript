@@ -123,6 +123,12 @@ gob.checkSyncZbpUsers = async (force = false) => {
   return rlt;
 };
 
+// 重置同步状态
+gob.resetSyncZbpUsers = () => {
+  gob.lstSync = -1;
+  gob.save();
+};
+
 // 拉取登记名单（bili.json）并更新 zbpUsers
 // 名单形如：[{ uid, name, type }]
 gob.syncZbpUsers = async () => {
@@ -222,7 +228,9 @@ gob.stopBySendLimit = (url, dayLimit = 37, sendLimit = 4) => {
 };
 
 // 初始化
-gob.init().load().checkSyncZbpUsers();
+gob.init().load();
+config.onSave = gob.resetSyncZbpUsers;
+gob.checkSyncZbpUsers();
 
 export {
   gob,

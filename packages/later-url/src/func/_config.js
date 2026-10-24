@@ -2,6 +2,7 @@ import { _log } from "../_base";
 
 const config = {
   data: {},
+  onSave: null,
   defData: {
     // 远程服务（原有）
     baseUrl: "http://127.0.0.1:41897/",
@@ -33,6 +34,9 @@ const config = {
   save() {
     GM_setValue("config", config.data);
     _log("[log]config.save()", config.data);
+    if (this.onSave) {
+      this.onSave();
+    }
   },
 };
 
