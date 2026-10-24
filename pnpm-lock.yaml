@@ -491,6 +491,13 @@ importers:
       rollup-plugin-monkey:
         specifier: 'catalog:'
         version: 1.1.0
+    devDependencies:
+      postcss:
+        specifier: 'catalog:'
+        version: 8.5.16
+      rollup-plugin-postcss:
+        specifier: 'catalog:'
+        version: 4.0.2(postcss@8.5.16)
 
   packages/php-v:
     dependencies:

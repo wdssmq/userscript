@@ -14,5 +14,9 @@
     "open": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-monkey": "catalog:"
+  },
+  "devDependencies": {
+    "postcss": "catalog:",
+    "rollup-plugin-postcss": "catalog:"
   }
 }
