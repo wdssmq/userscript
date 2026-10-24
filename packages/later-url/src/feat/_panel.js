@@ -1,4 +1,5 @@
 import { $n, _log, fnPrompt } from "../_base";
+import { gob } from "../_gob";
 import config from "../func/_config";
 import "../style/style.css";
 
@@ -122,6 +123,7 @@ const panel = {
   // ZBP 插件区块，已登记部分只读展示
   htmlZbp() {
     const { zbpUrl, enableZbp } = config.data;
+    const { adminUrl } = gob.zbpInfo();
     const strUrl = (zbpUrl || "").trim();
     const hasUrl = /^https?:\/\//i.test(strUrl);
     const users = this.users();
@@ -152,6 +154,9 @@ const panel = {
         </div>
         <div class="gm-later-row">
           <span>已登记 ${uidList.length} 个</span>
+          ${adminUrl
+            ? `<a class="gm-later-link" href="${escapeHtml(adminUrl)}" target="_blank" title="ZBP 管理地址">管理地址</a>`
+            : `<span>未配置</span>`}
         </div>
         ${htmlCur}
       </div>

@@ -93,6 +93,7 @@ gob.zbpInfo = () => {
   const info = {
     host: "",
     usersUrl: "",
+    adminUrl: "",
   };
   const strUrl = (config.data.zbpUrl || "").trim();
   if (!strUrl) {
@@ -104,6 +105,7 @@ gob.zbpInfo = () => {
   }
   info.host = oMatch[1];
   info.usersUrl = `${info.host}zb_users/plugin/odd_Later/usr/bili.json?ts=${curTimestamp}`;
+  info.adminUrl = `${info.host}zb_users/plugin/odd_Later/main.php`;
   return info;
 };
 
