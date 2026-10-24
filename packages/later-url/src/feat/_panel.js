@@ -102,7 +102,7 @@ const panel = {
     const host = urlHost(baseUrl) || "未配置";
     const token = authToken ? `${String(authToken).slice(0, 6)}•••` : "未配置";
     return `
-      <div class="gm-later-sec">
+      <div class="gm-later-sec gm-later-hidden">
         <div class="gm-later-title">
           <span>远程服务</span>
           ${this.htmlSwitch("cf-switch", enableCf)}
