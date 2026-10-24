@@ -1,9 +1,9 @@
 import { $n, _log, fnPrompt } from "../_base";
 import config from "../func/_config";
+import "../style/style.css";
 
 // 浮层设置面板：两套远程的开关与地址，改动即时保存
 const ID_ROOT = "gm-later-panel";
-const ID_STYLE = "gm-later-panel-style";
 
 // 空间页 UP 的 uid
 const RE_UID = /space\.bilibili\.com\/(\d+)/;
@@ -32,55 +32,6 @@ function escapeHtml(str) {
     "'": "&#39;",
   }[c]));
 }
-
-const CSS = `
-#gm-later-panel{position:fixed;right:16px;bottom:16px;z-index:2147483000;
-  font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:12px;color:#fff;
-  line-height:1.5;-webkit-user-select:none;user-select:none;}
-#gm-later-panel *{box-sizing:border-box;}
-.gm-later-card{width:260px;max-width:calc(100vw - 32px);
-  background:rgba(31,33,40,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.12);border-radius:12px;
-  box-shadow:0 10px 28px rgba(0,0,0,.35);overflow:hidden;
-  animation:gm-later-in .16s ease-out;}
-@keyframes gm-later-in{from{opacity:0;transform:translateY(6px) scale(.98);}to{opacity:1;transform:none;}}
-.gm-later-head{display:flex;align-items:center;justify-content:space-between;
-  padding:10px 12px;font-size:14px;font-weight:600;
-  background:linear-gradient(90deg,rgba(251,114,153,.18),rgba(35,173,229,.14));}
-.gm-later-fold{cursor:pointer;color:#C9CCD4;font-size:12px;font-weight:400;
-  padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.08);transition:background .16s ease,color .16s ease;}
-.gm-later-fold:hover{background:rgba(255,255,255,.16);color:#fff;}
-.gm-later-body{padding:10px 12px 12px;}
-.gm-later-sec{margin-bottom:10px;padding:8px 10px;border-radius:8px;background:rgba(43,46,56,.8);}
-.gm-later-sec:last-of-type{margin-bottom:0;}
-.gm-later-title{display:flex;align-items:center;justify-content:space-between;
-  font-size:13px;font-weight:500;color:#fff;}
-.gm-later-row{display:flex;align-items:center;justify-content:space-between;
-  margin-top:6px;color:#C9CCD4;}
-.gm-later-row > span:first-child{color:#8B90A0;}
-.gm-later-sw{width:36px;height:20px;border-radius:999px;background:#6B6F7A;
-  position:relative;cursor:pointer;transition:background .16s ease;}
-.gm-later-sw[data-on="true"]{background:#FB7299;}
-.gm-later-sw i{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
-  background:#fff;transition:left .16s ease;box-shadow:0 1px 3px rgba(0,0,0,.4);}
-.gm-later-sw[data-on="true"] i{left:18px;}
-.gm-later-link{cursor:pointer;color:#23ADE5;max-width:150px;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap;}
-.gm-later-link:hover{text-decoration:underline;}
-.gm-later-ok{color:#3DBF7A;}
-.gm-later-warn{color:#F5A623;}
-.gm-later-err{color:#E5534B;}
-.gm-later-status{margin-top:10px;padding:6px 8px;border-radius:8px;font-size:12px;
-  color:#C9CCD4;background:rgba(255,255,255,.05);word-break:break-all;}
-.gm-later-fab{width:48px;height:48px;border-radius:50%;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(31,33,40,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 20px rgba(0,0,0,.35);
-  transition:transform .16s ease,box-shadow .16s ease;}
-.gm-later-fab:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(0,0,0,.45);}
-.gm-later-fab-t{font-size:11px;font-weight:600;color:#fff;letter-spacing:.5px;}
-.gm-later-fab-n{font-size:11px;color:#FB7299;}
-`;
 
 const panel = {
   // 当前是否已注入面板
@@ -128,16 +79,6 @@ const panel = {
     };
     _log("panel.notify()\n", this.last);
     this.renderStatus();
-  },
-
-  injectStyle() {
-    if ($n(`#${ID_STYLE}`)) {
-      return;
-    }
-    const $style = document.createElement("style");
-    $style.id = ID_STYLE;
-    $style.textContent = CSS;
-    document.head.appendChild($style);
   },
 
   // 收起时的角标
@@ -265,7 +206,6 @@ const panel = {
     if (!this.isPage()) {
       return;
     }
-    this.injectStyle();
     let $root = $n(`#${ID_ROOT}`);
     if (!$root) {
       $root = document.createElement("div");
