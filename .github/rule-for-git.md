@@ -22,7 +22,3 @@ AI 生成 Git 提交信息时，主题必须使用以下格式：
   - /site-astro —— 使用目录名
   - /bin 或 /main.py —— `python`
 - 不符合以上规则的，使用 `misc` 或省略 `<scope>`。
-
-
-
-
