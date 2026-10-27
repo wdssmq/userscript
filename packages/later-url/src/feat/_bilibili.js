@@ -3,11 +3,13 @@ import {
   $na,
   _curUrl,
   _error,
-  _getDateStr,
+  _fmtDate,
   _log,
   _logHis,
   _logOnce,
+  _parseDate,
   _sleep,
+  curDate,
   fnElChange,
 } from "../_base";
 
@@ -37,8 +39,6 @@ const SEL = {
 };
 // 从链接中提取 BVID
 const RE_BVID = /\/video\/(BV[0-9A-Za-z]+)/;
-// 卡片中的日期文本
-const RE_DATE = /\d{4}-\d{1,2}-\d{1,2}/;
 
 // df For Old ↑
 // df For Old ↑
@@ -111,7 +111,8 @@ const bilibili = {
     uid: "",
     username: "",
     category: "default",
-    date: _getDateStr(),
+    // 兜底的发布时间：今天 00:00:00，格式 Y-m-d H:i:s
+    date: `${_fmtDate(curDate, false)} 00:00:00`,
   },
 
   // 需要的页面元素
@@ -299,15 +300,18 @@ const bilibili = {
         title = $aTitle.getAttribute("title") || $aTitle.textContent;
       }
     }
-    // 日期：「xxxx-xx-xx」
+    // 发布时间：「2025年12月18日」「10月1日」等，统一为 Y-m-d H:i:s
     const $subtitle = $card.querySelector(".bili-video-card__subtitle");
-    const oDate = ($subtitle ? $subtitle.textContent : $card.textContent).match(RE_DATE);
+    const strDate = _parseDate($subtitle ? $subtitle.textContent : "");
     return {
       uid: this.data.uid,
       name: this.data.username,
       bvid,
       title: title.trim(),
-      date: oDate ? oDate[0] : _getDateStr(),
+      // 发布时间；解析不到时回退到「今天」
+      date: strDate || this.data.date,
+      // 提交时间由发送时统一填充
+      time: "",
       url: `https://www.bilibili.com/video/${bvid}`,
       category: this.data.category,
     };

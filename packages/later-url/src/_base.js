@@ -1,4 +1,10 @@
 import { gm_name } from "./__info";
+// 时间相关实现在 func/_time.js，此处统一对外输出
+import {
+  _fmtDate,
+  _getDateStr,
+  _parseDate,
+} from "./func/_time";
 
 // 初始常量或函数
 const curUrl = window.location.href;
@@ -10,10 +16,6 @@ const curTimestamp = Math.floor(curDate.getTime() / 1000);
 const _curUrl = () => window.location.href;
 const _curDate = () => new Date();
 const _curTimestamp = () => Math.floor(_curDate().getTime() / 1000);
-function _getDateStr(date = curDate) {
-  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-  return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
-}
 const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // -------------------------------------
@@ -94,10 +96,12 @@ export {
   _curTimestamp,
   _curUrl,
   _error,
+  _fmtDate,
   _getDateStr,
   _log,
   _logHis,
   _logOnce,
+  _parseDate,
   _sleep,
   _warn,
   curDate,
