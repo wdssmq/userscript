@@ -12,9 +12,9 @@
 // @link     https://afdian.com/@wdssmq
 // @link     https://greasyfork.org/zh-CN/users/6865-wdssmq
 // @null     ----------------------------
-// @include        http://*/zb_users/plugin/AppCentre/plugin_edit.php*
-// @include        http://*/zb_users/plugin/AppCentre/theme_edit.php*
-// @include        http://*/zb_system/admin/index.php?act=PluginMng*
+// @include      */zb_users/plugin/AppCentre/plugin_edit.php*
+// @include      */zb_users/plugin/AppCentre/theme_edit.php*
+// @include      */zb_system/admin/index.php?act=PluginMng*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // ==/UserScript==
@@ -31,7 +31,7 @@
     GM_setValue("config", {
       appUrl: "//jq.qq.com/?_wv=1027&k=555hND5",
       appAdapted: "162210",
-      appPHPVer: "5.6",
+      appPHPVer: "7.4",
       appDesc: "置百丈玄冰而崩裂，掷须臾池水而漂摇。",
       authName: "沉冰浮水",
       authEmail: "wdssmq@qq.com",
@@ -72,9 +72,6 @@
     fnFill("#app_description", config.appDesc);
 
     const app_id = $("#app_id").val();
-    if (/LinksManage/.test(app_id)) {
-      fnFill("#app_phpver", "5.4", 1);
-    }
   })();
   (() => {
     if (location.pathname !== "/zb_system/admin/index.php") {
@@ -106,7 +103,7 @@
         $(this).css({ color: "red" });
         // .insertAfter("table tbody tr:first-child");
       }
-      if (/Todo|mzGrunt|FileIgnore|xnxf_SubMenu/.test(curHtml)) {
+      if (/mz_DevKit|mzGrunt/.test(curHtml)) {
         $(this).css({
           color: "cornflowerblue",
         });
