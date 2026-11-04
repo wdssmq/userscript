@@ -1,23 +1,35 @@
 /* 当直播间未开播时，限制主体内容最大宽度并居中显示。 */
-.app-body:has(.rows-closedown) {
+html:not(.bilibili-chat-temporary-restore) .app-body:has(.rows-closedown) {
   max-width: 1080px;
   margin-inline: auto;
 }
 
 /* 左栏与主父容器等宽 */
-.live-room-app:has(.rows-closedown) .player-and-aside-area>.player-ctnr {
+html:not(.bilibili-chat-temporary-restore) .live-room-app:has(.rows-closedown) .player-and-aside-area>.player-ctnr {
   width: 100% !important;
 }
 
 /* 聊天区块定位及宽度调整 */
-.live-room-app:has(.rows-closedown) .player-and-aside-area>.aside-area {
+html:not(.bilibili-chat-temporary-restore) .live-room-app:has(.rows-closedown) .player-and-aside-area>.aside-area {
   left: var(--chat-left) !important;
   top: var(--chat-top) !important;
   width: 100% !important;
 }
 
 /* 隐藏占位画面但保留其尺寸，避免播放器与聊天区高度塌缩。 */
-.live-room-app:has(.rows-closedown) .fullscreen-container-paddingbox {
+html:not(.bilibili-chat-temporary-restore) .live-room-app:has(.rows-closedown) .fullscreen-container-paddingbox {
   visibility: hidden !important;
 }
 
+.bilibili-chat-restore-button {
+  margin-left: 8px;
+  padding: 2px 6px;
+  border: 1px solid #6b7280;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  vertical-align: middle;
+}

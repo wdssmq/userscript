@@ -37,3 +37,48 @@ if (!observeChatPosition()) {
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
 }
+
+const restoreClass = "bilibili-chat-temporary-restore";
+const restoreButtonClass = "bilibili-chat-restore-button";
+
+function syncRestoreButton() {
+  const statusTags = document.querySelectorAll(".status-tag");
+  if (![...statusTags].some(statusTag => statusTag.textContent.trim() === "未开播")) {
+    document.documentElement.classList.remove(restoreClass);
+  }
+
+  statusTags.forEach((statusTag) => {
+    const nextElement = statusTag.nextElementSibling;
+    if (statusTag.textContent.trim() !== "未开播") {
+      if (nextElement?.classList.contains(restoreButtonClass)) {
+        nextElement.remove();
+      }
+      return;
+    }
+
+    if (nextElement?.classList.contains(restoreButtonClass)) {
+      return;
+    }
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = restoreButtonClass;
+    const restored = document.documentElement.classList.contains(restoreClass);
+    button.textContent = restored ? "重新应用" : "临时恢复";
+    button.setAttribute("aria-pressed", String(restored));
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const restored = document.documentElement.classList.toggle(restoreClass);
+      button.textContent = restored ? "重新应用" : "临时恢复";
+      button.setAttribute("aria-pressed", String(restored));
+    });
+    statusTag.insertAdjacentElement("afterend", button);
+  });
+}
+
+syncRestoreButton();
+new MutationObserver(syncRestoreButton).observe(document.documentElement, {
+  childList: true,
+  characterData: true,
+  subtree: true,
+});
