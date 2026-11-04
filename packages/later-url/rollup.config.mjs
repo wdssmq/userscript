@@ -1,5 +1,5 @@
+import process from "node:process";
 import replace from "@rollup/plugin-replace";
-// import open from "open";
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 import postcss from "rollup-plugin-postcss";
@@ -8,10 +8,6 @@ import { gm_banner, gm_name, gm_require } from "./src/__info.js";
 
 // console.log("typeof monkey：", typeof monkey);
 // // typeof monkey： function
-
-// // process.env.PWD 中获取当前文件夹名
-// const gm_dirname = process.env.PWD.split("/").pop();
-// console.log("gm_dirname：", gm_dirname);
 
 const gobConfig = {
   gm_file: `${gm_name}.user.js`,
@@ -69,7 +65,10 @@ const devConfig = {
           msg: "{{header}} install script for prod {{url}}",
           url: `${gobConfig.url}/${gobConfig.gm_file}`,
         });
-        // open(`${gobConfig.url}/dev/${gobConfig.gm_file}`);
+      },
+      watch: {
+        exclusions: [],
+        dirs: "",
       },
     }),
     replace({
