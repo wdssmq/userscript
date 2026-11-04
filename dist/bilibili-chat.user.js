@@ -51,7 +51,7 @@
     }
   }
 
-  var css_248z = "/* 当直播间未开播时，限制主体内容最大宽度并居中显示。 */\n.app-body:has(.rows-closedown) {\n  max-width: 1080px;\n  margin-inline: auto;\n}\n\n/* 左栏与主父容器等宽 */\n.live-room-app:has(.rows-closedown) .player-and-aside-area>.player-ctnr {\n  width: 100% !important;\n}\n\n/* 聊天区块定位及宽度调整 */\n.live-room-app:has(.rows-closedown) .player-and-aside-area>.aside-area {\n  left: var(--chat-left) !important;\n  top: var(--chat-top) !important;\n  width: 100% !important;\n}\n\n/* 隐藏占位画面但保留其尺寸，避免播放器与聊天区高度塌缩。 */\n.live-room-app:has(.rows-closedown) .fullscreen-container-paddingbox {\n  visibility: hidden !important;\n}\n\n";
+  var css_248z = "/* 当直播间未开播时，限制主体内容最大宽度并居中显示。 */\nhtml:not(.bilibili-chat-temporary-restore) .app-body:has(.rows-closedown) {\n  max-width: 1080px;\n  margin-inline: auto;\n}\n\n/* 左栏与主父容器等宽 */\nhtml:not(.bilibili-chat-temporary-restore) .live-room-app:has(.rows-closedown) .player-and-aside-area>.player-ctnr {\n  width: 100% !important;\n}\n\n/* 聊天区块定位及宽度调整 */\nhtml:not(.bilibili-chat-temporary-restore) .live-room-app:has(.rows-closedown) .player-and-aside-area>.aside-area {\n  left: var(--chat-left) !important;\n  top: var(--chat-top) !important;\n  width: 100% !important;\n}\n\n/* 隐藏占位画面但保留其尺寸，避免播放器与聊天区高度塌缩。 */\nhtml:not(.bilibili-chat-temporary-restore) .live-room-app:has(.rows-closedown) .fullscreen-container-paddingbox {\n  visibility: hidden !important;\n}\n\n.bilibili-chat-restore-button {\n  margin-left: 8px;\n  padding: 2px 6px;\n  border: 1px solid #6b7280;\n  border-radius: 4px;\n  background: transparent;\n  color: inherit;\n  font: inherit;\n  line-height: 1.4;\n  cursor: pointer;\n  vertical-align: middle;\n}\n";
   styleInject(css_248z);
 
   // 将播放器占位框的位置同步为未开播布局的定位基准。
@@ -91,5 +91,50 @@
     });
     observer.observe(document.documentElement, { childList: true, subtree: true });
   }
+
+  const restoreClass = "bilibili-chat-temporary-restore";
+  const restoreButtonClass = "bilibili-chat-restore-button";
+
+  function syncRestoreButton() {
+    const statusTags = document.querySelectorAll(".status-tag");
+    if (![...statusTags].some(statusTag => statusTag.textContent.trim() === "未开播")) {
+      document.documentElement.classList.remove(restoreClass);
+    }
+
+    statusTags.forEach((statusTag) => {
+      const nextElement = statusTag.nextElementSibling;
+      if (statusTag.textContent.trim() !== "未开播") {
+        if (nextElement?.classList.contains(restoreButtonClass)) {
+          nextElement.remove();
+        }
+        return;
+      }
+
+      if (nextElement?.classList.contains(restoreButtonClass)) {
+        return;
+      }
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = restoreButtonClass;
+      const restored = document.documentElement.classList.contains(restoreClass);
+      button.textContent = restored ? "重新应用" : "临时恢复";
+      button.setAttribute("aria-pressed", String(restored));
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const restored = document.documentElement.classList.toggle(restoreClass);
+        button.textContent = restored ? "重新应用" : "临时恢复";
+        button.setAttribute("aria-pressed", String(restored));
+      });
+      statusTag.insertAdjacentElement("afterend", button);
+    });
+  }
+
+  syncRestoreButton();
+  new MutationObserver(syncRestoreButton).observe(document.documentElement, {
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
 
 })();
