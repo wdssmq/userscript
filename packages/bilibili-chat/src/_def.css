@@ -1,11 +1,18 @@
-/* 未开播时，聊天区从播放器占位框左上角延伸至主区域右侧。 */
-.live-room-app:has(.rows-closedown) .player-and-aside-area > .aside-area {
-  left: var(--chat-left) !important;
-  top: var(--chat-top) !important;
-  width: calc(100% - var(--chat-left)) !important;
+/* 当直播间未开播时，限制主体内容最大宽度并居中显示。 */
+.app-body:has(.rows-closedown) {
+  max-width: 1080px;
+  margin-inline: auto;
 }
 
-.live-room-app:has(.rows-closedown) .chat-history-panel {
+/* 左栏与主父容器等宽 */
+.live-room-app:has(.rows-closedown) .player-and-aside-area>.player-ctnr {
+  width: 100% !important;
+}
+
+/* 聊天区块定位及宽度调整 */
+.live-room-app:has(.rows-closedown) .player-and-aside-area>.aside-area {
+  left: var(--chat-left) !important;
+  top: var(--chat-top) !important;
   width: 100% !important;
 }
 
@@ -14,11 +21,3 @@
   visibility: hidden !important;
 }
 
-/* 播放器容器与聊天区共用起点和宽度。 */
-.live-room-app:has(.rows-closedown) .player-and-aside-area > .player-ctnr {
-  left: var(--chat-left) !important;
-  width: calc(100% - var(--chat-left)) !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  transform: none !important;
-}
