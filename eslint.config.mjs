@@ -56,7 +56,20 @@ export default antfu(
       }], // 函数定义时括号前的空格
     },
   },
-
+  {
+    files: ["dist-lib/**/*.js"],
+    languageOptions: {
+      globals: {
+        define: "readonly",
+        self: "readonly",
+      },
+    },
+    rules: {
+      "no-unused-expressions": "off",
+      "no-restricted-globals": "off",
+      "style/max-statements-per-line": "off",
+    },
+  },
 );
 
 // 用于关闭某些规则的注释写法
