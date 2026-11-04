@@ -1,6 +1,6 @@
 const gm_banner = `
 // ==UserScript==
-// @name         bilibili-chat
+// @name         B 站直播间网页变「聊天群」
 // @namespace    https://www.wdssmq.com/
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
