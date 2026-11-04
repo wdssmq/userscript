@@ -50,7 +50,7 @@ jobs:
       - name: Build Packages
         if: steps.changed-files.outputs.packages_any_changed  == 'true'
         run: |
-          pnpm install --filter '!./packages-lib/lib-empty'
+          pnpm install
           pnpm run build:script
           pnpm run lint:fix
 
