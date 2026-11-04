@@ -1,4 +1,4 @@
-## bilibili-chat
+## B 站直播间网页变「聊天群」
 
 清除直播间聊天群左边的「空黑」区域
 
@@ -10,9 +10,9 @@ userscript/packages/bilibili-chat at main · wdssmq/userscript：
 
 ### 安装
 
-GitHub: [点击安装](https://github.com/wdssmq/userscript/blob/main/dist/bilibili-chat.user.js?raw=true "点击安装 bilibili-chat - GitHub") 「[在线查看](https://github.com/wdssmq/userscript/blob/main/dist/bilibili-chat.user.js "在线查看 dist 源码")」
+GitHub: [点击安装](https://github.com/wdssmq/userscript/blob/main/dist/bilibili-chat.user.js?raw=true "点击安装 B 站直播间网页变「聊天群」 - GitHub") 「[在线查看](https://github.com/wdssmq/userscript/blob/main/dist/bilibili-chat.user.js "在线查看 dist 源码")」
 
-CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili-chat.user.js "点击安装 bilibili-chat - CDN") 「[更新缓存](https://purge.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili-chat.user.js "点击更新 CDN 缓存")」
+CDN: [点击安装](https://cdn.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili-chat.user.js "点击安装 B 站直播间网页变「聊天群」 - CDN") 「[更新缓存](https://purge.jsdelivr.net/gh/wdssmq/userscript@main/dist/bilibili-chat.user.js "点击更新 CDN 缓存")」
 
 ### 关于
 

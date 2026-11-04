@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         bilibili-chat
+// @name         B 站直播间网页变「聊天群」
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.0
+// @version      1.0.1
 // @author       沉冰浮水
 // @description  清除直播间聊天群左边的「空黑」区域
 // @license      MIT
