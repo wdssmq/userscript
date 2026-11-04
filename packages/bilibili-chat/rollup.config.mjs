@@ -2,7 +2,7 @@ import process from "node:process";
 import replace from "@rollup/plugin-replace";
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
-// import postcss from "rollup-plugin-postcss";
+import postcss from "rollup-plugin-postcss";
 
 import { gm_banner, gm_name, gm_require } from "./src/__info.js";
 
@@ -36,7 +36,7 @@ const prodConfig = {
     banner: gobConfig.gm_banner,
   },
   plugins: [
-    // postcss(),
+    postcss(),
   ],
 };
 
@@ -49,7 +49,7 @@ const devConfig = {
     banner: "/* eslint-disable */\n",
   },
   plugins: [
-    // postcss(),
+    postcss(),
     monkey({
       listen: gobConfig.listen,
       onListen(web) {

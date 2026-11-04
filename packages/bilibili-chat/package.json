@@ -13,6 +13,7 @@
   "dependencies": {
     "@rollup/plugin-replace": "catalog:",
     "rollup": "catalog:",
-    "rollup-plugin-monkey": "catalog:"
+    "rollup-plugin-monkey": "catalog:",
+    "rollup-plugin-postcss": "catalog:"
   }
 }
