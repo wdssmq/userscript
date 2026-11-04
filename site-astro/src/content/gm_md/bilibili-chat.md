@@ -2,7 +2,7 @@
 title: bilibili-chat
 description: 消除聊天群左侧的空黑区块
 pubDate: 2026-11-04 22:11:37
-updateDate: 2026-11-04 22:11:37
+updateDate: 2026-11-04 22:34:44
 # heroImage: ""
 gitUrl: https://github.com/wdssmq/userscript/blob/main/dist/bilibili-chat.user.js
 gitUrlRaw: https://github.com/wdssmq/userscript/blob/main/dist/bilibili-chat.user.js?raw=true
