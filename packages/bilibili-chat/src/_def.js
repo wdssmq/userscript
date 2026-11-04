@@ -1,28 +1,39 @@
-import {
-  $n,
-  _log,
-} from "./_base";
+import "./_def.css";
 
-// 一个全局数据存储封装，带 ls 读写
-import { gob } from "./_gob.js";
+// 将播放器占位框的位置同步为未开播布局的定位基准。
+function syncChatPosition() {
+  const layout = document.querySelector(".player-and-aside-area");
+  const padding = layout?.querySelector(".fullscreen-container-paddingbox");
+  if (!layout || !padding) {
+    return false;
+  }
 
-// Your code here...
-
-_log("[TEST]Hello, world!");
-_log("[TEST]gob.data", gob.data);
-
-if (gob.intTest <= 3) {
-  alert("[TEST]Hello, world!");
+  const layoutRect = layout.getBoundingClientRect();
+  const paddingRect = padding.getBoundingClientRect();
+  layout.style.setProperty("--chat-left", `${paddingRect.left - layoutRect.left}px`);
+  layout.style.setProperty("--chat-top", `${paddingRect.top - layoutRect.top}px`);
+  return true;
 }
 
-// 写入数据并保存
-gob.intTest += 1;
-gob.save();
-_log("[TEST]gob.data", gob.data);
+const resizeObserver = new ResizeObserver(syncChatPosition);
 
-const $p = $n("p");
-$p.innerHTML += `<br>${gob.strTest} - by innerHTML`;
+// 等待直播区挂载后初始化，并在容器尺寸变化时重新同步位置。
+function observeChatPosition() {
+  if (!syncChatPosition()) {
+    return false;
+  }
 
-$("p").append(`<br>${gob.intTest} - by jQuery`);
+  resizeObserver.disconnect();
+  resizeObserver.observe(document.querySelector(".player-and-aside-area"));
+  resizeObserver.observe(document.querySelector(".fullscreen-container-paddingbox"));
+  return true;
+}
 
-// Your code here...
+if (!observeChatPosition()) {
+  const observer = new MutationObserver(() => {
+    if (observeChatPosition()) {
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+}

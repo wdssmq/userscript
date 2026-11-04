@@ -1,0 +1,24 @@
+/* 未开播时，聊天区从播放器占位框左上角延伸至主区域右侧。 */
+.live-room-app:has(.rows-closedown) .player-and-aside-area > .aside-area {
+  left: var(--chat-left) !important;
+  top: var(--chat-top) !important;
+  width: calc(100% - var(--chat-left)) !important;
+}
+
+.live-room-app:has(.rows-closedown) .chat-history-panel {
+  width: 100% !important;
+}
+
+/* 隐藏占位画面但保留其尺寸，避免播放器与聊天区高度塌缩。 */
+.live-room-app:has(.rows-closedown) .fullscreen-container-paddingbox {
+  visibility: hidden !important;
+}
+
+/* 播放器容器与聊天区共用起点和宽度。 */
+.live-room-app:has(.rows-closedown) .player-and-aside-area > .player-ctnr {
+  left: var(--chat-left) !important;
+  width: calc(100% - var(--chat-left)) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  transform: none !important;
+}
