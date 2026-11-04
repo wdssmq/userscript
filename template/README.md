@@ -35,15 +35,23 @@ pnpm add -D sass@catalog:
 import postcss from "rollup-plugin-postcss";
 
 // prodConfig.plugins
-plugins: [
-  postcss(),
-],
+// eslint-disable-next-line unused-imports/no-unused-vars
+const prodConfig = {
+  // ……
+  plugins: [
+    postcss(),
+  ],
+};
 
 // devConfig.plugins
-plugins: [
-  postcss(),
-  // 保留现有的开发插件
-],
+// eslint-disable-next-line unused-imports/no-unused-vars
+const devConfig = {
+  // ……
+  plugins: [
+    postcss(),
+    // 保留现有的开发插件
+  ],
+};
 
 ```
 
