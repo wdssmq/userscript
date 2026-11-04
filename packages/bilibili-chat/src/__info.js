@@ -4,7 +4,7 @@ const gm_banner = `
 // @namespace    https://www.wdssmq.com/
 // @version      placeholder.pkg.version
 // @author       沉冰浮水
-// @description  消除聊天群左侧的空黑区块
+// @description  清除直接间聊天群左边的「空黑」区域
 // @license      MIT
 // @null         ----------------------------
 // @contributionURL    https://github.com/wdssmq#%E4%BA%8C%E7%BB%B4%E7%A0%81
