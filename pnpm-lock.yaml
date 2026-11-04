@@ -425,9 +425,6 @@ importers:
       '@rollup/plugin-replace':
         specifier: 'catalog:'
         version: 5.0.7(rollup@4.61.0)
-      open:
-        specifier: 'catalog:'
-        version: 8.4.2
       rollup:
         specifier: 'catalog:'
         version: 4.61.0
@@ -497,9 +494,6 @@ importers:
       '@rollup/plugin-replace':
         specifier: 'catalog:'
         version: 5.0.7(rollup@4.61.0)
-      open:
-        specifier: 'catalog:'
-        version: 8.4.2
       rollup:
         specifier: 'catalog:'
         version: 4.61.0
