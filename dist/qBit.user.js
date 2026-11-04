@@ -370,7 +370,7 @@
     }
   }
 
-  var tplEdt = "<div class=\"mz-edt\">\n  <div class=\"act-tab\" style=\"display: flex;\">操作模式：</div>\n  <hr>\n  <h2>「标签」或「分类」（区分大小写，标签仅在 v2.8.3 以上版本有效）: </h2>\n  <p>\n    <input class=\"js-input\" type=\"text\" name=\"filter\" style=\"width: 97%;\" placeholder=\"包含要修改项目的「标签」或「分类」，或新建一个\">\n  </p>\n  <h2>Tracker: <span class=\"js-tip-btn\"></span></h2>\n  <div class=\"act-body\"></div>\n  <p class=\"pb-less text-16\">「<a target=\"_blank\" title=\"投喂支持\" href=\"https://afdian.com/a/wdssmq\" rel=\"nofollow\">打钱给作者-爱发电</a>」\n    「<a target=\"_blank\" title=\"QQ 群 - 我的咸鱼心\" href=\"https://jq.qq.com/?_wv=1027&k=SRYaRV6T\" rel=\"nofollow\">QQ 群 - 我的咸鱼心</a>」\n  </p>\n  <hr>\n  <p class=\"pb-less p-bold\">选中要操作的 Torrent 任务（可多选），右键里「标签」或「分类」添加或指定，建议用「标签」；</p>\n  <p class=\"pb-less\">「替换」时请使用完整地址，或者使用「子串替换」；</p>\n  <p class=\"pb-less\">特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</p>\n</div>\n";
+  var tplEdt = "<div class=\"mz-edt\">\r\n  <div class=\"act-tab\" style=\"display: flex;\">操作模式：</div>\r\n  <hr>\r\n  <h2>「标签」或「分类」（区分大小写，标签仅在 v2.8.3 以上版本有效）: </h2>\r\n  <p>\r\n    <input class=\"js-input\" type=\"text\" name=\"filter\" style=\"width: 97%;\" placeholder=\"包含要修改项目的「标签」或「分类」，或新建一个\">\r\n  </p>\r\n  <h2>Tracker: <span class=\"js-tip-btn\"></span></h2>\r\n  <div class=\"act-body\"></div>\r\n  <p class=\"pb-less text-16\">「<a target=\"_blank\" title=\"投喂支持\" href=\"https://afdian.com/a/wdssmq\" rel=\"nofollow\">打钱给作者-爱发电</a>」\r\n    「<a target=\"_blank\" title=\"QQ 群 - 我的咸鱼心\" href=\"https://jq.qq.com/?_wv=1027&k=SRYaRV6T\" rel=\"nofollow\">QQ 群 - 我的咸鱼心</a>」\r\n  </p>\r\n  <hr>\r\n  <p class=\"pb-less p-bold\">选中要操作的 Torrent 任务（可多选），右键里「标签」或「分类」添加或指定，建议用「标签」；</p>\r\n  <p class=\"pb-less\">「替换」时请使用完整地址，或者使用「子串替换」；</p>\r\n  <p class=\"pb-less\">特殊需求可「删除」→填入「****」清空旧的后「添加」新的；</p>\r\n</div>\r\n";
 
   function styleInject(css, ref) {
     if ( ref === void 0 ) ref = {};
@@ -399,7 +399,7 @@
     }
   }
 
-  var css_248z = ".mz-edt {\n  padding: 13px 23px;\n  font-size: 14px;\n  line-height: 20px\n}\n\n.mz-edt .text-16 {\n  font-size: 16px;\n  line-height: 24px\n}\n\n.mz-edt .p-bold {\n  font-weight: 700;\n  border-bottom: 1px solid currentColor;\n  margin-bottom: 4px;\n  padding-bottom: 0;\n}\n\n.mz-edt p.pb-less {\n  padding-bottom: 3px\n}\n\n.mz-hidden {\n  display: none !important;\n}\n\n#rssButtonBar input.mz-rss-input {\n  background: none;\n  padding-left: 4px;\n}\n";
+  var css_248z = ".mz-edt {\r\n  padding: 13px 23px;\r\n  font-size: 14px;\r\n  line-height: 20px\r\n}\r\n\r\n.mz-edt .text-16 {\r\n  font-size: 16px;\r\n  line-height: 24px\r\n}\r\n\r\n.mz-edt .p-bold {\r\n  font-weight: 700;\r\n  border-bottom: 1px solid currentColor;\r\n  margin-bottom: 4px;\r\n  padding-bottom: 0;\r\n}\r\n\r\n.mz-edt p.pb-less {\r\n  padding-bottom: 3px\r\n}\r\n\r\n.mz-hidden {\r\n  display: none !important;\r\n}\r\n\r\n#rssButtonBar input.mz-rss-input {\r\n  background: none;\r\n  padding-left: 4px;\r\n}\r\n";
   styleInject(css_248z);
 
   /* global __GM_api, MochaUI */

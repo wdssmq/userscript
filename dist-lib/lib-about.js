@@ -1,8 +1,11 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.mzAbout = factory());
-})(this, (function () { 'use strict';
+(function(global, factory) {
+  typeof exports === "object" && typeof module !== "undefined"
+    ? module.exports = factory()
+    : typeof define === "function" && define.amd
+      ? define(factory)
+      : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global.mzAbout = factory());
+})(this, () => {
+  "use strict";
 
   // localStorage 封装
   const lsObj = {
@@ -18,36 +21,40 @@
     },
   };
 
-  var aboutTpl = "<section class=\"mz-about-wrap\">\n  <div class=\"mz-about-panel\">\n    <!-- -------- -->\n    <p>QQ 群：<a href=\"https://jq.qq.com/?_wv=1027&amp;k=efK3gwpH\" title=\"我的咸鱼心\" target=\"_blank\">189574683</a></p>\n\n    <p>博客：<a href=\"https://www.wdssmq.com\" title=\"沉冰浮水的博客\">https://www.wdssmq.com</a></p>\n\n    <p class=\"is-text-bold\">Feed：<a href=\"http://feed.wdssmq.com\" title=\"Feed_沉冰浮水\">https://feed.wdssmq.com</a></p>\n\n    <p>哔哩哔哩：<a href=\"https://space.bilibili.com/44744006\" title=\"沉冰浮水_哔哩哔哩\">https://space.bilibili.com/44744006</a></p>\n\n    <p>GitHub：<a href=\"https://github.com/wdssmq\" title=\"沉冰浮水 - GitHub\">https://github.com/wdssmq</a></p>\n\n    <hr><!-- -------- -->\n\n    <p>文章推荐：「<a target=\"_blank\" href=\"https://www.wdssmq.com/post/20201231613.html\" title=\"「言说」RSS 是一种态度！！\">RSS 是一种态度</a>」「<a href=\"https://www.wdssmq.com/post/20200617652.html\" target=\"_blank\" title=\"「水坑」系列教程索引\">「水坑」系列教程索引</a>」</p>\n\n    <hr><!-- -------- -->\n\n    <p>爱发电：<a target=\"_blank\" href=\"https://afdian.com/a/wdssmq\" title=\"爱发电\">https://afdian.com/a/wdssmq</a></p>\n\n    <p>[AD：<a title=\"老薛主机\" target=\"_blank\" href=\"https://my.laoxuehost.net/aff.php?aff=294\">PHP 美国空间</a> 优惠码：15off-xnxf ]</p>\n\n    <p>[AD：<a title=\"主机云\" target=\"_blank\" href=\"https://my.hostyun.com/page.aspx?c=referral&u=8680\">vps-主机云</a>]</p>\n\n    <p>更多广告：<a title=\"Vultr\" target=\"_blank\" href=\"https://www.wdssmq.com/category/%E5%B9%BF%E5%91%8A%E6%85%8E%E5%85%A5/\">广告慎入 - 沉冰浮水</a></p>\n\n    <p>更多应用：<a href=\"https://app.zblogcn.com/?auth=6401c4a7-89cd-48f9-a68b-d6464d8c3bc8\" target=\"_blank\" title=\"沉冰浮水 - Z-Blog 应用中心\">沉冰浮水 - Z-Blog 应用中心</a></p>\n  </div>\n</section>\n";
+  const aboutTpl = "<section class=\"mz-about-wrap\">\r\n  <div class=\"mz-about-panel\">\r\n    <!-- -------- -->\r\n    <p>QQ 群：<a href=\"https://jq.qq.com/?_wv=1027&amp;k=efK3gwpH\" title=\"我的咸鱼心\" target=\"_blank\">189574683</a></p>\r\n\r\n    <p>博客：<a href=\"https://www.wdssmq.com\" title=\"沉冰浮水的博客\">https://www.wdssmq.com</a></p>\r\n\r\n    <p class=\"is-text-bold\">Feed：<a href=\"http://feed.wdssmq.com\" title=\"Feed_沉冰浮水\">https://feed.wdssmq.com</a></p>\r\n\r\n    <p>哔哩哔哩：<a href=\"https://space.bilibili.com/44744006\" title=\"沉冰浮水_哔哩哔哩\">https://space.bilibili.com/44744006</a></p>\r\n\r\n    <p>GitHub：<a href=\"https://github.com/wdssmq\" title=\"沉冰浮水 - GitHub\">https://github.com/wdssmq</a></p>\r\n\r\n    <hr><!-- -------- -->\r\n\r\n    <p>文章推荐：「<a target=\"_blank\" href=\"https://www.wdssmq.com/post/20201231613.html\" title=\"「言说」RSS 是一种态度！！\">RSS 是一种态度</a>」「<a href=\"https://www.wdssmq.com/post/20200617652.html\" target=\"_blank\" title=\"「水坑」系列教程索引\">「水坑」系列教程索引</a>」</p>\r\n\r\n    <hr><!-- -------- -->\r\n\r\n    <p>爱发电：<a target=\"_blank\" href=\"https://afdian.com/a/wdssmq\" title=\"爱发电\">https://afdian.com/a/wdssmq</a></p>\r\n\r\n    <p>[AD：<a title=\"老薛主机\" target=\"_blank\" href=\"https://my.laoxuehost.net/aff.php?aff=294\">PHP 美国空间</a> 优惠码：15off-xnxf ]</p>\r\n\r\n    <p>[AD：<a title=\"主机云\" target=\"_blank\" href=\"https://my.hostyun.com/page.aspx?c=referral&u=8680\">vps-主机云</a>]</p>\r\n\r\n    <p>更多广告：<a title=\"Vultr\" target=\"_blank\" href=\"https://www.wdssmq.com/category/%E5%B9%BF%E5%91%8A%E6%85%8E%E5%85%A5/\">广告慎入 - 沉冰浮水</a></p>\r\n\r\n    <p>更多应用：<a href=\"https://app.zblogcn.com/?auth=6401c4a7-89cd-48f9-a68b-d6464d8c3bc8\" target=\"_blank\" title=\"沉冰浮水 - Z-Blog 应用中心\">沉冰浮水 - Z-Blog 应用中心</a></p>\r\n  </div>\r\n</section>\r\n";
 
   function styleInject(css, ref) {
-    if ( ref === void 0 ) ref = {};
-    var insertAt = ref.insertAt;
+    if (ref === void 0)
+      ref = {};
+    const insertAt = ref.insertAt;
 
-    if (typeof document === 'undefined') { return; }
+    if (typeof document === "undefined") { return }
 
-    var head = document.head || document.getElementsByTagName('head')[0];
-    var style = document.createElement('style');
-    style.type = 'text/css';
+    const head = document.head || document.getElementsByTagName("head")[0];
+    const style = document.createElement("style");
+    style.type = "text/css";
 
-    if (insertAt === 'top') {
+    if (insertAt === "top") {
       if (head.firstChild) {
         head.insertBefore(style, head.firstChild);
-      } else {
+      }
+      else {
         head.appendChild(style);
       }
-    } else {
+    }
+    else {
       head.appendChild(style);
     }
 
     if (style.styleSheet) {
       style.styleSheet.cssText = css;
-    } else {
+    }
+    else {
       style.appendChild(document.createTextNode(css));
     }
   }
 
-  var css_248z = ".SubMenu a.mz-about-btn {\n  float: right;\n  margin-left: 12px;\n  padding: 0 1em;\n  text-decoration: none;\n}\n\n.mz-about-wrap {\n  border: 1px solid #e9e9e9;\n  padding: 14px;\n  background: #fff;\n  transition: all 0.2s ease;\n}\n\n.mz-about-panel p {\n  margin: 0 0 0.6rem;\n}\n.mz-about-panel hr {\n  border: none;\n  height: 2px;\n  background: #e9e9e9;\n  margin: 0.8rem 0;\n  visibility: visible;\n}\n\n.mz-about-hidden {\n  display: none;\n}";
+  const css_248z = ".SubMenu a.mz-about-btn {\n  float: right;\n  margin-left: 12px;\n  padding: 0 1em;\n  text-decoration: none;\n}\n\n.mz-about-wrap {\n  border: 1px solid #e9e9e9;\n  padding: 14px;\n  background: #fff;\n  transition: all 0.2s ease;\n}\n\n.mz-about-panel p {\n  margin: 0 0 0.6rem;\n}\n.mz-about-panel hr {\n  border: none;\n  height: 2px;\n  background: #e9e9e9;\n  margin: 0.8rem 0;\n  visibility: visible;\n}\n\n.mz-about-hidden {\n  display: none;\n}";
   styleInject(css_248z);
 
   // import msgContent from "./base/msg.md";
@@ -225,5 +232,4 @@
   const mzAbout = new MzAbout();
 
   return mzAbout;
-
-}));
+});
