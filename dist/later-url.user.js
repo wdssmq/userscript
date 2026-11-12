@@ -593,18 +593,8 @@
   // 标题清洗：去空白与 #
   gob.filter = str => String(str).replace(/\s/g, "").replace(/#/g, "");
 
-  // 统一取时间，格式均为 Y-m-d H:i:s
-  // date：视频发布时间，取不到时回退为当前时间
-  // time：提交时间，即实际发出请求的时间
-  function pickTime(info = {}, data = {}) {
-    return {
-      date: info.date || data.date || _fmtDate(),
-      time: info.time || _fmtDate(),
-    };
-  }
-
   // 发送链接信息到远程服务（CF）
-  // info: { uid, name, bvid, title, date, time, url, category }
+  // info: { uid, name, bvid, title, pubTime, pickTime, url, category }
   gob.postCF = async (info, data = {}) => {
     // 未启用则不发请求
     if (!config.data.enableCf) {
@@ -614,8 +604,7 @@
     const { baseUrl, authToken } = config.data;
     gob.postIndex += 1;
     info.title = gob.filter(info.title);
-    const { date, time } = pickTime(info, data);
-    const url = `${baseUrl}add?url=${encodeURIComponent(info.url)}&title=${encodeURIComponent(info.title)}&author=${encodeURIComponent(data.username)}&category=${encodeURIComponent(data.category)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`;
+    const url = `${baseUrl}add?url=${encodeURIComponent(info.url)}&title=${encodeURIComponent(info.title)}&author=${encodeURIComponent(data.username)}&category=${encodeURIComponent(data.category)}&pubTime=${encodeURIComponent(info.pubTime)}&pickTime=${encodeURIComponent(info.pickTime)}`;
     _log(`gob.postCF() - ${gob.postIndex}\n`, url);
     try {
       const res = await gob.http.get(url, {
@@ -657,15 +646,14 @@
       _logOnce(`gob.postZBP() - 未登记的 UP，跳过发送：${uid}`);
       return false;
     }
-    const { date, time } = pickTime(info, data);
     const body = {
       uid,
       name: info.name || data.username || "",
       url: info.url,
       title: info.title,
       // 视频发布时间与提交时间，均为 Y-m-d H:i:s
-      date,
-      time,
+      pubTime: info.pubTime,
+      pickTime: info.pickTime,
     };
     // _log("gob.postZBP()\n", body);
     try {
@@ -806,8 +794,7 @@
       uid: "",
       username: "",
       category: "default",
-      // 兜底的发布时间：今天 00:00:00，格式 Y-m-d H:i:s
-      date: `${_fmtDate(curDate, false)} 00:00:00`,
+      pickTime: _fmtDate(),
     },
 
     // 需要的页面元素
@@ -1003,10 +990,8 @@
         name: this.data.username,
         bvid,
         title: title.trim(),
-        // 发布时间；解析不到时回退到「今天」
-        date: strDate || this.data.date,
-        // 提交时间由发送时统一填充
-        time: "",
+        pubTime: strDate,
+        pickTime: this.data.pickTime,
         url: `https://www.bilibili.com/video/${bvid}`,
         category: this.data.category,
       };
@@ -1101,6 +1086,10 @@
         // _logOnce("bilibili.main()->data", bilibili.data);
         // 两套远程各发一次，任一成功即算成功
         const fnPost = async (info, data) => {
+          if (!info.pubTime) {
+            _error(`视频发布时间无法解析，未发送：${info.bvid}`);
+            return false;
+          }
           const rltCF = await gob.postCF(info, data);
           const rltZBP = await gob.postZBP(info, data);
           // 无论成功与否，该 bvid 都算走过一遍 fnPost
