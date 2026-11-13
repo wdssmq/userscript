@@ -1,0 +1,16 @@
+/* 截图时保留弹幕行宽度与布局，以占位色隐藏实际内容。 */
+
+html.bilibili-chat-skeleton .chat-items .danmaku-item .user-name,
+html.bilibili-chat-skeleton .chat-items .danmaku-item .danmaku-item-right {
+  background-color: currentColor;
+  border-radius: 4px;
+}
+
+html.bilibili-chat-skeleton .chat-items .danmaku-item .wealth-medal-ctnr {
+  background-color: currentColor;
+  border-radius: 2px;
+}
+
+html.bilibili-chat-skeleton .chat-items .danmaku-item .wealth-medal{
+  visibility: hidden;
+}
