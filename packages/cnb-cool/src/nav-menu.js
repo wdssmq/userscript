@@ -50,6 +50,7 @@ function fnMakeItem(strId, strName, mixIcon, strUrl) {
   const $span = document.createElement("span");
   $span.className = "text-base";
   $span.textContent = strName || strId;
+  $span.title = strName || strId;
   $a.append($span);
   return $a;
 }
