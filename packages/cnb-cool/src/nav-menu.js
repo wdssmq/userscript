@@ -21,26 +21,40 @@ function fnGetCurUser() {
   return m ? m[1] : "";
 }
 
-// 生成单个菜单项
-function fnMakeItem(strId, strName, strAvatar, strUrl) {
+// 生成单个菜单项，mixIcon 可为图片地址或 DOM 节点（如站点 logo，克隆使用）
+function fnMakeItem(strId, strName, mixIcon, strUrl) {
   const $a = document.createElement("a");
   $a.href = strUrl || `https://cnb.cool/${strId}`;
   $a.target = "_self";
   $a.className = "flex items-center gap-2 px-3 py-2 hover:bg-panel-pri-hover whitespace-nowrap";
-  const $img = document.createElement("img");
-  $img.src = strAvatar;
-  $img.alt = strId;
-  $img.width = 20;
-  $img.height = 20;
-  $img.className = "cnb-avatar rounded-full dark:brightness-90 flex-none";
+  if (typeof mixIcon === "string" && mixIcon) {
+    const $img = document.createElement("img");
+    $img.src = mixIcon;
+    $img.alt = strId;
+    $img.width = 20;
+    $img.height = 20;
+    $img.className = "cnb-avatar rounded-full dark:brightness-90 flex-none";
+    $a.append($img);
+  }
+  else if (mixIcon instanceof Element) {
+    const $el = mixIcon.cloneNode(true);
+    $el.removeAttribute("id");
+    $el.classList.add("flex-none", "cnb-avatar");
+    // // SVG 的 width/height 属性是只读的 SVGAnimatedLength，需用 setAttribute
+    // $el.setAttribute("width", "20");
+    // $el.setAttribute("height", "20");
+    // $el.style.width = "20px";
+    // $el.style.height = "20px";
+    $a.append($el);
+  }
   const $span = document.createElement("span");
   $span.className = "text-base text-pri";
   $span.textContent = strName || strId;
-  $a.append($img, $span);
+  $a.append($span);
   return $a;
 }
 
-// 渲染菜单项：首项为登录用户主页，其后为已保存的组织
+// 渲染菜单项：首项为登录用户主页，其后为已保存的组织，末项固定为组织管理页
 function fnRenderItems($popup) {
   $popup.innerHTML = "";
   const strUser = fnGetCurUser();
@@ -57,10 +71,19 @@ function fnRenderItems($popup) {
     $tip.className = "px-3 py-2 text-sm text-sec whitespace-nowrap";
     $tip.textContent = "暂无已保存的组织";
     $popup.append($tip);
-    return;
   }
   for (const item of gob.orgList) {
     $popup.append(fnMakeItem(item.id, item.name, item.avatar, item.url));
+  }
+  // 固定末项：组织管理页，图标使用站点 logo
+  if (strUser) {
+    const $logo = $n("svg.ruyi-icon-logo-monochrome");
+    $popup.append(fnMakeItem(
+      strUser,
+      "组织管理",
+      $logo,
+      `https://cnb.cool/u/${strUser}/groups`,
+    ));
   }
 }
 
