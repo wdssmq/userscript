@@ -49,7 +49,7 @@ function fnRenderItems($popup) {
       strUser,
       strUser,
       `https://cnb.cool/users/${strUser}/avatar/s`,
-      `https://cnb.cool/${strUser}`,
+      `https://cnb.cool/u/${strUser}`,
     ));
   }
   if (!gob.orgList.length) {
