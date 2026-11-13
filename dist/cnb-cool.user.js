@@ -352,7 +352,7 @@
       return;
     }
     const $logo = $n("svg.ruyi-icon-logo-monochrome");
-    if (!$logo || !gob.orgList.length) {
+    if (!$logo) {
       return;
     }
     const $wrap = $logo.closest("a")?.parentElement;
