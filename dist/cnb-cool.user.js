@@ -231,7 +231,7 @@
     const $a = document.createElement("a");
     $a.href = strUrl || `https://cnb.cool/${strId}`;
     $a.target = "_self";
-    $a.className = "flex items-center gap-2 px-3 py-2 hover:bg-panel-pri-hover whitespace-nowrap";
+    $a.className = "flex items-center gap-2 px-3 py-2 hover:bg-panel-pri-hover hover:text-brand whitespace-nowrap";
     if (typeof mixIcon === "string" && mixIcon) {
       const $img = document.createElement("img");
       $img.src = mixIcon;
@@ -253,7 +253,7 @@
       $a.append($el);
     }
     const $span = document.createElement("span");
-    $span.className = "text-base text-pri";
+    $span.className = "text-base";
     $span.textContent = strName || strId;
     $a.append($span);
     return $a;
