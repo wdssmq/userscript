@@ -1,6 +1,7 @@
 import {
   $n,
   $na,
+  _curUrl,
   _log,
   fnElChange,
 } from "./_base";
@@ -13,6 +14,10 @@ import { gob } from "./_gob.js";
 
 // 解析当前页面中的组织卡片
 function fnParseOrgCards() {
+  const curUrl = _curUrl();
+  // _log("[org]当前页面", curUrl);
+  if (!curUrl.endsWith("/groups"))
+    return [];
   const arrOrg = [];
   for (const $a of $na("a[href^=\"/\"]")) {
     const $avatar = $a.querySelector(".cnb-avatar img");
