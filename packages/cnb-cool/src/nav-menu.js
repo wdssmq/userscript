@@ -105,18 +105,26 @@ function fnCreateMenu() {
   $popup.className = "hidden fixed z-[9999] min-w-[200px] border border-pri rounded-[3px] bg-panel-pri py-1 shadow-lg";
   document.body.append($popup);
 
-  $btn.addEventListener("click", () => {
-    const bolShow = $popup.classList.contains("hidden");
-    if (!bolShow) {
-      $popup.classList.add("hidden");
-      return;
-    }
+  // hover 触发显示 / 延迟隐藏（留出从按钮移入弹层的时间）
+  let intHideTimer = 0;
+  const fnShow = () => {
+    clearTimeout(intHideTimer);
     fnRenderItems($popup);
     const rect = $btn.getBoundingClientRect();
     $popup.style.left = `${rect.left}px`;
     $popup.style.top = `${rect.bottom + 4}px`;
     $popup.classList.remove("hidden");
-  });
+  };
+  const fnHide = () => {
+    clearTimeout(intHideTimer);
+    intHideTimer = setTimeout(() => {
+      $popup.classList.add("hidden");
+    }, 300);
+  };
+  $btn.addEventListener("mouseenter", fnShow);
+  $btn.addEventListener("mouseleave", fnHide);
+  $popup.addEventListener("mouseenter", () => clearTimeout(intHideTimer));
+  $popup.addEventListener("mouseleave", fnHide);
 
   // 点击其它区域关闭
   document.addEventListener("click", (e) => {
