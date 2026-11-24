@@ -20,6 +20,10 @@ const gobInfo = {
   // key: [默认值, 是否记录至 ls]
   // 已加入的组织列表
   orgList: [[], 1],
+  // 最近访问的仓库 / issue
+  hisList: [[], 1],
+  // 历史中固定显示的路径
+  hisPins: [[], 1],
 };
 const gob = {
   _lsKey: `${gm_name}_data`,
