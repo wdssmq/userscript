@@ -1,10 +1,11 @@
 import process from "node:process";
 import replace from "@rollup/plugin-replace";
+import typescript from "@rollup/plugin-typescript";
 // for prod
 import monkey, { monkeyPath, monkeyRequire } from "rollup-plugin-monkey";
 // import postcss from "rollup-plugin-postcss";
 
-import { gm_banner, gm_name, gm_require } from "./src/__info.js";
+import { gm_banner, gm_name, gm_require } from "./src/__info";
 
 // console.log("typeof monkey：", typeof monkey);
 // // typeof monkey： function
@@ -33,19 +34,20 @@ if (process.env.NODE_ENV === "prod") {
 }
 
 const prodConfig = {
-  input: "src/main.js",
+  input: "src/main.ts",
   output: {
     file: gobConfig.gm_file,
     format: "iife",
     banner: gobConfig.gm_banner,
   },
   plugins: [
+    typescript(),
     // postcss(),
   ],
 };
 
 const devConfig = {
-  input: "src/main.js",
+  input: "src/main.ts",
   output: {
     dir: "dev",
     format: "iife",
@@ -53,6 +55,7 @@ const devConfig = {
     banner: "/* eslint-disable */\n",
   },
   plugins: [
+    typescript(),
     // postcss(),
     monkey({
       listen: gobConfig.listen,

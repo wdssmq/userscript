@@ -1,24 +1,25 @@
+import type { OrgItem } from "./_gob";
+
 import {
-  $n,
   $na,
   _curUrl,
   _log,
   fnElChange,
 } from "./_base";
-
 // 一个全局数据存储封装，带 ls 读写
-import { gob } from "./_gob.js";
+import { gob } from "./_gob";
 
 // -------------------------------------
 // 收集「我加入的组织」，保存到脚本 ls（localStorage）
 
 // 解析当前页面中的组织卡片
-function fnParseOrgCards() {
+function fnParseOrgCards(): OrgItem[] {
   const curUrl = _curUrl();
   // _log("[org]当前页面", curUrl);
-  if (!curUrl.endsWith("/groups"))
+  if (!curUrl.endsWith("/groups")) {
     return [];
-  const arrOrg = [];
+  }
+  const arrOrg: OrgItem[] = [];
   for (const $a of $na("a[href^=\"/\"]")) {
     const $avatar = $a.querySelector(".cnb-avatar img");
     const $h1 = $a.querySelector("h1");
@@ -34,8 +35,8 @@ function fnParseOrgCards() {
     const $span = $h1.querySelector("span");
     arrOrg.push({
       id: strHref.slice(1),
-      name: $span ? $span.textContent.replace(/^[（(]|[）)]$/g, "") : "",
-      desc: $p.textContent.trim(),
+      name: $span?.textContent?.replace(/^[（(]|[）)]$/g, "") ?? "",
+      desc: $p.textContent?.trim() ?? "",
       avatar: $avatar.getAttribute("src") || "",
       url: `https://cnb.cool${strHref}`,
     });
@@ -45,12 +46,12 @@ function fnParseOrgCards() {
 }
 
 // 合并保存组织列表（按 id 去重，有变化才写入 ls）
-function fnSaveOrgs() {
+function fnSaveOrgs(): void {
   const arrCur = fnParseOrgCards();
   if (!arrCur.length) {
     return;
   }
-  const mapOrg = new Map(gob.orgList.map(item => [item.id, item]));
+  const mapOrg = new Map(gob.orgList.map((item): [string, OrgItem] => [item.id, item]));
   let bolChanged = false;
   for (const item of arrCur) {
     const old = mapOrg.get(item.id);
@@ -73,7 +74,7 @@ fnSaveOrgs();
 // SPA 路由 / DOM 变化时重新检测（简单防抖）
 let intTimer = 0;
 let intLast = 0;
-fnElChange($n("body"), () => {
+fnElChange(document.body, () => {
   const intNow = Date.now();
   if (intNow - intLast < 500) {
     clearTimeout(intTimer);

@@ -5,7 +5,7 @@ import {
 } from "./_base";
 
 // 一个全局数据存储封装，带 ls 读写
-import { gob } from "./_gob.js";
+import { gob } from "./_gob";
 
 // -------------------------------------
 // 在 logo 标题后添加下拉菜单，快速跳转 ls 里保存的组织
@@ -14,7 +14,7 @@ const strMenuBtnId = "cnb-nav-menu-btn";
 const strMenuPopupId = "cnb-nav-menu-popup";
 
 // 从头部头像地址取当前登录用户，如 https://cnb.cool/users/wdssmq/avatar/s
-function fnGetCurUser() {
+function fnGetCurUser(): string {
   const $img = $n(".JS-cnb-header .cnb-avatar img");
   const strSrc = $img?.getAttribute("src") || "";
   const m = strSrc.match(/\/users\/([^/]+)\/avatar/);
@@ -22,7 +22,7 @@ function fnGetCurUser() {
 }
 
 // 生成单个菜单项，mixIcon 可为图片地址或 DOM 节点（如站点 logo，克隆使用）
-function fnMakeItem(strId, strName, mixIcon, strUrl) {
+function fnMakeItem(strId: string, strName: string, mixIcon: string | Element | null, strUrl: string): HTMLElement {
   const $a = document.createElement("a");
   $a.href = strUrl || `https://cnb.cool/${strId}`;
   $a.target = "_self";
@@ -37,7 +37,7 @@ function fnMakeItem(strId, strName, mixIcon, strUrl) {
     $a.append($img);
   }
   else if (mixIcon instanceof Element) {
-    const $el = mixIcon.cloneNode(true);
+    const $el = mixIcon.cloneNode(true) as Element;
     $el.removeAttribute("id");
     $el.classList.add("flex-none", "cnb-avatar");
     // // SVG 的 width/height 属性是只读的 SVGAnimatedLength，需用 setAttribute
@@ -56,7 +56,7 @@ function fnMakeItem(strId, strName, mixIcon, strUrl) {
 }
 
 // 渲染菜单项：首项为登录用户主页，其后为已保存的组织，末项固定为组织管理页
-function fnRenderItems($popup) {
+function fnRenderItems($popup: HTMLElement): void {
   $popup.innerHTML = "";
   const strUser = fnGetCurUser();
   if (strUser) {
@@ -89,7 +89,7 @@ function fnRenderItems($popup) {
 }
 
 // 创建菜单按钮与弹层
-function fnCreateMenu() {
+function fnCreateMenu(): HTMLElement {
   const $btn = document.createElement("button");
   $btn.id = strMenuBtnId;
   $btn.type = "button";
@@ -108,7 +108,7 @@ function fnCreateMenu() {
 
   // hover 触发显示 / 延迟隐藏（留出从按钮移入弹层的时间）
   let intHideTimer = 0;
-  const fnShow = () => {
+  const fnShow = (): void => {
     clearTimeout(intHideTimer);
     fnRenderItems($popup);
     const rect = $btn.getBoundingClientRect();
@@ -116,7 +116,7 @@ function fnCreateMenu() {
     $popup.style.top = `${rect.bottom + 4}px`;
     $popup.classList.remove("hidden");
   };
-  const fnHide = () => {
+  const fnHide = (): void => {
     clearTimeout(intHideTimer);
     intHideTimer = setTimeout(() => {
       $popup.classList.add("hidden");
@@ -142,7 +142,7 @@ function fnCreateMenu() {
 }
 
 // 确保菜单存在（SPA 重渲染后自动补回）
-function fnEnsureMenu() {
+function fnEnsureMenu(): void {
   if ($n(`#${strMenuBtnId}`)) {
     return;
   }
@@ -161,7 +161,7 @@ function fnEnsureMenu() {
 // SPA 路由 / DOM 变化时重新检测（简单防抖）
 let intTimer = 0;
 let intLast = 0;
-fnElChange($n("body"), () => {
+fnElChange(document.body, () => {
   const intNow = Date.now();
   if (intNow - intLast < 500) {
     clearTimeout(intTimer);
@@ -174,7 +174,7 @@ fnElChange($n("body"), () => {
 // 初次执行 + 短暂重试：脚本在 document-end 运行时头部可能尚未渲染，
 // 且整页加载后可能不再有 DOM 变化，观察者不会触发，需主动兜底
 let intRetry = 0;
-function fnInit() {
+function fnInit(): void {
   fnEnsureMenu();
   if (!$n(`#${strMenuBtnId}`) && intRetry < 10) {
     intRetry++;

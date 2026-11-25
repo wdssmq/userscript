@@ -1,12 +1,13 @@
+import type { HisItem } from "./_gob";
+
 import {
   $n,
   $na,
   _log,
   fnElChange,
 } from "./_base";
-
 // 一个全局数据存储封装，带 ls 读写
-import { gob } from "./_gob.js";
+import { gob } from "./_gob";
 
 // -------------------------------------
 // 在「待办」tab 内展示访问历史：
@@ -18,7 +19,7 @@ const strCardRole = "cnb-history-card";
 const intMaxHis = 20;
 
 // 解析当前路径是否为仓库 / issue 页面
-function fnParsePath(strPath) {
+function fnParsePath(strPath: string): HisItem | null {
   const arrSeg = strPath.split("/").filter(Boolean);
   if (arrSeg.length < 2) {
     return null;
@@ -36,7 +37,7 @@ function fnParsePath(strPath) {
   if (setReserved.has(arrSeg[0].toLowerCase())) {
     return null;
   }
-  const strType = strPath.includes("/issues") ? "issue" : "repo";
+  const strType: HisItem["type"] = strPath.includes("/issues") ? "issue" : "repo";
   // issue 列表页（-/issues 结尾）不记录
   if (strType === "issue" && /\/-?\/issues\/?$/.test(strPath)) {
     return null;
@@ -47,9 +48,9 @@ function fnParsePath(strPath) {
 }
 
 // 记录时抓取页面标题：issue 取实际标题，仓库取描述；取不到返回空串（显示时回退为路径）
-function fnScrapeTitle(strType) {
+function fnScrapeTitle(strType: HisItem["type"]): string {
   // issue 标题按「·」分隔取第一段（如「标题 · 仓库 · 站点名」）
-  const fnPick = strVal => strType === "issue"
+  const fnPick = (strVal: string): string => strType === "issue"
     ? strVal.split("·")[0].trim()
     : strVal.trim();
   const arrSel = strType === "issue"
@@ -70,7 +71,7 @@ function fnScrapeTitle(strType) {
 }
 
 // 记录最近访问（去重后置顶，未固定的最多保留 intMaxHis 条）
-function fnRecordVisit() {
+function fnRecordVisit(): void {
   const strPath = window.location.pathname;
   const obj = fnParsePath(strPath);
   if (!obj) {
@@ -93,7 +94,7 @@ function fnRecordVisit() {
 }
 
 // 切换固定 / 取消固定
-function fnTogglePin(strPath) {
+function fnTogglePin(strPath: string): void {
   const arrNew = gob.hisPins.filter(item => item !== strPath);
   if (arrNew.length === gob.hisPins.length) {
     arrNew.unshift(strPath);
@@ -108,31 +109,31 @@ function fnTogglePin(strPath) {
 }
 
 // 时间显示：MM-DD HH:mm
-function fnFormatTime(intTs) {
+function fnFormatTime(intTs: number | undefined): string {
   if (!intTs) {
     return "";
   }
   const dt = new Date(intTs);
-  const options = { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" };
+  const options = { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" } as const;
   return dt.toLocaleString("zh-CN", options);
 }
 
 // 克隆页面已有图标，找不到时返回 null
-function fnCloneIcon(strSelector) {
-  const $icon = $n(strSelector);
+function fnCloneIcon<T extends Element = Element>(strSelector: string): T | null {
+  const $icon = $n<T>(strSelector);
   if (!$icon) {
     return null;
   }
-  const $el = $icon.cloneNode(true);
+  const $el = $icon.cloneNode(true) as T;
   $el.removeAttribute("id");
   return $el;
 }
 
 // 待办卡片骨架缓存（grid + t-table，tbody 已清空）
-let $tplCard = null;
+let $tplCard: HTMLElement | null = null;
 
 // 生成一条历史记录行（对齐待办卡片内的 tr 结构）
-function fnMakeRow(item) {
+function fnMakeRow(item: HisItem): HTMLElement {
   const bolPinned = gob.hisPins.includes(item.path);
   const arrSeg = item.path.split("/").filter(Boolean);
   const strRepo = arrSeg.slice(0, 2).join("/");
@@ -205,7 +206,7 @@ function fnMakeRow(item) {
   $btn.type = "button";
   $btn.className = "cursor-pointer flex-none";
   $btn.title = bolPinned ? "取消固定" : "固定显示";
-  const $pinIcon = fnCloneIcon(".ruyi-icon-label-pin");
+  const $pinIcon = fnCloneIcon<SVGElement>(".ruyi-icon-label-pin");
   if ($pinIcon) {
     $pinIcon.style.opacity = bolPinned ? "1" : "0.3";
     $btn.append($pinIcon);
@@ -225,7 +226,7 @@ function fnMakeRow(item) {
 
   // 卡片模式：每条记录各自复制一张待办卡片，填入单行
   if ($tplCard) {
-    const $card = $tplCard.cloneNode(true);
+    const $card = $tplCard.cloneNode(true) as HTMLElement;
     const $tbody = $card.querySelector("tbody");
     if ($tbody) {
       const $tr = document.createElement("tr");
@@ -253,7 +254,7 @@ function fnMakeRow(item) {
 }
 
 // 定位「待办」tab 的 .tabs-content：优先取包含 issue/PR 列表的面板
-function fnGetContent() {
+function fnGetContent(): Element | null {
   const $tabs = $n(".t-tabs__content");
   if (!$tabs) {
     return null;
@@ -264,7 +265,7 @@ function fnGetContent() {
 }
 
 // 缓存待办卡片模板（grid + t-table，tbody 已清空），成功返回 true
-function fnCacheTemplate($content) {
+function fnCacheTemplate($content: Element): boolean {
   if ($tplCard) {
     return true;
   }
@@ -272,7 +273,7 @@ function fnCacheTemplate($content) {
   if (!$tpl) {
     return false;
   }
-  $tplCard = $tpl.cloneNode(true);
+  $tplCard = $tpl.cloneNode(true) as HTMLElement;
   const $tbody = $tplCard.querySelector("tbody");
   if ($tbody) {
     $tbody.innerHTML = "";
@@ -281,7 +282,7 @@ function fnCacheTemplate($content) {
 }
 
 // 移除已渲染的历史卡片
-function fnRemoveCards() {
+function fnRemoveCards(): void {
   for (const $el of $na(`[data-role="${strCardRole}"]`)) {
     $el.remove();
   }
@@ -289,21 +290,21 @@ function fnRemoveCards() {
 
 // 渲染历史卡片：固定项在前，其后按最近访问排序
 // 每条记录各自复制一张待办卡片（grid + t-table），逐个挂到 tabs-content
-function fnRenderItems() {
+function fnRenderItems(): void {
   fnRemoveCards();
   const $content = fnGetContent();
   if (!$content) {
     return;
   }
   const bolTpl = fnCacheTemplate($content);
-  const mapHis = new Map(gob.hisList.map(item => [item.path, item]));
-  const arrShow = [
-    ...gob.hisPins.map(strPath => mapHis.get(strPath) || { path: strPath, type: "repo" }),
+  const mapHis = new Map(gob.hisList.map((item): [string, HisItem] => [item.path, item]));
+  const arrShow: HisItem[] = [
+    ...gob.hisPins.map((strPath): HisItem => mapHis.get(strPath) || { path: strPath, type: "repo" }),
     ...gob.hisList.filter(item => !gob.hisPins.includes(item.path)),
   ];
-  if (bolTpl) {
+  if (bolTpl && $tplCard) {
     if (!arrShow.length) {
-      const $card = $tplCard.cloneNode(true);
+      const $card = $tplCard.cloneNode(true) as HTMLElement;
       $card.dataset.role = strCardRole;
       const $tbody = $card.querySelector("tbody");
       const $tr = document.createElement("tr");
@@ -348,7 +349,7 @@ function fnRenderItems() {
 }
 
 // 确保历史卡片存在（SPA 重渲染后自动补回），顺带记录当前访问
-function fnEnsureHistory() {
+function fnEnsureHistory(): void {
   fnRecordVisit();
   const $content = fnGetContent();
   if (!$content) {
@@ -367,7 +368,7 @@ function fnEnsureHistory() {
 
 // 初次执行 + 短暂重试：页面加载完成时可能不再有 DOM 变化，观察者不会触发
 let intRetry = 0;
-function fnInit() {
+function fnInit(): void {
   fnEnsureHistory();
   if (!$n(`[data-role="${strCardRole}"]`) && intRetry < 10) {
     intRetry++;
@@ -379,7 +380,7 @@ fnInit();
 // SPA 路由 / DOM 变化时重新检测（简单防抖）
 let intTimer = 0;
 let intLast = 0;
-fnElChange($n("body"), () => {
+fnElChange(document.body, () => {
   const intNow = Date.now();
   if (intNow - intLast < 500) {
     clearTimeout(intTimer);
