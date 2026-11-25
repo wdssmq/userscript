@@ -25,7 +25,7 @@ const gm_banner = `
 
 const gm_name = "__GM_NAME__";
 
-const gm_require = [
+const gm_require: { url: string, func: string }[] = [
   {
     url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js",
     func: "$",

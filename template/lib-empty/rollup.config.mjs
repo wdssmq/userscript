@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 
 import replace from "@rollup/plugin-replace";
+import typescript from "@rollup/plugin-typescript";
 import { config } from "dotenv";
 import copy from "rollup-plugin-copy";
 import livereload from "rollup-plugin-livereload";
@@ -22,7 +23,7 @@ const envConfig = config({ path: `./.env` }).parsed;
 const extractCSS = pkg.extractCSS ? `${pkg.name}.css` : false;
 
 const defConfig = {
-  input: `src/${pkg.name}.js`,
+  input: `src/${pkg.name}.ts`,
   output: {
     file: pkg.main,
     format: "umd",
@@ -31,6 +32,7 @@ const defConfig = {
     // sourcemap: true,
   },
   plugins: [
+    typescript(),
     postcss({
       extract: extractCSS,
     }),

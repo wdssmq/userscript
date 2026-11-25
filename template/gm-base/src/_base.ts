@@ -6,36 +6,43 @@ const curDate = new Date();
 
 // -------------------------------------
 
-const _curUrl = () => window.location.href;
-const _curDate = () => new Date();
-function _getDateStr(date = curDate) {
-  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+const _curUrl = (): string => window.location.href;
+const _curDate = (): Date => new Date();
+function _getDateStr(date: Date = curDate): string {
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" } as const;
   return date.toLocaleDateString("zh-CN", options).replace(/\//g, "-");
 }
-const _sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+function _sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 // -------------------------------------
 
-const _log = (...args) => console.log(`[${gm_name}] |`, ...args);
-const _warn = (...args) => console.warn(`[${gm_name}] |`, ...args);
-const _error = (...args) => console.error(`[${gm_name}] |`, ...args);
+const _log = (...args: unknown[]): void => console.log(`[${gm_name}] |`, ...args);
+const _warn = (...args: unknown[]): void => console.warn(`[${gm_name}] |`, ...args);
+const _error = (...args: unknown[]): void => console.error(`[${gm_name}] |`, ...args);
 
 // -------------------------------------
 
 // const $ = window.$ || unsafeWindow.$;
-function $n(e) {
-  return document.querySelector(e);
+function $n<T extends Element = HTMLElement>(selector: string): T | null {
+  return document.querySelector<T>(selector);
 }
-function $na(e) {
-  return document.querySelectorAll(e);
+function $na<T extends Element = Element>(selector: string): NodeListOf<T> {
+  return document.querySelectorAll<T>(selector);
 }
 
 // -------------------------------------
 
 // 指定元素内查找子元素
-function fnFindDom(el, selector) {
-  el = typeof el === "string" ? $n(el) : el;
-  const queryList = el.querySelectorAll(selector);
+function fnFindDom(el: string | Element, selector: string): Element | NodeListOf<Element> | null {
+  const target = typeof el === "string" ? $n(el) : el;
+  if (!target) {
+    return null;
+  }
+  const queryList = target.querySelectorAll(selector);
   if (queryList.length === 1) {
     return queryList[0];
   }
@@ -45,7 +52,10 @@ function fnFindDom(el, selector) {
 // -------------------------------------
 
 // 元素变化监听
-function fnElChange(el, fn = () => { }) {
+function fnElChange(
+  el: Element,
+  fn: (mutationRecord: MutationRecord[], mutationObserver: MutationObserver) => void = () => {},
+): void {
   const observer = new MutationObserver((mutationRecord, mutationObserver) => {
     // _log('mutationRecord = ', mutationRecord);
     // _log('mutationObserver === observer', mutationObserver === observer);

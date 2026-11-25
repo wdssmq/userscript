@@ -4,7 +4,7 @@ import {
 } from "./_base";
 
 // 一个全局数据存储封装，带 ls 读写
-import { gob } from "./_gob.js";
+import { gob } from "./_gob";
 
 // Your code here...
 
@@ -21,7 +21,9 @@ gob.save();
 _log("[TEST]gob.data", gob.data);
 
 const $p = $n("p");
-$p.innerHTML += `<br>${gob.strTest} - by innerHTML`;
+if ($p) {
+  $p.innerHTML += `<br>${gob.strTest} - by innerHTML`;
+}
 
 $("p").append(`<br>${gob.intTest} - by jQuery`);
 

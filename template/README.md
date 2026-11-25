@@ -13,9 +13,13 @@ pnpm --dir template run gen:gm
 
 ```
 
+## TypeScript
+
+`gm-base` 与 `lib-empty` 的源码均为 TypeScript，生成项目自带 `tsconfig.json`，可运行 `pnpm run typecheck` 检查类型。GM 模板的 Rollup 配置也是 TypeScript（`rollup.config.ts`），构建脚本已通过 `--configPlugin @rollup/plugin-typescript` 加载。
+
 ## GM 项目使用 CSS / Sass
 
-生成的 GM 项目已包含 `rollup.config.mjs`。在 GM 项目目录中运行以下命令，安装 CSS 打包所需依赖：
+生成的 GM 项目已包含 `rollup.config.ts`。在 GM 项目目录中运行以下命令，安装 CSS 打包所需依赖：
 
 ```bash
 pnpm add -D postcss@catalog: rollup-plugin-postcss@catalog:
@@ -29,7 +33,7 @@ pnpm add -D sass@catalog:
 
 ```
 
-在 `rollup.config.mjs` 中引入并配置 PostCSS 插件，在生产和开发配置的 `plugins` 中都加入 `postcss()`：
+在 `rollup.config.ts` 中引入并配置 PostCSS 插件，在生产和开发配置的 `plugins` 中都加入 `postcss()`：
 
 ```js
 import postcss from "rollup-plugin-postcss";

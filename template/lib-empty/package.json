@@ -16,6 +16,7 @@
     "build": "rollup -c --environment NODE_ENV:prod",
     "dev": "rollup -c -w --environment NODE_ENV:dev",
     "demo": "live-server --watch=index.html,dist/*.js",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
@@ -27,12 +28,15 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "catalog:",
     "@rollup/plugin-replace": "catalog:",
+    "@rollup/plugin-typescript": "catalog:",
     "dotenv": "catalog:",
     "postcss": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-copy": "catalog:",
     "rollup-plugin-livereload": "catalog:",
     "rollup-plugin-postcss": "catalog:",
-    "rollup-plugin-serve": "catalog:"
+    "rollup-plugin-serve": "catalog:",
+    "tslib": "catalog:",
+    "typescript": "catalog:"
   }
 }

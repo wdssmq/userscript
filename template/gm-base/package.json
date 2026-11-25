@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "packageManager": "pnpm@10.34.1",
   "scripts": {
-    "build": "rollup -c --environment NODE_ENV:prod",
-    "dev": "rollup -c -w --environment NODE_ENV:dev",
+    "build": "rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript --environment NODE_ENV:prod",
+    "dev": "rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript -w --environment NODE_ENV:dev",
+    "typecheck": "tsc --noEmit",
     "clean:out": "rm -rf dev *.user.js",
     "clean:deps": "rm -rf node_modules",
     "up:ver": "npm version patch && npm run build",
@@ -13,7 +14,10 @@
   },
   "dependencies": {
     "@rollup/plugin-replace": "catalog:",
+    "@rollup/plugin-typescript": "catalog:",
     "rollup": "catalog:",
-    "rollup-plugin-monkey": "catalog:"
+    "rollup-plugin-monkey": "catalog:",
+    "tslib": "catalog:",
+    "typescript": "catalog:"
   }
 }
