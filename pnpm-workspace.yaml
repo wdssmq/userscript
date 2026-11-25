@@ -34,7 +34,7 @@ catalog:
   marked: ^16.4.1
   open: ^8.4.2
   plop: ^4.0.5
-  postcss: ^8.5.10
+  postcss: ^8.5.23
   rollup: ^4.60.2
   rollup-plugin-copy: ^3.5.0
   rollup-plugin-html-string: ^1.0.1
