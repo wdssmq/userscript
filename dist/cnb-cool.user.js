@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         cnb-cool
 // @namespace    https://www.wdssmq.com/
-// @version      1.0.0
+// @version      1.0.1
 // @author       沉冰浮水
 // @description  提升 cnb.cool 的使用体验
 // @license      MIT
